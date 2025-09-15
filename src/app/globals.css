@@ -101,6 +101,9 @@
 .banner-bg-pattern {
   background-image: url("/banner-bg-pattern.svg")
 }
+.bg-quality {
+  background-image: url("/bg-qaulity.jpg")
+}
 
 
 @layer base {

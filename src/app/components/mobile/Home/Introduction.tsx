@@ -29,7 +29,7 @@ export default function Introduction() {
                 </div>
              
             </div>
-            test
+            
 
         </section>
     )
