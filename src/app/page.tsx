@@ -8,6 +8,7 @@ import Services from "./components/mobile/Home/Services";
 import QualityBox from "./components/mobile/Home/QualityBox";
 import Statistics from "./components/mobile/Home/Statistics";
 import BlogShort from "./components/mobile/Home/BlogShort";
+import { NavigationBar } from "./components/mobile/Home/NavigationBar";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <QualityBox/>
       <Statistics/>
       <BlogShort/>
+      <NavigationBar/>
    </div>
   );
 }
