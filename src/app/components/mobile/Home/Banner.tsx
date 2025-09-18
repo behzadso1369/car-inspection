@@ -1,15 +1,16 @@
 'use client'
 import { Button } from "@/components/ui/button";
 import {  Car02Icon } from "hugeicons-react";
+import Image from "next/image";
 
 export default function Banner () {
     return (
         <header className="bg-primary banner-bg-pattern py-3 px-4 h-11 text-white flex justify-between items-center sticky top-0 z-10">
             <div className="flex items-center">
-            <Car02Icon size={24}/>
-            <strong className="font-IranSans-UltraLight text-sm mx-1">کارشناسی خودرو در کمترین زمان</strong>
+            <Image src={"/car-approved.svg"} width="24" height="24" alt="رزرو کارشناس"/>
+            <strong className="font-IranSans-UltraLight text-[#FFFBFB] text-sm mx-1 font-normal">کارشناسی خودرو در کمترین زمان</strong>
             </div>
-            <Button size="sm" variant="outline"  className="rounded-3xl">
+            <Button size="sm" variant="outline"  className="rounded-3xl font-IranSans-UltraLight">
                 رزرو کارشناس
             </Button>
                 

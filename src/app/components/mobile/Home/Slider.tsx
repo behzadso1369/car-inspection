@@ -3,6 +3,7 @@ import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/componen
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 export const Slider = () => {
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState<number>(1)
@@ -20,7 +21,9 @@ export const Slider = () => {
     }, [api])
     const items = [0, 1, 2]; 
   return (
-    <div className="bg-white my-4 py-4 px-4 relative">
+
+
+    <div className="bg-white py-4 px-4 relative">
       <Carousel
         setApi={setApi}
         opts={{
@@ -49,7 +52,12 @@ export const Slider = () => {
               key={i}
               className="relative w-full h-full "
             >
-                <div className="w-full h-full bg-banner  bg-cover"></div>
+                <div className="w-full h-full bg-banner  bg-cover px-8 pt-10">
+                  <h2 className="text-white text-2xl w-46 font-IranSans leading-10">کارشناسی خودرو، فقط با چند کلیک</h2>
+                  <Button className="mt-2 rounded-2xl flex justify-center items-center font-IranSans text-white">
+                    رزرو کارشناسی
+                  </Button>
+                </div>
               {/* <Image
                 src="/banner.png"
                 alt="کارشناسی خودرو، فقط با چند کلیک"
