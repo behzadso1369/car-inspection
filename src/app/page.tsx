@@ -7,13 +7,14 @@ import QualityBox from "./components/mobile/Home/QualityBox";
 import Statistics from "./components/mobile/Home/Statistics";
 import BlogShort from "./components/mobile/Home/BlogShort";
 import { NavigationBar } from "./components/mobile/Home/NavigationBar";
+import instance from "@/helper/interceptor";
+import { ApiHelper } from "@/helper/api-request";
 
-export default async function  Home() {
-        const res = await fetch(`http://45.139.11.225:5533/api/Site/GetMasterPageData`,{
-        cache: "no-store"
-      });
-  const products = await res.json();
- console.log(products);
+export default   function  Home() {
+         instance.get(ApiHelper.get("GetMasterPageData")).then((res:any) => {
+          console.log(res)
+        });
+
  
   return (
    <div className="bg-main-background">
