@@ -1,5 +1,3 @@
-import { NextSeo } from "next-seo";
-import Image from "next/image";
 import Banner from "./components/mobile/Home/Banner";
 import { Slider } from "./components/mobile/Home/Slider";
 import CallAction from "./components/mobile/Home/CallAction";
@@ -10,7 +8,13 @@ import Statistics from "./components/mobile/Home/Statistics";
 import BlogShort from "./components/mobile/Home/BlogShort";
 import { NavigationBar } from "./components/mobile/Home/NavigationBar";
 
-export default function Home() {
+export default async function  Home() {
+        const res = await fetch(`http://45.139.11.225:5533/api/Site/GetMasterPageData`,{
+        cache: "no-store"
+      });
+  const products = await res.json();
+ console.log(products);
+ 
   return (
    <div className="bg-main-background">
  
