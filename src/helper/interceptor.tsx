@@ -1,71 +1,50 @@
-"use client"
+"use client";
 import axios from "axios";
-import { toast } from "sonner"
+import { toast } from "sonner";
+
+const BASE_URL = "http://45.139.11.225:5533/api/Site/";
+
 const instance = axios.create({
-  baseURL: "http://45.139.11.225:5533/api/Site/",
+  baseURL: BASE_URL,
 });
 
-  let error = "";
-  instance.interceptors.request.use(
-  (config:any) => {
-    
-    const token =  localStorage.getItem("token");
-    return {
-      ...config,
-      headers: {
-        ...(token !== null && { Authorization: `Bearer ${token}` }),
-        ...config.headers,
-      },
-    };
+instance.interceptors.request.use(
+  (config: any) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
   },
-  (error) => {
-    return  toast("Event has", {
-      description: error,
-      action: {
-        label: "Undo",
-        onClick: () => console.log("Undo"),
-      },
-    })
-  }
+  (error) => Promise.reject(error)
 );
+
 instance.interceptors.response.use(
   (response) => {
-    if(response.data.isSuccess) {
-      console.log("test taost")
-      error = response.data.statusMessage;
-
-    }else {;
-      error = response.data.statusMessage;
+    const { data } = response;
+    console.log("dataaaaaaaaaaaaaaa"+data.statusMessage)
+    toast("Error", { description: data.statusMessage });
+    if (!data.isSuccess) {
+      toast("Error", { description: data.statusMessage });
     }
-    return response;
+    return response.data.resultObject;
   },
   (error) => {
-    if(!error.response) {
-      error = "اینترنت شما قظع شده است";
+    let message = "مشکلی به وجود آمده است";
 
-    }else {
-      if (error.response.status === 401) {
-        error = "نشست شما منقضی شده است";
-   
-        window.location.href = "/login";
-      }else {
-      error = 
-        error?.response?.data?.message
-          ? error?.response?.data?.message
-          : 'مشکلی به وجود آمده است'
-      }
+    if (!error.response) {
+      message = "اینترنت شما قطع شده است";
+    } else if (error.response.status === 401) {
+      message = "نشست شما منقضی شده است";
+      window.location.href = "/login";
+    } else {
+      message = error.response?.data?.message ?? message;
     }
-    return  toast("Event has", {
-      description: error,
-      action: {
-        label: "Undo",
-        onClick: () => console.log("Undo"),
-      },
-    })
+
+    toast("Error", { description: message });
+    return Promise.reject(error);
   }
 );
 
-
+console.log("Exporting instance:", instance);
 export default instance;
-
-

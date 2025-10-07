@@ -4,7 +4,9 @@ import { ProductCard } from "./ProductCard";
 import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
 
-export default function Services() {
+export default function Services({data}:any) {
+  console.log(data);
+  
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
     const [count, setCount] = useState(0)
@@ -28,9 +30,12 @@ export default function Services() {
                 loop:true
             }}  >
         <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {data?.map((item:any, index:number) => (
             <CarouselItem key={index} className="basis-4/5" >
-             <ProductCard/>
+              
+                  <ProductCard Id={item.Id} ImagePath={item.ImagePath} Title={item.Title} Description={item.Description} />
+              
+           
             </CarouselItem>
           ))}
         </CarouselContent>

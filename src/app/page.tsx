@@ -1,3 +1,5 @@
+
+"use client"
 import Banner from "./components/mobile/Home/Banner";
 import { Slider } from "./components/mobile/Home/Slider";
 import CallAction from "./components/mobile/Home/CallAction";
@@ -9,23 +11,32 @@ import BlogShort from "./components/mobile/Home/BlogShort";
 import { NavigationBar } from "./components/mobile/Home/NavigationBar";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
+import { useEffect, useState } from "react";
 
 export default   function  Home() {
-         instance.get(ApiHelper.get("GetMasterPageData")).then((res:any) => {
-          console.log(res)
-        });
+const [data,setData] = useState<any>([]);
+  useEffect(() => {
+    instance.get(ApiHelper.get("GetMasterPageData"))
+      .then((res: any) => {
+        console.log(res);
+        setData(res);
+      })
+      .catch((err: any) => {
+        console.error("Error fetching data:", err);
+      });
+  }, []);
 
  
   return (
    <div className="bg-main-background">
  
-      <Banner/>
-      <CallAction/>
-      <Slider/>
+      <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
+      <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
+      <Slider data={data?.MasterSiteData?.Sliders}/>
       <Introduction/>
-      <Services/>
-      <QualityBox/>
-      <Statistics/>
+      <Services data={data?.CarInspectionServices}/>
+      <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
+      <Statistics data={data?.StatisticsData}/>
       <BlogShort/>
       <NavigationBar/>
    </div>

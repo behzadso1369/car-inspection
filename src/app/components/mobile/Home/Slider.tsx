@@ -4,7 +4,7 @@ import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-export const Slider = () => {
+export const Slider = ({data}:any) => {
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState<number>(1)
    

@@ -1,13 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { CheckmarkCircle01Icon } from "hugeicons-react";
 
-export default function QualityBox() {
+export default function QualityBox({data}:any) {
+    console.log(data);
+    
     return (
         <div className="bg-quality bg-center py-8 px-4 w-full font-IranSans">
             <div className="bg-[#15131399] text-white py-8 px-4 rounded-4xl">
-                <h6 className="my-3 text-lg">راز کیفیت خدمات ما</h6>
+                <h6 className="my-3 text-lg">{data?.Title}</h6>
                 <p className="my-3 text-base leading-8">
-                ما تمامی نیروهای خدماتی خود را با دقت و بر اساس معیارهای مشخص ارزیابی و انتخاب می‌کنیم تا اطمینان حاصل شود  شما بالاترین سطح کیفیت خدمات را دریافت خواهد کرد. باور ما این است که رضایت شما بهترین تبلیغ برای ماست و تجربه مثبت شما موجب معرفی ما به دیگران خواهد شد.
+{data?.MoreDescription}
                 </p>
                 <ul className="my-3">
                     <li className="my-3 text-lg flex">

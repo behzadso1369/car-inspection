@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "./components/mobile/Home/Header";
 import { Footer } from "./components/mobile/Home/Footer";
 import SeoWrapper from "./SeoWrapper";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
      
         
         {children}
+                <Toaster richColors position="top-center" />
         <Footer/>
       </body>
     </html>
