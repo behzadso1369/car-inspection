@@ -4,7 +4,7 @@ import {  Car02Icon } from "hugeicons-react";
 import Image from "next/image";
 
 export default function Banner ({data}:any) {
-    console.log(data);
+
     
     return (
         <header className="bg-primary banner-bg-pattern py-3 px-4 h-11 text-white flex justify-between items-center sticky top-0 z-10">

@@ -22,7 +22,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     const { data } = response;
-    console.log("dataaaaaaaaaaaaaaa"+data.statusMessage)
+    
     toast("Error", { description: data.statusMessage });
     if (!data.isSuccess) {
       toast("Error", { description: data.statusMessage });
@@ -46,5 +46,5 @@ instance.interceptors.response.use(
   }
 );
 
-console.log("Exporting instance:", instance);
+
 export default instance;

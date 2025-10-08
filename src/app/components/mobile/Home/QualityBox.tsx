@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { CheckmarkCircle01Icon } from "hugeicons-react";
 
 export default function QualityBox({data}:any) {
-    console.log(data);
+
     
     return (
         <div className="bg-quality bg-center py-8 px-4 w-full font-IranSans">

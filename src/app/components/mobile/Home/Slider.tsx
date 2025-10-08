@@ -5,6 +5,7 @@ import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 export const Slider = ({data}:any) => {
+  console.log(data);
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState<number>(1)
    
@@ -47,13 +48,13 @@ export const Slider = ({data}:any) => {
         className="w-full"
       >
         <CarouselContent className="w-full h-[183px] ">
-          {[1, 2, 3].map((i) => (
+          {data?.map((item:any) => (
             <CarouselItem
-              key={i}
+              key={item.id}
               className="relative w-full h-full "
             >
-                <div className="w-full h-full bg-banner  bg-cover px-8 pt-10">
-                  <h2 className="text-white text-2xl w-46 font-IranSans leading-10">کارشناسی خودرو، فقط با چند کلیک</h2>
+                <div className="w-full h-full   bg-cover px-8 pt-10" style={{background: `url(http://45.139.11.225:5533/${item.ImagePath})`}}>
+                  <h2 className="text-black text-2xl w-46 font-IranSans leading-10">{item.Title}</h2>
                   <Button className="mt-2 rounded-2xl flex justify-center items-center font-IranSans text-white">
                     رزرو کارشناسی
                   </Button>

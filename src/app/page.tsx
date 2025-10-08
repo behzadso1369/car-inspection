@@ -32,7 +32,7 @@ const [data,setData] = useState<any>([]);
  
       <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
       <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
-      <Slider data={data?.MasterSiteData?.Sliders}/>
+      <Slider data={data?.Sliders}/>
       <Introduction/>
       <Services data={data?.CarInspectionServices}/>
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>

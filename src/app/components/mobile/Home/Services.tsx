@@ -5,7 +5,7 @@ import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
 
 export default function Services({data}:any) {
-  console.log(data);
+
   
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
