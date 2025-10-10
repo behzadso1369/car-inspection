@@ -38,7 +38,7 @@ const [data,setData] = useState<any>([]);
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
       <Statistics data={data?.StatisticsData}/>
       <BlogShort/>
-      <NavigationBar/>
+     
    </div>
   );
 }

@@ -5,6 +5,7 @@ import { Header } from "./components/mobile/Home/Header";
 import { Footer } from "./components/mobile/Home/Footer";
 import SeoWrapper from "./SeoWrapper";
 import { Toaster } from "sonner";
+import { NavigationBar } from "./components/mobile/Home/NavigationBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
         
         {children}
                 <Toaster richColors position="top-center" />
+                <NavigationBar/>
         <Footer/>
       </body>
     </html>
