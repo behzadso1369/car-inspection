@@ -3,6 +3,7 @@ import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/componen
 import { useEffect, useState } from "react";
 import { RequestCard } from "./RequestCard";
 import { ArrowLeft01Icon } from "hugeicons-react"
+import Link from "next/link";
 
 export default function Requests({data}:any) {
 
@@ -25,11 +26,11 @@ export default function Requests({data}:any) {
         <section className="bg-white  px-4 py-12  font-IranSans">
               <div className="flex w-full justify-between">
                 <span>درخواست های من</span>
-                <p className="text-[#1434CB] flex items-center">
+                <Link href={"/Profile/requests"} prefetch={false} className="text-[#1434CB] flex items-center">
                     <span>همه درخواست ها</span>
                     <ArrowLeft01Icon className="mb-1 mx-1" color="#1434CB" size={20} />
                     
-                </p>
+                </Link>
               
             </div>
             <Carousel  setApi={setApi}  className="w-full max-w-full my-4" opts={{

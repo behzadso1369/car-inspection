@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft01Icon, ArrowLeft02Icon } from "hugeicons-react"
 import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 export const RequestCard = ({Id,Title,Description,paymentStatus,CarName,Status}:any) => {
     return (
@@ -14,7 +15,7 @@ export const RequestCard = ({Id,Title,Description,paymentStatus,CarName,Status}:
     <h5 className="text-[#101117] text-base my-2"> وضعیت سفارش : {paymentStatus} </h5>
     <strong className="text-sm text-[#101117] font-light">{Description}</strong>
     <div className="w-full">
-    <Button className="rounded-3xl w-1/2 my-4 bg-[#3456bb] text-white">جزییات سفارش</Button>
+    <Link prefetch={false} href={`${Status === "compepelted" ? "./Profile/requests/done" : Status === "./Profile/requests/cenceled" ? "canceled" : "./Profile/requests/incompeleted"}`} className="rounded-3xl inline-block py-2 px-1 text-center text-sm  w-1/2 my-4 bg-[#3456bb] text-white">جزییات سفارش</Link>
     </div>
 
   </figcaption>

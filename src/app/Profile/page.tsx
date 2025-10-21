@@ -31,7 +31,7 @@ export default function Profile() {
         <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
             <div className="text-[#101117] flex">
             <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
-            <Link href={"/Profile/requests"} className="mx-1 text-base">تمامی درخواست ها  </Link>
+            <Link href={"/Profile/requests"} className="mx-1 text-base" prefetch={false}>تمامی درخواست ها  </Link>
             </div>
      
         <ArrowLeft/>

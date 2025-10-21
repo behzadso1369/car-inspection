@@ -19,7 +19,7 @@ export const NavigationBar = () => {
         <Image alt="کارشناسی خودرو" src="/car-service.svg" width={24} height={24}/>
         <span className="text-xs my-1">خدمات کارچک</span>
         </Link>
-        <Link className="flex flex-col justify-between items-center text-[#999A9C] active:text-[#416CEA]" href="/test">
+        <Link className="flex flex-col justify-between items-center text-[#999A9C] active:text-[#416CEA]" href="/Profile">
         <Image alt="کارشناسی خودرو" src="/profile.svg" width={24} height={24}/>
         <span className="text-xs my-1">پروفایل</span>
         </Link>

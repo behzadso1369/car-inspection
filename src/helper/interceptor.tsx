@@ -2,7 +2,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 
-const BASE_URL = "http://45.139.11.225:5533/api/Site/";
+const BASE_URL = "https://api.carmacheck.com/api/Site/";
 
 const instance = axios.create({
   baseURL: BASE_URL,

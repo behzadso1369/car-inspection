@@ -12,13 +12,13 @@ import { NavigationBar } from "./components/mobile/Home/NavigationBar";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useEffect, useState } from "react";
+import { Footer } from "./components/mobile/Home/Footer";
 
 export default   function  Home() {
 const [data,setData] = useState<any>([]);
   useEffect(() => {
     instance.get(ApiHelper.get("GetMasterPageData"))
       .then((res: any) => {
-        console.log(res);
         setData(res);
       })
       .catch((err: any) => {
@@ -38,6 +38,7 @@ const [data,setData] = useState<any>([]);
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
       <Statistics data={data?.StatisticsData}/>
       <BlogShort/>
+      <Footer/>
      
    </div>
   );
