@@ -117,3 +117,6 @@
     @apply bg-background text-foreground;
   }
 }
+.blog-banner {
+  background-image: url("/blog-banner.png")
+}
