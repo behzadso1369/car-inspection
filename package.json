@@ -10,6 +10,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.13",
     "axios": "^1.12.2",
@@ -18,6 +19,7 @@
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "hugeicons-react": "^0.3.0",
+    "input-otp": "^1.4.2",
     "lucide-react": "^0.542.0",
     "next": "15.5.2",
     "next-seo": "^6.8.0",

@@ -48,26 +48,29 @@ export const Slider = ({data}:any) => {
         className="w-full"
       >
         <CarouselContent className="w-full h-[183px] ">
-          {data?.map((item:any) => (
-            <CarouselItem
+          {data?.map((item:any) => {
+            const imageUrl = item.ImagePath.replace(/\\/g, '/'); 
+ return (
+  <CarouselItem
               key={item.id}
               className="relative w-full h-full "
             >
-                <div className="w-full h-full   bg-cover px-8 pt-10" style={{background: `url(http://45.139.11.225:5533/${item.ImagePath})`}}>
-                  <h2 className="text-black text-2xl w-46 font-IranSans leading-10">{item.Title}</h2>
-                  <Button className="mt-2 rounded-2xl flex justify-center items-center font-IranSans text-white">
+                <div className="w-full h-full relative   px-8 pt-10" >
+                  <h2 className=" text-2xl w-46 font-IranSans leading-10 z-10 absolute text-white font-medium">{item.Text}</h2>
+                  <Button className="mt-2 rounded-2xl absolute flex justify-center items-center font-IranSans text-white z-10 top-1/2">
                     رزرو کارشناسی
                   </Button>
                 </div>
-              {/* <Image
-                src="/banner.png"
+              <Image
+                src={`https://api.carmacheck.com/${imageUrl}`}
                 alt="کارشناسی خودرو، فقط با چند کلیک"
                 fill
-                className="object-cover "
+                className="object-cover z-0"
                 quality={100}
-              /> */}
+              />
             </CarouselItem>
-          ))}
+ )           
+})}
         </CarouselContent>
       </Carousel>
       <div className="flex items-center flex-col absolute right-4  rounded-l-2xl bg-white top-1/2 -translate-y-1/2  py-6 px-2">

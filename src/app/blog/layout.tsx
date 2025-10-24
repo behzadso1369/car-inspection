@@ -1,6 +1,7 @@
 import { Call02Icon } from "hugeicons-react";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import BlogFooter from "./components/BlogFooter";
 
 export default function BlogLayout({
     children,
@@ -23,6 +24,7 @@ export default function BlogLayout({
 
         </div>
         {children}
+        <BlogFooter/>
         </div>
     )
 }

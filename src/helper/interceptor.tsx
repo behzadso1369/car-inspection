@@ -2,7 +2,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 
-const BASE_URL = "https://api.carmacheck.com/api/Site/";
+const BASE_URL = "https://api.carmacheck.com/api/";
 
 const instance = axios.create({
   baseURL: BASE_URL,
@@ -30,6 +30,7 @@ instance.interceptors.response.use(
     return response.data.resultObject;
   },
   (error) => {
+    debugger
     let message = "مشکلی به وجود آمده است";
 
     if (!error.response) {
@@ -38,7 +39,7 @@ instance.interceptors.response.use(
       message = "نشست شما منقضی شده است";
       window.location.href = "/login";
     } else {
-      message = error.response?.data?.message ?? message;
+      message = error.response?.data?.statusMessage ?? message;
     }
 
     toast("Error", { description: message });

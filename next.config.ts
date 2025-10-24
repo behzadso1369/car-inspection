@@ -4,9 +4,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: '45.139.11.225',
-        port: '5533',
+        protocol: 'https',
+        hostname: 'api.carmacheck.com',
+        port: '',
         pathname: '/**',
         search: '',
       },

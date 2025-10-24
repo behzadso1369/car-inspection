@@ -1,10 +1,24 @@
+"use client"
 import { Call02Icon, Edit01Icon } from "hugeicons-react";
 import { ArrowLeft, ArrowRight, Edit3Icon } from "lucide-react";
 import Image from "next/image";
 import Requests from "./components/Requests";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import instance from "@/helper/interceptor";
+import { ApiHelper } from "@/helper/api-request";
 
 export default function Profile() {
+    const [data,setData] = useState<any>([]);
+  useEffect(() => {
+    instance.get(ApiHelper.get("GetOrders"))
+      .then((res: any) => {
+        setData(res);
+      })
+      .catch((err: any) => {
+        console.error("Error fetching data:", err);
+      });
+  }, []);
     const requests = [
         {Id:1,Title:"تکمیل شده",CarName:"سمند سورن",paymentStatus:"تکمیل سفارش",Description:"کارشناسی ماشین انجام شده است.",status: "compepelted"},
         {Id:1,Title:"تکمیل نشده",CarName:"پژو 206",paymentStatus:"منتظر پرداخت",Description:"پرداخت خود را تکمیل کنید.",status: "unknown"},
@@ -40,7 +54,7 @@ export default function Profile() {
         <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
         <div className="text-[#101117] flex">
             <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
-            <span className="mx-1 text-base">تمامی درخواست ها  </span>
+            <span className="mx-1 text-base">آدرس ها</span>
             </div>
         <ArrowLeft/>
 
@@ -48,7 +62,7 @@ export default function Profile() {
         <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
         <div className="text-[#101117] flex">
             <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
-            <span className="mx-1 text-base">تمامی درخواست ها  </span>
+            <span className="mx-1 text-base">خروج</span>
             </div>
         <ArrowLeft/>
 

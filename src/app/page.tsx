@@ -37,7 +37,7 @@ const [data,setData] = useState<any>([]);
       <Services data={data?.CarInspectionServices}/>
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
       <Statistics data={data?.StatisticsData}/>
-      <BlogShort/>
+      <BlogShort data={data?.BlogPosts}/>
       <Footer/>
      
    </div>

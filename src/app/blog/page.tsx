@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input"
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import { SearchIcon } from "lucide-react";
 import ArticleCard from "./components/BlogCard";
+import { Button } from "@/components/ui/button";
+import SuggestionCard from "./components/SuggestionCard";
 
 export default function Blog () {
     const [api, setApi] = useState<CarouselApi>();
@@ -83,7 +85,7 @@ export default function Blog () {
 </div>
 <div>
     <div className="flex justify-center flex-wrap">
-    <h1 className="w-auto border-b py-2 text-center inline-block m-auto">جدیدترین‌های مقالات</h1>
+    <h2 className="w-auto border-b py-2 text-center inline-block m-auto">جدیدترین‌های مقالات</h2>
     <ArticleCard title="موبایل‌هایی که برای ارتباط آنلاین
 با هوش مصنوعی استفاده می‌شوند." imageSrc="/articel1.png" author="حسین احمدی" category="کارشناسی" date="۱۶ اردیبهشت ۱۴۰۴" />
     <ArticleCard title="موبایل‌هایی که برای ارتباط آنلاین
@@ -92,6 +94,16 @@ export default function Blog () {
 با هوش مصنوعی استفاده می‌شوند." imageSrc="/articel1.png" author="حسین احمدی" category="کارشناسی" date="۱۶ اردیبهشت ۱۴۰۴" />
     <ArticleCard title="موبایل‌هایی که برای ارتباط آنلاین
 با هوش مصنوعی استفاده می‌شوند." imageSrc="/articel1.png" author="حسین احمدی" category="کارشناسی" date="۱۶ اردیبهشت ۱۴۰۴" />
+<div className="flex w-full justify-center">
+  <Button>مشاهده همه</Button>
+</div>
+<div className="flex justify-center flex-wrap">
+<h2 className="w-auto border-b py-2 text-center inline-block m-auto">مطالب پیشنهادی</h2>
+  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard1.png" link="/" />
+  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard2.jpg" link="/" />
+  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard3.jpg" link="/" />
+  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard1.png" link="/" />
+</div>
     </div>
 
 

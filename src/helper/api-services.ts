@@ -1,6 +1,9 @@
 export default {
 //masterSiteData
-GetMasterPageData: "GetMasterPageData"
+GetMasterPageData: "Site/GetMasterPageData",
+GetOrders: "User/GetUserOrders",
+CheckPhoneNumber: "User/UserCheckPhoneNumber",
+UserVerify: "User/UserVerify",
 
 
 
