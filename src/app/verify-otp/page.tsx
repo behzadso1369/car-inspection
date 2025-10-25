@@ -12,14 +12,20 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function VerifyOtp() {
+   const searchParams = useSearchParams();
        const [value,setValue] = useState<any>("")
   const router = useRouter();
-   const [timer, setTimer] = useState(120);
+   const expiry = Number(searchParams.get('expiry'));
+   const [timer, setTimer] = useState(   Math.max(0, Math.floor((expiry - Date.now()) / 1000)));
+ 
+
+    
+  
    
   // ⏳ Countdown effect
   useEffect(() => {
@@ -39,13 +45,17 @@ export default function VerifyOtp() {
     const s = (sec % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   }; 
-    const verifyOtp = () => {
-        instance.post(ApiHelper.get("CheckPhoneNumber"),{
+    const verifyOtp = (e:any) => {
+      console.log(e)
+        instance.post(ApiHelper.get("UserVerify"),{
             userId:localStorage.getItem("userId"),
-            otpCode:value
+            otpCode:e
         }).then((res:any) => {
             if (res) {
-        router.push("/profile");
+              debugger
+              localStorage.setItem("token",res.accessToken)
+              
+        router.push("/Profile");
       } 
         })
     }
@@ -58,10 +68,8 @@ export default function VerifyOtp() {
             <h1 className="text-[#101117] font-medium text-base">کد تایید را وارد کنید</h1>
             <Label className="text-sm text-[#101117] font-light text-center">کد تایید برای شماره {localStorage.getItem("phoneNumber")} ارسال گردید</Label>
             <div className="w-full flex justify-center">
-                  <InputOTP onChange={(e:any) => {
-                    setValue(e.target.value)
-                  }} onComplete={verifyOtp}  className="w-auto"  maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
-      <InputOTPGroup dir="ltr">
+                  <InputOTP   onComplete={verifyOtp}  className="w-auto"  maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
+      <InputOTPGroup dir="ltr" >
         <InputOTPSlot index={0} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
       
         <InputOTPSlot index={1} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />

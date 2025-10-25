@@ -19,8 +19,10 @@ export default function Login() {
             if (res?.isRegistered) {
                 localStorage.setItem("userId",res?.userId);
                 localStorage.setItem("phoneNumber",value);
+                   const expiryTimestamp = Date.now() + res?.remainingSeconds * 1000;
+                
       
-        router.push("/verify-otp");
+           router.push(`/verify-otp?expiry=${expiryTimestamp}`);
       } else {
    
         router.push("/register");

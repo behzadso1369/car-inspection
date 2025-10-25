@@ -4,6 +4,7 @@ GetMasterPageData: "Site/GetMasterPageData",
 GetOrders: "User/GetUserOrders",
 CheckPhoneNumber: "User/UserCheckPhoneNumber",
 UserVerify: "User/UserVerify",
+Logout: "User/Logout"
 
 
 

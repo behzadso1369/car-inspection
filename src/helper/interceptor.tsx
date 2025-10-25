@@ -30,7 +30,7 @@ instance.interceptors.response.use(
     return response.data.resultObject;
   },
   (error) => {
-    debugger
+    
     let message = "مشکلی به وجود آمده است";
 
     if (!error.response) {
