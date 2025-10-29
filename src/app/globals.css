@@ -85,7 +85,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 @theme {
-  --font-IranSans: "IRANSans";
+  --font-IranSans: "IRANSans"; 
   --font-IranSans-UltraLight: "IRANSansUltraLight";
   --primary: #3563E9;
   --secondary: #FFFFFF;
