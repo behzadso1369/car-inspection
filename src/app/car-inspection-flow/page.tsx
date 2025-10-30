@@ -10,18 +10,31 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { Tick01Icon } from "hugeicons-react";
 import OpenSheet from "./CarGroupSheet";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import FiveStepSolidGauge from "./GuageChart";
+import SimpleGauge from "./GuageChart";
+import { Button } from "@/components/ui/button";
 
 export default function CarInspectionFlow() {
     const [data,setData] = useState<any>([]);
-        const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    instance.get(ApiHelper.get("GetMasterPageData"))
+      const [inputValue,setInputValue] = useState({
+        name:"",
+        value: 0
+      });
+            const GetMasterPageData = () => {
+                instance.get(ApiHelper.get("GetMasterPageData"))
       .then((res: any) => {
         setData(res);
       })
       .catch((err: any) => {
         console.error("Error fetching data:", err);
       });
+            }
+            
+  useEffect(() => {
+    GetMasterPageData();
+
+    
   }, []);
 
  
@@ -36,8 +49,11 @@ export default function CarInspectionFlow() {
                 <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">
                     <h1 className="text-black text-lg my-2 font-medium">کارشناسی خودرو</h1>
                     <h2 className="text-[#55565A] font-light text-base">جهت شروع فرآیند کارشناسی اطلاعات زیر را وارد کنید.</h2>
-                    <div className="flex">
-                        <div>chart</div>
+                    <div className="flex  items-center">
+                        <div className="aspect-[2] relative w-16 h-8 ml-4">
+                              <Image src="/step1.png" alt="step1.png" fill className="object-fill"/>
+                        </div>
+                        
                         <div>
        <h3 className="text-base text-black my-2 font-medium">مرحله اول :مشخصات اولیه خودرو</h3>
        <h4 className="text-[#55565A] font-light text-sm"> بعدی: انتخاب روش کارشناسی</h4>
@@ -49,14 +65,22 @@ export default function CarInspectionFlow() {
                         </div>
                  
                     </div>
-                    <Label className="my-2">نام خودرو</Label>
-                                    <Input                 onClick={() => setIsOpen(true)} placeholder="نام خودرو را انتخاب کنید" className="items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A]  text-xs"/>
+                     <Dialog >
+<DialogTrigger className="w-full">
+                        <Label className="my-2">نام خودرو</Label>
+                                    <Input   value={inputValue.name}        readOnly       placeholder="نام خودرو را انتخاب کنید" className="items-center !py-4 border w-full border-[#DFDFDF] rounded-full text-[#55565A]  text-xs h-11"/>
+                                    <Button className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4">رزرو کارشناسی</Button>
+   
+</DialogTrigger>
+ <OpenSheet inputValue={inputValue} setInputValue={setInputValue}/>
+</Dialog>
+
                 
 
                 </div>
 
             </div>
-                <div className="w-full h-96 bg-[#416CEA] relative mt-[200px] flex flex-wrap justify-center">
+                <div className="w-full h-96 bg-[#416CEA] relative mt-28 flex flex-wrap justify-center">
                         <div className="absolute -top-2 -translate-y-1/2 -rotate-360">
                             <Image alt="flow-car" src="/flow-car.png" className="!w-full" width={300} height={167}/>
 
@@ -113,7 +137,7 @@ export default function CarInspectionFlow() {
                     <div className="mt-16">
                         <h3>انتخاب محل کارشنا   سی خودرو با شما</h3>
                     </div>
-                             <OpenSheet isOpen={isOpen} setIsOpen={setIsOpen}  />
+                             
 
         </div>
     )
