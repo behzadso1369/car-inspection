@@ -14,9 +14,11 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import FiveStepSolidGauge from "./GuageChart";
 import SimpleGauge from "./GuageChart";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function CarInspectionFlow() {
     const [data,setData] = useState<any>([]);
+     const router = useRouter();
       const [inputValue,setInputValue] = useState({
         name:"",
         value: 0
@@ -36,6 +38,22 @@ export default function CarInspectionFlow() {
 
     
   }, []);
+  useEffect(() => {
+    localStorage.setItem("CarGroupId",String(inputValue.value));
+    localStorage.setItem("CarGroupName",String(inputValue.name));
+    debugger
+  },[inputValue])
+  const moveToInspectionMethod = () => {
+  
+    instance.post(ApiHelper.get("CreateOrder"),{
+        carGroupId:inputValue.value
+    }).then((res:any) => {
+        if(res?.orderId) {
+            localStorage.setItem("OrderId",res?.orderId);
+           router.push(`./car-inspection-flow/inspection-method`);
+        }
+    })
+  }
 
  
   
@@ -69,9 +87,10 @@ export default function CarInspectionFlow() {
 <DialogTrigger className="w-full">
                         <Label className="my-2">نام خودرو</Label>
                                     <Input   value={inputValue.name}        readOnly       placeholder="نام خودرو را انتخاب کنید" className="items-center !py-4 border w-full border-[#DFDFDF] rounded-full text-[#55565A]  text-xs h-11"/>
-                                    <Button className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4">رزرو کارشناسی</Button>
+
    
 </DialogTrigger>
+                                    <Button onClick={moveToInspectionMethod} className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4">رزرو کارشناسی</Button>
  <OpenSheet inputValue={inputValue} setInputValue={setInputValue}/>
 </Dialog>
 

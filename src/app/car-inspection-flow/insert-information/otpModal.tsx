@@ -12,7 +12,26 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
       const [timer, setTimer] = useState(60);
        const router = useRouter();
      
-    
+         const moveToInspectionLocation = () => {
+         instance.post(ApiHelper.get("MoveOrder"), {
+            "isBack": false,
+              "orderId": Number(localStorage.getItem("OrderId")),
+              "userId": localStorage.getItem("userId"),
+
+         })
+        .then((res:any) => {
+          if(res) {
+   router.push("./inspection-location")
+          }
+         
+           
+          
+        
+            
+        }).catch((err:any) => {
+          console.log(err)
+        })
+       }
         
       
        
@@ -41,16 +60,16 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
             otpCode:e
         }).then((res:any) => {
             if (res) {
-              debugger
+              
               localStorage.setItem("token",res.accessToken)
               
-        router.push("/Profile");
+        moveToInspectionLocation();
       } 
         })
     }
     return (
           <>
-              <DialogContent className="sm:max-w-[425px] bg-white font-IranSans">
+              <DialogContent className="sm:max-w-[425px] bg-white font-IranSans px-2 py-8">
           <DialogHeader>
             <DialogTitle className="text-base text-[#101117] font-medium">کد تایید را وارد کنید</DialogTitle>
             <DialogDescription className="text-sm text-[#101117] font-light">
@@ -62,17 +81,17 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
             <div className="w-full flex justify-center">
                   <InputOTP   onComplete={verifyOtp}  className="w-auto"  maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
       <InputOTPGroup dir="ltr" >
-        <InputOTPSlot index={0} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot index={0} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
       
-        <InputOTPSlot index={1} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot index={1} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
     
-        <InputOTPSlot   index={2} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot   index={2} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
       
-        <InputOTPSlot  index={3} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot  index={3} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
   
-        <InputOTPSlot   index={4} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot   index={4} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
      
-        <InputOTPSlot   index={5} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot   index={5} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
       </InputOTPGroup>
     </InputOTP>
             </div>

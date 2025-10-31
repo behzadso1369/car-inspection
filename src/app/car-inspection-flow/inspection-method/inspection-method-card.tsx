@@ -17,36 +17,17 @@ export default function InspectionMethodCard({inspectionType,data, selected, onS
       dir="rtl">
             <div className="py-4 border-b border-[#DFDFDF]">
 <div className="flex items-center gap-3 text-[#101117] text-sm">
-        <RadioGroupItem value={inspectionType} id={inspectionType} />
-        <Label htmlFor={inspectionType}>{inspectionType}</Label>
+        <RadioGroupItem value={String(data.Id)} id={String(data.Id)} />
+        <Label htmlFor={String(data.Id)}>{data.InspectionTypeName}</Label>
       </div>
       
       <div className="px-6 grid grid-cols-2 text-xs font-light text-[#55565A]">
+       {data.Features.slice(0,6).map((item:any) => (
         <span className="my-1">
-            بررسی رنگ و بدنه
+          {item.Name}
         </span>
-        <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-        <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-        <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-        <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-        <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-        <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-        <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-        {!showMore && <span className="my-1" onClick={() => setShowMore(true)}>
+       ))}
+        {(!showMore && data.Features.length > 6) && <span className="my-1" onClick={() => setShowMore(true)}>
                مشاهده بیشتر
         </span>}
       
@@ -54,28 +35,19 @@ export default function InspectionMethodCard({inspectionType,data, selected, onS
 
       </div>
       {showMore &&   <div className="px-6 grid grid-cols-2 text-xs font-light text-[#55565A]" >
-          <span className="my-1">
-            بررسی رنگ و بدنه
+          {data.Features.slice(6,data.Features.length - 1).map((item:any) => (
+        <span className="my-1">
+          {item.Name}
         </span>
-          <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-          <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-          <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
-          <span className="my-1">
-            بررسی رنگ و بدنه
-        </span>
+       ))}
+          
       </div>}
             </div>
             <div className="flex justify-between px-4 py-3">
                 <div className="flex flex-col">
                     <span className="text-[#101117] font-medium text-sm">قیمت بازار</span>
                     <div className="flex">
-      <span className="text-[#55565A] text-m font-light">5,028,000 </span>
+      <span className="text-[#55565A] text-m font-light">{data.MarketPrice} </span>
                     <span className="text-[#55565A] text-m font-light">تومان</span>
                     </div>
               
@@ -83,7 +55,7 @@ export default function InspectionMethodCard({inspectionType,data, selected, onS
                 <div className="flex flex-col">
                     <span className="text-[#101117] font-medium text-sm">قیمت کارچک</span>
                       <div className="flex">
-                         <span className="text-[#55565A] text-m font-light">5,028,000 </span>
+                         <span className="text-[#55565A] text-m font-light">{data.OurPrice} </span>
                     <span className="text-[#55565A] text-m font-light">تومان </span>
                       </div>
                    
