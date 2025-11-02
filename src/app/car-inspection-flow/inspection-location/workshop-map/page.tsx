@@ -14,7 +14,7 @@ export default function DirectionsMap() {
         <DialogTitle className="text-base text-[#101117] font-medium">
           آدرس و ساعت مراجعه
         </DialogTitle>
-      </DialogHeader>
+      </DialogHeader>-+
 
    <div className="w-full h-[500px]">
       <MapContainer  center={[35.753436, 51.509858]} zoom={600} className="h-full w-full">
