@@ -5,7 +5,7 @@ import { RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
 
 
-export default function InspectionTimeCard({inspectionType,data, selected, onSelect,desc}:any) {
+export default function inspectionTimeCard({inspectionType,data, selected, onSelect}:any) {
     const [showMore,setShowMore] = useState(false);
       const isSelected = selected === inspectionType;
     return (
@@ -17,12 +17,51 @@ export default function InspectionTimeCard({inspectionType,data, selected, onSel
       dir="rtl">
             <div className="py-4 border-b border-[#DFDFDF]">
 <div className="flex items-center gap-3 text-[#101117] text-sm">
-        <RadioGroupItem value={inspectionType} id={inspectionType} />
-        <Label htmlFor={inspectionType}>{inspectionType}</Label>
-        <div>{desc}</div>
+        <RadioGroupItem value={String(data.Id)} id={String(data.Id)} />
+        <Label htmlFor={String(data.Id)}>{data.InspectionTypeName}</Label>
       </div>
-            </div>
+      
+      <div className="px-6 grid grid-cols-2 text-xs font-light text-[#55565A]">
+       {data.Features.slice(0,6).map((item:any) => (
+        <span className="my-1">
+          {item.Name}
+        </span>
+       ))}
+        {(!showMore && data.Features.length > 6) && <span className="my-1" onClick={() => setShowMore(true)}>
+               مشاهده بیشتر
+        </span>}
+      
+       
+
+      </div>
+      {showMore &&   <div className="px-6 grid grid-cols-2 text-xs font-light text-[#55565A]" >
+          {data.Features.slice(6,data.Features.length - 1).map((item:any) => (
+        <span className="my-1">
+          {item.Name}
+        </span>
+       ))}
           
+      </div>}
+            </div>
+            <div className="flex justify-between px-4 py-3">
+                <div className="flex flex-col">
+                    <span className="text-[#101117] font-medium text-sm">قیمت بازار</span>
+                    <div className="flex">
+      <span className="text-[#55565A] text-m font-light">{data.MarketPrice} </span>
+                    <span className="text-[#55565A] text-m font-light">تومان</span>
+                    </div>
+              
+                </div>
+                <div className="flex flex-col">
+                    <span className="text-[#101117] font-medium text-sm">قیمت کارچک</span>
+                      <div className="flex">
+                         <span className="text-[#55565A] text-m font-light">{data.OurPrice} </span>
+                    <span className="text-[#55565A] text-m font-light">تومان </span>
+                      </div>
+                   
+                </div>
+
+            </div>
 
 
     

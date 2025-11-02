@@ -13,7 +13,9 @@ GetCarGroupWithBrandId: "Site/GetCarGroupWithBrandId",
 GetCarInspectionData:"Site/GetCarInspectionData",
 CreateOrder: "OrderSite/Create",
 MoveOrder: "OrderSite/Move",
-GetCarInspectionLocationData:"Site/GetCarInspectionLocationData"
+GetCarInspectionLocationData:"Site/GetCarInspectionLocationData",
+GetCarInspectionDateAndTime:"Site/GetCarInspectionDateAndTime",
+GetCarInspectionDateType:"Site/GetCarInspectionDateType"
 
 
 
