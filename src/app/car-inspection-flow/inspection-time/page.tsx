@@ -8,6 +8,7 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import InspectionDateTypeCar from "./inspectionDateTypeCar";
 import { RadioGroup } from "@/components/ui/radio-group";
+import Image from "next/image";
 
 export default function InspectionTime() {
        const [selected, setSelected] = useState("");
@@ -17,7 +18,6 @@ export default function InspectionTime() {
          const GetCarInspectionDateTime = () => {
         instance.get(ApiHelper.get("GetCarInspectionDateAndTime"))
         .then((res:any) => {
-            debugger
             setCarInspectionDateTime(res);
               if (res?.length > 0) {
         setSelected(String(res[0].Id));
@@ -52,7 +52,7 @@ export default function InspectionTime() {
                 <div className="bg-white  px-4 py-6 rounded-3xl my-6">
 
                     <div className="flex">
-                        <div>chart</div>
+                      
                         <div>
        <h3 className="text-base text-black my-2 font-medium">مرحله چهارم :  محل کارشناسی</h3>
        <h4 className="text-[#55565A] font-light text-sm"> بعدی:   انتخاب زمان کارشناسی</h4>
