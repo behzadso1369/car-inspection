@@ -107,7 +107,7 @@ export default function InsertInformation() {
             <FormItem >
               <FormLabel className="text-sm text-[#101117] font-light my-2">نام  و نام خانوادگی * </FormLabel>
               <FormControl>
-                       <Input {...field} placeholder="09124845873" className="px-4 h-12  items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A]  text-xs"/>
+                       <Input {...field} placeholder="محمد اسدی" className="px-4 h-12  items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A]  text-xs"/>
               </FormControl>
              
               <FormMessage />

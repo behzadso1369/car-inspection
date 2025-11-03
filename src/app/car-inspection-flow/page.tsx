@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Banner from "../components/mobile/Home/Banner";
 import CallAction from "../components/mobile/Home/CallAction";
 import instance from "@/helper/interceptor";
@@ -15,9 +15,18 @@ import FiveStepSolidGauge from "./GuageChart";
 import SimpleGauge from "./GuageChart";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function CarInspectionFlow() {
     const [data,setData] = useState<any>([]);
+     const ref = useRef(null);
+     const [openModal,setOpenModal] = useState<boolean>(false)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end -200%"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-100%", "650%"]);
+  
      const router = useRouter();
       const [inputValue,setInputValue] = useState({
         name:"",
@@ -41,7 +50,7 @@ export default function CarInspectionFlow() {
   useEffect(() => {
     localStorage.setItem("CarGroupId",String(inputValue.value));
     localStorage.setItem("CarGroupName",String(inputValue.name));
-    debugger
+    
   },[inputValue])
   const moveToInspectionMethod = () => {
   
@@ -83,15 +92,15 @@ export default function CarInspectionFlow() {
                         </div>
                  
                     </div>
-                     <Dialog >
-<DialogTrigger className="w-full">
-                        <Label className="my-2">نام خودرو</Label>
-                                    <Input   value={inputValue.name}        readOnly       placeholder="نام خودرو را انتخاب کنید" className="items-center !py-4 border w-full border-[#DFDFDF] rounded-full text-[#55565A]  text-xs h-11"/>
+                     <Dialog open={openModal}>
+
+                        <Label onClick={() => setOpenModal(true)} className="my-2">نام خودرو</Label>
+                                    <Input  onClick={() => setOpenModal(true)}   value={inputValue.name}        readOnly       placeholder="نام خودرو را انتخاب کنید" className="items-center !py-4 border w-full border-[#DFDFDF] rounded-full text-[#55565A]  text-xs h-11"/>
 
    
-</DialogTrigger>
+
                                     <Button onClick={moveToInspectionMethod} className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4">رزرو کارشناسی</Button>
- <OpenSheet inputValue={inputValue} setInputValue={setInputValue}/>
+ <OpenSheet openModal={openModal} setOpenModal={setOpenModal} inputValue={inputValue} setInputValue={setInputValue}/>
 </Dialog>
 
                 
@@ -99,7 +108,7 @@ export default function CarInspectionFlow() {
                 </div>
 
             </div>
-                <div className="w-full h-96 bg-[#416CEA] relative mt-28 flex flex-wrap justify-center">
+                <div className="w-full  bg-[#416CEA] relative mt-28 flex flex-wrap justify-center py-8">
                         <div className="absolute -top-2 -translate-y-1/2 -rotate-360">
                             <Image alt="flow-car" src="/flow-car.png" className="!w-full" width={300} height={167}/>
 
@@ -153,11 +162,75 @@ export default function CarInspectionFlow() {
 
 
                     </div>
-                    <div className="mt-16">
-                        <h3>انتخاب محل کارشنا   سی خودرو با شما</h3>
+         
+
+                    <div className="px-4 py-16 flex flex-wrap justify-center font-medium " ref={ref}>
+                        <h3 className="font-bold">انتخاب محل کارشناسی خودرو با شما</h3>
+                        <div className="px-3 w-full border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
+                            <h2 className="text-sm text-[#101117] font-light">اعزام کارشناس به محل انتخابی شما</h2>
+                            <h3 className="text-base text-[#55565A] my-1 font-light">شهر تهران</h3>
+                            <h4 className="text-[#55565A] text-sm font-light">در این سرویس کارشناس برای انجام کارشناسی به محلی که شما تعیین کرده‌اید مراجعه می‌کند.</h4>
+
+                        </div>
+                        <div className="px-3 w-full border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
+                            <h2 className="text-sm text-[#101117] font-light">اعزام کارشناس به محل انتخابی شما</h2>
+                            <h3 className="text-base text-[#55565A] my-1 font-light">شهر تهران</h3>
+                            <h4 className="text-[#55565A] text-sm font-light">در این سرویس کارشناس برای انجام کارشناسی به محلی که شما تعیین کرده‌اید مراجعه می‌کند.</h4>
+
+                        </div>
                     </div>
+                    <div className="bg-[#F0F2F4] py-16 flex flex-wrap justify-center relative px-4 bg-fixed">
+                        <h2 className="font-bold bg-[#F0F2F4] py-4 z-40">فرآیند انجام کارشناسی</h2>
+                        <div className="w-full my-4">
+                            <div className="flex flex-col w-2/5 pl-5">
+                                <span className="text-sm text-[#101117]">ثبت درخواست</span>
+                                <span className="text-xs text-[#55565A]">  ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی</span>
+
+                            </div>
+
+                        </div>
+                        <div className="w-full flex justify-end my-4 ">
+                            <div className="flex flex-col w-2/5 pr-5">
+                                <span className="text-sm text-[#101117]">ثبت درخواست</span>
+                                        <span className="text-xs text-[#55565A]">
+                                                             ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی
+
+                                        </span>
+               
+                            </div>
+
+                        </div>
+                        <div className="w-full my-4">
+                            <div className="flex flex-col w-2/5 pl-5">
+                                <span className="text-sm text-[#101117]">ثبت درخواست</span>
+                                        <span className="text-xs text-[#55565A]">
+                                                                    ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی
+                                        </span>
+        
+
+                            </div>
+
+                        </div>
+                        <div className="w-full flex justify-end my-4">
+                            <div className="flex flex-col w-2/5 pr-5">
+                                <span className="text-sm text-[#101117]">ثبت درخواست</span>
+                                        <span className="text-xs text-[#55565A]">          ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی</span>
+                      
+
+                            </div>
+
+                        </div>
+                        <div className="absolute w-16  top-24 h-[calc(100%-96px)] bg-way bg-cover" >
+                            <motion.img src="/car-way.png" alt="car-way" width={45} height={117}  style={{ y }}  className={`absolute -top-16 left-1/2 -translate-x-1/2`} />
+
+                        </div>
+                         
+
                              
 
+        </div>
+          <div className="h-[800px] "></div>
+                  
         </div>
     )
 }

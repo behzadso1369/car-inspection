@@ -13,10 +13,11 @@ GetCarGroupWithBrandId: "Site/GetCarGroupWithBrandId",
 GetCarInspectionData:"Site/GetCarInspectionData",
 CreateOrder: "OrderSite/Create",
 MoveOrder: "OrderSite/Move",
+MovePrivateOrder: "OrderSite/Move/Private",
 GetCarInspectionLocationData:"Site/GetCarInspectionLocationData",
 GetCarInspectionDateAndTime:"Site/GetCarInspectionDateAndTime",
-GetCarInspectionDateType:"Site/GetCarInspectionDateType"
-
+GetCarInspectionDateType:"Site/GetCarInspectionDateType",
+GetUserOrderDetails: "Site/GetUserOrderDetails"
 
 
 

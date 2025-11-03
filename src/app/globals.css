@@ -120,3 +120,9 @@
 .blog-banner {
   background-image: url("/blog-banner.png")
 }
+.bg-way {
+  background: url("/way.png");
+}
+.car-way {
+    background: url("/car-way.png");
+}

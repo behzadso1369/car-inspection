@@ -81,17 +81,17 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
             <div className="w-full flex justify-center">
                   <InputOTP   onComplete={verifyOtp}  className="w-auto"  maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
       <InputOTPGroup dir="ltr" >
-        <InputOTPSlot index={0} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot index={0} className="mr-2 border border-[#B1B1B3] w-10 h-10 !rounded-[8px]"   />
       
-        <InputOTPSlot index={1} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot index={1} className="mr-2 border border-[#B1B1B3] w-10 h-10 !rounded-[8px]"   />
     
-        <InputOTPSlot   index={2} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot   index={2} className="mr-2 border border-[#B1B1B3] w-10 h-10 !rounded-[8px]"   />
       
-        <InputOTPSlot  index={3} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot  index={3} className="mr-2 border border-[#B1B1B3] w-10 h-10 !rounded-[8px]"  />
   
-        <InputOTPSlot   index={4} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot   index={4} className="mr-2 border border-[#B1B1B3] w-10 h-10 !rounded-[8px]"  />
      
-        <InputOTPSlot   index={5} className="mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot   index={5} className="mr-2 border border-[#B1B1B3] w-10 h-10 !rounded-[8px]"  />
       </InputOTPGroup>
     </InputOTP>
             </div>

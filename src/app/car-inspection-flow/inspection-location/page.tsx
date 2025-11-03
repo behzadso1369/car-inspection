@@ -17,13 +17,36 @@ import InLocation from "./InLocation";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import DirectionsMap from "./workshop-map/page";
+import { useRouter } from "next/navigation";
+
 
 export default function InsertInformation() {
      const [locations, setLocations] = useState<any>([]);
      const [defaultTab,setDefaultTab] = useState<string>("");
+     const router = useRouter();
+          const moveToCarInspectionTime = () => {
+        const params:any = {
+                      "isBack": false,
+              "orderId": Number(localStorage.getItem("OrderId")),
+              "carInspectionLocationTypeId":defaultTab
+
+        }
+      
+     
+         instance.post(ApiHelper.get("MovePrivateOrder"),params)
+        .then((res:any) => {
+         if(res) {
+             router.push("./inspection-time")
+         }
+        
+            
+        }).catch((err:any) => {
+          console.log(err)
+        })
+       }
   
       
-       const getCarInspectionLocationData = () => {
+       const getCarInspectionLocationData = () => { 
         instance.get(ApiHelper.get("GetCarInspectionLocationData")).then((res:any) => {
             setDefaultTab(res?.CarInspectionLocationPage[0].Id)
             
@@ -96,7 +119,7 @@ setLocations(res?.CarInspectionLocationPage);
            </div>
              <div className="px-4 w-full fixed flex justify-center  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
                                
-                              <Button type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full" >
+                              <Button onClick={moveToCarInspectionTime} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full" >
                             تایید محل کارشناسی
                          </Button>
                                

@@ -23,10 +23,14 @@ instance.interceptors.response.use(
   (response) => {
     const { data } = response;
     
-    toast("Error", { description: data.statusMessage });
+    
     if (!data.isSuccess) {
       toast("Error", { description: data.statusMessage });
+    }else {
+      if(response?.config?.method !== "get")
+      toast("Success", { description: data.statusMessage });
     }
+    
     return response.data.resultObject;
   },
   (error) => {

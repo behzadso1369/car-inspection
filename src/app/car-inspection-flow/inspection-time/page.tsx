@@ -23,16 +23,22 @@ export default function InspectionTime() {
        const moveToFinalConfirm = () => {
         const params:any = {
                       "isBack": false,
-              "orderId": localStorage.getItem("OrderId"),
-              "userId": localStorage.getItem("userId"),
+              "orderId": Number(localStorage.getItem("OrderId")),
+              "carInspectionDateTypeId":Number(selected)
 
         }
-        if(carInspectionDateType?.filter((item:any) => item.Id == selected)?.[0]?.MaxMinutes) {
-                                  params["scheduledDate"] = carInspectionDateType.filter((item:any) => item.id == selectedTime)[0].Time;
-              params["scheduledTime"] = carInspectionDateType.filter((item:any) => item.id == selectedTime)[0].Display;
+        
+        if(!carInspectionDateType?.filter((item:any) => item.Id == selected)?.[0]?.MaxMinutes) {
+          
+                                  params["scheduledDate"] = carInspectionDateTime?.filter((item:any) => item.Id == defaultTab)?.[0]?.Hours.filter((item:any) => item.Id == selectedTime)[0].Time;
+              params["scheduledTime"] = carInspectionDateTime?.filter((item:any) => item.Id == defaultTab)?.[0]?.Hours.filter((item:any) => item.Id == selectedTime)[0].Display;
+              
+              
         }
+        
+        
      
-         instance.post(ApiHelper.get("MoveOrder"),params)
+         instance.post(ApiHelper.get("MovePrivateOrder"),params)
         .then((res:any) => {
          if(res) {
              router.push("./final-confirm")
@@ -52,7 +58,8 @@ export default function InspectionTime() {
             
             
               if (res?.length > 0) {
-        setSelectedTime(String(res[0].Hours[1].Id));
+                const firstEnabled = res?.[0]?.Hours.filter((item:any) => item.IsDisabled == false);
+        setSelectedTime(String(firstEnabled[0].Id));
         setDefaultTab(res[0].Id);
         
 

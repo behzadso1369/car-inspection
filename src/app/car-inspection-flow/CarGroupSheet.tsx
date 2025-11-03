@@ -13,7 +13,7 @@ import instance from '@/helper/interceptor';
 import { ApiHelper } from '@/helper/api-request';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
-export default function OpenSheet({inputValue,setInputValue}:any) {
+export default function OpenSheet({inputValue,setInputValue,openModal,setOpenModal}:any) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [products,setProducts] = useState<any>([]);
   const [disableDrag,setDisableDrag] = useState<boolean>(false);
@@ -26,9 +26,7 @@ export default function OpenSheet({inputValue,setInputValue}:any) {
   const currentLocale = pathname.split('/')[1]
   const getAllData = (e:any) => {
     
-                   instance.post(ApiHelper.get("GetAllData"),{
-                    terms:e
-                   })
+                   instance.get(ApiHelper.get("GetAllData") + "?terms=" + e)
       .then((res: any) => {
       
         
@@ -89,6 +87,8 @@ export default function OpenSheet({inputValue,setInputValue}:any) {
 
           <div key={item.id} className="flex w-full items-center my-4 border-b border-[#CFCFD0] py-2" onClick={() => {
             setInputValue({name: item.Name,value:item.Id})
+            setOpenModal();
+            
           }}>
              <Image width={25} height={25} src={"https://api.carmacheck.com/" + item.ImagePath} alt={item.Name}/>
           <span className='mx-2'>{item.Name}</span>
