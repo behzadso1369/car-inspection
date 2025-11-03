@@ -9,18 +9,53 @@ import { ApiHelper } from "@/helper/api-request";
 import InspectionDateTypeCar from "./inspectionDateTypeCar";
 import { RadioGroup } from "@/components/ui/radio-group";
 import Image from "next/image";
+import InspectionTimeCard from "./inspectionTimeCard";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+
 
 export default function InspectionTime() {
        const [selected, setSelected] = useState("");
+       const [selectedTime, setSelectedTime] = useState("");
        const [carInspectionDateType,setCarInspectionDateType] = useState<any>([]);
        const [carInspectionDateTime,setCarInspectionDateTime] = useState<any>([]);
+       const router = useRouter();
+       const moveToFinalConfirm = () => {
+        const params:any = {
+                      "isBack": false,
+              "orderId": localStorage.getItem("OrderId"),
+              "userId": localStorage.getItem("userId"),
+
+        }
+        if(carInspectionDateType?.filter((item:any) => item.Id == selected)?.[0]?.MaxMinutes) {
+                                  params["scheduledDate"] = carInspectionDateType.filter((item:any) => item.id == selectedTime)[0].Time;
+              params["scheduledTime"] = carInspectionDateType.filter((item:any) => item.id == selectedTime)[0].Display;
+        }
+     
+         instance.post(ApiHelper.get("MoveOrder"),params)
+        .then((res:any) => {
+         if(res) {
+             router.push("./final-confirm")
+         }
+        
+            
+        }).catch((err:any) => {
+          console.log(err)
+        })
+       }
             const [defaultTab,setDefaultTab] = useState<string>("");
          const GetCarInspectionDateTime = () => {
         instance.get(ApiHelper.get("GetCarInspectionDateAndTime"))
         .then((res:any) => {
+            
             setCarInspectionDateTime(res);
+            
+            
               if (res?.length > 0) {
-        setSelected(String(res[0].Id));
+        setSelectedTime(String(res[0].Hours[1].Id));
+        setDefaultTab(res[0].Id);
+        
+
       }
             
         }).catch((err:any) => {
@@ -32,6 +67,8 @@ export default function InspectionTime() {
         .then((res:any) => {
             
             setCarInspectionDateType(res?.CarInspectionDateTypes);
+            
+            
               if (res?.CarInspectionDateTypes?.length > 0) {
                 
         setSelected(String(res?.CarInspectionDateTypes?.[0]?.Id));
@@ -70,39 +107,56 @@ export default function InspectionTime() {
             <div className="px-4">
                            <RadioGroup  value={selected} onValueChange={setSelected}>
                               {carInspectionDateType.map((item:any) => (
-                    <InspectionDateTypeCar inspectionType={selected} data={item} selected={selected} onSelect={setSelected}  />
+                    <InspectionDateTypeCar   selected={selected}
+        onSelect={setSelected} inspectionType={String(item.Id)} data={item}  />
 
                 ))}
                            </RadioGroup>
               
 
             </div>
-                            <Tabs    value={defaultTab}
-      onValueChange={setDefaultTab} className="w-full bg-white py-6 font-IranSans px-4" dir="rtl">
+            {!carInspectionDateType?.filter((item:any) => item.Id == selected)?.[0]?.MaxMinutes &&                       <Tabs    value={defaultTab}
+      onValueChange={setDefaultTab} className="w-full mt-4 bg-white py-6 font-IranSans" dir="rtl">
           
-  <TabsList onChange={(e:any) => console.log(e)}  className="px-2 w-full" >
+  <TabsList onChange={(e:any) => console.log(e)}  className="w-full" >
 
       {carInspectionDateTime.map((item:any) => (
-          <TabsTrigger className=" text-[#A6A6A6] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA]     px-4 mx-2" value={item.Id}>{item.Name}</TabsTrigger>
+          <TabsTrigger className="flex flex-col text-[#55565A] data-[state=active]:text-[#416CEA] data-[state=active]:!border-b pb-6 data-[state=active]:border-b-[#416CEA]     px-2 mx-1" value={item.Id}>{item.Title.split(" ").map((item:any) => (<span>{item}</span>))}</TabsTrigger>
 
      ))}
-                        <TabsTrigger disabled className=" text-[#A6A6A6] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA]     px-4 mx-2" value="0">در محل شما</TabsTrigger>
+    
 
         </TabsList>
-       
 
-      
-        <TabsContent value="0">
-            <InLocation/>
+    <TabsContent value={defaultTab} className="grid grid-cols-2 px-2 gap-2 pb-20">
+                   {carInspectionDateTime?.filter((item:any) => item.Id == defaultTab)?.[0]?.Hours.map((item:any) => (     
+                      <div className="px-2">
+                         <RadioGroup  value={selectedTime} onValueChange={setSelectedTime}>
+                              
+                    <InspectionTimeCard   selected={selectedTime}
+        onSelect={setSelectedTime} inspectionType={String(item.Id)} data={item}  />
+
+              
+                           </RadioGroup>
+                      </div>
+                      ))}
         </TabsContent>
-        {carInspectionDateTime.map((item:any) => (
-    <TabsContent value={item.Id}>
-            <InWorkShop LocationTypeDescription={item.LocationTypeDescription}/>
-        </TabsContent>
-        ))}
+
     
        
-      </Tabs>
+      </Tabs>}
+      
+       <div className="px-4 w-full fixed flex justify-center  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+                   
+                   <Button onClick={moveToFinalConfirm} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full" >
+                 تایید و ادامه
+
+              </Button>
+                    
+           
+                
+
+            </div>
             </div>
     )
 }
