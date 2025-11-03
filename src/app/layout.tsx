@@ -40,7 +40,7 @@ export default function RootLayout({
         
         {children}
                 <Toaster richColors position="top-center" />
-                {/* <NavigationBar/> */}
+             
      
       </body>
     </html>

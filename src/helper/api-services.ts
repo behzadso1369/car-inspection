@@ -17,7 +17,8 @@ MovePrivateOrder: "OrderSite/Move/Private",
 GetCarInspectionLocationData:"Site/GetCarInspectionLocationData",
 GetCarInspectionDateAndTime:"Site/GetCarInspectionDateAndTime",
 GetCarInspectionDateType:"Site/GetCarInspectionDateType",
-GetUserOrderDetails: "Site/GetUserOrderDetails"
+GetUserOrderDetails: "Site/GetUserOrderDetails",
+GetUserOrderDetail: "User/GetUserOrderDetails"
 
 
 

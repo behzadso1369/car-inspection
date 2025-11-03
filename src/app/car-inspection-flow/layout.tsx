@@ -27,7 +27,7 @@ export default function ProfileLayout({
           
   <div className="bg-white font-IranSans">
                        <div className="px-8 py-3 flex justify-between  shadow-[0px_6px_20px_-2px_#10182814]">
-           <ArrowRight/>
+                   <ArrowRight onClick={() => window.history.back()}/>
                 <div className="flex items-center">
             <Image alt="کارچک" width={32} height={30} src={"/assets/images/logo.svg"}/>
             <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">کارچک</h1>

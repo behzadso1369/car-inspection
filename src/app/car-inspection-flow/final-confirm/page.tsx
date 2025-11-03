@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function FinalConfirm() {
     const [orderDetail,setOrderDetail] = useState<any>([])
+    const router = useRouter();
       const getUserOrderDetails = () => { 
         instance.get(ApiHelper.get("GetUserOrderDetails") + "?OrderId=" + localStorage.getItem("OrderId")).then((res:any) => {
             
@@ -14,6 +16,18 @@ export default function FinalConfirm() {
            
             
 setOrderDetail(res);
+        })
+       }
+       const moveToPaymentSucceed = () => {
+         const params:any = {
+                      "isBack": false,
+              "orderId": Number(localStorage.getItem("OrderId"))
+
+        }
+        instance.post(ApiHelper.get("MovePrivateOrder"),params).then((res:any) => {
+            if(res) {
+                    router.push("./payment-success");
+            }
         })
        }
        useEffect(() => {
@@ -92,7 +106,7 @@ setOrderDetail(res);
                     </div>
                       <div className="px-4 w-full fixed flex justify-center  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
                    
-                   <Button type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full" >
+                   <Button onClick={moveToPaymentSucceed} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full" >
                   ثبت سفارش
 
               </Button>
