@@ -16,7 +16,7 @@ export default function InspectionTimeCard({inspectionType,data, selected, onSel
         isSelected ? "border-[#416CEA] border-2 " : "border-[#DFDFDF] "
       }`}
       dir="rtl">
-            <div className="py-4 border-b border-[#DFDFDF]">
+            <div className="py-4">
 <div className="flex items-center gap-3 text-[#101117] text-sm">
         <RadioGroupItem disabled={data.IsDisabled} value={String(data.Id)} id={String(data.Id)} />
         <Label htmlFor={String(data.Id)}>{data.Display}</Label>

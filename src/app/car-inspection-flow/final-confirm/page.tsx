@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import Image from "next/image";
 
 export default function FinalConfirm() {
@@ -27,10 +26,5 @@ export default function FinalConfirm() {
         
                     </div>
                     </div>
-=======
-export default  function FinalConfirm() {
-    return (
-        <>final</>
->>>>>>> 33744674a28503cc1c6da4abd9abd5b9c9b44fea
     )
 }
