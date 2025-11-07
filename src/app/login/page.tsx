@@ -30,7 +30,7 @@ export default function Login() {
         })
     }
     return (
-         <div className="h-screen bg-[#fafdfe] flex justify-center pt-32 px-4 font-IranSans ">
+         <div className="h-screen bg-[#fafdfe] flex justify-center px-4 font-IranSans lg:max-w-xl lg:container lg:mx-auto lg:pt-8  items-center ">
 
 
 

@@ -33,9 +33,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
      <SeoWrapper/>
-     <div className="hidden lg:block">
-     <Header />
-     </div>
+  
      
         
         {children}

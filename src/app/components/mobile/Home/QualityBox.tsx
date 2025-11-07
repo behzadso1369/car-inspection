@@ -5,8 +5,8 @@ export default function QualityBox({data}:any) {
 
     
     return (
-        <div className="bg-quality bg-center py-8 px-4 w-full font-IranSans">
-            <div className="bg-[#15131399] text-white py-8 px-4 rounded-4xl">
+        <div className="bg-quality bg-center w-full py-8 px-4  font-IranSans">
+            <div className="bg-[#151313E5] text-white py-8 px-4 rounded-4xl w-full lg:w-2/5">
                 <h6 className="my-3 text-lg">{data?.Title}</h6>
                 <p className="my-3 text-base leading-8">
 {data?.MoreDescription}

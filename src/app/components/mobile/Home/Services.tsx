@@ -22,7 +22,7 @@ export default function Services({data}:any) {
     }, [api])
 
     return (
-        <section className="bg-white  px-4 py-12">
+        <section className="bg-white  px-4 py-12 lg:px-32">
             <h3 className="mb-7 text-center font-IranSans text-lg">خدمات کارشناسی کارچک</h3>
             <Carousel  setApi={setApi}  className="w-full max-w-full" opts={{
                 direction: "rtl",
@@ -31,7 +31,7 @@ export default function Services({data}:any) {
             }}  >
         <CarouselContent>
           {data?.map((item:any, index:number) => (
-            <CarouselItem key={index} className="basis-4/5" >
+            <CarouselItem key={index} className="basis-4/5 lg:basis-1/3" >
               
                   <ProductCard Id={item.Id} ImagePath={item.ImagePath} Title={item.Title} Description={item.Description} />
               

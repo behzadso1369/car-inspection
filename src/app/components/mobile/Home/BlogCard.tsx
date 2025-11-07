@@ -5,7 +5,7 @@ import Image from "next/image"
 
 export const BlogCard = ({Title,ImagePath,Excerpt}:any) => {
     return (
-        <figure className="border border-[#DCDCDC]  rounded-3xl font-IranSans mb-4 pb-8">
+        <figure className="border border-[#DCDCDC]  rounded-3xl font-IranSans mb-4 pb-8 col-span-3 lg:col-span-1">
      <div className="relative">
      <Image className="w-full rounded-3xl" src={"https://api.carmacheck.com/"+ImagePath} alt="کارشناسی فنی"  height={100} width={100} />
      <div className="bg-white absolute w-18 h-18 bottom-0 left-6 translate-y-1/2 rounded-full py-1 flex justify-center">

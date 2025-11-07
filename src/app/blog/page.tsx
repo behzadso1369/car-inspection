@@ -8,12 +8,23 @@ import { SearchIcon } from "lucide-react";
 import ArticleCard from "./components/BlogCard";
 import { Button } from "@/components/ui/button";
 import SuggestionCard from "./components/SuggestionCard";
+import instance from "@/helper/interceptor";
+import { ApiHelper } from "@/helper/api-request";
 
 export default function Blog () {
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState<number>(0);
     const [count, setCount] = useState<number>(0);
+    const [suggestedPost,setSuggestedPost] = useState<any>([]);
+    const [newPost,setNewPost] = useState<any>([]);
+    const getBlogData = () => {
+      instance.get(ApiHelper.get("GetMasterBlogPageData")).then((res:any) => {
+        setNewPost(res?.NewPosts);
+        setSuggestedPost(res?.SuggestedPosts);
+      })
+    }
     useEffect(() => {
+      getBlogData();
       if (!api) {
         return
       }
@@ -86,23 +97,13 @@ export default function Blog () {
 <div>
     <div className="flex justify-center flex-wrap">
     <h2 className="w-auto border-b py-2 text-center inline-block m-auto">جدیدترین‌های مقالات</h2>
-    <ArticleCard title="موبایل‌هایی که برای ارتباط آنلاین
-با هوش مصنوعی استفاده می‌شوند." imageSrc="/articel1.png" author="حسین احمدی" category="کارشناسی" date="۱۶ اردیبهشت ۱۴۰۴" />
-    <ArticleCard title="موبایل‌هایی که برای ارتباط آنلاین
-با هوش مصنوعی استفاده می‌شوند." imageSrc="/articel1.png" author="حسین احمدی" category="کارشناسی" date="۱۶ اردیبهشت ۱۴۰۴" />
-    <ArticleCard title="موبایل‌هایی که برای ارتباط آنلاین
-با هوش مصنوعی استفاده می‌شوند." imageSrc="/articel1.png" author="حسین احمدی" category="کارشناسی" date="۱۶ اردیبهشت ۱۴۰۴" />
-    <ArticleCard title="موبایل‌هایی که برای ارتباط آنلاین
-با هوش مصنوعی استفاده می‌شوند." imageSrc="/articel1.png" author="حسین احمدی" category="کارشناسی" date="۱۶ اردیبهشت ۱۴۰۴" />
-<div className="flex w-full justify-center">
+    {newPost.map((item:any) => (    <ArticleCard title={item?.Title} imageSrc={"https://api.carmacheck.com/" + item?.ImagePath} author="حسین احمدی" category={item.CategoryName} date="۱۶ اردیبهشت ۱۴۰۴" />))}
   <Button>مشاهده همه</Button>
 </div>
 <div className="flex justify-center flex-wrap">
 <h2 className="w-auto border-b py-2 text-center inline-block m-auto">مطالب پیشنهادی</h2>
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard1.png" link="/" />
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard2.jpg" link="/" />
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard3.jpg" link="/" />
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard1.png" link="/" />
+{suggestedPost.map((item:any) => (    <SuggestionCard title={item?.Title} imageSrc={"https://api.carmacheck.com/" + item?.ImagePath} link="/" date="۱۶ اردیبهشت ۱۴۰۴" />))}
+
 </div>
     </div>
 
@@ -112,7 +113,6 @@ export default function Blog () {
     
      
     
-            
-        </div>
+ 
     )
 }

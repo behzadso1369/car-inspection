@@ -15,8 +15,8 @@ export const RequestCard = ({Id,Title,Description,paymentStatus,CarName,Status}:
     <h5 className="text-[#416CEA] text-sm my-2"> کار شناسی ماشین  {CarName} </h5>
     <h5 className="text-[#101117] text-base my-2"> وضعیت سفارش : {paymentStatus} </h5>
     <strong className="text-sm text-[#101117] font-light">{Description}</strong>
-    <div className="w-full">
-    <Link prefetch={false} href={`./requests/${Id}` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm  w-1/2 my-4 bg-[#3456bb] text-white">جزییات سفارش</Link>
+    <div className="w-full lg:flex lg:justify-end">
+    <Link prefetch={false} href={`/Profile/requests/${Id}` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#3456bb] text-white">جزییات سفارش</Link>
     </div>
 
   </figcaption>

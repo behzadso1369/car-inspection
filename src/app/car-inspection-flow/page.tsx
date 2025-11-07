@@ -72,7 +72,8 @@ export default function CarInspectionFlow() {
         <div className="bg-white font-IranSans">
                   <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
                   <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
-            <div className="px-4">
+       
+            <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10">
                 <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">
                     <h1 className="text-black text-lg my-2 font-medium">کارشناسی خودرو</h1>
                     <h2 className="text-[#55565A] font-light text-base">جهت شروع فرآیند کارشناسی اطلاعات زیر را وارد کنید.</h2>
@@ -108,18 +109,21 @@ export default function CarInspectionFlow() {
                 </div>
 
             </div>
-                <div className="w-full  bg-[#416CEA] relative mt-28 flex flex-wrap justify-center py-8">
-                        <div className="absolute -top-2 -translate-y-1/2 -rotate-360">
-                            <Image alt="flow-car" src="/flow-car.png" className="!w-full" width={300} height={167}/>
+                <div className="w-full    bg-[#416CEA] relative mt-28 lg:mt-0   py-8 lg:py-28">
+                        <div className="absolute left-1/2 lg:left-0 -top-2 lg:-top-2/3 -translate-y-1/2 -translate-x-1/2 lg:translate-0 -rotate-y-180">
+                        <div className="w-[353px] lg:w-[739px] relative aspect-[2.09]">
+           <Image alt="flow-car" src="/flow-car.png" fill className="object-cover"/>
+                        </div>
+                 
 
                         </div>
-                        <div className="mt-24 px-4 text-white w-full">
+                        <div className="mt-24 lg:mt-14 px-4 lg:px-24 text-white w-full lg:w-1/2">
                              <h3 className="text-lg font-medium">سرویس‌های کارشناسی کارچک</h3>
                         <p className="text-base leading-8">
                             ما تمامی خدمات کارشناسی خودرو را هم در محل مورد نظر شما و هم درب مغازه به‌صورت کامل انجام می‌دهیم. موارد شامل:
                         </p> 
                            </div>
-                        <div className="grid grid-cols-3 gap-3 w-full px-4 text-white">
+                        <div className="grid grid-cols-3 gap-3 w-full lg:w-1/2  px-4 lg:px-24 text-white">
                             <p className="flex">
                                 <Tick01Icon size={24}/>
                                 <span>فنی و موتور</span>
@@ -147,10 +151,10 @@ export default function CarInspectionFlow() {
                             </p>
                             <p className="flex">
                                 <Tick01Icon size={24}/>
-                                <span></span>
+                                <span>تست رانندگی</span>
 
                             </p> 
-                            <p className="flex">
+                            <p className="flex col-span-3">
                                 <Tick01Icon size={24}/>
                                 <span>تنظیم رایگان قولنامه رسمی و عقد قرارداد</span>
 
@@ -165,34 +169,34 @@ export default function CarInspectionFlow() {
          
 
                     <div className="px-4 py-16 flex flex-wrap justify-center font-medium " ref={ref}>
-                        <h3 className="font-bold">انتخاب محل کارشناسی خودرو با شما</h3>
-                        <div className="px-3 w-full border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
+                        <h3 className="font-bold w-full text-center">انتخاب محل کارشناسی خودرو با شما</h3>
+                        <div className="px-3 w-full lg:w-1/3  mx-4 border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
                             <h2 className="text-sm text-[#101117] font-light">اعزام کارشناس به محل انتخابی شما</h2>
                             <h3 className="text-base text-[#55565A] my-1 font-light">شهر تهران</h3>
                             <h4 className="text-[#55565A] text-sm font-light">در این سرویس کارشناس برای انجام کارشناسی به محلی که شما تعیین کرده‌اید مراجعه می‌کند.</h4>
 
                         </div>
-                        <div className="px-3 w-full border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
+                        <div className="px-3 w-full lg:w-1/3  mx-4 border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
                             <h2 className="text-sm text-[#101117] font-light">اعزام کارشناس به محل انتخابی شما</h2>
                             <h3 className="text-base text-[#55565A] my-1 font-light">شهر تهران</h3>
                             <h4 className="text-[#55565A] text-sm font-light">در این سرویس کارشناس برای انجام کارشناسی به محلی که شما تعیین کرده‌اید مراجعه می‌کند.</h4>
 
                         </div>
                     </div>
-                    <div className="bg-[#F0F2F4] py-16 flex flex-wrap justify-center relative px-4 bg-fixed">
+                    <div className="bg-[#F0F2F4] py-16 lg:pt-12 flex flex-wrap justify-center relative px-4 lg:px-96">
                         <h2 className="font-bold bg-[#F0F2F4] py-4 z-40">فرآیند انجام کارشناسی</h2>
                         <div className="w-full my-4">
                             <div className="flex flex-col w-2/5 pl-5">
-                                <span className="text-sm text-[#101117]">ثبت درخواست</span>
-                                <span className="text-xs text-[#55565A]">  ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی</span>
+                                <span className="text-sm text-[#101117] lg:text-2xl">ثبت درخواست</span>
+                                <span className="text-xs text-[#55565A] lg:text-base">  ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی</span>
 
                             </div>
 
                         </div>
                         <div className="w-full flex justify-end my-4 ">
                             <div className="flex flex-col w-2/5 pr-5">
-                                <span className="text-sm text-[#101117]">ثبت درخواست</span>
-                                        <span className="text-xs text-[#55565A]">
+                                <span className="text-sm text-[#101117] lg:text-2xl">ثبت درخواست</span>
+                                        <span className="text-xs text-[#55565A] lg:text-base">
                                                              ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی
 
                                         </span>
@@ -202,8 +206,8 @@ export default function CarInspectionFlow() {
                         </div>
                         <div className="w-full my-4">
                             <div className="flex flex-col w-2/5 pl-5">
-                                <span className="text-sm text-[#101117]">ثبت درخواست</span>
-                                        <span className="text-xs text-[#55565A]">
+                                <span className="text-sm text-[#101117] lg:text-2xl">ثبت درخواست</span>
+                                        <span className="text-xs text-[#55565A] lg:text-base">
                                                                     ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی
                                         </span>
         

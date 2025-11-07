@@ -71,8 +71,8 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
           <>
               <DialogContent className="sm:max-w-[425px] bg-white font-IranSans px-2 py-8">
           <DialogHeader>
-            <DialogTitle className="text-base text-[#101117] font-medium">کد تایید را وارد کنید</DialogTitle>
-            <DialogDescription className="text-sm text-[#101117] font-light">
+            <DialogTitle className="text-base text-[#101117] font-medium text-center">کد تایید را وارد کنید</DialogTitle>
+            <DialogDescription className="text-sm text-[#101117] font-light text-center">
               کد تایید برای شماره {localStorage.getItem("phoneNumber")} ارسال گردید
             </DialogDescription>
           </DialogHeader>

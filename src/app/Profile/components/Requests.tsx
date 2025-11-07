@@ -23,7 +23,7 @@ export default function Requests({data}:any) {
     }, [api])
 
     return (
-        <section className="bg-white  px-4 py-12  font-IranSans">
+        <section className="bg-white lg:border lg:border-[#D9D9D9]  px-4 py-12  font-IranSans col-span-3 lg:col-span-2 lg:order-1">
               <div className="flex w-full justify-between">
                 <span>درخواست های من</span>
                 <Link href={"/Profile/requests"} prefetch={false} className="text-[#1434CB] flex items-center">
@@ -33,14 +33,15 @@ export default function Requests({data}:any) {
                 </Link>
               
             </div>
-            <Carousel  setApi={setApi}  className="w-full max-w-full my-4" opts={{
+            <div className="block lg:hidden">
+              <Carousel  setApi={setApi}  className="w-full max-w-full my-4" opts={{
                 direction: "rtl",
                 align:"start",
                 loop:true
             }}  >
         <CarouselContent>
           {data?.map((item:any, index:number) => (
-            <CarouselItem key={index} className="basis-4/5" >
+            <CarouselItem key={index} className="basis-4/5 " >
               
                   <RequestCard Status={item.isComplete  ? "compepelted" : "unknown"} Id={item.id} CarName={item.carGroup} Title={item.isComplete ? "تکمیل شده" : "تکمیل نشده"} paymentStatus={item.flowState} Description={item.Description} />
               
@@ -50,6 +51,19 @@ export default function Requests({data}:any) {
         </CarouselContent>
     
       </Carousel>
+            </div>
+            <div className="hidden lg:block">
+               {data?.map((item:any, index:number) => (
+            
+              
+                  <RequestCard Status={item.isComplete  ? "compepelted" : "unknown"} Id={item.id} CarName={item.carGroup} Title={item.isComplete ? "تکمیل شده" : "تکمیل نشده"} paymentStatus={item.flowState} Description={item.Description} />
+              
+           
+       
+          ))}
+
+            </div>
+            
 
         </section>
 

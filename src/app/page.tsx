@@ -13,6 +13,7 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useEffect, useState } from "react";
 import { Footer } from "./components/mobile/Home/Footer";
+import { Header } from "./components/mobile/Home/Header";
 
 export default   function  Home() {
 const [data,setData] = useState<any>([]);
@@ -28,17 +29,26 @@ const [data,setData] = useState<any>([]);
 
  
   return (
-   <div className="bg-main-background">
+   <div className="bg-white lg:container lg:mx-auto">
  
       <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-      <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
+       <div className="block lg:hidden">
+  <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
+       </div>
+          <div className="hidden lg:block px-20 mb-6 bg-white">
+     <Header />
+     </div>
+    
       <Slider data={data?.Sliders}/>
       <Introduction/>
       <Services data={data?.CarInspectionServices}/>
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
       <Statistics data={data?.StatisticsData}/>
       <BlogShort data={data?.BlogPosts}/>
-         <NavigationBar/>
+      <div className="block lg:hidden">
+  <NavigationBar/>
+      </div>
+       
       <Footer/>
      
    </div>

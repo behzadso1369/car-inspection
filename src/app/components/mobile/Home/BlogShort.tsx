@@ -16,7 +16,7 @@ export default function BlogShort({data}:any) {
                 </p>
               
             </div>
-           <div className="my-4">
+           <div className="my-4 grid grid-cols-3">
             {data?.map((item:any) => (
 <BlogCard key={item.Title} Title={item.Title} ImagePath={item.ImagePath} Excerpt={item.Excerpt}/>
             ))}

@@ -38,7 +38,7 @@ setOrderDetail(res);
         moveToPaymentSucceed();
        },[])
     return (
-              <div className="bg-white font-IranSans">
+              <div className="bg-white font-IranSans lg:px-4 lg:py-4">
                       
                     <div className="px-4">
                         <div className="bg-white  px-4 py-6 rounded-3xl mt-6">
@@ -110,7 +110,7 @@ setOrderDetail(res);
                                    </div>
                                
                                </div>
-                      <div className="px-4 w-full fixed flex justify-center  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+                      <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-center  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
                    
                    <Button onClick={moveToProfile} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full" >
                    مشاهده پروفایل

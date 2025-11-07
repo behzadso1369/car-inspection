@@ -18,7 +18,11 @@ GetCarInspectionLocationData:"Site/GetCarInspectionLocationData",
 GetCarInspectionDateAndTime:"Site/GetCarInspectionDateAndTime",
 GetCarInspectionDateType:"Site/GetCarInspectionDateType",
 GetUserOrderDetails: "Site/GetUserOrderDetails",
-GetUserOrderDetail: "User/GetUserOrderDetails"
+GetUserOrderDetail: "User/GetUserOrderDetails",
+
+GetMasterBlogPageData: "SiteBlog/GetMasterPageData",
+GetAboutUsPageData: "Site/GetAboutUsPageData"
+
 
 
 

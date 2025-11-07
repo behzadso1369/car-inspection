@@ -3,13 +3,15 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft01Icon } from "hugeicons-react"
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useEffect, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 
 export default function RequestDetail() {
     const params = useParams();
+    const router = useRouter();
     const [orderDetail,setOrderDetail] = useState<any>({})
     const orderById = () => {
         
@@ -22,8 +24,48 @@ export default function RequestDetail() {
             useEffect(() => {
             orderById();
         },[])
+            const logOut = () => {
+    instance.post(ApiHelper.get("Logout"))
+      .then((res: any) => {
+        localStorage.clear();
+        router.push("/");
+       
+      })
+      .catch((err: any) => {
+        console.error("Error fetching data:", err);
+      });
+  }
     return (
-        <div className="py-6 font-IranSans px-4">
+          <div className="grid grid-cols-3 gap-4 py-4">
+        <div className="col-span-3 lg:col-span-1 order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[300px]">           
+                <h3 className="text-[#101117] font-normal my-6 px-4">تنظیمات حساب</h3>   
+                <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
+                    <div className="text-[#101117] flex">
+                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+                    <Link href={"/Profile/requests"} className="mx-1 text-base" prefetch={false}>تمامی درخواست ها  </Link>
+                    </div>
+             
+                <ArrowLeft/>
+        
+                </h6>
+                <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
+                <div className="text-[#101117] flex">
+                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+                    <span className="mx-1 text-base">آدرس ها</span>
+                    </div>
+                <ArrowLeft/>
+        
+                </h6>
+                <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
+                <div className="text-[#101117] flex" onClick={logOut}>
+                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+                    <span className="mx-1 text-base" >خروج</span>
+                    </div>
+                <ArrowLeft/>
+        
+                </h6>
+                </div>
+                 <div className="py-6 font-IranSans px-4 order-0 lg-order-1 lg:col-span-2 lg:border lg:border-[#D9D9D9]">
            <figure className="  rounded-2xl font-IranSans bg-[#FBFBFB] border border-[#DFDFDF] my-4">
  
 
@@ -75,5 +117,7 @@ export default function RequestDetail() {
 <ArrowLeft01Icon className="mb-1 mx-1" color="#1434CB" size={20} />
 </Link> */}
         </div>
+                </div>
+       
     )
 } 
