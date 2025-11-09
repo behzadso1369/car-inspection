@@ -11,7 +11,7 @@ export const NavigationBar = () => {
         <Home01Icon size={24}/>
         <span className="text-xs my-1">خانه</span>
         </Link>
-        <Link className="flex flex-col items-center justify-between text-[#999A9C] active:text-[#416CEA]" href="/car-inspection-flow" prefetch={false}>
+        <Link className="flex flex-col items-center justify-between text-[#999A9C] active:text-[#416CEA]" href="/car-inspection-flow/select-car-group" prefetch={false}>
         <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
         <span className="text-xs my-1">کارشناسی خودرو</span>
         </Link>

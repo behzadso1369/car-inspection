@@ -36,7 +36,7 @@ const [data,setData] = useState<any>([]);
   <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
        </div>
           <div className="hidden lg:block px-20 mb-6 bg-white">
-     <Header />
+     <Header data={data?.MasterSiteData?.PhoneNumbers} />
      </div>
     
       <Slider data={data?.Sliders}/>

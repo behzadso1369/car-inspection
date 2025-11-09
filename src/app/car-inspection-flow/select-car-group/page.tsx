@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Banner from "../components/mobile/Home/Banner";
-import CallAction from "../components/mobile/Home/CallAction";
+import Banner from "../../components/mobile/Home/Banner";
+import CallAction from "../../components/mobile/Home/CallAction";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { Input } from "@/components/ui/input";
@@ -9,13 +9,14 @@ import { SheetTrigger } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { Tick01Icon } from "hugeicons-react";
-import OpenSheet from "./CarGroupSheet";
+import OpenSheet from "../CarGroupSheet";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import FiveStepSolidGauge from "./GuageChart";
-import SimpleGauge from "./GuageChart";
+import FiveStepSolidGauge from "../GuageChart";
+import SimpleGauge from "../GuageChart";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { Header } from "@/app/components/mobile/Home/Header";
 
 export default function CarInspectionFlow() {
     const [data,setData] = useState<any>([]);
@@ -59,7 +60,7 @@ export default function CarInspectionFlow() {
     }).then((res:any) => {
         if(res?.orderId) {
             localStorage.setItem("OrderId",res?.orderId);
-           router.push(`./car-inspection-flow/inspection-method`);
+           router.push(`./inspection-method`);
         }
     })
   }
@@ -71,7 +72,9 @@ export default function CarInspectionFlow() {
 
         <div className="bg-white font-IranSans">
                   <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-                  <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
+                 <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
+     <Header data={data?.MasterSiteData?.PhoneNumbers} />
+     </div>
        
             <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10">
                 <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">

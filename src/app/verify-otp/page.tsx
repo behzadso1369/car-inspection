@@ -40,11 +40,13 @@ export default function VerifyOtp() {
     return `${m}:${s}`;
   }; 
     const verifyOtp = (e:any) => {
-        instance.post(ApiHelper.get("CheckPhoneNumber"),{
+        instance.post(ApiHelper.get("UserVerify"),{
             userId:localStorage.getItem("userId"),
             otpCode:e
         }).then((res:any) => {
             if (res) {
+              localStorage.setItem("token",res?.accessToken)
+
         router.push("/profile");
       } 
         })
