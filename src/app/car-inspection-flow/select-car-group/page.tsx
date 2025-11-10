@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Header } from "@/app/components/mobile/Home/Header";
+import { OurCustomer } from "./slider/page";
+import Statistics from "@/app/components/mobile/Home/Statistics";
 
 export default function CarInspectionFlow() {
     const [data,setData] = useState<any>([]);
@@ -236,7 +238,10 @@ export default function CarInspectionFlow() {
                              
 
         </div>
-          <div className="h-[800px] "></div>
+          <div className="h-[800px] ">
+            <OurCustomer/>
+          </div>
+          <Statistics data={data?.StatisticsData}/>
                   
         </div>
     )

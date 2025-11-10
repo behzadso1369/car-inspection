@@ -47,7 +47,7 @@ export default function Profile() {
         </div>
         <div className="grid grid-cols-3 gap-4">
  <Requests data={orders}/>
-        <div className="col-span-3 lg:col-span-1 lg:order-0 lg:border lg:border-[#D9D9D9]">           
+        <div className="col-span-3 lg:col-span-1 lg:order-0 rounded-2xl lg:border lg:border-[#D9D9D9] lg:max-h-[300px]">           
         <h3 className="text-[#101117] font-normal my-6 px-4">تنظیمات حساب</h3>   
         <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
             <div className="text-[#101117] flex">

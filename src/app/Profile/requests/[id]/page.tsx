@@ -37,7 +37,7 @@ export default function RequestDetail() {
   }
     return (
           <div className="grid grid-cols-3 gap-4 py-4">
-        <div className="col-span-3 lg:col-span-1 order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[300px]">           
+        <div className="col-span-3 lg:col-span-1 rounded-2xl order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[300px]">           
                 <h3 className="text-[#101117] font-normal my-6 px-4">تنظیمات حساب</h3>   
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                     <div className="text-[#101117] flex">
@@ -65,7 +65,7 @@ export default function RequestDetail() {
         
                 </h6>
                 </div>
-                 <div className="py-6 font-IranSans px-4 order-0 lg-order-1 lg:col-span-2 lg:border lg:border-[#D9D9D9]">
+                 <div className="py-6 font-IranSans px-4 order-0 lg-order-1 lg:col-span-2 lg:border lg:border-[#D9D9D9]  rounded-2xl">
            <figure className="  rounded-2xl font-IranSans bg-[#FBFBFB] border border-[#DFDFDF] my-4">
  
 

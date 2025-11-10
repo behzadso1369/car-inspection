@@ -26,9 +26,9 @@ export default function ProfileLayout({
   }, []);
     return (
         <div className="lg:max-w-7xl lg:container lg:mx-auto ">
-          <div className="hidden lg:block  bg-white">
-              <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-               <Header />
+                  <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
+                           <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
+               <Header data={data?.MasterSiteData?.PhoneNumbers} />
                </div>
                <div className="block lg:hidden">
                    <div className="px-8 py-3 flex justify-between  shadow-[0px_6px_20px_-2px_#10182814]">

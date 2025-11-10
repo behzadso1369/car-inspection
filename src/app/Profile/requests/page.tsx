@@ -52,7 +52,7 @@ export default function Profile() {
     // ]
     return (
       <div className="grid grid-cols-3 gap-4 py-4">
-        <div className="col-span-3 lg:col-span-1 order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[300px]">           
+        <div className="col-span-3 lg:col-span-1 order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[300px] rounded-2xl">           
                 <h3 className="text-[#101117] font-normal my-6 px-4">تنظیمات حساب</h3>   
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                     <div className="text-[#101117] flex">
@@ -80,7 +80,7 @@ export default function Profile() {
         
                 </h6>
                 </div>
-         <Tabs defaultValue="درخواست ها جاری" className="w-full h-full lg:border lg:border-[#D9D9D9] col-span-3 order-0 lg-order-1 lg:col-span-2 bg-[#fbfbfc] py-6 font-IranSans px-4" dir="rtl">
+         <Tabs defaultValue="درخواست ها جاری" className="w-full h-full lg:border rounded-2xl lg:border-[#D9D9D9] col-span-3 order-0 lg-order-1 lg:col-span-2 bg-[#fbfbfc] py-6 font-IranSans px-4" dir="rtl">
         <TabsList  className="px-2 w-full lg:!w-auto" >
           <TabsTrigger className="rounded-4xl text-[#A6A6A6] border data-[state=active]:bg-[#3456bb] data-[state=active]:border-none  data-[state=active]:text-white  border-[#A6A6A6] px-4 mx-2" value="درخواست ها جاری">درخواست ها جاری</TabsTrigger>
           <TabsTrigger className="rounded-4xl text-[#A6A6A6]  border data-[state=active]:bg-[#3456bb] data-[state=active]:border-none   data-[state=active]:text-white border-[#A6A6A6] px-4 mx-2" value="انجام شده">انجام شده</TabsTrigger>

@@ -23,7 +23,7 @@ export default function Requests({data}:any) {
     }, [api])
 
     return (
-        <section className="bg-white lg:border lg:border-[#D9D9D9]  px-4 py-12  font-IranSans col-span-3 lg:col-span-2 lg:order-1">
+        <section className="bg-white lg:border lg:border-[#D9D9D9] rounded-2xl  px-4 py-12  font-IranSans col-span-3 lg:col-span-2 lg:order-1">
               <div className="flex w-full justify-between">
                 <span>درخواست های من</span>
                 <Link href={"/Profile/requests"} prefetch={false} className="text-[#1434CB] flex items-center">
