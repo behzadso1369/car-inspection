@@ -46,40 +46,49 @@ export const OurCustomer = () => {
         
         className="w-full"
       >
-        <CarouselContent className="w-full h-[183px] lg:h-[500px]">
+        <CarouselContent className="w-full h-auto lg:h-[500px]">
           {items.map((item:any) => {
  return (
   <CarouselItem
               key={item}
 
             >
-              <div className="flex flex-wrap px-60">
-                <div className="w-full flex ">
-                   <Image
+              <div className="flex flex-wrap px-2 lg:px-60">
+                <div className="w-full flex flex-wrap ">
+                  <div className="w-full lg:w-1/3 flex justify-center relative h-[320px]">
+  <Image
                 src="/car-flow-1.png"
                 alt=""
-                width={322}
-                height={189}
-                className="!h-auto mx-2"
+            fill
+                className=" mx-2"
                 
                 quality={100}
               />
-                <Image
+                  </div>
+                  <div className="w-full lg:w-1/3  flex justify-between my-4 h-[100px] ">
+                  <div className="relative h-full w-5/6">
+  <Image
                 src="/car-flow-2.png"
                 alt=""
-              width={322}
-                height={189}
-                  className="!h-auto mx-2"
+             fill 
+               
                 quality={100}
               />
-                <Image
-                src="/car-flow-3.png"
+                  </div>
+                  <div className="relative h-full w-5/6">
+  <Image
+                src="/car-flow-2.png"
                 alt=""
-                width={322}
-                height={189}
-                  className="!h-auto mx-2"
+             fill 
+               
                 quality={100}
               />
+                  </div>
+      
+              
+                
+                  </div>
+           
                 </div>
                 <div className="mt-2">
                   <h3 className="text-2xl font-medium my-2">محیا محمودی</h3>
