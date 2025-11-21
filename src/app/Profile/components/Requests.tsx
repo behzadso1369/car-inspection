@@ -23,7 +23,7 @@ export default function Requests({data}:any) {
     }, [api])
 
     return (
-        <section className="bg-white lg:border lg:border-[#D9D9D9] rounded-2xl  px-4 py-12  font-IranSans col-span-3 lg:col-span-2 lg:order-1">
+        <section className="bg-white lg:border lg:border-[#D9D9D9] rounded-2xl  px-4 pt-6 font-IranSans col-span-3 lg:col-span-2 lg:order-1 lg:h-[500px] lg:overflow-auto">
               <div className="flex w-full justify-between">
                 <span>درخواست های من</span>
                 <Link href={"/Profile/requests"} prefetch={false} className="text-[#1434CB] flex items-center">
@@ -34,7 +34,7 @@ export default function Requests({data}:any) {
               
             </div>
             <div className="block lg:hidden">
-              <Carousel  setApi={setApi}  className="w-full max-w-full my-4" opts={{
+              <Carousel  setApi={setApi}  className="w-full max-w-full" opts={{
                 direction: "rtl",
                 align:"start",
                 loop:true

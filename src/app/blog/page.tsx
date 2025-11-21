@@ -1,4 +1,6 @@
-'use client'
+"use client"
+
+export const dynamic = 'force-dynamic'
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";

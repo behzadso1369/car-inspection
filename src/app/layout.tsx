@@ -7,6 +7,8 @@ import SeoWrapper from "./SeoWrapper";
 import { Toaster } from "sonner";
 import { NavigationBar } from "./components/mobile/Home/NavigationBar";
 
+export const dynamic = 'force-dynamic'
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

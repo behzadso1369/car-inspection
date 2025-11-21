@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft01Icon } from "hugeicons-react"
+import { ArrowLeft01Icon, Location01Icon, Logout03Icon } from "hugeicons-react"
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
@@ -36,36 +36,36 @@ export default function RequestDetail() {
       });
   }
     return (
-          <div className="grid grid-cols-3 gap-4 py-4">
-        <div className="col-span-3 lg:col-span-1 rounded-2xl order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[300px]">           
+          <div className="grid grid-cols-3 gap-4 py-4 font-IranSans">
+        <div className="col-span-3 lg:col-span-1 rounded-2xl order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[243px]">           
                 <h3 className="text-[#101117] font-normal my-6 px-4">تنظیمات حساب</h3>   
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                     <div className="text-[#101117] flex">
-                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+                              <Image alt="کارشناسی خودرو" src="/car-inspection-icon.svg" width={24} height={24}/>
                     <Link href={"/Profile/requests"} className="mx-1 text-base" prefetch={false}>تمامی درخواست ها  </Link>
                     </div>
              
-                <ArrowLeft/>
+                   <ArrowLeft01Icon/>
         
                 </h6>
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                 <div className="text-[#101117] flex">
-                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+  <Location01Icon size={24}/>
                     <span className="mx-1 text-base">آدرس ها</span>
                     </div>
-                <ArrowLeft/>
+                 <ArrowLeft01Icon/>
         
                 </h6>
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                 <div className="text-[#101117] flex" onClick={logOut}>
-                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+                      <Logout03Icon size={24}/>
                     <span className="mx-1 text-base" >خروج</span>
                     </div>
-                <ArrowLeft/>
+                <ArrowLeft01Icon/>
         
                 </h6>
                 </div>
-                 <div className="py-6 font-IranSans px-4 order-0 lg-order-1 lg:col-span-2 lg:border lg:border-[#D9D9D9]  rounded-2xl">
+                 <div className="py-6 font-IranSans px-4 order-0 lg-order-1 col-span-3 lg:col-span-2 lg:border lg:border-[#D9D9D9]  rounded-2xl">
            <figure className="  rounded-2xl font-IranSans bg-[#FBFBFB] border border-[#DFDFDF] my-4">
  
 
@@ -106,10 +106,14 @@ export default function RequestDetail() {
 </div>
 <div className="flex ">
     <Image src="/sample-car.png" width={74} height={74} alt="کارشناسی خودرو"/> 
+    <div className="flex w-full justify-between">
     <div className="flex flex-col text-base text-[#101117] mx-4">
         <span>خودرو سواری  {orderDetail?.carGroup}</span>
         <span>مالک :  {orderDetail?.username}</span>
     </div>
+    <Link prefetch={false} href={`./${params?.id}/inspection-report` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#3456bb] text-white">گزارش کارشناسی</Link>
+    </div>
+
 
 </div>
 {/* <Link href="/" className="w-full flex justify-between my-12">

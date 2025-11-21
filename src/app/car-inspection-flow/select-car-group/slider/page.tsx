@@ -1,10 +1,10 @@
-'use client';
+"use client";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
 import { Calendar01Icon } from "hugeicons-react";
-export const OurCustomer = () => {
+export default function OurCustomer() {
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState<number>(1)
    

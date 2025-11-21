@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <system.webServer>
+    <!-- Enable static compression -->
+    <httpCompression>
+      <dynamicTypes>
+        <add mimeType="text/plain" enabled="true" />
+        <add mimeType="text/html" enabled="true" />
+        <add mimeType="text/css" enabled="true" />
+        <add mimeType="application/javascript" enabled="true" />
+        <add mimeType="application/json" enabled="true" />
+      </dynamicTypes>
+      <staticTypes>
+        <add mimeType="text/plain" enabled="true" />
+        <add mimeType="text/html" enabled="true" />
+        <add mimeType="text/css" enabled="true" />
+        <add mimeType="application/javascript" enabled="true" />
+        <add mimeType="application/json" enabled="true" />
+      </staticTypes>
+    </httpCompression>
+
+    <!-- Security headers -->
+    <httpProtocol>
+      <customHeaders>
+        <add name="X-Content-Type-Options" value="nosniff" />
+        <add name="X-Frame-Options" value="SAMEORIGIN" />
+        <add name="X-XSS-Protection" value="1; mode=block" />
+      </customHeaders>
+    </httpProtocol>
+
+    <!-- URL Rewrite: Reverse-proxy to Node.js app running on localhost:3000 -->
+    <!-- This requires IIS URL Rewrite module (v2.0+) and ARR (Application Request Routing) -->
+    <rewrite>
+      <rules>
+        <!-- Skip rewrite for actual files and directories (static assets) -->
+        <rule name="StaticFiles" stopProcessing="true">
+          <conditions>
+            <add input="{REQUEST_FILENAME}" matchType="IsFile" />
+          </conditions>
+          <action type="None" />
+        </rule>
+
+        <rule name="Directories" stopProcessing="true">
+          <conditions>
+            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" />
+          </conditions>
+          <action type="None" />
+        </rule>
+
+        <!-- Rewrite all other requests to Node.js via reverse proxy -->
+        <rule name="ReverseProxyNode" stopProcessing="true">
+          <match url="(.*)" />
+          <conditions>
+            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+          </conditions>
+          <action type="Rewrite" url="http://localhost:3000/{R:1}" />
+        </rule>
+      </rules>
+
+      <!-- Allow outbound rewriting for response headers -->
+      <outboundRules>
+        <rule name="OutboundRewriteResponseHeader" preCondition="ResponseIsHtml">
+          <match filterByTags="A, Form, Img" pattern="^http(s)?://localhost:3000/(.*)" />
+          <action type="Rewrite" value="http{R:1}://{HTTP_HOST}/{R:2}" />
+        </rule>
+        <preConditions>
+          <preCondition name="ResponseIsHtml">
+            <add input="{RESPONSE_CONTENT_TYPE}" pattern="^text/html" />
+          </preCondition>
+        </preConditions>
+      </outboundRules>
+    </rewrite>
+
+    <!-- Enable proxy module for reverse-proxy functionality -->
+    <proxy enabled="true" preserveHostHeader="false" reverseRewriteHostInResponseHeaders="false" />
+
+    <!-- Additional settings -->
+    <security>
+      <requestFiltering>
+        <fileExtensions>
+          <add fileExtension=".json" allowed="true" />
+        </fileExtensions>
+      </requestFiltering>
+    </security>
+  </system.webServer>
+
+  <system.web>
+    <httpRuntime maxRequestLength="52428800" />
+  </system.web>
+</configuration>

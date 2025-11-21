@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Header } from "@/app/components/mobile/Home/Header";
-import { OurCustomer } from "./slider/page";
+import OurCustomer from "./slider/page";
 import Statistics from "@/app/components/mobile/Home/Statistics";
 
 export default function CarInspectionFlow() {

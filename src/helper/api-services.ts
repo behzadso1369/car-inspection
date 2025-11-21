@@ -23,7 +23,9 @@ GetUserOrderDetail: "User/GetUserOrderDetails",
 GetMasterBlogPageData: "SiteBlog/GetMasterPageData",
 GetAboutUsPageData: "Site/GetAboutUsPageData",
 SearchWithTermsCategory: "SiteBlog/SearchWithTermsCategory",
-SearchCategoryWithId: "SiteBlog/SearchCategoryWithId"
+SearchCategoryWithId: "SiteBlog/SearchCategoryWithId",
+GetFAQ_CategoryData: "Site/GetFAQ_CategoryData",
+GetFAQWithCategoryId: "Site/GetFAQWithCategoryId"
 
 
 

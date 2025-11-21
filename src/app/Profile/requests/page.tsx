@@ -1,6 +1,6 @@
 "use client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Call02Icon } from "hugeicons-react";
+import { ArrowLeft01Icon, Call02Icon, Location01Icon, Logout03Icon } from "hugeicons-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import CurrentRequest from "./currentRequests";
@@ -51,32 +51,32 @@ export default function Profile() {
     //     {Id:1,Title:"تکمیل نشده",CarName:"پژو 206",paymentStatus:"منتظر پرداخت",Description:"پرداخت خود را تکمیل کنید.",status: "unknown"},
     // ]
     return (
-      <div className="grid grid-cols-3 gap-4 py-4">
-        <div className="col-span-3 lg:col-span-1 order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[300px] rounded-2xl">           
+      <div className="grid grid-cols-3 gap-4 pt-4 font-IranSans pb-16">
+        <div className="col-span-3 lg:col-span-1 order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[243px] rounded-2xl">           
                 <h3 className="text-[#101117] font-normal my-6 px-4">تنظیمات حساب</h3>   
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                     <div className="text-[#101117] flex">
-                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+                          <Image alt="کارشناسی خودرو" src="/car-inspection-icon.svg" width={24} height={24}/>
                     <Link href={"/Profile/requests"} className="mx-1 text-base" prefetch={false}>تمامی درخواست ها  </Link>
                     </div>
              
-                <ArrowLeft/>
+                 <ArrowLeft01Icon/>
         
                 </h6>
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                 <div className="text-[#101117] flex">
-                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+                      <Location01Icon size={24}/>
                     <span className="mx-1 text-base">آدرس ها</span>
                     </div>
-                <ArrowLeft/>
+                 <ArrowLeft01Icon/>
         
                 </h6>
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                 <div className="text-[#101117] flex" onClick={logOut}>
-                    <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+                     <Logout03Icon size={24}/>
                     <span className="mx-1 text-base" >خروج</span>
                     </div>
-                <ArrowLeft/>
+                   <ArrowLeft01Icon/>
         
                 </h6>
                 </div>

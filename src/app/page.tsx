@@ -1,5 +1,7 @@
 
 "use client"
+
+export const dynamic = 'force-dynamic'
 import Banner from "./components/mobile/Home/Banner";
 import { Slider } from "./components/mobile/Home/Slider";
 import CallAction from "./components/mobile/Home/CallAction";

@@ -1,4 +1,6 @@
-'use client'
+"use client"
+
+export const dynamic = 'force-dynamic'
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { SearchIcon } from "lucide-react";
 import SuggestionCard from "../components/SuggestionCard";
@@ -59,9 +61,9 @@ export default function BlogCategory() {
   </InputGroupAddon>
 </InputGroup>
  <Tabs onValueChange={(e:any) => {
-    console.log(e);
-    setFirstCategoryData(e)
- }} defaultValue={firstCategoryData} className="w-full bg-[#fbfbfc] py-6 font-IranSans" dir="rtl">
+   console.log(e);
+   setFirstCategoryData(Number(e))
+ }} defaultValue={String(firstCategoryData)} className="w-full bg-[#fbfbfc] py-6 font-IranSans" dir="rtl">
               <TabsList  className="px-2 w-full" >
                       <Carousel  setApi={setApi}  className="w-full max-w-full my-4" opts={{
                 direction: "rtl",
@@ -74,7 +76,7 @@ export default function BlogCategory() {
               
 
       
-          <TabsTrigger key={index} className="rounded-4xl text-[#A6A6A6] border data-[state=active]:bg-[#3456bb] data-[state=active]:border-none  data-[state=active]:text-white  border-[#A6A6A6] px-4 mx-2" value={item.Id}>{item.Name}</TabsTrigger>
+          <TabsTrigger key={index} className="rounded-4xl text-[#A6A6A6] border data-[state=active]:bg-[#3456bb] data-[state=active]:border-none  data-[state=active]:text-white  border-[#A6A6A6] px-4 mx-2" value={String(item.Id)}>{item.Name}</TabsTrigger>
 
         
        
@@ -88,8 +90,8 @@ export default function BlogCategory() {
    
       </Carousel>
       </TabsList>
-       {carouselTabData?.map((item:any, index:number) => (
-   <TabsContent key={item.id} value={item.Id}>
+     {carouselTabData?.map((item:any, index:number) => (
+   <TabsContent key={item.Id} value={String(item.Id)}>
            <div className="flex justify-center flex-wrap">
 
    

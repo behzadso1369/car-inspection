@@ -7,7 +7,7 @@ import Link from "next/link"
 export const RequestCard = ({Id,Title,Description,paymentStatus,CarName,Status}:any) => {
   
     return (
-        <figure className="  rounded-3xl font-IranSans bg-[#FBFBFB] border border-[#DFDFDF] my-4">
+        <figure className="  rounded-3xl font-IranSans bg-[#FBFBFB] border border-[#DFDFDF] mt-4">
  
 
   <figcaption className="mt-4 px-4" key={Id}>
