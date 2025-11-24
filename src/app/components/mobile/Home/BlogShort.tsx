@@ -3,6 +3,7 @@
 import { ArrowLeft01Icon } from "hugeicons-react"
 import { ProductCard } from "./ProductCard"
 import { BlogCard } from "./BlogCard"
+import Link from "next/link"
 
 export default function BlogShort({data}:any) {
     return (
@@ -10,7 +11,7 @@ export default function BlogShort({data}:any) {
             <div className="flex w-full justify-between">
                 <span>خواندنی ها</span>
                 <p className="text-[#1434CB] flex items-center">
-                    <span>نمایش بلاگ</span>
+                    <Link href="./blog" prefetch={false}>نمایش بلاگ</Link>
                     <ArrowLeft01Icon className="mb-1 mx-1" color="#1434CB" size={20} />
                     
                 </p>

@@ -1,94 +1,231 @@
+"use client"
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { CheckmarkCircle01Icon } from "hugeicons-react";
+import Banner from "../components/mobile/Home/Banner";
+import { Header } from "../components/mobile/Home/Header";
+import CallAction from "../components/mobile/Home/CallAction";
+import { Footer } from "../components/mobile/Home/Footer";
+import { NavigationBar } from "../components/mobile/Home/NavigationBar";
+import instance from "@/helper/interceptor";
+import { ApiHelper } from "@/helper/api-request";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import Link from "next/link";
 
 const experts = [
   {
-    name: "صالح جوان",
-    title: "برق‌کار خودرو",
-    img: "/assets/images/expert-1.jpg",
+    name: "صالح حردانی",
+    title: "برق کار خودرو",
+    img: "/expert1.png",
   },
   {
-    name: "جمال احمدی",
+    name: "مهران احمدی",
     title: "تکنسین تعمیر بدنه",
-    img: "/assets/images/expert-2.jpg",
+    img: "/expert2.png",
   },
   {
-    name: "محمد کامیابی",
-    title: "تکنسین مکانیک‌کاری",
-    img: "/assets/images/expert-3.jpg",
+    name: "علیرضا کوشکی",
+    title: "تکنسین صافکاری",
+    img: "/expert3.png",
   },
   {
     name: "روزبه چشمی",
     title: "تکنسین لاستیک و بالانس",
-    img: "/assets/images/expert-4.jpg",
+    img: "/expert4.png",
+  },
+  {
+    name: "روزبه چشمی",
+    title: "تکنسین لاستیک و بالانس",
+    img: "/expert4.png",
   },
 ];
 
 export default function AboutUsPage() {
-  return (
-    <main className="bg-white dark:bg-black min-h-screen w-full">
-      {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">کارچک</span>
-          <img src="/assets/images/logo.svg" alt="logo" className="w-8 h-8" />
-        </div>
-        <div>
-          <a href="tel:02100000000" className="text-blue-600">
-            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.86 19.86 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.24.72 3.31a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.07.35 2.18.59 3.31.72A2 2 0 0 1 22 16.92z"/></svg>
-          </a>
-        </div>
-      </header>
+  const [data, setData] = useState<any>([]);
+  
+  useEffect(() => {
+    instance.get(ApiHelper.get("GetMasterPageData"))
+      .then((res: any) => {
+        setData(res);
+      })
+      .catch((err: any) => {
+        console.error("Error fetching data:", err);
+      });
+  }, []);
 
-      {/* About Section */}
-      <section className="flex flex-col md:flex-row items-center gap-8 px-4 md:px-16 py-8">
-        <img src="/assets/images/mechanic.jpg" alt="mechanic" className="w-full md:w-1/3 rounded-xl object-cover" />
-        <div className="flex-1">
-          <h2 className="text-lg md:text-2xl font-bold mb-4 text-right">درباره ما</h2>
-          <ul className="space-y-2 text-right text-gray-700 dark:text-gray-200">
-            <li>ما بیش از ۲۵ سال تجربه و کارآمد داریم که با دقت و تعهد کار می‌کنیم تا مطمئن بشیم خودروی شما همیشه در بهترین وضعیت ممکن قرار داره. در هر سرویس دوره‌ای، چراغ‌ها، سیستم برق، بدنه و فنی خودرو، قطعات و مصرفی‌ها رو بررسی می‌کنیم.</li>
-            <li>کیفیت بالا <span className="text-blue-600 ml-2">✔</span></li>
-            <li>قابل اعتماد <span className="text-blue-600 ml-2">✔</span></li>
-            <li>رضایت مشتریان <span className="text-blue-600 ml-2">✔</span></li>
-          </ul>
+  return (
+    <div dir="rtl" className="bg-white font-IranSans w-full">
+      <Banner data={data?.MasterSiteData?.NavbarPhoneNumber} />
+      
+      {/* Mobile Header */}
+      <div className="block lg:hidden">
+        <CallAction data={data?.MasterSiteData?.PhoneNumbers} />
+      </div>
+    
+          <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
+               <Header data={data?.MasterSiteData?.PhoneNumbers} />
+               </div>
+
+      {/* About Us Section */}
+      <section className="px-4 lg:px-16 py-8 lg:py-12">
+        <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8 max-w-7xl mx-auto">
+          {/* Image */}
+       
+          
+          {/* Text Content */}
+          <div className="w-full lg:w-1/2 flex flex-col">
+            <h2 className="text-2xl lg:text-3xl font-bold mb-6 text-right text-[#101117]">
+              درباره ما
+            </h2>
+            
+            <div className="space-y-4 text-right text-gray-700 text-base lg:text-lg leading-8 mb-6">
+              <p>
+                ما تیمی با تجربه و کارآمد داریم که با دقت و تعهد کار می‌کنه تا مطمئن بشیم خودروی شما همیشه در بهترین وضعیت ممکن قرار داره. در هر سرویس دوره‌ای چراغ‌ها، سیستم برق و سایر قطعاتی که ممکنه دچار استهلاک بشن رو بررسی می‌کنیم.
+              </p>
+            </div>
+            
+            {/* Features List */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-right">
+                <CheckmarkCircle01Icon color="#416CEA" size={24} />
+                <span className="text-lg text-[#101117]">کیفیت بالا</span>
+              </div>
+              <div className="flex items-center gap-3 text-right">
+                <CheckmarkCircle01Icon color="#416CEA" size={24} />
+                <span className="text-lg text-[#101117]">قابل اعتماد</span>
+              </div>
+              <div className="flex items-center gap-3 text-right">
+                <CheckmarkCircle01Icon color="#416CEA" size={24} />
+                <span className="text-lg text-[#101117]">رضایت مشتریان</span>
+              </div>
+            </div>
+          </div>
+             <div className="w-full lg:w-1/2">
+            <Image
+              src="/about-us-main-page.jpg"
+              alt="مکانیک در حال کار"
+              width={600}
+              height={400}
+              className="w-full h-auto rounded-2xl object-cover"
+            />
+          </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="bg-gray-50 dark:bg-gray-900 py-8 px-4 md:px-16">
-        <div className="max-w-3xl mx-auto text-center">
-          <h3 className="text-lg md:text-xl font-semibold mb-2">با بیش از ۲۵ سال تجربه تخصصی در خدمات خودرو</h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">ارزش یعنی خدمت همراه با اعتماد. اعتمادی که شما به تیم ما دارید. استراتژی‌ها و سیستم‌های خود را داریم و اینکه همیشه مطابق انتظار، نتیجه را تحویل دهید.</p>
-          <Button className="mb-6 bg-blue-600 text-white hover:bg-blue-700">ثبت درخواست</Button>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <Card className="flex flex-col items-center py-6">
-              <svg width="40" height="40" fill="none" stroke="#2563eb" strokeWidth="2" viewBox="0 0 24 24" className="mb-2"><path d="M9 17v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M7 7h10M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><rect x="7" y="7" width="10" height="10" rx="2"/></svg>
-              <div className="text-lg font-bold">بیش از ۹۰٪</div>
-              <div className="text-sm text-gray-500">دقت در گزارش کارشناسی</div>
+      {/* Experience Section */}
+      <section className="bg-[#F0F2F4] py-8 lg:py-12 px-4 lg:px-16">
+        <div className="max-w-4xl mx-auto text-center">
+          <h3 className="text-xl lg:text-3xl font-bold mb-4 text-[#101117]">
+            با بیش از ۲۵ سال تجربه تخصصی در خدمات خودرو
+          </h3>
+          
+          <p className="text-gray-600 text-base lg:text-lg leading-8 mb-8 max-w-3xl mx-auto">
+            ارزش یعنی خدمت همراه با اعتماد. اعتمادی که مشتریان به شما دارند. اعتمادی که شما به تیم، استراتژی‌ها و سیستم‌های خود دارید و اینکه همیشه مطابق انتظار نتیجه را تحویل دهید.
+          </p>
+          
+          <Link href="./car-inspection-flow/select-car-group" className="bg-[#3456bb] hover:bg-[#3563E9] text-white rounded-3xl px-36 py-4 text-lg mb-8">
+            ثبت درخواست
+          </Link>
+          
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <Card className="bg-white rounded-2xl p-6 lg:p-8 border border-gray-200 shadow-sm">
+              <div className="flex flex-col items-center">
+                <div className="w-16 h-16  flex items-center justify-center mb-4">
+                 <Image src={"/دقت در گزارش.png"} alt="دقت در گزارش" height={62} width={56} />
+                </div>
+                <div className="text-lg lg:text-3xl  text-[#55565A] mb-2">
+                  بیش از 
+                </div>
+                <div className="text-4xl lg:text-3xl font-bold text-[#101117] mb-2">
+                   90% 
+                </div>
+                <div className="text-lg lg:text-base text-[#55565A]">
+                  دقت در گزارش کارشناسی
+                </div>
+              </div>
             </Card>
-            <Card className="flex flex-col items-center py-6">
-              <svg width="40" height="40" fill="none" stroke="#2563eb" strokeWidth="2" viewBox="0 0 24 24" className="mb-2"><path d="M5 16v-1a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v1"/><circle cx="12" cy="7" r="4"/></svg>
-              <div className="text-lg font-bold">بیش از ۲۵۰۰۰۰</div>
-              <div className="text-sm text-gray-500">کارشناسی موفق</div>
+            
+            <Card className="bg-white rounded-2xl p-6 lg:p-8 border border-gray-200 shadow-sm">
+              <div className="flex flex-col items-center">
+                <div className="w-16 h-16 flex items-center justify-center mb-4">
+                 <Image src={"/کارشناسان موفق.png"} alt="کارشناسان موفق" height={62} width={56} />
+                </div>
+                <div className="text-lg lg:text-3xl  text-[#55565A] mb-2">
+                  بیش از 
+                </div>
+                  <div className="text-4xl lg:text-3xl font-bold text-[#101117] mb-2">
+                25000
+                </div>
+                <div className="text-lg lg:text-3xl  text-[#55565A] mb-2">
+                  کارشناسی موفق
+                </div>
+              </div>
             </Card>
           </div>
         </div>
       </section>
 
-      {/* Experts Section */}
-      <section className="bg-black text-white py-8 px-4 md:px-16">
-        <h3 className="text-lg md:text-xl font-semibold mb-6 text-center">کارشناسان حرفه ای</h3>
-        <p className="max-w-2xl mx-auto text-center text-gray-300 mb-8">از مدت‌ها پیش ثابت شده که وقتی یک صفحه نگاه می‌کنید، محتوای قابل خواندن صفحه را از تمرکز اصلی منحرف می‌کند. دلیل استفاده از متن لورم ایپسوم این است که توزیع حروف در آن تقریباً نسبت به یک متن معمولی است.</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          {experts.map((expert, idx) => (
-            <Card key={idx} className="flex flex-col items-center bg-gray-900 py-6">
-              <img src={expert.img} alt={expert.name} className="w-24 h-24 rounded-xl object-cover mb-4" />
-              <div className="font-bold text-base mb-1">{expert.name}</div>
-              <div className="text-sm text-gray-400">{expert.title}</div>
-            </Card>
+      {/* Professional Experts Section */}
+      <section className="bg-white text-[#101117] py-12 lg:py-16 px-4 lg:px-16">
+        <div className="max-w-6xl mx-auto">
+          <h3 className="text-2xl lg:text-3xl font-bold mb-6 text-center">
+            کارشناسان حرفه ای
+          </h3>
+          
+          <p className="max-w-3xl mx-auto text-center text-[#101117] text-base lg:text-lg leading-8 mb-12">
+            از مدت‌ها پیش ثابت شده که وقتی یک خواننده به چیدمان و طراحی یک صفحه نگاه می‌کند، محتوای قابل خواندن صفحه او را از تمرکز اصلی‌اش منحرف می‌کند. دلیل استفاده از متن لورم ایپسوم این است که توزیع حروف در آن تقریباً شبیه به یک متن معمولی است.
+          </p>
+          
+          <div className="w-full ">
+              <Carousel   className="w-full max-w-full " opts={{
+                direction: "rtl",
+                align:"center",
+                loop:true
+            }}  >
+        <CarouselContent>
+          {experts?.map((item:any, index:number) => (
+            <CarouselItem key={index} className="basis-4/5 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5" >
+              
+ <div key={index} className="flex flex-col items-center w-full">
+                <div className="w-full  lg:w-40 lg:h-40 rounded-2xl overflow-hidden mb-4 ">
+                  <Image
+                    src={item.img}
+                    alt={item.name}
+                    width={160}
+                    height={160}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="font-bold text-base lg:text-lg mb-2 text-center">
+                  {item.name}
+                </div>
+                <div className="text-sm lg:text-base text-gray-400 text-center">
+                  {item.title}
+                </div>
+              </div>
+              
+           
+            </CarouselItem>
           ))}
+        </CarouselContent>
+    
+      </Carousel>
+          
+          </div>
         </div>
       </section>
-    </main>
+
+      {/* Footer */}
+      <Footer />
+      
+      {/* Mobile Navigation Bar */}
+      <div className="block lg:hidden">
+        <NavigationBar />
+      </div>
+    </div>
   );
 }

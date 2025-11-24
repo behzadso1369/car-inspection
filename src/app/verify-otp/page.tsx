@@ -47,7 +47,7 @@ export default function VerifyOtp() {
             if (res) {
               localStorage.setItem("token",res?.accessToken)
 
-        router.push("/profile");
+        router.push("/Profile");
       } 
         })
     }

@@ -48,7 +48,7 @@ export const Slider = ({data}:any) => {
         
         className="w-full"
       >
-        <CarouselContent className="w-full h-[183px] lg:h-[500px]">
+        <CarouselContent className="w-full h-[183px] lg:h-[400px]">
           {data?.map((item:any) => {
             const imageUrl = item.ImagePath.replace(/\\/g, '/'); 
  return (
@@ -57,8 +57,8 @@ export const Slider = ({data}:any) => {
               className="relative w-full h-full"
             >
                 <div className="w-full h-full relative   px-8 pt-10" >
-                  <h2 className=" text-2xl w-46 font-IranSans leading-10 z-10 absolute text-white font-medium">{item.Text}</h2>
-                  <Button className="mt-2 rounded-2xl absolute flex justify-center items-center font-IranSans text-white z-10 top-1/2">
+                  {/* <h2 className=" text-2xl w-46 font-IranSans leading-10 z-10 absolute text-white font-medium">{item.Text}</h2> */}
+                  <Button className="mt-2 lg:w-64 lg:top-3/4 rounded-2xl absolute flex justify-center items-center font-IranSans text-white z-10 top-1/2">
                     رزرو کارشناسی
                   </Button>
                 </div>

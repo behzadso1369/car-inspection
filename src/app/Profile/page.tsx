@@ -8,11 +8,14 @@ import { useEffect, useState } from "react";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 
 export default function Profile() {
     const [orders,setOrders] = useState<any>([]);
+    const decoded:any = jwtDecode(localStorage.getItem("token") || "");
     const router = useRouter();
   useEffect(() => {
+    console.log(decoded);
     instance.get(ApiHelper.get("GetOrders"))
       .then((res: any) => {
         setOrders(res);
@@ -40,8 +43,8 @@ export default function Profile() {
             
         <div className="flex justify-between lg:hidden px-8 items-center pt-6 pb-4 border-b border-[#DFDFDF]">
             <div className="flex flex-col">
-                <span>محیا محمودی</span>
-                <span>09364845873</span>
+                <span>{decoded?.name}</span>
+                <span>{decoded?.userPhoneNumber}</span>
             </div>
             <Edit01Icon/>
         </div>

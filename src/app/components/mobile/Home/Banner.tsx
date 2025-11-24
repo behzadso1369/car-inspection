@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import {  Car02Icon } from "hugeicons-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Banner ({data}:any) {
 
@@ -12,7 +13,7 @@ export default function Banner ({data}:any) {
             <Image src={"/car-approved.svg"} width="24" height="24" alt="رزرو کارشناس"/>
             <strong className="font-IranSans-UltraLight text-[#FFFBFB] text-sm mx-1 font-normal">کارشناسی خودرو در کمترین زمان</strong>
             </div>
-            <a  className="rounded-3xl font-IranSans-UltraLight border border-white px-2" href={`tel:${data}`}>رزرو کارشناس</a>
+            <Link   className="rounded-3xl font-IranSans-UltraLight border border-white px-2" href="./car-inspection-flow/select-car-group">رزرو کارشناس</Link>
             {/* <Button size="sm" variant="outline"  className="rounded-3xl font-IranSans-UltraLight">
              
             </Button> */}

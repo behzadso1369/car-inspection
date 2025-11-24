@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CheckmarkCircle01Icon } from "hugeicons-react";
+import Link from "next/link";
 
 export default function QualityBox({data}:any) {
 
@@ -30,7 +31,7 @@ export default function QualityBox({data}:any) {
                     </li>
 
                 </ul>
-                <Button  className="rounded-3xl h-11 w-full my-4 bg-[#416CEA] text-white">رزرو کارشناسی</Button>
+                <Link href="./car-inspection-flow/select-car-group" prefetch={false}  className="rounded-3xl py-3 px-4 inline-block text-center w-full my-4 bg-[#416CEA] text-white">رزرو کارشناسی</Link>
             </div>
             
         </div>

@@ -35,10 +35,10 @@ const [data,setData] = useState<any>([]);
  
       <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
        <div className="block lg:hidden">
-  <CallAction data={data}/>
+  <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
        </div>
           <div className="hidden lg:block px-20 mb-6 bg-white">
-     <Header data={data?.MasterSiteData?.NavbarPhoneNumber} />
+     <Header data={data?.MasterSiteData?.PhoneNumbers} />
      </div>
     
       <Slider data={data?.Sliders}/>
