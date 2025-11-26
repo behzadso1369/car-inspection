@@ -25,7 +25,8 @@ GetAboutUsPageData: "Site/GetAboutUsPageData",
 SearchWithTermsCategory: "SiteBlog/SearchWithTermsCategory",
 SearchCategoryWithId: "SiteBlog/SearchCategoryWithId",
 GetFAQ_CategoryData: "Site/GetFAQ_CategoryData",
-GetFAQWithCategoryId: "Site/GetFAQWithCategoryId"
+GetFAQWithCategoryId: "Site/GetFAQWithCategoryId",
+GetRegulationsData: "Site/GetRegulationsData",
 
 
 

@@ -35,7 +35,7 @@ const [data,setData] = useState<any>([]);
  
       <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
        <div className="block lg:hidden">
-  <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
+  <CallAction data={data}/>
        </div>
           <div className="hidden lg:block px-20 mb-6 bg-white">
      <Header data={data?.MasterSiteData?.PhoneNumbers} />

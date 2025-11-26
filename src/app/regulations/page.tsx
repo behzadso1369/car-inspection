@@ -102,6 +102,7 @@ function MobileCarouselTabs({
     align: 'start',
     containScroll: 'trimSnaps',
   });
+  
 
   return (
     <div className="lg:hidden">
@@ -158,7 +159,15 @@ function DesktopFlexTabs({
 
 export default function RegulationsPage() {
        const [data,setData] = useState<any>([]);
+       const [regulationsData,setRegulationsData] = useState<any>([]);
+       const getRugulationsData = () => {
+        
+        instance.get(ApiHelper.get("GetRegulationsData")).then((res:any) => {
+setRegulationsData(res?.Regulations);
+        })
+       }
   useEffect(() => {
+    getRugulationsData();
     instance.get(ApiHelper.get("GetMasterPageData"))
       .then((res: any) => {
         setData(res);
@@ -175,33 +184,34 @@ export default function RegulationsPage() {
     <div dir="rtl" className="w-full max-w-6xl mx-auto px-4  font-IranSans">
         <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
                <div className="block lg:hidden">
-          <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
+          <CallAction data={data}/>
                </div>
                   <div className="hidden lg:block px-20 mb-6 bg-white">
              <Header data={data?.MasterSiteData?.PhoneNumbers} />
              </div>
       {/* Header */}
-      <div className="mb-8 py-2">
+      <div className="my-6 py-2">
         <h1 className="text-base lg:text-3xl font-bold text-[#101117] mb-2">قوانین و مقررات کارچک</h1>
         <p className="text-gray-600">ورود شما از طریق شماره همراه به منزله تایید قوانین ومقررات کارچک می باشد.</p>
       </div>
+      <div className='my-4'>{regulationsData?.[0]?.Content}</div>
 
       {/* Mobile Carousel Tabs */}
-      <MobileCarouselTabs
+      {/* <MobileCarouselTabs
         categories={FAQ_DATA}
         activeTab={activeTab}
         onTabChange={setActiveTab}
-      />
+      /> */}
 
       {/* Desktop Flex Tabs */}
-      <DesktopFlexTabs
+      {/* <DesktopFlexTabs
         categories={FAQ_DATA}
         activeTab={activeTab}
         onTabChange={setActiveTab}
-      />
+      /> */}
 
       {/* Content Accordion */}
-      {activeCategory && (
+      {/* {activeCategory && (
         <div className="mt-8">
           <Accordion type="single" collapsible className="w-full ">
             {activeCategory.questions.map((q) => (
@@ -216,7 +226,7 @@ export default function RegulationsPage() {
             ))}
           </Accordion>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

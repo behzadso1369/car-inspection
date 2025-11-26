@@ -10,83 +10,10 @@ import CallAction from '../components/mobile/Home/CallAction';
 import { Header } from '../components/mobile/Home/Header';
 import instance from '@/helper/interceptor';
 import { ApiHelper } from '@/helper/api-request';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
+import { SearchIcon } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
-const FAQ_DATA = [
-  {
-    id: 'car-inspection',
-    label: 'کارشناسی خودرو',
-    questions: [
-      {
-        id: 'q1',
-        question: 'با توجه تلفیق اطلاعات و استفاده از چارت و مدلهای نزدیک به فناوری غیرفنی است؟',
-        answer: 'پاسخ سوال اول درباره کارشناسی خودرو و روش های مختلف آن',
-      },
-      {
-        id: 'q2',
-        question: 'با توجه تلفیق اطلاعات و استفاده از تسهیلات طراحی، دریچه برنامه نویسی چگونه است؟',
-        answer: 'پاسخ سوال دوم درباره تسهیلات و برنامه نویسی',
-      },
-      {
-        id: 'q3',
-        question: 'با توجه تلفیق اطلاعات و استفاده و مستخدم درفناوری غیرفنی است؟',
-        answer: 'پاسخ سوال سوم درباره فناوری و استفاده از آن',
-      },
-    ],
-  },
-  {
-    id: 'general-questions',
-    label: 'سوالات متداول',
-    questions: [
-      {
-        id: 'q1',
-        question: 'مراحل کارشناسی چگونه انجام می شود؟',
-        answer: 'کارشناسی خودرو از طریق چندین مرحله انجام می شود: بررسی خارجی، بررسی داخلی، تست سیستم ها و صدور گزارش.',
-      },
-      {
-        id: 'q2',
-        question: 'مدت زمان کارشناسی چقدر است؟',
-        answer: 'معمولا کارشناسی یک خودرو بین 30 تا 60 دقیقه طول می کشد.',
-      },
-      {
-        id: 'q3',
-        question: 'آیا کارشناسی در محل کار انجام می شود؟',
-        answer: 'بله، ما سرویس کارشناسی در محل را ارائه می دهیم.',
-      },
-    ],
-  },
-  {
-    id: 'warranty',
-    label: 'گارانتی و بیمه',
-    questions: [
-      {
-        id: 'q1',
-        question: 'گزارش کارشناسی چه مدت اعتبار دارد؟',
-        answer: 'گزارش کارشناسی برای 24 ساعت اعتبار دارد.',
-      },
-      {
-        id: 'q2',
-        question: 'آیا خودرو در هنگام کارشناسی بیمه می شود؟',
-        answer: 'بله، خودرو شما در هنگام کارشناسی توسط بیمه ما پوشش داده می شود.',
-      },
-    ],
-  },
-  {
-    id: 'payment',
-    label: 'پرداخت',
-    questions: [
-      {
-        id: 'q1',
-        question: 'روش های پرداخت کدام هستند؟',
-        answer: 'ما روش های مختلفی شامل کارت اعتباری، تراز بانکی و پرداخت نقدی را قبول می کنیم.',
-      },
-      {
-        id: 'q2',
-        question: 'آیا امکان بازپرداخت وجود دارد؟',
-        answer: 'بله، اگر با سرویس راضی نباشید می توانید درخواست بازپرداخت کنید.',
-      },
-    ],
-  },
-];
 
 // Mobile Carousel Tabs Component
 function MobileCarouselTabs({
@@ -112,7 +39,7 @@ function MobileCarouselTabs({
               <button
                 onClick={() => onTabChange(cat?.Id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                  activeTab === cat.Id
+                    activeTab === String(cat.Id)
                     ? 'bg-[#3456bb] text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
@@ -141,12 +68,12 @@ function DesktopFlexTabs({
     <div className="hidden lg:flex gap-4 flex-wrap">
       {categories.map((cat:any) => (
         <button
-          key={cat.id}
+          key={cat.Id}
           onClick={() => onTabChange(cat.Id)}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-            activeTab === cat.id
+            activeTab === String(cat.Id)
               ? 'bg-[#3456bb] text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              : 'bg-white border border-[#A6A6A6] text-[#A6A6A6] cursor-pointer'
           }`}
         >
           {cat.Name}
@@ -183,22 +110,36 @@ export default function FAQPage() {
   }, []);
   const [activeTab, setActiveTab] = useState("1");
 
-  const activeCategory = faqCategories.find((cat:any) => cat.Id === activeTab);
+  const activeCategory = faqCategories.find((cat:any) => String(cat.Id) === activeTab);
 
   return (
     <div dir="rtl" className="w-full max-w-6xl mx-auto px-4  font-IranSans">
         <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
                <div className="block lg:hidden">
-          <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
+          <CallAction data={data}/>
                </div>
                   <div className="hidden lg:block px-20 mb-6 bg-white">
              <Header data={data?.MasterSiteData?.PhoneNumbers} />
              </div>
       {/* Header */}
-      <div className="mb-8 py-2">
-        <h1 className="text-base lg:text-3xl font-bold text-[#101117] mb-2">پرسش های متداول</h1>
-        <p className="text-gray-600">پرسش ها و پاسخ های مرتبط با خدمات ما</p>
+      <div className="my-6 py-2">
+        <h1 className="text-base lg:text-2xl font-normal text-[#101117] mb-2">پرسش های متداول</h1>
+          <Label className='my-4 text-[#101117] font-extralight text-sm lg:text-lg'>موضوع موردنظرتون را جستجو نمایید.</Label>
+          <InputGroup  className="px-4 flex items-center !py-6 border border-[#DFDFDF] rounded-full text-[#55565A]">
+        
+          <InputGroupInput  placeholder="جستجو در موضوع" />
+        
+          <InputGroupAddon align="inline-end">
+          <SearchIcon />
+          </InputGroupAddon>
+        </InputGroup>
+     
+        {/* <p className="text-gray-600">پرسش ها و پاسخ های مرتبط با خدمات ما</p> */}
       </div>
+      <div className='my-4'>
+               <span>دسته بندی:</span>
+      </div>
+      
 
       {/* Mobile Carousel Tabs */}
       <MobileCarouselTabs

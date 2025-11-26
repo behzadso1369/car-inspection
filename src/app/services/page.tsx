@@ -9,6 +9,8 @@ import Banner from "../components/mobile/Home/Banner"
 import { Header } from "../components/mobile/Home/Header"
 import instance from "@/helper/interceptor"
 import { ApiHelper } from "@/helper/api-request"
+import CallAction from "../components/mobile/Home/CallAction"
+import { NavigationBar } from "../components/mobile/Home/NavigationBar"
 
 export default function Services() {
             const [data,setData] = useState<any>([]);
@@ -109,6 +111,9 @@ export default function Services() {
                                    <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
                        <Header data={data?.MasterSiteData?.PhoneNumbers} />
                        </div>
+                          <div className="block lg:hidden sticky top-11 z-10 bg-white">
+                         <CallAction data={data}/>
+                              </div>
       {/* Hero Section */}
       <section className="w-full lg:max-w-7xl lg:mx-auto">
         
@@ -246,6 +251,9 @@ export default function Services() {
 
       {/* Spacing */}
       <div className="h-8" />
+       <div className="lg:hidden">
+                  <NavigationBar/>
+          </div>
     </div>
   )
 }

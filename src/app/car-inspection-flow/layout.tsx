@@ -28,7 +28,8 @@ export default function ProfileLayout({
 
 
   <div className={`bg-white font-IranSans  ${!isBaseFlow ? "lg:max-w-xl lg:container lg:mx-auto lg:my-10 lg:pt-8" : ""}   shadow-[0px_4px_24px_0px_#EAEAEA]`}>
-                       <div className="px-8 py-3 flex justify-between  shadow-[0px_6px_20px_-2px_#10182814] lg:shadow-none lg:hidden">
+                       {!isBaseFlow && (
+                       <div className="px-8 py-3 flex justify-between  shadow-[0px_6px_20px_-2px_#10182814] lg:shadow-none">
                    <ArrowRight onClick={() => window.history.back()}/>
                 <div className="flex items-center">
             <Image alt="کارچک" width={32} height={30} src={"/assets/images/logo.svg"}/>
@@ -41,6 +42,7 @@ export default function ProfileLayout({
 
 
         </div>
+                       )}
                   {children}
                   
                   </div>

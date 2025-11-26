@@ -1,8 +1,22 @@
+"use client";
 import { Call02Icon } from "hugeicons-react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 export const Header = ({data}:any) => {
+    const pathname = usePathname();
+    
+    const isActive = (href: string) => {
+        if (href === "/") {
+            return pathname === "/";
+        }
+        if (href === "/car-inspection-flow/select-car-group") {
+            return pathname.startsWith("/car-inspection-flow");
+        }
+        return pathname.startsWith(href);
+    };
+    
     return (
 
 
@@ -15,19 +29,19 @@ export const Header = ({data}:any) => {
                         </div>
 
                             <ul className="flex text-base">
-                                <li className="mx-4 text-[#416CEA]">
+                                <li className={`mx-4 ${isActive("/") ? "text-[#3456bb]" : ""}`}>
                                     <Link href="/" prefetch={false}>خانه</Link>
                                 </li>
-                                <li className="mx-4">
+                                <li className={`mx-4 ${isActive("/car-inspection-flow/select-car-group") ? "text-[#3456bb]" : ""}`}>
                                     <Link href="/car-inspection-flow/select-car-group" prefetch={false}>کارشناسی خودرو</Link>
                                 </li>
-                                <li className="mx-4">
-                                    <Link href="/test" prefetch={false}>خدمات کارچک</Link>
+                                <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
+                                    <Link href="/services" prefetch={false}>خدمات کارچک</Link>
                                 </li>
-                                <li className="mx-4">
+                                <li className={`mx-4 ${isActive("/contact-us") ? "text-[#3456bb]" : ""}`}>
                                     <Link href="/contact-us" prefetch={false}>ارتباط با ما</Link>
                                 </li>
-                                <li className="mx-4">
+                                <li className={`mx-4 ${isActive("/about-us") ? "text-[#3456bb]" : ""}`}>
                                       <Link href="/about-us" prefetch={false}>درباره ما</Link>
                                 </li>
                             </ul>

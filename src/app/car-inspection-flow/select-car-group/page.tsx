@@ -19,6 +19,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Header } from "@/app/components/mobile/Home/Header";
 import OurCustomer from "./slider/page";
 import Statistics from "@/app/components/mobile/Home/Statistics";
+import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar";
 
 export default function CarInspectionFlow() {
     const [data,setData] = useState<any>([]);
@@ -73,9 +74,12 @@ export default function CarInspectionFlow() {
    
 
         <div className="bg-white font-IranSans">
-                  <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
+                  <Banner data={data}/>
                  <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
      <Header data={data?.MasterSiteData?.PhoneNumbers} />
+     </div>
+     <div className="lg:hidden sticky top-11 z-10 bg-white">
+        <CallAction data={data} />
      </div>
        
             <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10">
@@ -242,6 +246,10 @@ export default function CarInspectionFlow() {
             <OurCustomer/>
           </div>
           <Statistics data={data?.StatisticsData}/>
+          <div className="lg:hidden">
+                  <NavigationBar/>
+          </div>
+    
                   
         </div>
     )
