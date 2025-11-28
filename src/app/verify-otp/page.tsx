@@ -39,6 +39,13 @@ export default function VerifyOtp() {
     const s = (sec % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   }; 
+    // Cookie helper function
+    const setCookie = (name: string, value: string, days: number = 30) => {
+      const expires = new Date();
+      expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+      document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+    };
+
     const verifyOtp = (e:any) => {
         instance.post(ApiHelper.get("UserVerify"),{
             userId:localStorage.getItem("userId"),
@@ -46,6 +53,11 @@ export default function VerifyOtp() {
         }).then((res:any) => {
             if (res) {
               localStorage.setItem("token",res?.accessToken)
+              
+              // Set refresh token in cookie if provided by API
+              if (res?.refreshToken) {
+                setCookie("refreshToken", res.refreshToken);
+              }
 
         router.push("/Profile");
       } 

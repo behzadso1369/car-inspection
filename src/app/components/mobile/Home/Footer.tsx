@@ -1,5 +1,6 @@
 import { Clock01Icon, Location01Icon, SmartPhone01Icon } from "hugeicons-react"
 import Image from "next/image"
+import Link from "next/link"
 
 export const Footer = () => {
     return (
@@ -18,13 +19,13 @@ export const Footer = () => {
             <span className="text-base mx-2">02191001740 - 09981982905</span>
           </div>
           <div className="mt-8 flex justify-between flex-wrap">
-            <div>سوالات متداول</div>
+            <Link href="./faq" prefetch={false}>سوالات متداول</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
-            <div>ارتباط با ما</div>
+            <Link href="./contact-us">ارتباط با ما</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
-            <div>درباره ما</div>
+            <Link href="about-us" prefetch={false}>درباره ما</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
-            <div>قوانین و مقررات</div>
+            <Link href="./regulations">قوانین و مقررات</Link>
 
           </div>
           <div className="my-8 mx-18">
@@ -55,13 +56,13 @@ export const Footer = () => {
        
           <div className="mx-16">
                <h3 className="my-4 w-full text-[#101117] font-bold text-xl">دسترسی سریع</h3>
-            <div className="my-4">سوالات متداول</div>
+              <Link href="./regulations">قوانین و مقررات</Link>
            
-            <div className="my-4">ارتباط با ما</div>
+             <Link href="about-us" prefetch={false}>درباره ما</Link>
             
-            <div className="my-4">درباره ما</div>
+             <Link href="./contact-us">ارتباط با ما</Link>
             
-            <div className="my-4">قوانین و مقررات</div>
+                       <Link href="./faq" prefetch={false}>سوالات متداول</Link>
 
           </div>
           <div className="my-8 mr-96">

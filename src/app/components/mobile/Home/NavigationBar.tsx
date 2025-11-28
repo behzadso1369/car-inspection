@@ -26,15 +26,21 @@ export const NavigationBar = () => {
         <span className="text-xs my-1">خانه</span>
         </Link>
         <Link className={`flex flex-col items-center justify-between ${isActive("/car-inspection-flow/select-car-group") ? "text-[#3456bb]" : "text-[#999A9C]"}`} href="/car-inspection-flow/select-car-group" prefetch={false}>
+        <div style={isActive("/car-inspection-flow/select-car-group") ? { filter: "brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(220deg) brightness(0.73) contrast(1.2)" } : { filter: "brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)" }}>
         <Image alt="کارشناسی خودرو" src="/car-inspection.svg" width={24} height={24}/>
+        </div>
         <span className="text-xs my-1">کارشناسی خودرو</span>
         </Link>
         <Link className={`flex flex-col   justify-between items-center ${isActive("/services") ? "text-[#3456bb]" : "text-[#999A9C]"}`} href="/services" prefetch={false}>
+        <div style={isActive("/services") ? { filter: "brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(220deg) brightness(0.73) contrast(1.2)" } : { filter: "brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)" }}>
         <Image alt="کارشناسی خودرو" src="/car-service.svg" width={24} height={24}/>
+        </div>
         <span className="text-xs my-1">خدمات کارچک</span>
         </Link>
         <Link className={`flex flex-col justify-between items-center ${isActive("/Profile") ? "text-[#3456bb]" : "text-[#999A9C]"}`} href="/Profile" prefetch={false}>
+        <div style={isActive("/Profile") ? { filter: "brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(220deg) brightness(0.73) contrast(1.2)" } : { filter: "brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)" }}>
         <Image alt="کارشناسی خودرو" src="/profile.svg" width={24} height={24}/>
+        </div>
         <span className="text-xs my-1">پروفایل</span>
         </Link>
         </nav>

@@ -20,12 +20,13 @@ export const Header = ({data}:any) => {
     return (
 
 
-        <header  className=" w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 bg-white rounded-b-3xl font-IranSans">
+
+        <header  className="w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 bg-white rounded-b-3xl font-IranSans">
      
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                                                         <Image alt="کارچک" width={62} height={57} src={"/assets/images/logo.svg"}/>
-                            <h1 className="font-IranSans-UltraLight text-4xl text-black mx-1 font-semibold">کارچک</h1>
+                            <h1 className="font-IranSans-UltraLight text-4xl text-black mx-1 font-semibold">{data?.MasterSiteData?.CompanyName}</h1>
                         </div>
 
                             <ul className="flex text-base">
@@ -47,9 +48,9 @@ export const Header = ({data}:any) => {
                             </ul>
                                               <span className="text-[#101117] flex items-center font-IranSans">
                 
-                {data?.split("-").map((item:any) => (
-                     <a  className="rounded-3xl font-IranSans-UltraLight border border-white px-2" href={`tel:${item}`}>{item}</a>
-                ))}
+                
+                     <a  className="rounded-3xl font-IranSans-UltraLight border border-white px-2" href={`tel:${data?.MasterSiteData?.NavbarPhoneNumber}`}>{data?.MasterSiteData?.NavbarPhoneNumber}</a>
+             
                 <Call02Icon size={16}/>
             </span>
                             </div>

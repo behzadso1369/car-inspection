@@ -20,6 +20,7 @@ import { Header } from "@/app/components/mobile/Home/Header";
 import OurCustomer from "./slider/page";
 import Statistics from "@/app/components/mobile/Home/Statistics";
 import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar";
+import { Footer } from "@/app/components/mobile/Home/Footer";
 
 export default function CarInspectionFlow() {
     const [data,setData] = useState<any>([]);
@@ -75,8 +76,8 @@ export default function CarInspectionFlow() {
 
         <div className="bg-white font-IranSans">
                   <Banner data={data}/>
-                 <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
-     <Header data={data?.MasterSiteData?.PhoneNumbers} />
+                 <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-20">
+     <Header data={data} />
      </div>
      <div className="lg:hidden sticky top-11 z-10 bg-white">
         <CallAction data={data} />
@@ -193,7 +194,7 @@ export default function CarInspectionFlow() {
                         </div>
                     </div>
                     <div className="bg-[#F0F2F4] py-16 lg:pt-12 flex flex-wrap justify-center relative px-4 lg:px-96">
-                        <h2 className="font-bold bg-[#F0F2F4] py-4 z-40">فرآیند انجام کارشناسی</h2>
+                        <h2 className="font-bold bg-[#F0F2F4] py-4 z-10">فرآیند انجام کارشناسی</h2>
                         <div className="w-full my-4">
                             <div className="flex flex-col w-2/5 pl-5">
                                 <span className="text-sm text-[#101117] lg:text-2xl">ثبت درخواست</span>
@@ -242,13 +243,14 @@ export default function CarInspectionFlow() {
                              
 
         </div>
-          <div className="h-[800px] ">
+          <div className="h-[600px] lg:h-[800px]">
             <OurCustomer/>
           </div>
           <Statistics data={data?.StatisticsData}/>
           <div className="lg:hidden">
                   <NavigationBar/>
           </div>
+          <Footer/>
     
                   
         </div>

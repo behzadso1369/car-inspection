@@ -24,10 +24,17 @@ export default function Profile() {
         console.error("Error fetching data:", err);
       });
   }, []);
+  // Cookie helper function to delete cookie
+  const deleteCookie = (name: string) => {
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+  };
+
   const logOut = () => {
     instance.post(ApiHelper.get("Logout"))
       .then((res: any) => {
         localStorage.clear();
+        // Clear refresh token cookie
+        deleteCookie("refreshToken");
         router.push("/");
        
       })

@@ -107,7 +107,7 @@ export default function NewServicePage() {
     <div className="font-IranSans bg-white">
           <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
                                    <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
-                       <Header data={data?.MasterSiteData?.PhoneNumbers} />
+                       <Header data={data} />
                        </div>
       {/* Hero Section */}
       <section className="w-full lg:max-w-7xl lg:mx-auto">

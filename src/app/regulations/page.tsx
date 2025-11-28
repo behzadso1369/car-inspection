@@ -187,7 +187,7 @@ setRegulationsData(res?.Regulations);
           <CallAction data={data}/>
                </div>
                   <div className="hidden lg:block px-20 mb-6 bg-white">
-             <Header data={data?.MasterSiteData?.PhoneNumbers} />
+             <Header data={data} />
              </div>
       {/* Header */}
       <div className="my-6 py-2">

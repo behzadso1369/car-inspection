@@ -37,12 +37,12 @@ const [data,setData] = useState<any>([]);
        <div className="block lg:hidden">
   <CallAction data={data}/>
        </div>
-          <div className="hidden lg:block px-20 mb-6 bg-white">
-     <Header data={data?.MasterSiteData?.PhoneNumbers} />
+          <div className="hidden lg:block px-20 mb-5   sticky top-11 z-10">
+     <Header data={data} />
      </div>
     
       <Slider data={data?.Sliders}/>
-      <Introduction/>
+      <Introduction data={data?.WhyWe}/>
       <Services data={data?.CarInspectionServices}/>
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
       <Statistics data={data?.StatisticsData}/>

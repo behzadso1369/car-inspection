@@ -109,7 +109,7 @@ export default function Services() {
     <div className="font-IranSans bg-white">
           <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
                                    <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
-                       <Header data={data?.MasterSiteData?.PhoneNumbers} />
+                       <Header data={data} />
                        </div>
                           <div className="block lg:hidden sticky top-11 z-10 bg-white">
                          <CallAction data={data}/>

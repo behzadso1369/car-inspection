@@ -66,7 +66,7 @@ export default function AboutUsPage() {
       </div>
     
           <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
-               <Header data={data?.MasterSiteData?.PhoneNumbers} />
+               <Header data={data} />
                </div>
 
       {/* About Us Section */}
