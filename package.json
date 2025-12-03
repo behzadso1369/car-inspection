@@ -6,6 +6,8 @@
     "dev": "next dev -p 5173",
     "build": "next build",
     "start": "next start",
+    "start:standalone": "node .next/standalone/server.js",
+    "build:iis": "next build",
     "lint": "biome check",
     "format": "biome format --write"
   },

@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Enable standalone output for IIS deployment
+  output: 'standalone',
 };
 
 export default nextConfig;
