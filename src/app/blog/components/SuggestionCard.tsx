@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function SuggestionCard({title,imageSrc,link,date}:any) {
     return (
-        <Link prefetch={false} href={link}   className="flex flex-col items-center w-full">
+        <Link prefetch={false} href={link}   className="flex flex-col items-center w-full col-span-4 lg:col-span-1">
             
                 <figure className="my-4">
                     <div className="relative  aspect-[1.77] w-full">

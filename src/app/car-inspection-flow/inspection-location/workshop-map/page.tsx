@@ -7,8 +7,7 @@ import { Location01Icon } from "hugeicons-react"
 
 
 export default function DirectionsMap({LocationTypeDescription}:any) {
-
-
+  const mapProps: any = { center: [35.753436, 51.509858], zoom: 13, className: "h-full w-full" };
 
   return (
     <DialogContent className="w-screen h-screen overflow-auto max-w-none p-0 border-none bg-white font-IranSans">
@@ -23,12 +22,8 @@ export default function DirectionsMap({LocationTypeDescription}:any) {
       </DialogHeader>
 
    <div className="w-full h-[650px]">
-      <MapContainer  center={[35.753436, 51.509858]} zoom={600} className="h-full w-full">
-        <TileLayer
-        marker
-          attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <MapContainer {...mapProps}>
+        <TileLayer {...({ attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' } as any)} />
         <Marker position={[37.7749, -122.4194]}>
           <Popup>San Francisco</Popup>
         </Marker>

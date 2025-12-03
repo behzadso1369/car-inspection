@@ -130,7 +130,7 @@ export default function InsertInformation() {
             </FormItem>
           )}
         />
-       <div className="px-4 w-full fixed flex justify-center  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+       <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-center  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
                      <Dialog open={openModal}>
 
               <OtpMoldal  openModal={openModal} setOpnModal={setOpenModal}/>

@@ -56,7 +56,7 @@ export default function InspectionMethod() {
         })
        }
     return (
-          <div className="bg-white font-IranSans">
+          <div className="bg-white font-IranSans lg:px-4 lg:py-4 ">
               
             <div className="px-4">
                 <div className="bg-white  px-4 py-6 rounded-3xl my-6">
@@ -98,7 +98,7 @@ export default function InspectionMethod() {
             </div>
             
 
-            <div className="px-4 w-full fixed flex justify-between  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+            <div className="px-4 lg:my-4 w-full fixed  lg:static lg:mt-8 flex justify-between  bottom-0 b-white   shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
               <Button  className="bg-[#416CEA] text-white rounded-3xl py-6 px-12" onClick={moveToInsertInformation}>
                 تایید و ادامه
               </Button>

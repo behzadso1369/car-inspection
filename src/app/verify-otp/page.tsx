@@ -39,40 +39,52 @@ export default function VerifyOtp() {
     const s = (sec % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   }; 
-    const verifyOtp = () => {
-        instance.post(ApiHelper.get("CheckPhoneNumber"),{
+    // Cookie helper function
+    const setCookie = (name: string, value: string, days: number = 30) => {
+      const expires = new Date();
+      expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+      document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+    };
+
+    const verifyOtp = (e:any) => {
+        instance.post(ApiHelper.get("UserVerify"),{
             userId:localStorage.getItem("userId"),
-            otpCode:value
+            otpCode:e
         }).then((res:any) => {
             if (res) {
-        router.push("/profile");
+              localStorage.setItem("token",res?.accessToken)
+              
+              // Set refresh token in cookie if provided by API
+              if (res?.refreshToken) {
+                setCookie("refreshToken", res.refreshToken);
+              }
+
+        router.push("/Profile");
       } 
         })
     }
     return (
-         <div className="h-screen bg-[#fafdfe] flex justify-center pt-32 px-4 font-IranSans ">
+         <div className="h-screen bg-[#fafdfe] flex justify-center px-4 font-IranSans lg:max-w-xl lg:container lg:mx-auto lg:pt-8  items-center ">
 
 
 
         <Card className="shadow-[0px_4px_24px_0px_#EAEAEA] px-4 h-[300px] w-full">
-            <h1 className="text-[#101117] font-medium text-base">کد تایید را وارد کنید</h1>
+            <h1 className="text-[#101117] font-medium text-base text-center">کد تایید را وارد کنید</h1>
             <Label className="text-sm text-[#101117] font-light text-center">کد تایید برای شماره {localStorage.getItem("phoneNumber")} ارسال گردید</Label>
             <div className="w-full flex justify-center">
-                  <InputOTP onChange={(e:any) => {
-                    setValue(e.target.value)
-                  }} onComplete={verifyOtp}  className="w-auto"  maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
+                  <InputOTP  onComplete={verifyOtp}  className="w-auto"  maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
       <InputOTPGroup dir="ltr">
-        <InputOTPSlot index={0} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot index={0} className="lg:mr-3 mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
       
-        <InputOTPSlot index={1} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot index={1} className="lg:mr-3 mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
     
-        <InputOTPSlot   index={2} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
+        <InputOTPSlot   index={2} className="lg:mr-3 mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"   />
       
-        <InputOTPSlot  index={3} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot  index={3} className="lg:mr-3 mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
   
-        <InputOTPSlot   index={4} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot   index={4} className="lg:mr-3 mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
      
-        <InputOTPSlot   index={5} className="mr-3 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
+        <InputOTPSlot   index={5} className="lg:mr-3 mr-2 border border-[#B1B1B3] w-12 h-12 !rounded-[8px]"  />
       </InputOTPGroup>
     </InputOTP>
             </div>

@@ -1,7 +1,7 @@
 'use client'
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { SearchIcon } from "lucide-react";
-import SuggestionCard from "../../components/SuggestionCard";
+import SuggestionCard from "../components/SuggestionCard";
 
 export default function BlogCategory() {
         return (

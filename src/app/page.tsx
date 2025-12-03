@@ -1,5 +1,7 @@
 
 "use client"
+
+export const dynamic = 'force-dynamic'
 import Banner from "./components/mobile/Home/Banner";
 import { Slider } from "./components/mobile/Home/Slider";
 import CallAction from "./components/mobile/Home/CallAction";
@@ -13,6 +15,7 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useEffect, useState } from "react";
 import { Footer } from "./components/mobile/Home/Footer";
+import { Header } from "./components/mobile/Home/Header";
 
 export default   function  Home() {
 const [data,setData] = useState<any>([]);
@@ -28,17 +31,26 @@ const [data,setData] = useState<any>([]);
 
  
   return (
-   <div className="bg-main-background">
+   <div className="bg-white lg:container lg:mx-auto">
  
       <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-      <CallAction data={data?.MasterSiteData?.PhoneNumbers}/>
+       <div className="block lg:hidden">
+  <CallAction data={data}/>
+       </div>
+          <div className="hidden lg:block px-20 mb-5   sticky top-11 z-10">
+     <Header data={data} />
+     </div>
+    
       <Slider data={data?.Sliders}/>
-      <Introduction/>
+      <Introduction data={data?.WhyWe}/>
       <Services data={data?.CarInspectionServices}/>
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
       <Statistics data={data?.StatisticsData}/>
       <BlogShort data={data?.BlogPosts}/>
-         <NavigationBar/>
+      <div className="block lg:hidden">
+  <NavigationBar/>
+      </div>
+       
       <Footer/>
      
    </div>

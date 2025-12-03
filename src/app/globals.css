@@ -102,7 +102,8 @@
   background-image: url("/banner-bg-pattern.svg")
 }
 .bg-quality {
-  background-image: url("/bg-qaulity.jpg")
+  background-image: url("/service-background.png");
+  background-size: cover
 }
 
 
@@ -126,3 +127,11 @@
 .car-way {
     background: url("/car-way.png");
 }
+.full-bleed {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  }

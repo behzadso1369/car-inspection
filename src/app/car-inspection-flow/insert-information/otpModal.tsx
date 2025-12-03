@@ -53,6 +53,13 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
         const s = (sec % 60).toString().padStart(2, "0");
         return `${m}:${s}`;
       }
+      // Cookie helper function
+      const setCookie = (name: string, value: string, days: number = 30) => {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+        document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+      };
+
       const verifyOtp = (e:any) => {
       console.log(e)
         instance.post(ApiHelper.get("UserVerify"),{
@@ -63,6 +70,11 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
               
               localStorage.setItem("token",res.accessToken)
               
+              // Set refresh token in cookie if provided by API
+              if (res?.refreshToken) {
+                setCookie("refreshToken", res.refreshToken);
+              }
+              
         moveToInspectionLocation();
       } 
         })
@@ -71,8 +83,8 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
           <>
               <DialogContent className="sm:max-w-[425px] bg-white font-IranSans px-2 py-8">
           <DialogHeader>
-            <DialogTitle className="text-base text-[#101117] font-medium">کد تایید را وارد کنید</DialogTitle>
-            <DialogDescription className="text-sm text-[#101117] font-light">
+            <DialogTitle className="text-base text-[#101117] font-medium text-center">کد تایید را وارد کنید</DialogTitle>
+            <DialogDescription className="text-sm text-[#101117] font-light text-center">
               کد تایید برای شماره {localStorage.getItem("phoneNumber")} ارسال گردید
             </DialogDescription>
           </DialogHeader>

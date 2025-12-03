@@ -18,7 +18,16 @@ GetCarInspectionLocationData:"Site/GetCarInspectionLocationData",
 GetCarInspectionDateAndTime:"Site/GetCarInspectionDateAndTime",
 GetCarInspectionDateType:"Site/GetCarInspectionDateType",
 GetUserOrderDetails: "Site/GetUserOrderDetails",
-GetUserOrderDetail: "User/GetUserOrderDetails"
+GetUserOrderDetail: "User/GetUserOrderDetails",
+
+GetMasterBlogPageData: "SiteBlog/GetMasterPageData",
+GetAboutUsPageData: "Site/GetAboutUsPageData",
+SearchWithTermsCategory: "SiteBlog/SearchWithTermsCategory",
+SearchCategoryWithId: "SiteBlog/SearchCategoryWithId",
+GetFAQ_CategoryData: "Site/GetFAQ_CategoryData",
+GetFAQWithCategoryId: "Site/GetFAQWithCategoryId",
+GetRegulationsData: "Site/GetRegulationsData",
+
 
 
 
