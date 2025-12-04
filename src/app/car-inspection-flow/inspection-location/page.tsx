@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import OpenSheet from "../CarGroupSheet";
 import { RadioGroup } from "@/components/ui/radio-group";
-import { Edit3Icon } from "lucide-react";
+import { Edit3Icon, Car, Wrench } from "lucide-react";
 import Link from "next/link";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import DirectionsMap from "./workshop-map/page";
 import { useRouter } from "next/navigation";
+import { Car02Icon, Car04Icon } from "hugeicons-react";
 
 
 export default function InsertInformation() {
@@ -96,10 +97,18 @@ setLocations(res?.CarInspectionLocationPage);
   <TabsList onChange={(e:any) => console.log(e)}  className="px-2 w-full" >
 
       {locations.map((item:any) => (
-          <TabsTrigger className=" text-[#A6A6A6] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA]     px-4 mx-2" value={item.Id}>{item.Name}</TabsTrigger>
+          <TabsTrigger className=" text-[#404040] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA]     px-4 mx-2" value={item.Id}>{item.Name}</TabsTrigger>
 
      ))}
-                        <TabsTrigger disabled className=" text-[#A6A6A6] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA]     px-4 mx-2" value="0">در محل شما</TabsTrigger>
+                        <TabsTrigger disabled className=" text-[#2C2C2C] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA]     px-4 mx-2 flex items-center gap-1.5 relative disabled:text-black disabled:opacity-100" value="0">
+                            <span>در محل شما</span>
+                            <span className="relative bg-gradient-to-r from-[#D63031] via-[#E74C3C] to-[#C0392B] text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap flex items-center gap-1 shadow-lg shadow-[#E74C3C]/40 animate-pulse">
+                                <Car02Icon size={16} className="w-3 h-3 animate-bounce" style={{ animationDuration: '1.5s' }} />
+                                
+                                به زودی
+                                <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-300 rounded-full animate-ping"></span>
+                            </span>
+                        </TabsTrigger>
 
         </TabsList>
        

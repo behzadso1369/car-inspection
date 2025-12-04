@@ -1,5 +1,5 @@
 "use client";
-import { Call02Icon } from "hugeicons-react"
+import { Call02Icon, UserCircle02Icon } from "hugeicons-react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -52,7 +52,11 @@ export const Header = ({data}:any) => {
                      <a  className="rounded-3xl font-IranSans-UltraLight border border-white px-2" href={`tel:${data?.MasterSiteData?.NavbarPhoneNumber}`}>{data?.MasterSiteData?.NavbarPhoneNumber}</a>
              
                 <Call02Icon size={16}/>
+                 <Link href="/Profile" className="mx-2">
+            <UserCircle02Icon size={24}/>
+            </Link>
             </span>
+           
                             </div>
             
 
