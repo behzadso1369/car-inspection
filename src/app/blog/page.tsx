@@ -1,6 +1,5 @@
 "use client"
 
-export const dynamic = 'force-dynamic'
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { SearchIcon } from "lucide-react";
 import SuggestionCard from "./components/SuggestionCard";
@@ -9,7 +8,10 @@ import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/componen
 import { useEffect, useState } from "react";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
+import { NextSeo } from "next-seo";
 
+// این صفحه باید CSR بماند چون تعامل زیادی با کاربر دارد (search, tabs, carousel)
+// و نیاز به state management در client دارد
 export default function Blog() {
      const [api, setApi] = useState<CarouselApi>();
        const [carouselTabData,setCategoryTabData] = useState<any>([]);
@@ -50,7 +52,29 @@ export default function Blog() {
             getCategoryWithId(firstCategoryData);
         },[firstCategoryData])
        
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://carmacheck.com';
+       
         return (
+        <>
+          <NextSeo
+            title="مقالات کارشناسی خودرو | مجله کارچک"
+            description="مقالات تخصصی درباره کارشناسی خودرو، نکات خرید ماشین، بررسی عیوب رایج، راهنمای خرید خودرو و مطالب آموزشی برای خریداران"
+            canonical={`${baseUrl}/blog`}
+            openGraph={{
+              title: "مقالات کارشناسی خودرو | مجله کارچک",
+              description: "مقالات تخصصی درباره کارشناسی خودرو و خرید ماشین",
+              url: `${baseUrl}/blog`,
+              siteName: "کارچک",
+              locale: "fa_IR",
+              type: "website",
+            }}
+            additionalMetaTags={[
+              {
+                name: "keywords",
+                content: "مقالات خودرو,آموزش خرید ماشین,نکات کارشناسی,مجله خودرو,کارشناسی خودرو,بلاگ خودرو",
+              },
+            ]}
+          />
         <div className="px-4 font-IranSans py-4">
           
       <InputGroup  className="px-4 flex items-center !py-0 border border-[#DFDFDF] rounded-full text-[#55565A]">
@@ -119,5 +143,6 @@ export default function Blog() {
     
             
         </div>
+        </>
     )
 }

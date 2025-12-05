@@ -1,232 +1,70 @@
-'use client';
+import { Metadata } from 'next';
+import { serverApiHelper } from '@/helper/server-fetcher';
 
-import { useState, useRef, useEffect } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import useEmblaCarousel from 'embla-carousel-react';
-import Banner from '../components/mobile/Home/Banner';
-import CallAction from '../components/mobile/Home/CallAction';
-import { Header } from '../components/mobile/Home/Header';
-import instance from '@/helper/interceptor';
-import { ApiHelper } from '@/helper/api-request';
+// ISR - Incremental Static Regeneration (revalidate هر 1 ساعت)
+// قوانین و مقررات نادراً تغییر می‌کنند، پس ISR مناسب است
+export const revalidate = 3600; // 1 hour
 
-const FAQ_DATA = [
-  {
-    id: 'car-inspection',
-    label: 'کارشناسی خودرو',
-    questions: [
-      {
-        id: 'q1',
-        question: 'با توجه تلفیق اطلاعات و استفاده از چارت و مدلهای نزدیک به فناوری غیرفنی است؟',
-        answer: 'پاسخ سوال اول درباره کارشناسی خودرو و روش های مختلف آن',
-      },
-      {
-        id: 'q2',
-        question: 'با توجه تلفیق اطلاعات و استفاده از تسهیلات طراحی، دریچه برنامه نویسی چگونه است؟',
-        answer: 'پاسخ سوال دوم درباره تسهیلات و برنامه نویسی',
-      },
-      {
-        id: 'q3',
-        question: 'با توجه تلفیق اطلاعات و استفاده و مستخدم درفناوری غیرفنی است؟',
-        answer: 'پاسخ سوال سوم درباره فناوری و استفاده از آن',
-      },
-    ],
+// SEO Metadata
+export const metadata: Metadata = {
+  title: "قوانین و مقررات | شرایط استفاده از خدمات کارچک",
+  description: "قوانین و مقررات استفاده از خدمات کارشناسی کارچک، حریم خصوصی، شرایط پرداخت، ضمانت و قوانین لغو یا تغییر نوبت کارشناسی",
+  keywords: [
+    "قوانین کارچک",
+    "مقررات کارشناسی",
+    "شرایط استفاده",
+    "حریم خصوصی",
+    "ضمانت کارشناسی",
+    "کارشناسی خودرو",
+  ],
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/regulations`,
   },
-  {
-    id: 'general-questions',
-    label: 'سوالات متداول',
-    questions: [
-      {
-        id: 'q1',
-        question: 'مراحل کارشناسی چگونه انجام می شود؟',
-        answer: 'کارشناسی خودرو از طریق چندین مرحله انجام می شود: بررسی خارجی، بررسی داخلی، تست سیستم ها و صدور گزارش.',
-      },
-      {
-        id: 'q2',
-        question: 'مدت زمان کارشناسی چقدر است؟',
-        answer: 'معمولا کارشناسی یک خودرو بین 30 تا 60 دقیقه طول می کشد.',
-      },
-      {
-        id: 'q3',
-        question: 'آیا کارشناسی در محل کار انجام می شود؟',
-        answer: 'بله، ما سرویس کارشناسی در محل را ارائه می دهیم.',
-      },
-    ],
+  openGraph: {
+    title: "قوانین و مقررات کارچک",
+    description: "قوانین و مقررات استفاده از خدمات کارشناسی خودرو",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/regulations`,
+    siteName: "کارچک",
+    locale: "fa_IR",
+    type: "website",
   },
-  {
-    id: 'warranty',
-    label: 'گارانتی و بیمه',
-    questions: [
-      {
-        id: 'q1',
-        question: 'گزارش کارشناسی چه مدت اعتبار دارد؟',
-        answer: 'گزارش کارشناسی برای 24 ساعت اعتبار دارد.',
-      },
-      {
-        id: 'q2',
-        question: 'آیا خودرو در هنگام کارشناسی بیمه می شود؟',
-        answer: 'بله، خودرو شما در هنگام کارشناسی توسط بیمه ما پوشش داده می شود.',
-      },
-    ],
+  twitter: {
+    card: "summary",
+    title: "قوانین و مقررات کارچک",
+    description: "شرایط استفاده از خدمات کارشناسی",
   },
-  {
-    id: 'payment',
-    label: 'پرداخت',
-    questions: [
-      {
-        id: 'q1',
-        question: 'روش های پرداخت کدام هستند؟',
-        answer: 'ما روش های مختلفی شامل کارت اعتباری، تراز بانکی و پرداخت نقدی را قبول می کنیم.',
-      },
-      {
-        id: 'q2',
-        question: 'آیا امکان بازپرداخت وجود دارد؟',
-        answer: 'بله، اگر با سرویس راضی نباشید می توانید درخواست بازپرداخت کنید.',
-      },
-    ],
+  robots: {
+    index: true,
+    follow: true,
   },
-];
+};
 
-// Mobile Carousel Tabs Component
-function MobileCarouselTabs({
-  categories,
-  activeTab,
-  onTabChange,
-}: {
-  categories: typeof FAQ_DATA;
-  activeTab: string;
-  onTabChange: (id: string) => void;
-}) {
-  const [emblaRef] = useEmblaCarousel({
-    align: 'start',
-    containScroll: 'trimSnaps',
-  });
+// Server-side data fetching با استفاده از serverApiHelper
+async function getRegulationsData() {
+  const data = await serverApiHelper.get("GetRegulationsData", 3600);
+  return data || { Regulations: [] };
+}
+
+async function getMasterPageData() {
+  return await serverApiHelper.get("GetMasterPageData", 3600);
+}
+
+export default async function RegulationsPage() {
+  const [regulationsResponse, masterData] = await Promise.all([
+    getRegulationsData(),
+    getMasterPageData()
+  ]);
   
+  const regulationsData = regulationsResponse?.Regulations || [];
 
   return (
-    <div className="lg:hidden">
-      <Carousel className="w-full">
-        <CarouselContent className="gap-2 ml-0">
-          {categories.map((cat) => (
-            <CarouselItem key={cat.id} className="basis-auto pl-2">
-              <button
-                onClick={() => onTabChange(cat.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                  activeTab === cat.id
-                    ? 'bg-[#3456bb] text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                {cat.label}
-              </button>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
-    </div>
-  );
-}
-
-// Desktop Flex Tabs Component
-function DesktopFlexTabs({
-  categories,
-  activeTab,
-  onTabChange,
-}: {
-  categories: typeof FAQ_DATA;
-  activeTab: string;
-  onTabChange: (id: string) => void;
-}) {
-  return (
-    <div className="hidden lg:flex gap-4 flex-wrap">
-      {categories.map((cat) => (
-        <button
-          key={cat.id}
-          onClick={() => onTabChange(cat.id)}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-            activeTab === cat.id
-              ? 'bg-[#3456bb] text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          {cat.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-export default function RegulationsPage() {
-       const [data,setData] = useState<any>([]);
-       const [regulationsData,setRegulationsData] = useState<any>([]);
-       const getRugulationsData = () => {
-        
-        instance.get(ApiHelper.get("GetRegulationsData")).then((res:any) => {
-setRegulationsData(res?.Regulations);
-        })
-       }
-  useEffect(() => {
-    getRugulationsData();
-    instance.get(ApiHelper.get("GetMasterPageData"))
-      .then((res: any) => {
-        setData(res);
-      })
-      .catch((err: any) => {
-        console.error("Error fetching data:", err);
-      });
-  }, []);
-  const [activeTab, setActiveTab] = useState(FAQ_DATA[0].id);
-
-  const activeCategory = FAQ_DATA.find((cat) => cat.id === activeTab);
-
-  return (
-    <div dir="rtl" className="w-full max-w-6xl mx-auto px-4  font-IranSans">
-        <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-               <div className="block lg:hidden">
-          <CallAction data={data}/>
-               </div>
-                  <div className="hidden lg:block px-20 mb-6 bg-white">
-             <Header data={data} />
-             </div>
+    <div dir="rtl" className="w-full max-w-6xl mx-auto px-4 font-IranSans">
       {/* Header */}
       <div className="my-6 py-2">
         <h1 className="text-base lg:text-3xl font-bold text-[#101117] mb-2">قوانین و مقررات کارچک</h1>
         <p className="text-gray-600">ورود شما از طریق شماره همراه به منزله تایید قوانین ومقررات کارچک می باشد.</p>
       </div>
       <div className='my-4'>{regulationsData?.[0]?.Content}</div>
-
-      {/* Mobile Carousel Tabs */}
-      {/* <MobileCarouselTabs
-        categories={FAQ_DATA}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-      /> */}
-
-      {/* Desktop Flex Tabs */}
-      {/* <DesktopFlexTabs
-        categories={FAQ_DATA}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-      /> */}
-
-      {/* Content Accordion */}
-      {/* {activeCategory && (
-        <div className="mt-8">
-          <Accordion type="single" collapsible className="w-full ">
-            {activeCategory.questions.map((q) => (
-              <AccordionItem key={q.id} value={q.id} className="border-none bg-[#F0F2F4] px-4 py-2 rounded-3xl !mb-2">
-                <AccordionTrigger className="text-right text-gray-800 hover:text-[#3456bb]">
-                  {q.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-600 text-right">
-                  {q.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      )} */}
     </div>
   );
 }

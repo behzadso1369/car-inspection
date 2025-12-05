@@ -68,8 +68,8 @@ instance.interceptors.response.use(
     if (!data.isSuccess) {
       toast("Error", { description: data.statusMessage });
     }else {
-      if(response?.config?.method !== "get")
-      toast("Success", { description: data.statusMessage });
+      // if(response?.config?.method !== "get")
+      // toast("Success", { description: data.statusMessage });
     }
     
     return response.data.resultObject;

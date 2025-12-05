@@ -1,28 +1,66 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Check } from "lucide-react"
-import Banner from "../components/mobile/Home/Banner"
-import { Header } from "../components/mobile/Home/Header"
-import instance from "@/helper/interceptor"
-import { ApiHelper } from "@/helper/api-request"
-import CallAction from "../components/mobile/Home/CallAction"
 import { NavigationBar } from "../components/mobile/Home/NavigationBar"
+import { Metadata } from "next"
+import { serverApiHelper } from "@/helper/server-fetcher"
 
-export default function Services() {
-            const [data,setData] = useState<any>([]);
-  useEffect(() => {
-    instance.get(ApiHelper.get("GetMasterPageData"))
-      .then((res: any) => {
-        setData(res);
-      })
-      .catch((err: any) => {
-        console.error("Error fetching data:", err);
-      });
-  }, []);
+// ISR - Incremental Static Regeneration (revalidate هر 1 ساعت)
+// صفحه سرویس‌ها محتوای نسبتاً ثابتی دارد که گاهی آپدیت می‌شود
+export const revalidate = 3600; // 1 hour
+
+// SEO Metadata
+export const metadata: Metadata = {
+  title: "خدمات کارشناسی خودرو | استاندارد و VIP",
+  description: "انواع خدمات کارشناسی: استاندارد از ۲۵۰ هزار تومان | VIP از ۴۵۰ هزار تومان | بررسی موتور، برق، تایر، ترمز و سیستم سوخت | گزارش فوری",
+  keywords: [
+    "قیمت کارشناسی",
+    "کارشناسی استاندارد",
+    "کارشناسی VIP",
+    "خدمات کارشناسی",
+    "هزینه کارشناسی خودرو",
+    "کارشناسی خودرو",
+    "کارچک",
+    "تعرفه کارشناسی",
+  ],
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/services`,
+  },
+  openGraph: {
+    title: "خدمات کارشناسی خودرو | استاندارد و VIP",
+    description: "انواع خدمات کارشناسی: استاندارد از ۲۵۰ هزار تومان | VIP از ۴۵۰ هزار تومان",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/services`,
+    siteName: "کارچک",
+    locale: "fa_IR",
+    type: "website",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/services.png`,
+        width: 1200,
+        height: 630,
+        alt: "خدمات کارشناسی خودرو کارچک",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "خدمات کارشناسی خودرو",
+    description: "کارشناسی استاندارد و VIP با قیمت مناسب",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+// Server-side data fetching با استفاده از serverApiHelper
+async function getMasterPageData() {
+  return await serverApiHelper.get("GetMasterPageData", 3600);
+}
+
+export default async function Services() {
+  const data = await getMasterPageData();
   const features = [
     {
       id: 1,
@@ -107,13 +145,6 @@ export default function Services() {
 
   return (
     <div className="font-IranSans bg-white">
-          <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-                                   <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
-                       <Header data={data} />
-                       </div>
-                          <div className="block lg:hidden sticky top-11 z-10 bg-white">
-                         <CallAction data={data}/>
-                              </div>
       {/* Hero Section */}
       <section className="w-full lg:max-w-7xl lg:mx-auto">
         

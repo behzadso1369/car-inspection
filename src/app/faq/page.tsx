@@ -1,18 +1,17 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState, useEffect } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import useEmblaCarousel from 'embla-carousel-react';
-import Banner from '../components/mobile/Home/Banner';
-import CallAction from '../components/mobile/Home/CallAction';
-import { Header } from '../components/mobile/Home/Header';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import instance from '@/helper/interceptor';
 import { ApiHelper } from '@/helper/api-request';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { SearchIcon } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { NextSeo } from 'next-seo';
+
+// این صفحه باید CSR بماند چون نیاز به تعامل زیاد با کاربر دارد
+// (انتخاب دسته‌بندی، سرچ، آکاردیون) و state management پیچیده دارد
 
 
 // Mobile Carousel Tabs Component
@@ -25,11 +24,6 @@ function MobileCarouselTabs({
   activeTab: string;
   onTabChange: (id: string) => void;
 }) {
-  const [emblaRef] = useEmblaCarousel({
-    align: 'start',
-    containScroll: 'trimSnaps',
-  });
-
   return (
     <div className="lg:hidden">
       <Carousel className="w-full">
@@ -112,15 +106,30 @@ export default function FAQPage() {
 
   const activeCategory = faqCategories.find((cat:any) => String(cat.Id) === activeTab);
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://carmacheck.com';
+
   return (
-    <div dir="rtl" className="w-full max-w-6xl mx-auto px-4  font-IranSans">
-        <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-               <div className="block lg:hidden">
-          <CallAction data={data}/>
-               </div>
-                  <div className="hidden lg:block px-20 mb-6 bg-white">
-             <Header data={data} />
-             </div>
+    <>
+      <NextSeo
+        title="سوالات متداول | پاسخ به سوالات کارشناسی خودرو"
+        description="پاسخ به سوالات متداول درباره فرآیند کارشناسی، هزینه‌ها، مدت زمان، گزارش کارشناسی و نحوه رزرو نوبت کارشناسی خودرو"
+        canonical={`${baseUrl}/faq`}
+        openGraph={{
+          title: "سوالات متداول کارشناسی خودرو",
+          description: "پاسخ به سوالات متداول درباره کارشناسی خودرو",
+          url: `${baseUrl}/faq`,
+          siteName: "کارچک",
+          locale: "fa_IR",
+          type: "website",
+        }}
+        additionalMetaTags={[
+          {
+            name: "keywords",
+            content: "سوالات متداول,راهنمای کارشناسی,چگونه کارشناسی کنیم,کارشناسی خودرو,کارچک,FAQ",
+          },
+        ]}
+      />
+      <div dir="rtl" className="w-full max-w-6xl mx-auto px-4  font-IranSans">
       {/* Header */}
       <div className="my-6 py-2">
         <h1 className="text-base lg:text-2xl font-normal text-[#101117] mb-2">پرسش های متداول</h1>
@@ -173,5 +182,6 @@ export default function FAQPage() {
         </div>
       )}
     </div>
+    </>
   );
 }

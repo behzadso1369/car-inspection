@@ -10,6 +10,11 @@ import { ApiHelper } from "@/helper/api-request";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
+// CSR - Client Side Rendering
+// صفحه پروفایل باید CSR باشد چون:
+// 1. نیاز به احراز هویت (token در localStorage)
+// 2. داده‌های شخصی کاربر (نباید pre-render شوند)
+// 3. تعاملات زیاد (logout، ویرایش، نمایش درخواست‌ها)
 export default function Profile() {
     const [orders,setOrders] = useState<any>([]);
     const decoded:any = jwtDecode(localStorage.getItem("token") || "");

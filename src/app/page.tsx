@@ -1,46 +1,87 @@
-
-"use client"
-
-export const dynamic = 'force-dynamic'
-import Banner from "./components/mobile/Home/Banner";
 import { Slider } from "./components/mobile/Home/Slider";
-import CallAction from "./components/mobile/Home/CallAction";
 import Introduction from "./components/mobile/Home/Introduction";
 import Services from "./components/mobile/Home/Services";
 import QualityBox from "./components/mobile/Home/QualityBox";
 import Statistics from "./components/mobile/Home/Statistics";
 import BlogShort from "./components/mobile/Home/BlogShort";
 import { NavigationBar } from "./components/mobile/Home/NavigationBar";
-import instance from "@/helper/interceptor";
-import { ApiHelper } from "@/helper/api-request";
-import { useEffect, useState } from "react";
-import { Footer } from "./components/mobile/Home/Footer";
-import { Header } from "./components/mobile/Home/Header";
+import { Metadata } from "next";
+import { serverApiHelper } from "@/helper/server-fetcher";
 
-export default   function  Home() {
-const [data,setData] = useState<any>([]);
-  useEffect(() => {
-    instance.get(ApiHelper.get("GetMasterPageData"))
-      .then((res: any) => {
-        setData(res);
-      })
-      .catch((err: any) => {
-        console.error("Error fetching data:", err);
-      });
-  }, []);
+// ISR - Incremental Static Regeneration (revalidate هر 10 دقیقه)
+// صفحه اصلی محتوای دینامیک دارد (بلاگ‌ها، سرویس‌ها) اما نیازی به fetch در هر request نیست
+export const revalidate = 600; // 10 minutes
+
+// SEO Metadata
+export const metadata: Metadata = {
+  title: "کارچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
+  description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق | کارشناسی در محل یا مرکز | دریافت گزارش فوری | تهران",
+  keywords: [
+    "کارشناسی خودرو",
+    "کارشناسی ماشین",
+    "خرید خودرو",
+    "خرید ماشین",
+    "کارچک",
+    "carmacheck",
+    "کارشناسی خودرو تهران",
+    "کارشناسی آنلاین",
+    "کارشناسی در محل",
+    "قیمت کارشناسی خودرو",
+    "بهترین کارشناس خودرو",
+  ],
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com",
+  },
+  openGraph: {
+    title: "کارچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
+    description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com",
+    siteName: "کارچک",
+    locale: "fa_IR",
+    type: "website",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/og-home.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "کارچک - کارشناسی خودرو",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "کارچک | کارشناسی تخصصی خودرو",
+    description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+// Server-side data fetching با استفاده از serverApiHelper
+async function getMasterPageData() {
+  return await serverApiHelper.get("GetMasterPageData", 600);
+}
+
+export default async function Home() {
+  // لاگ در Terminal (server-side)
+  console.log('🏠 Home page rendering - Server Side');
+  console.log('⏰ Time:', new Date().toISOString());
+
+  const data = await getMasterPageData();
+  console.log('📊 Data fetched:', data ? 'Success' : 'Failed');
+  console.log('📊 Data fetched:', data);
 
  
   return (
-   <div className="bg-white lg:container lg:mx-auto">
- 
-      <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-       <div className="block lg:hidden">
-  <CallAction data={data}/>
-       </div>
-          <div className="hidden lg:block px-20 mb-5   sticky top-11 z-10">
-     <Header data={data} />
-     </div>
-    
+   <div className="bg-white">
       <Slider data={data?.Sliders}/>
       <Introduction data={data?.WhyWe}/>
       <Services data={data?.CarInspectionServices}/>
@@ -50,9 +91,6 @@ const [data,setData] = useState<any>([]);
       <div className="block lg:hidden">
   <NavigationBar/>
       </div>
-       
-      <Footer/>
-     
    </div>
   );
 }

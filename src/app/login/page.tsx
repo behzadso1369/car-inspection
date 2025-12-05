@@ -9,6 +9,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+// CSR - Client Side Rendering
+// صفحات احراز هویت باید CSR باشند چون:
+// 1. نیاز به localStorage و session management دارند
+// 2. فرم‌های تعاملی با validation لحظه‌ای
+// 3. نیازی به SEO ندارند (صفحات خصوصی)
 export default function Login() {
     const [value,setValue] = useState<any>("")
   const router = useRouter();

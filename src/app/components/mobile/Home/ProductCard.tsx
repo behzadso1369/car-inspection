@@ -10,7 +10,7 @@ export const ProductCard = ({Id,ImagePath,Title,Description,DurationTime}:any) =
      <div className="relative">
      <Image className="w-full rounded-3xl h-52" src={"https://api.carmacheck.com/" + ImagePath} alt={Title}  height={100} width={100} />
      <div className="bg-white absolute w-14 h-16 bottom-0 left-6 translate-y-1/2 rounded-full py-1 flex justify-center">
-     <Link href="./car-inspection-flow" prefetch={false} className="bg-[#416CEA]  w-12 h-12 text-white flex justify-center rounded-full items-center">
+     <Link href="./car-inspection-flow/select-car-group" prefetch={false} className="bg-[#416CEA]  w-12 h-12 text-white flex justify-center rounded-full items-center">
         <ArrowLeft01Icon color="white" size={24} />
 
      </Link>

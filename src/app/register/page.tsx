@@ -1,8 +1,11 @@
+"use client";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
+// CSR - Client Side Rendering
+// صفحه ثبت‌نام باید CSR باشد چون نیاز به form handling و validation دارد
 export default function Register() {
     return (
          <div className="h-screen bg-[#fafdfe] flex justify-center pt-32 px-4 font-IranSans ">

@@ -16,6 +16,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
+// CSR - Client Side Rendering
+// صفحه تایید OTP باید CSR باشد چون:
+// 1. نیاز به timer و countdown دارد
+// 2. تعامل زیاد با کاربر (ورود کد)
+// 3. مدیریت localStorage و cookies
 export default function VerifyOtp() {
        const [value,setValue] = useState<any>("")
   const router = useRouter();

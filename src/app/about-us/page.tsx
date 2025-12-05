@@ -1,19 +1,64 @@
-"use client"
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckmarkCircle01Icon } from "hugeicons-react";
-import Banner from "../components/mobile/Home/Banner";
-import { Header } from "../components/mobile/Home/Header";
-import CallAction from "../components/mobile/Home/CallAction";
-import { Footer } from "../components/mobile/Home/Footer";
 import { NavigationBar } from "../components/mobile/Home/NavigationBar";
-import instance from "@/helper/interceptor";
-import { ApiHelper } from "@/helper/api-request";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Link from "next/link";
+import { Metadata } from "next";
+import { serverApiHelper } from "@/helper/server-fetcher";
+
+// ISR - Incremental Static Regeneration (revalidate هر 1 ساعت)
+// صفحه درباره ما محتوای نسبتاً ثابتی دارد که گاهی آپدیت می‌شود
+export const revalidate = 3600; // 1 hour
+
+// SEO Metadata
+export const metadata: Metadata = {
+  title: "درباره کارچک | ۲۵ سال تجربه در کارشناسی خودرو",
+  description: "کارچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق انجام داده است. کارشناسان حرفه‌ای و مجرب.",
+  keywords: [
+    "درباره کارچک",
+    "تاریخچه کارچک",
+    "کارشناسان کارچک",
+    "تجربه کارشناسی",
+    "کارشناسی خودرو",
+    "کارچک",
+    "carmacheck",
+    "تیم کارچک",
+  ],
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/about-us`,
+  },
+  openGraph: {
+    title: "درباره کارچک | ۲۵ سال تجربه در کارشناسی خودرو",
+    description: "کارچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/about-us`,
+    siteName: "کارچک",
+    locale: "fa_IR",
+    type: "website",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/about-us-main-page.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "درباره کارچک - تیم و کارشناسان",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "درباره کارچک | ۲۵ سال تجربه",
+    description: "کارچک با ۲۵ سال تجربه و ۹۰٪ دقت",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+// Server-side data fetching با استفاده از serverApiHelper
+async function getMasterPageData() {
+  return await serverApiHelper.get("GetMasterPageData", 3600);
+}
 
 const experts = [
   {
@@ -43,32 +88,11 @@ const experts = [
   },
 ];
 
-export default function AboutUsPage() {
-  const [data, setData] = useState<any>([]);
-  
-  useEffect(() => {
-    instance.get(ApiHelper.get("GetMasterPageData"))
-      .then((res: any) => {
-        setData(res);
-      })
-      .catch((err: any) => {
-        console.error("Error fetching data:", err);
-      });
-  }, []);
+export default async function AboutUsPage() {
+  const data = await getMasterPageData();
 
   return (
     <div dir="rtl" className="bg-white font-IranSans w-full">
-      <Banner data={data?.MasterSiteData?.NavbarPhoneNumber} />
-      
-      {/* Mobile Header */}
-      <div className="block lg:hidden">
-        <CallAction data={data?.MasterSiteData?.PhoneNumbers} />
-      </div>
-    
-          <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
-               <Header data={data} />
-               </div>
-
       {/* About Us Section */}
       <section className="px-4 lg:px-16 py-8 lg:py-12">
         <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8 max-w-7xl mx-auto">
@@ -219,9 +243,6 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer />
-      
       {/* Mobile Navigation Bar */}
       <div className="block lg:hidden">
         <NavigationBar />

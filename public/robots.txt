@@ -1,0 +1,52 @@
+# Robots.txt for CarmaCheck
+# تنظیمات SEO برای بهینه‌سازی indexing
+
+User-agent: *
+
+# ✅ اجازه دسترسی به صفحات عمومی
+Allow: /
+Allow: /about-us
+Allow: /services
+Allow: /contact-us
+Allow: /blog
+Allow: /blog/
+Allow: /faq
+Allow: /regulations
+Allow: /car-inspection-flow/select-car-group
+
+# ❌ منع دسترسی به صفحات خصوصی
+Disallow: /car-inspection-flow/inspection-method
+Disallow: /car-inspection-flow/inspection-location
+Disallow: /car-inspection-flow/inspection-time
+Disallow: /car-inspection-flow/insert-information
+Disallow: /car-inspection-flow/final-confirm
+Disallow: /car-inspection-flow/payment-success
+Disallow: /Profile/
+Disallow: /login
+Disallow: /register
+Disallow: /verify-otp
+Disallow: /new-service
+
+# ❌ منع دسترسی به فایل‌های سیستمی
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /*?*
+
+# 🗺️ Sitemap
+Sitemap: https://carmacheck.com/sitemap.xml
+
+# 🚀 Crawl-delay برای محافظت از سرور
+Crawl-delay: 1
+
+# 🤖 تنظیمات خاص Googlebot
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# 🤖 تنظیمات خاص Bingbot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+

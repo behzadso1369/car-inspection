@@ -1,0 +1,114 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { RadioGroup } from "@/components/ui/radio-group";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import InWorkShop from "./InWorkShop";
+import InLocation from "./InLocation";
+import instance from "@/helper/interceptor";
+import { ApiHelper } from "@/helper/api-request";
+import { useRouter } from "next/navigation";
+import { Car02Icon } from "hugeicons-react";
+
+export default function ClientWrapper() {
+  const [locations, setLocations] = useState<any>([]);
+  const [defaultTab, setDefaultTab] = useState<string>("");
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch('./inspection-time');
+  }, [router]);
+
+  const moveToCarInspectionTime = () => {
+    const params: any = {
+      "isBack": false,
+      "orderId": Number(localStorage.getItem("OrderId")),
+      "carInspectionLocationTypeId": defaultTab
+    };
+
+    instance.post(ApiHelper.get("MovePrivateOrder"), params)
+      .then((res: any) => {
+        if (res) {
+          router.push("./inspection-time");
+        }
+      }).catch((err: any) => {
+        console.log(err);
+      });
+  };
+
+  const getCarInspectionLocationData = () => {
+    instance.get(ApiHelper.get("GetCarInspectionLocationData")).then((res: any) => {
+      setDefaultTab(res?.CarInspectionLocationPage[0].Id);
+      setLocations(res?.CarInspectionLocationPage);
+    });
+  };
+
+  useEffect(() => {
+    getCarInspectionLocationData();
+  }, []);
+
+  return (
+    <div className="bg-white font-IranSans lg:px-4 lg:py-4">
+      <div className="px-4">
+        <div className="bg-white px-4 py-6 rounded-3xl my-6">
+          <div className="flex items-center">
+            <div className="aspect-[2] relative w-16 h-8 ml-4">
+              <Image src="/step2.png" alt="step2.png" fill className="object-fill" />
+            </div>
+            <div>
+              <h3 className="text-base text-black my-2 font-medium">مرحله چهارم: محل کارشناسی</h3>
+              <h4 className="text-[#55565A] font-light text-sm"> بعدی: انتخاب زمان کارشناسی</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex">
+        <Image src="/sample-car.png" width={74} height={74} alt="کارشناسی خودرو" />
+        <div className="flex flex-col text-base text-[#101117] mx-4">
+          <span>خودرو سواری {typeof window !== 'undefined' && localStorage.getItem("CarGroupName")}</span>
+          <span>مالک : محیا محمودی</span>
+        </div>
+      </div>
+
+      <div>
+        <h1>رزرو کارشناسی</h1>
+        <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full bg-white py-6 font-IranSans px-4" dir="rtl">
+          <TabsList className="px-2 w-full">
+            {locations.map((item: any) => (
+              <TabsTrigger key={item.Id} className="text-[#404040] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] px-4 mx-2" value={item.Id}>
+                {item.Name}
+              </TabsTrigger>
+            ))}
+            <TabsTrigger disabled className="text-[#2C2C2C] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] px-4 mx-2 flex items-center gap-1.5 relative disabled:text-black disabled:opacity-100" value="0">
+              <span>در محل شما</span>
+              <span className="relative bg-gradient-to-r from-[#D63031] via-[#E74C3C] to-[#C0392B] text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap flex items-center gap-1 shadow-lg shadow-[#E74C3C]/40 animate-pulse">
+                <Car02Icon size={16} className="w-3 h-3 animate-bounce" style={{ animationDuration: '1.5s' }} />
+                به زودی
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-300 rounded-full animate-ping"></span>
+              </span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="0">
+            <InLocation />
+          </TabsContent>
+          {locations.map((item: any) => (
+            <TabsContent key={item.Id} value={item.Id}>
+              <InWorkShop LocationTypeDescription={item.LocationTypeDescription} />
+            </TabsContent>
+          ))}
+        </Tabs>
+      </div>
+
+      <div className="px-4 lg:my-4 lg:static lg:mt-8 w-full fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+        <Button onClick={moveToCarInspectionTime} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+          تایید محل کارشناسی
+        </Button>
+      </div>
+    </div>
+  );
+}
+

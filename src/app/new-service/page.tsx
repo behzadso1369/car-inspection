@@ -5,8 +5,6 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Check } from "lucide-react"
-import Banner from "../components/mobile/Home/Banner"
-import { Header } from "../components/mobile/Home/Header"
 import instance from "@/helper/interceptor"
 import { ApiHelper } from "@/helper/api-request"
 
@@ -105,10 +103,6 @@ export default function NewServicePage() {
 
   return (
     <div className="font-IranSans bg-white">
-          <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-                                   <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
-                       <Header data={data} />
-                       </div>
       {/* Hero Section */}
       <section className="w-full lg:max-w-7xl lg:mx-auto">
         
