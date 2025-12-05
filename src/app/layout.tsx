@@ -60,18 +60,27 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Fetch data در server-side برای ConditionalHeader
+  let initialData = null;
+  
+  try {
+    initialData = await serverApiHelper.get("GetMasterPageData", 600);
+  } catch (error) {
+    console.error("Error fetching master data in layout:", error);
+  }
+
   return (
     <html lang="fa" dir="rtl">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
      <SeoWrapper/>
-        <ConditionalHeader />
+        <ConditionalHeader initialData={initialData} />
         {children}
         <ConditionalFooter />
                 <Toaster richColors position="top-center" />

@@ -50,7 +50,7 @@ export default function ClientWrapper() {
   }, []);
 
   return (
-    <div className="bg-white font-IranSans lg:px-4 lg:py-4">
+    <div className="bg-white font-IranSans lg:px-4 lg:py-4 overflow-x-hidden max-w-full">
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -65,7 +65,7 @@ export default function ClientWrapper() {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex px-4">
         <Image src="/sample-car.png" width={74} height={74} alt="کارشناسی خودرو" />
         <div className="flex flex-col text-base text-[#101117] mx-4">
           <span>خودرو سواری {typeof window !== 'undefined' && localStorage.getItem("CarGroupName")}</span>
@@ -73,19 +73,19 @@ export default function ClientWrapper() {
         </div>
       </div>
 
-      <div>
-        <h1>رزرو کارشناسی</h1>
+      <div className="overflow-x-hidden">
+        {/* <h1>رزرو کارشناسی</h1> */}
         <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full bg-white py-6 font-IranSans px-4" dir="rtl">
-          <TabsList className="px-2 w-full">
+          <TabsList className="px-2 w-full overflow-x-auto scrollbar-hide flex-nowrap">
             {locations.map((item: any) => (
-              <TabsTrigger key={item.Id} className="text-[#404040] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] px-4 mx-2" value={item.Id}>
+              <TabsTrigger key={item.Id} className="text-[#404040] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] mx-2 whitespace-nowrap flex-shrink-0" value={item.Id}>
                 {item.Name}
               </TabsTrigger>
             ))}
-            <TabsTrigger disabled className="text-[#2C2C2C] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] px-4 mx-2 flex items-center gap-1.5 relative disabled:text-black disabled:opacity-100" value="0">
+            <TabsTrigger disabled className="text-[#2C2C2C] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] mx-2 flex items-center gap-1.5 relative disabled:text-black disabled:opacity-100 whitespace-nowrap flex-shrink-0" value="0">
               <span>در محل شما</span>
               <span className="relative bg-gradient-to-r from-[#D63031] via-[#E74C3C] to-[#C0392B] text-white text-xs font-bold px-2.5 py-1 rounded-lg whitespace-nowrap flex items-center gap-1 shadow-lg shadow-[#E74C3C]/40 animate-pulse">
-                <Car02Icon size={16} className="w-3 h-3 animate-bounce" style={{ animationDuration: '1.5s' }} />
+                {/* <Car02Icon size={16} className="w-3 h-3 animate-bounce" style={{ animationDuration: '1.5s' }} /> */}
                 به زودی
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-300 rounded-full animate-ping"></span>
               </span>
@@ -103,8 +103,8 @@ export default function ClientWrapper() {
         </Tabs>
       </div>
 
-      <div className="px-4 lg:my-4 lg:static lg:mt-8 w-full fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button onClick={moveToCarInspectionTime} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+      <div className="px-4 lg:my-4 lg:static lg:mt-8 w-full fixed flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5 left-0 right-0">
+        <Button onClick={moveToCarInspectionTime} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full max-w-full">
           تایید محل کارشناسی
         </Button>
       </div>

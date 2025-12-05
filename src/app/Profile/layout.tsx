@@ -8,6 +8,7 @@ import Banner from "../components/mobile/Home/Banner";
 import { useEffect, useState } from "react";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
+import { ProfileErrorBoundary } from "./ErrorBoundary";
 
 export default function ProfileLayout({
     children,
@@ -25,31 +26,44 @@ export default function ProfileLayout({
       });
   }, []);
     return (
-        <div className="lg:max-w-7xl lg:container lg:mx-auto ">
-                  <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
-                           <div className="hidden lg:block px-20 mb-6 bg-transparent sticky  top-11 z-10">
-               <Header data={data} />
-               </div>
-               <div className="block lg:hidden">
-                   <div className="px-8 py-3 flex justify-between  shadow-[0px_6px_20px_-2px_#10182814]">
-           <ArrowRight onClick={() => window.history.back()}/>
-                <div className="flex items-center">
-            <Image alt="کارچک" width={32} height={30} src={"/assets/images/logo.svg"}/>
-            <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">کارچک</h1>
+        <ProfileErrorBoundary>
+            <div className="lg:max-w-7xl lg:container lg:mx-auto ">
+                <Banner data={data?.MasterSiteData?.NavbarPhoneNumber}/>
+                <div className="hidden lg:block px-20 mb-6 bg-transparent sticky top-11 z-10">
+                    <Header data={data} />
+                </div>
+                <div className="block lg:hidden">
+                    <div className="px-8 py-3 flex justify-between shadow-[0px_6px_20px_-2px_#10182814]">
+                        <ArrowRight onClick={() => {
+                            if (typeof window !== 'undefined') {
+                                window.history.back();
+                            }
+                        }}/>
+                        <div className="flex items-center">
+                            <Image 
+                                alt="کارچک" 
+                                width={32} 
+                                height={30} 
+                                src={data?.MasterSiteData?.ImagePath 
+                                    ? `https://api.carmacheck.com/${data.MasterSiteData.ImagePath}` 
+                                    : "/assets/images/logo.svg"}
+                            />
+                            <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">
+                                {data?.MasterSiteData?.CompanyName || "کارچک"}
+                            </h1>
+                        </div>
+                        <span className="text-[#101117] flex items-center font-IranSans">
+                            <Call02Icon size={16}/>
+                        </span>
+                    </div>
+                </div>
+                
+                {children}
+                
+                <div className="block lg:hidden">
+                    <NavigationBar/>
+                </div>
             </div>
-            <span className="text-[#101117] flex items-center font-IranSans">
-               
-                <Call02Icon size={16}/>
-            </span>
-
-
-        </div>
-               </div>
-              
-        {children}
-              <div className="block lg:hidden">
-  <NavigationBar/>
-      </div>
-        </div>
+        </ProfileErrorBoundary>
     )
 }

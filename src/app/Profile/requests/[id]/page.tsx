@@ -17,7 +17,6 @@ export default function RequestDetail() {
         
         instance.get(ApiHelper.get("GetUserOrderDetail") + "?OrderId=" + params.id).then((res:any) => {
             setOrderDetail(res);
-            debugger
         })
 
     }
@@ -27,12 +26,17 @@ export default function RequestDetail() {
             const logOut = () => {
     instance.post(ApiHelper.get("Logout"))
       .then((res: any) => {
-        localStorage.clear();
+        if (typeof window !== 'undefined') {
+          localStorage.clear();
+        }
         router.push("/");
-       
       })
       .catch((err: any) => {
-        console.error("Error fetching data:", err);
+        console.error("Error logging out:", err);
+        if (typeof window !== 'undefined') {
+          localStorage.clear();
+        }
+        router.push("/");
       });
   }
     return (

@@ -117,18 +117,18 @@ export default function DirectionsMap({LocationTypeDescription}:any) {
   };
 
   return (
-    <DialogContent className="w-screen h-screen overflow-auto max-w-none p-0 border-none bg-white font-IranSans">
-      <DialogHeader className="h-8">
-        <DialogTitle className="text-base text-[#101117]  py-4 font-bold">
+    <DialogContent className="w-[100vw] h-[100vh] max-w-[100vw] max-h-[100vh] overflow-hidden p-0 border-none bg-white font-IranSans m-0 rounded-none lg:rounded-lg lg:w-[90vw] lg:h-[90vh] lg:max-w-[1200px]">
+      <DialogHeader className="h-auto px-4 pt-4 pb-2">
+        <DialogTitle className="text-base text-[#101117] py-4 font-bold">
           آدرس و ساعت مراجعه
         </DialogTitle>
-         <div className="flex my-3 px-6">
+         <div className="flex my-3">
             <Location01Icon size={20}/>
-            <span className="text-sm mx-2">{LocationTypeDescription}</span>
+            <span className="text-sm mx-2 break-words">{LocationTypeDescription}</span>
           </div>
       </DialogHeader>
 
-   <div className="w-full h-[650px] relative">
+   <div className="w-full h-[calc(100vh-180px)] lg:h-[650px] relative">
       <MapContainer {...mapProps}>
         <TileLayer {...({ attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' } as any)} />
         <MapBounds userLocation={userLocation} destination={destination} />
@@ -159,16 +159,16 @@ export default function DirectionsMap({LocationTypeDescription}:any) {
       </MapContainer>
       
       {/* Action Buttons Overlay - positioned on map */}
-      <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] z-[1000] flex justify-between gap-3">
+      <div className="absolute bottom-0 left-0 right-0 px-4 py-4 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] z-[1000] flex justify-between gap-3">
         <Button 
           onClick={handleNavigation}
-          className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 flex-1" 
+          className="bg-[#416CEA] text-white rounded-3xl py-4 lg:py-6 px-6 lg:px-12 flex-1 text-sm lg:text-base" 
         >
           مسیریابی
         </Button>
         <Button 
           onClick={handleSMS}
-          className="bg-transparent text-[#416CEA] rounded-3xl py-6 px-12 flex-1 border border-[#416CEA]" 
+          className="bg-transparent text-[#416CEA] rounded-3xl py-4 lg:py-6 px-6 lg:px-12 flex-1 border border-[#416CEA] text-sm lg:text-base" 
         >
           پیامک
         </Button>
