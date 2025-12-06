@@ -75,7 +75,14 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
                 setCookie("refreshToken", res.refreshToken);
               }
               
-        moveToInspectionLocation();
+              // بررسی redirectUrl و هدایت به آن صفحه
+              const redirectUrl = typeof window !== 'undefined' ? localStorage.getItem("redirectUrl") : null;
+              if (redirectUrl) {
+                localStorage.removeItem("redirectUrl");
+                router.push(redirectUrl);
+              } else {
+                moveToInspectionLocation();
+              }
       } 
         })
     }

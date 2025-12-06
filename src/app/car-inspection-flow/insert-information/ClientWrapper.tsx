@@ -51,21 +51,24 @@ export default function ClientWrapper() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     instance.post(ApiHelper.get("UserRegister"), values)
       .then((res: any) => {
+        debugger
         if (res) {
           if (res?.isRegistered) {
             login(values.phoneNumber);
           }
           setOpenModal(true);
         } else {
-          setOpenModal(true);
+          setOpenModal(false);
         }
       }).catch((err: any) => {
+        setOpenModal(false);
+        debugger
         console.log(err);
       });
   }
 
   return (
-    <div className="bg-white font-IranSans">
+    <div className="bg-white font-IranSans h-screen">
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -90,7 +93,7 @@ export default function ClientWrapper() {
                 <FormItem>
                   <FormLabel className="text-sm text-[#101117] font-light my-2">نام و نام خانوادگی *</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="محمد اسدی" className="px-4 h-12 items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A] text-xs" />
+                    <Input {...field} placeholder="نام و نام خانوادگی" className="px-4 h-12 items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A] text-xs" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,16 +106,16 @@ export default function ClientWrapper() {
                 <FormItem>
                   <FormLabel className="text-sm text-[#101117] font-light my-2">شماره موبایل</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="09124845873" className="px-4 h-12 items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A] text-xs" />
+                    <Input {...field} placeholder="09123456789" className="px-4 h-12 items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A] text-xs" />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className="py-2 px-2">
                     لطفا شماره را همراه با صفر وارد کنید
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+            <div className="px-4 lg:my-4 lg:static lg:mt-8 fixed left-0 right-0 flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
               <Dialog open={openModal} onOpenChange={setOpenModal}>
                 <OtpMoldal openModal={openModal} setOpnModal={setOpenModal} />
               </Dialog>

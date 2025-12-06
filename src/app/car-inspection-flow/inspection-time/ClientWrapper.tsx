@@ -75,6 +75,26 @@ export default function ClientWrapper() {
     GetCarInspectionDateTime();
   }, []);
 
+  // بررسی اینکه آیا نوع انتخاب شده کارشناسی فوری است (دارای MaxMinutes)
+  const selectedType = carInspectionDateType?.find((item: any) => String(item.Id) === String(selected));
+  // اگر MaxMinutes در object وجود داشته باشد و مقدار truthy داشته باشد، یعنی کارشناسی فوری است
+  // بررسی می‌کنیم که MaxMinutes وجود داشته باشد و نه null، undefined، یا empty string باشد
+  const hasMaxMinutes = selectedType && 
+    selectedType.hasOwnProperty('MaxMinutes') && 
+    selectedType.MaxMinutes !== null && 
+    selectedType.MaxMinutes !== undefined && 
+    selectedType.MaxMinutes !== "" &&
+    (typeof selectedType.MaxMinutes === 'number' ? selectedType.MaxMinutes >= 0 : true);
+  const shouldShowTimeTabs = selected && !hasMaxMinutes;
+  
+  // برای دیباگ - می‌توانید این خط را بعداً حذف کنید
+  if (selected && selectedType) {
+    console.log('Selected Type:', selectedType);
+    console.log('MaxMinutes:', selectedType.MaxMinutes);
+    console.log('hasMaxMinutes:', hasMaxMinutes);
+    console.log('shouldShowTimeTabs:', shouldShowTimeTabs);
+  }
+
   return (
     <div className="bg-white font-IranSans lg:relative">
       <div className="px-4">
@@ -102,7 +122,7 @@ export default function ClientWrapper() {
         </RadioGroup>
       </div>
 
-      {!carInspectionDateType?.filter((item: any) => item.Id == selected)?.[0]?.MaxMinutes && (
+      {shouldShowTimeTabs && (
         <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full mt-4 bg-white py-6 font-IranSans" dir="rtl">
           <TabsList className="w-full">
             {carInspectionDateTime.map((item: any) => (
@@ -129,7 +149,7 @@ export default function ClientWrapper() {
         </Tabs>
       )}
 
-      <div className="px-4 w-full lg:my-4 lg:sticky lg:bg-white lg:mt-8 fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+      <div className="px-4 w-full lg:my-4 lg:sticky lg:bg-white lg:mt-8 fixed flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
         <Button onClick={moveToFinalConfirm} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
           تایید و ادامه
         </Button>

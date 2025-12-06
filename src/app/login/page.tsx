@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // CSR - Client Side Rendering
 // صفحات احراز هویت باید CSR باشند چون:
@@ -17,6 +17,16 @@ import { useRouter } from "next/navigation";
 export default function Login() {
     const [value,setValue] = useState<any>("")
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // دریافت redirectUrl از query params یا localStorage
+  useEffect(() => {
+    const redirectUrlFromQuery = searchParams.get("redirectUrl");
+    if (redirectUrlFromQuery && typeof window !== 'undefined') {
+      localStorage.setItem("redirectUrl", redirectUrlFromQuery);
+    }
+  }, [searchParams]);
+
     const login = () => {
         instance.post(ApiHelper.get("CheckPhoneNumber"),{
             phoneNumber:value

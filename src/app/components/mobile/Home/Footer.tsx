@@ -67,9 +67,7 @@ export const Footer = () => {
           </div>
           <div className="my-8 mr-96">
             <div className="flex justify-between">
-                <Image width={74} height={80} className="object-cover mx-6" src="/footer1.png" alt="enamad"/>
-                <Image width={74} height={80} className="object-cover mx-6" src="/footer2.png" alt="unity"/>
-                <Image width={74} height={80} className="object-cover mx-6" src="/footer3.png" alt="footer3"/>
+                <a referrerPolicy="origin" target='_blank' href='https://trustseal.enamad.ir/?id=682294&Code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD'><img referrerPolicy="origin" src='https://trustseal.enamad.ir/logo.aspx?id=682294&Code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD' alt='' style={{cursor: "pointer"}} /></a>
             </div>
           </div>
           <div className="h-8 bg-white"></div>

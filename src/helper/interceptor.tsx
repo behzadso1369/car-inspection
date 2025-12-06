@@ -66,6 +66,7 @@ instance.interceptors.response.use(
     }
     
     if (!data.isSuccess) {
+      
       toast("Error", { description: data.statusMessage });
     }else {
       // if(response?.config?.method !== "get")
@@ -76,6 +77,11 @@ instance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
+    
+    if(error.response.data.statusMessage) {
+      toast("Error", { description: error.response.data.statusMessage });
+      return
+    }
     
     let message = "مشکلی به وجود آمده است";
 
