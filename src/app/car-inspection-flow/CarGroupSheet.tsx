@@ -60,7 +60,7 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
   }
 
   return (
-<DialogContent className="w-screen h-screen overflow-auto  max-w-none p-0 border-none  bg-white font-IranSans">
+<DialogContent className="w-screen h-full overflow-auto  max-w-none p-0 border-none  bg-white font-IranSans">
             <div className="px-4">
  <DialogHeader>
             <DialogTitle className="text-base text-[#101117] font-medium flex justify-center py-4 font-bold ">انتخاب خودرو</DialogTitle>
