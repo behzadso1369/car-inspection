@@ -12,12 +12,18 @@ import { ApiHelper } from "@/helper/api-request";
 import { useRouter } from "next/navigation";
 import { Car02Icon } from "hugeicons-react";
 import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from "jwt-decode";
+
+interface CustomJwtPayload extends JwtPayload {
+  name?: string;
+  userPhoneNumber?: string;
+}
 
 export default function ClientWrapper() {
   const [locations, setLocations] = useState<any>([]);
   const [defaultTab, setDefaultTab] = useState<string>("");
   const router = useRouter();
-   const token:any = localStorage.getItem("token");
+   const token:any = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
 
   useEffect(() => {
     router.prefetch('./inspection-time');
@@ -71,7 +77,7 @@ export default function ClientWrapper() {
         <Image src="/sample-car.png" width={74} height={74} alt="کارشناسی خودرو" />
         <div className="flex flex-col text-base text-[#101117] mx-4">
           <span>خودرو سواری {typeof window !== 'undefined' && localStorage.getItem("CarGroupName")}</span>
-          <span>مالک :  {jwtDecode(token)}</span>
+          <span>مالک :  {token ? (jwtDecode<CustomJwtPayload>(token)?.name || "") : ""}</span>
         </div>
       </div>
 
