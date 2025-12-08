@@ -24,7 +24,7 @@ const API_BASE_URL = 'https://api.carmacheck.com';
 // Dynamic metadata با icon از API
 export async function generateMetadata(): Promise<Metadata> {
   let iconUrl = '/favicon.ico'; // fallback
-  let siteName = 'کارچک';
+  let siteName = 'کارماچک';
   let siteDescription = 'کارشناسی تخصصی خودرو با کارشناسان مجرب';
 
   try {

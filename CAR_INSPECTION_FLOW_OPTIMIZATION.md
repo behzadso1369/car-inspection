@@ -343,5 +343,5 @@ export default function NewFlowPage() {
 
 **تاریخ آخرین به‌روزرسانی**: دسامبر 2025  
 **وضعیت**: ✅ Production Ready & Optimized  
-**نویسنده**: تیم توسعه کارچک
+**نویسنده**: تیم توسعه کارماچک
 

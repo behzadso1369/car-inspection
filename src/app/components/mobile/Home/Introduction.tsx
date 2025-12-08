@@ -19,7 +19,7 @@ export default function Introduction({data}:any) {
                     </p>
                 </div>
                 <div className="w-full flex justify-center">
-                    <Image className="rotate-90" src={"https://api.carmacheck.com/" + data?.[0].ImagePath} width="171" height="240" alt="چرا کارچک"/>
+                    <Image className="rotate-90" src={"https://api.carmacheck.com/" + data?.[0].ImagePath} width="171" height="240" alt="چرا کارماچک"/>
                 </div>
                 <div className="w-1/3">
                     <h3 className="text-[#101117] text-sm text-center py-4 font-medium">{data?.[0].T3Title}</h3>
@@ -65,7 +65,7 @@ export default function Introduction({data}:any) {
                 </div>
               
                 <div className="w-1/3 flex justify-center">
-                    <Image className="rotate-90" src={"https://api.carmacheck.com/" + data?.[0].ImagePath} width="348" height="489" alt="چرا کارچک"/>
+                    <Image className="rotate-90" src={"https://api.carmacheck.com/" + data?.[0].ImagePath} width="348" height="489" alt="چرا کارماچک"/>
                 </div>
                 
                 

@@ -23,7 +23,7 @@ export default function Services({data}:any) {
 
     return (
         <section className="bg-white  px-4 py-12 lg:px-36">
-            <h3 className="mb-7 text-center font-IranSans text-lg">خدمات کارشناسی کارچک</h3>
+            <h3 className="mb-7 text-center font-IranSans text-lg">خدمات کارشناسی کارماچک</h3>
             <Carousel  setApi={setApi}  className="w-full max-w-full" opts={{
                 direction: "rtl",
                 align:"start",

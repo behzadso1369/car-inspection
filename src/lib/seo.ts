@@ -40,7 +40,7 @@ export function generateOGTags(config: {
     url: getCanonicalUrl(config.path),
     title: config.title,
     description: config.description,
-    siteName: 'کارچک - کارشناسی خودرو',
+    siteName: 'کارماچک - کارشناسی خودرو',
     images: [
       {
         url: config.image || `${BASE_URL}/og-default.jpg`,
@@ -59,7 +59,7 @@ export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'کارچک',
+    name: 'کارماچک',
     alternateName: 'CarmaCheck',
     url: BASE_URL,
     logo: `${BASE_URL}/assets/images/logo.svg`,
@@ -120,11 +120,11 @@ export function generateArticleSchema(config: {
     dateModified: config.dateModified || config.datePublished,
     author: {
       '@type': 'Person',
-      name: config.author || 'تیم کارچک',
+      name: config.author || 'تیم کارماچک',
     },
     publisher: {
       '@type': 'Organization',
-      name: 'کارچک',
+      name: 'کارماچک',
       logo: {
         '@type': 'ImageObject',
         url: `${BASE_URL}/assets/images/logo.svg`,
@@ -147,7 +147,7 @@ export function generateServiceSchema() {
     serviceType: 'کارشناسی خودرو',
     provider: {
       '@type': 'Organization',
-      name: 'کارچک',
+      name: 'کارماچک',
       url: BASE_URL,
     },
     areaServed: {
@@ -205,7 +205,7 @@ export const COMMON_KEYWORDS = [
   'کارشناسی ماشین',
   'خرید خودرو',
   'خرید ماشین',
-  'کارچک',
+  'کارماچک',
   'carmacheck',
   'کارشناسی خودرو تهران',
 ];
@@ -215,7 +215,7 @@ export const COMMON_KEYWORDS = [
  */
 export const PAGE_SEO = {
   home: {
-    title: 'کارچک | کارشناسی تخصصی خودرو با کارشناسان مجرب',
+    title: 'کارماچک | کارشناسی تخصصی خودرو با کارشناسان مجرب',
     description: 'کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق | کارشناسی در محل یا مرکز | دریافت گزارش فوری | تهران',
     keywords: [
       ...COMMON_KEYWORDS,
@@ -228,13 +228,13 @@ export const PAGE_SEO = {
   },
   
   about: {
-    title: 'درباره کارچک | ۲۵ سال تجربه در کارشناسی خودرو',
-    description: 'کارچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق انجام داده است. کارشناسان حرفه‌ای و مجرب.',
+    title: 'درباره کارماچک | ۲۵ سال تجربه در کارشناسی خودرو',
+    description: 'کارماچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق انجام داده است. کارشناسان حرفه‌ای و مجرب.',
     keywords: [
       ...COMMON_KEYWORDS,
-      'درباره کارچک',
-      'تاریخچه کارچک',
-      'کارشناسان کارچک',
+      'درباره کارماچک',
+      'تاریخچه کارماچک',
+      'کارشناسان کارماچک',
       'تجربه کارشناسی',
     ],
     path: '/about-us',
@@ -255,20 +255,20 @@ export const PAGE_SEO = {
   },
   
   contact: {
-    title: 'تماس با کارچک | ۰۲۱-۹۱۰۰۱۷۴۰',
-    description: 'تماس با کارچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: تهران، ونک، ملاصدرا، بن‌بست صدر، پلاک ۶ | ساعات کاری: شنبه تا چهارشنبه ۹-۱۸',
+    title: 'تماس با کارماچک | ۰۲۱-۹۱۰۰۱۷۴۰',
+    description: 'تماس با کارماچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: تهران، ونک، ملاصدرا، بن‌بست صدر، پلاک ۶ | ساعات کاری: شنبه تا چهارشنبه ۹-۱۸',
     keywords: [
       ...COMMON_KEYWORDS,
-      'تماس با کارچک',
+      'تماس با کارماچک',
       'شماره تماس کارشناسی',
-      'آدرس کارچک',
+      'آدرس کارماچک',
       'ساعات کاری',
     ],
     path: '/contact-us',
   },
   
   blog: {
-    title: 'مقالات کارشناسی خودرو | مجله کارچک',
+    title: 'مقالات کارشناسی خودرو | مجله کارماچک',
     description: 'مقالات تخصصی درباره کارشناسی خودرو، نکات خرید ماشین، بررسی عیوب رایج، راهنمای خرید خودرو و مطالب آموزشی برای خریداران',
     keywords: [
       ...COMMON_KEYWORDS,
@@ -293,11 +293,11 @@ export const PAGE_SEO = {
   },
   
   regulations: {
-    title: 'قوانین و مقررات | شرایط استفاده از خدمات کارچک',
-    description: 'قوانین و مقررات استفاده از خدمات کارشناسی کارچک، حریم خصوصی، شرایط پرداخت، ضمانت و قوانین لغو یا تغییر نوبت کارشناسی',
+    title: 'قوانین و مقررات | شرایط استفاده از خدمات کارماچک',
+    description: 'قوانین و مقررات استفاده از خدمات کارشناسی کارماچک، حریم خصوصی، شرایط پرداخت، ضمانت و قوانین لغو یا تغییر نوبت کارشناسی',
     keywords: [
       ...COMMON_KEYWORDS,
-      'قوانین کارچک',
+      'قوانین کارماچک',
       'مقررات کارشناسی',
       'شرایط استفاده',
     ],

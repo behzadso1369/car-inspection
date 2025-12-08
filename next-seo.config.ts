@@ -7,8 +7,8 @@ import { DefaultSeoProps } from "next-seo";
  */
 const DEFAULT_SEO: DefaultSeoProps = {
   // Title Template - برای تمام صفحات
-  titleTemplate: "%s | کارچک",
-  defaultTitle: "کارچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
+  titleTemplate: "%s | کارماچک",
+  defaultTitle: "کارماچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
   
   // Meta Description پیش‌فرض
   description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق | کارشناسی در محل یا مرکز | دریافت گزارش فوری | تهران",
@@ -49,11 +49,11 @@ const DEFAULT_SEO: DefaultSeoProps = {
     // Author and Publisher
     {
       name: "author",
-      content: "کارچک - CarmaCheck",
+      content: "کارماچک - CarmaCheck",
     },
     {
       name: "publisher",
-      content: "کارچک",
+      content: "کارماچک",
     },
     // Theme Color
     {
@@ -71,22 +71,22 @@ const DEFAULT_SEO: DefaultSeoProps = {
     type: "website",
     locale: "fa_IR",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com",
-    siteName: "کارچک - کارشناسی خودرو",
-    title: "کارچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
+    siteName: "کارماچک - کارشناسی خودرو",
+    title: "کارماچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
     description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق | کارشناسی در محل یا مرکز",
     images: [
       {
         url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/og-default.jpg`,
         width: 1200,
         height: 630,
-        alt: "کارچک - کارشناسی خودرو",
+        alt: "کارماچک - کارشناسی خودرو",
         type: "image/jpeg",
       },
       {
         url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/assets/images/logo.svg`,
         width: 800,
         height: 600,
-        alt: "لوگوی کارچک",
+        alt: "لوگوی کارماچک",
         type: "image/svg+xml",
       },
     ],

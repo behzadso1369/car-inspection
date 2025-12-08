@@ -5,7 +5,7 @@ import ClientWrapper from "./ClientWrapper";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "تایید نهایی | فرآیند کارشناسی خودرو | کارچک",
+  title: "تایید نهایی | فرآیند کارشناسی خودرو | کارماچک",
   description: "بررسی و تایید نهایی اطلاعات سفارش کارشناسی خودرو",
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/car-inspection-flow/final-confirm`,

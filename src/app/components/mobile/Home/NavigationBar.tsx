@@ -66,14 +66,14 @@ export const NavigationBar = memo(() => {
             >
                 <div style={{ filter: isActive("/services") ? activeFilter : inactiveFilter }}>
                     <Image 
-                        alt="خدمات کارچک" 
+                        alt="خدمات کارماچک" 
                         src="/car-service.svg" 
                         width={24} 
                         height={24}
                         loading="lazy"
                     />
                 </div>
-                <span className="text-xs my-1">خدمات کارچک</span>
+                <span className="text-xs my-1">خدمات کارماچک</span>
             </NavigationLink>
             
             <NavigationLink 

@@ -36,7 +36,7 @@ export const Header = memo(({data}:any) => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <Image 
-                        alt="کارچک" 
+                        alt="کارماچک" 
                         width={62} 
                         height={57} 
                         src={"https://api.carmacheck.com/" + data?.MasterSiteData?.ImagePath}
@@ -58,7 +58,7 @@ export const Header = memo(({data}:any) => {
                         </NavigationLink>
                     </li>
                     <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/services" prefetch={true}>خدمات کارچک</NavigationLink>
+                        <NavigationLink href="/services" prefetch={true}>خدمات کارماچک</NavigationLink>
                     </li>
                     <li className={`mx-4 ${isActive("/contact-us") ? "text-[#3456bb]" : ""}`}>
                         <NavigationLink href="/contact-us" prefetch={true}>ارتباط با ما</NavigationLink>

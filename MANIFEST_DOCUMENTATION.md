@@ -34,8 +34,8 @@ Next.js به صورت خودکار:
 
 | فیلد | منبع | Fallback |
 |------|------|----------|
-| **name** | `MasterSiteData.CompanyName` | "کارچک" |
-| **short_name** | `MasterSiteData.CompanyName` | "کارچک" |
+| **name** | `MasterSiteData.CompanyName` | "کارماچک" |
+| **short_name** | `MasterSiteData.CompanyName` | "کارماچک" |
 | **description** | `MasterSiteData.Description` | "کارشناسی تخصصی خودرو..." |
 | **icons[].src** | `MasterSiteData.ImagePath` | "/favicon.ico" |
 
@@ -145,8 +145,8 @@ curl https://carmacheck.com/manifest.json
 
 ```json
 {
-  "name": "کارچک",
-  "short_name": "کارچک",
+  "name": "کارماچک",
+  "short_name": "کارماچک",
   "description": "کارشناسی تخصصی خودرو با کارشناسان مجرب",
   "start_url": "/",
   "display": "standalone",
@@ -242,7 +242,7 @@ const data = await serverApiHelper.get("GetMasterPageData", 600); // 10 دقیق
 
 ```typescript
 let iconUrl = '/favicon.ico'; // fallback
-let siteName = 'کارچک'; // fallback
+let siteName = 'کارماچک'; // fallback
 ```
 
 ---

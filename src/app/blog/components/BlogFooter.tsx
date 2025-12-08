@@ -4,7 +4,7 @@ import { PlusIcon } from "lucide-react";
 export default function BlogFooter() {
     return (
         <div className="font-IranSans px-4">
-            <h3 className="text-[#416CEA] text-xl font-medium">فروشگاه کارچک</h3>
+            <h3 className="text-[#416CEA] text-xl font-medium">فروشگاه کارماچک</h3>
             <h4 className="text-[#101117] font-medium border-b py-6 border-[#A6A6A6] ">کارشناسی خودرو</h4>
             <div className="flex justify-between text-[#101117] font-medium mt-6 mb-12">
                 <h5>لینک های پر کاربرد</h5>

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "خدمات کارشناسی",
     "هزینه کارشناسی خودرو",
     "کارشناسی خودرو",
-    "کارچک",
+    "کارماچک",
     "تعرفه کارشناسی",
   ],
   alternates: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: "خدمات کارشناسی خودرو | استاندارد و VIP",
     description: "انواع خدمات کارشناسی: استاندارد از ۲۵۰ هزار تومان | VIP از ۴۵۰ هزار تومان",
     url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/services`,
-    siteName: "کارچک",
+    siteName: "کارماچک",
     locale: "fa_IR",
     type: "website",
     images: [
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
         url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/services.png`,
         width: 1200,
         height: 630,
-        alt: "خدمات کارشناسی خودرو کارچک",
+        alt: "خدمات کارشناسی خودرو کارماچک",
       },
     ],
   },

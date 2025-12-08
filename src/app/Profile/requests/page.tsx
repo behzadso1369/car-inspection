@@ -68,14 +68,14 @@ export default function Profile() {
                  <ArrowLeft01Icon/>
         
                 </h6>
-                <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
+                {/* <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                 <div className="text-[#101117] flex">
                       <Location01Icon size={24}/>
                     <span className="mx-1 text-base">آدرس ها</span>
                     </div>
                  <ArrowLeft01Icon/>
         
-                </h6>
+                </h6> */}
                 <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
                 <div className="text-[#101117] flex" onClick={logOut}>
                      <Logout03Icon size={24}/>

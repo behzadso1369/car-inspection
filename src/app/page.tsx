@@ -14,14 +14,14 @@ export const revalidate = 600; // 10 minutes
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: "کارچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
+  title: "کارماچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
   description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق | کارشناسی در محل یا مرکز | دریافت گزارش فوری | تهران",
   keywords: [
     "کارشناسی خودرو",
     "کارشناسی ماشین",
     "خرید خودرو",
     "خرید ماشین",
-    "کارچک",
+    "کارماچک",
     "carmacheck",
     "کارشناسی خودرو تهران",
     "کارشناسی آنلاین",
@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com",
   },
   openGraph: {
-    title: "کارچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
+    title: "کارماچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
     description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com",
-    siteName: "کارچک",
+    siteName: "کارماچک",
     locale: "fa_IR",
     type: "website",
     images: [
@@ -44,13 +44,13 @@ export const metadata: Metadata = {
         url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/og-home.jpg`,
         width: 1200,
         height: 630,
-        alt: "کارچک - کارشناسی خودرو",
+        alt: "کارماچک - کارشناسی خودرو",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "کارچک | کارشناسی تخصصی خودرو",
+    title: "کارماچک | کارشناسی تخصصی خودرو",
     description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت",
   },
   robots: {

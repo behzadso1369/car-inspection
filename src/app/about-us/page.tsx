@@ -13,26 +13,26 @@ export const revalidate = 3600; // 1 hour
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: "درباره کارچک | ۲۵ سال تجربه در کارشناسی خودرو",
-  description: "کارچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق انجام داده است. کارشناسان حرفه‌ای و مجرب.",
+  title: "درباره کارماچک | ۲۵ سال تجربه در کارشناسی خودرو",
+  description: "کارماچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق انجام داده است. کارشناسان حرفه‌ای و مجرب.",
   keywords: [
-    "درباره کارچک",
-    "تاریخچه کارچک",
-    "کارشناسان کارچک",
+    "درباره کارماچک",
+    "تاریخچه کارماچک",
+    "کارشناسان کارماچک",
     "تجربه کارشناسی",
     "کارشناسی خودرو",
-    "کارچک",
+    "کارماچک",
     "carmacheck",
-    "تیم کارچک",
+    "تیم کارماچک",
   ],
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/about-us`,
   },
   openGraph: {
-    title: "درباره کارچک | ۲۵ سال تجربه در کارشناسی خودرو",
-    description: "کارچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق",
+    title: "درباره کارماچک | ۲۵ سال تجربه در کارشناسی خودرو",
+    description: "کارماچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق",
     url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/about-us`,
-    siteName: "کارچک",
+    siteName: "کارماچک",
     locale: "fa_IR",
     type: "website",
     images: [
@@ -40,14 +40,14 @@ export const metadata: Metadata = {
         url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/about-us-main-page.jpg`,
         width: 1200,
         height: 630,
-        alt: "درباره کارچک - تیم و کارشناسان",
+        alt: "درباره کارماچک - تیم و کارشناسان",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "درباره کارچک | ۲۵ سال تجربه",
-    description: "کارچک با ۲۵ سال تجربه و ۹۰٪ دقت",
+    title: "درباره کارماچک | ۲۵ سال تجربه",
+    description: "کارماچک با ۲۵ سال تجربه و ۹۰٪ دقت",
   },
   robots: {
     index: true,

@@ -47,15 +47,15 @@ export default function InspectionMethodCard({inspectionType,data, selected, onS
                 <div className="flex flex-col">
                     <span className="text-[#101117] font-medium text-sm">قیمت بازار</span>
                     <div className="flex">
-      <span className="text-[#55565A] text-m font-light">{data.MarketPrice} </span>
+      <span className="text-[#55565A] text-m font-light">{data.MarketPrice.toLocaleString()} </span>
                     <span className="text-[#55565A] text-m font-light">تومان</span>
                     </div>
               
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-[#101117] font-medium text-sm">قیمت کارچک</span>
+                    <span className="text-[#101117] font-medium text-sm">قیمت کارماچک</span>
                       <div className="flex">
-                         <span className="text-[#55565A] text-m font-light">{data.OurPrice} </span>
+                         <span className="text-[#55565A] text-m font-light">{data.OurPrice.toLocaleString()} </span>
                     <span className="text-[#55565A] text-m font-light">تومان </span>
                       </div>
                    

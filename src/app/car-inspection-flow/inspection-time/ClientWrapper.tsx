@@ -24,7 +24,7 @@ export default function ClientWrapper() {
 
   const moveToFinalConfirm = () => {
     const params: any = {
-      "isBack": false,
+      "isBack": true,
       "orderId": Number(localStorage.getItem("OrderId")),
       "carInspectionDateTypeId": Number(selected)
     };

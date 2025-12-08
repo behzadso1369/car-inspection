@@ -57,14 +57,14 @@ export default function Blog() {
         return (
         <>
           <NextSeo
-            title="مقالات کارشناسی خودرو | مجله کارچک"
+            title="مقالات کارشناسی خودرو | مجله کارماچک"
             description="مقالات تخصصی درباره کارشناسی خودرو، نکات خرید ماشین، بررسی عیوب رایج، راهنمای خرید خودرو و مطالب آموزشی برای خریداران"
             canonical={`${baseUrl}/blog`}
             openGraph={{
-              title: "مقالات کارشناسی خودرو | مجله کارچک",
+              title: "مقالات کارشناسی خودرو | مجله کارماچک",
               description: "مقالات تخصصی درباره کارشناسی خودرو و خرید ماشین",
               url: `${baseUrl}/blog`,
-              siteName: "کارچک",
+              siteName: "کارماچک",
               locale: "fa_IR",
               type: "website",
             }}

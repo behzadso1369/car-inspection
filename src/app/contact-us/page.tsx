@@ -8,32 +8,32 @@ import { Metadata } from "next";
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: "تماس با کارچک | ۰۲۱-۹۱۰۰۱۷۴۰",
-  description: "تماس با کارچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: تهران، ونک، ملاصدرا، بن‌بست صدر، پلاک ۶ | ساعات کاری: شنبه تا چهارشنبه ۹-۱۸",
+  title: "تماس با کارماچک | ۰۲۱-۹۱۰۰۱۷۴۰",
+  description: "تماس با کارماچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: تهران، ونک، ملاصدرا، بن‌بست صدر، پلاک ۶ | ساعات کاری: شنبه تا چهارشنبه ۹-۱۸",
   keywords: [
-    "تماس با کارچک",
+    "تماس با کارماچک",
     "شماره تماس کارشناسی",
-    "آدرس کارچک",
+    "آدرس کارماچک",
     "ساعات کاری",
     "کارشناسی خودرو",
     "تهران ونک",
-    "پشتیبانی کارچک",
+    "پشتیبانی کارماچک",
   ],
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/contact-us`,
   },
   openGraph: {
-    title: "تماس با کارچک | ۰۲۱-۹۱۰۰۱۷۴۰",
-    description: "تماس با کارچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: تهران، ونک، ملاصدرا",
+    title: "تماس با کارماچک | ۰۲۱-۹۱۰۰۱۷۴۰",
+    description: "تماس با کارماچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: تهران، ونک، ملاصدرا",
     url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/contact-us`,
-    siteName: "کارچک",
+    siteName: "کارماچک",
     locale: "fa_IR",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "تماس با کارچک",
-    description: "راه‌های ارتباطی با کارچک",
+    title: "تماس با کارماچک",
+    description: "راه‌های ارتباطی با کارماچک",
   },
   robots: {
     index: true,
@@ -61,7 +61,7 @@ export default function ContactUs() {
  </div>
   </div>
   <div className="lg:order-0">
-  <h1 className="text-[#101117] lg:text-3xl">اطلاعات کارچک</h1>
+  <h1 className="text-[#101117] lg:text-3xl">اطلاعات کارماچک</h1>
  <h3 className="text-[#55565A] lg:text-base my-2">ما به شما کمک می‌کنیم تا بهترین کارشناسی خودرو را با بهترین قیمت تهیه کنید.</h3>
  <div className="my-4">
  <div className="flex my-3">

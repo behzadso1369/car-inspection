@@ -8,7 +8,7 @@ import { serverApiHelper } from "@/helper/server-fetcher";
 export const revalidate = 3600; // 1 hour
 
 export const metadata: Metadata = {
-  title: "انتخاب روش کارشناسی | فرآیند کارشناسی خودرو | کارچک",
+  title: "انتخاب روش کارشناسی | فرآیند کارشناسی خودرو | کارماچک",
   description: "انتخاب روش کارشناسی خودرو: کارشناسی در محل یا مرکز. همراه با قیمت و جزئیات هر روش.",
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/car-inspection-flow/inspection-method`,

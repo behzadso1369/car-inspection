@@ -23,17 +23,17 @@ export default function NewServicePage() {
     {
       id: 1,
       icon: "/service-box-1.svg",
-      title: "تجهیزات با کیفیت",
+      title: "کارشناسی دقیق",
     },
     {
       id: 2,
       icon: "/service-box-1.svg",
-      title: "تجهیزات با کیفیت",
+      title: "کارشناسی در محل",
     },
     {
       id: 3,
       icon: "/professiona-tools.svg",
-      title: "تجهیزات با کیفیت",
+      title: "کارشناسی فنی",
     },
     {
       id: 4,

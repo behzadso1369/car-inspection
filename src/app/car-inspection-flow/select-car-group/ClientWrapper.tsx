@@ -120,7 +120,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
           </div>
         </div>
         <div className="mt-24 lg:mt-14 px-4 lg:px-24 text-white w-full lg:w-1/2">
-          <h3 className="text-lg font-medium">سرویس‌های کارشناسی کارچک</h3>
+          <h3 className="text-lg font-medium">سرویس‌های کارشناسی کارماچک</h3>
           <p className="text-base leading-8">
             ما تمامی خدمات کارشناسی خودرو را هم در محل مورد نظر شما و هم درب مغازه به‌صورت کامل انجام می‌دهیم. موارد شامل:
           </p>
@@ -139,9 +139,9 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       <div className="px-4 py-16 flex flex-wrap justify-center font-medium" ref={ref}>
         <h3 className="font-bold w-full text-center">انتخاب محل کارشناسی خودرو با شما</h3>
         <div className="px-3 w-full lg:w-1/3 mx-4 border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
-          <h2 className="text-sm text-[#101117] font-light">اعزام کارشناس به محل انتخابی شما</h2>
-          <h3 className="text-base text-[#55565A] my-1 font-light">شهر تهران</h3>
-          <h4 className="text-[#55565A] text-sm font-light">در این سرویس کارشناس برای انجام کارشناسی به محلی که شما تعیین کرده‌اید مراجعه می‌کند.</h4>
+          <h2 className="text-sm text-[#101117] font-light">مراجعه شما به مرکز کارشناسی کارچک</h2>
+          <h3 className="text-base text-[#55565A] my-1 font-light">شرق  تهران</h3>
+          <h4 className="text-[#55565A] text-sm font-light">در این سرویس پس از ثبت درخواست، برای انجام کارشناسی باید به مرکز کارچک (شرق تهران)مراجعه کنید.</h4>
         </div>
         <div className="px-3 w-full lg:w-1/3 mx-4 border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
           <h2 className="text-sm text-[#101117] font-light">اعزام کارشناس به محل انتخابی شما</h2>
@@ -154,26 +154,26 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         <h2 className="font-bold bg-[#F0F2F4] py-4 z-10">فرآیند انجام کارشناسی</h2>
         <div className="w-full my-4">
           <div className="flex flex-col w-2/5 pl-5">
-            <span className="text-sm text-[#101117] lg:text-2xl">ثبت درخواست</span>
-            <span className="text-xs text-[#55565A] lg:text-base">ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی</span>
+            <span className="text-sm text-[#101117] lg:text-2xl">انتخاب خودرو</span>
+            <span className="text-xs text-[#55565A] lg:text-base">انتخاب گروه خودرو با توجه به برند انتخاب شده</span>
           </div>
         </div>
         <div className="w-full flex justify-end my-4">
           <div className="flex flex-col w-2/5 pr-5">
-            <span className="text-sm text-[#101117] lg:text-2xl">ثبت درخواست</span>
-            <span className="text-xs text-[#55565A] lg:text-base">ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی</span>
+            <span className="text-sm text-[#101117] lg:text-2xl">نوع کارشناسی </span>
+            <span className="text-xs text-[#55565A] lg:text-base">ثبت کارشناسی استاندارد یا VIP</span>
           </div>
         </div>
         <div className="w-full my-4">
           <div className="flex flex-col w-2/5 pl-5">
-            <span className="text-sm text-[#101117] lg:text-2xl">ثبت درخواست</span>
-            <span className="text-xs text-[#55565A] lg:text-base">ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی</span>
+            <span className="text-sm text-[#101117] lg:text-2xl">زمان کارشناسی </span>
+            <span className="text-xs text-[#55565A] lg:text-base">انتخاب روز و ساعت کارشناسی </span>
           </div>
         </div>
         <div className="w-full flex justify-end my-4">
           <div className="flex flex-col w-2/5 pr-5">
-            <span className="text-sm text-[#101117]">ثبت درخواست</span>
-            <span className="text-xs text-[#55565A]">ثبت درخواست کارشناسی خودرو از طریق وب‌سایت، اپلیکیشن و تماس تلفنی</span>
+            <span className="text-sm text-[#101117]">تایید و پردخت</span>
+            <span className="text-xs text-[#55565A]">ثبت و تایید و پرداخت مبلغ نهایی کارشناسی</span>
           </div>
         </div>
         <div className="absolute w-16 top-24 h-[calc(100%-96px)] bg-way bg-cover">

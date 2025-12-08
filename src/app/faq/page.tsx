@@ -118,14 +118,14 @@ export default function FAQPage() {
           title: "سوالات متداول کارشناسی خودرو",
           description: "پاسخ به سوالات متداول درباره کارشناسی خودرو",
           url: `${baseUrl}/faq`,
-          siteName: "کارچک",
+          siteName: "کارماچک",
           locale: "fa_IR",
           type: "website",
         }}
         additionalMetaTags={[
           {
             name: "keywords",
-            content: "سوالات متداول,راهنمای کارشناسی,چگونه کارشناسی کنیم,کارشناسی خودرو,کارچک,FAQ",
+            content: "سوالات متداول,راهنمای کارشناسی,چگونه کارشناسی کنیم,کارشناسی خودرو,کارماچک,FAQ",
           },
         ]}
       />

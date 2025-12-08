@@ -41,7 +41,7 @@ export default function ProfileLayout({
                         }}/>
                         <div className="flex items-center">
                             <Image 
-                                alt="کارچک" 
+                                alt="کارماچک" 
                                 width={32} 
                                 height={30} 
                                 src={data?.MasterSiteData?.ImagePath 
@@ -49,7 +49,7 @@ export default function ProfileLayout({
                                     : "/assets/images/logo.svg"}
                             />
                             <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">
-                                {data?.MasterSiteData?.CompanyName || "کارچک"}
+                                {data?.MasterSiteData?.CompanyName || "کارماچک"}
                             </h1>
                         </div>
                         <span className="text-[#101117] flex items-center font-IranSans">

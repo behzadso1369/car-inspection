@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         "کارشناسی خودرو",
         "مقالات خودرو",
         "آموزش خرید ماشین",
-        "کارچک",
+        "کارماچک",
         "بلاگ خودرو",
       ],
       alternates: {
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         title: `${categoryName} | مقالات کارشناسی خودرو`,
         description: description.slice(0, 160),
         url: `${siteURL}/blog/${id}`,
-        siteName: "کارچک",
+        siteName: "کارماچک",
         locale: "fa_IR",
         type: "article",
         images: posts[0]?.ImagePath ? [
@@ -73,7 +73,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       },
       twitter: {
         card: "summary_large_image",
-        title: `${categoryName} | کارچک`,
+        title: `${categoryName} | کارماچک`,
         description: description.slice(0, 160),
       },
       robots: {
@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   } catch (error) {
     // در صورت خطا، metadata پیش‌فرض
     return {
-      title: "مقاله | کارشناسی خودرو کارچک",
+      title: "مقاله | کارشناسی خودرو کارماچک",
       description: "مقالات تخصصی کارشناسی خودرو و خرید ماشین",
       alternates: {
         canonical: `${siteURL}/blog/${id}`,

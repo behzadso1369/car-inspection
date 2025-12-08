@@ -7,7 +7,7 @@ const API_BASE_URL = 'https://api.carmacheck.com';
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   // Fetch data from API
   let iconUrl = '/favicon.ico'; // fallback
-  let siteName = 'کارچک';
+  let siteName = 'کارماچک';
   let siteDescription = 'کارشناسی تخصصی خودرو با کارشناسان مجرب';
 
   try {

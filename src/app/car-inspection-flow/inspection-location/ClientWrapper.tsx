@@ -31,7 +31,7 @@ export default function ClientWrapper() {
 
   const moveToCarInspectionTime = () => {
     const params: any = {
-      "isBack": false,
+      "isBack": true,
       "orderId": Number(localStorage.getItem("OrderId")),
       "carInspectionLocationTypeId": defaultTab
     };
@@ -111,10 +111,21 @@ export default function ClientWrapper() {
         </Tabs>
       </div>
 
-      <div className="px-4 lg:my-4 lg:static lg:mt-8 w-full fixed flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5 left-0 right-0">
-        <Button onClick={moveToCarInspectionTime} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full max-w-full">
+      <div className="px-4 lg:my-4 w-full fixed lg:static lg:mt-8 flex justify-between bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+        <Button onClick={moveToCarInspectionTime} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
           تایید محل کارشناسی
         </Button>
+        <div className="flex flex-col">
+          <span className="text-[#101117] font-medium text-sm">{localStorage.getItem("inspectionMethod")}</span>
+          <div className="flex">
+            <span className="text-[#55565A] text-m font-light">
+              {typeof window !== 'undefined' && localStorage.getItem("inspectionPrice") 
+                ? Number(localStorage.getItem("inspectionPrice")).toLocaleString('fa-IR')
+                : '0'}
+            </span>
+            <span className="text-[#55565A] text-m font-light">تومان </span>
+          </div>
+        </div>
       </div>
     </div>
   );
