@@ -87,7 +87,7 @@ export default function RequestDetail() {
 <div className="my-6 border-b border-[#DFDFDF] box-border  w-full">
     <div className="flex justify-between text-sm my-2">
         <span className="text-[#55565A]">کد پیگیری سفارش:</span>
-        <span className="text-[#101117] text-base font-medium">524235</span>
+        <span className="text-[#101117] text-base font-medium">{orderDetail?.id}</span>
     </div>
     <div className="flex justify-between text-sm my-2 w-full">
         <span className="text-[#55565A]">تاریخ  ثبت سفارش:</span>

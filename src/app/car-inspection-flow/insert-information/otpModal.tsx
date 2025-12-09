@@ -14,7 +14,7 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
      
          const moveToInspectionLocation = () => {
          instance.post(ApiHelper.get("MoveOrder"), {
-            "isBack": true,
+            "isBack": false,
               "orderId": Number(localStorage.getItem("OrderId")),
               "userId": localStorage.getItem("userId"),
 

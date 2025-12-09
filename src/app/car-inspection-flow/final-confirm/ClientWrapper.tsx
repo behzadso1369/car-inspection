@@ -23,7 +23,7 @@ export default function ClientWrapper() {
 
   const moveToPaymentSucceed = () => {
     const params: any = {
-      "isBack": true,
+      "isBack": false,
       "orderId": Number(localStorage.getItem("OrderId"))
     };
     instance.post(ApiHelper.get("MovePrivateOrder"), params).then((res: any) => {

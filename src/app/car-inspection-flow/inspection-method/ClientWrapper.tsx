@@ -55,12 +55,12 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
 
   const moveToInsertInformation = () => {
     instance.post(ApiHelper.get("MoveOrder"), {
-      "isBack": true,
+      "isBack": false,
       "orderId": localStorage.getItem("OrderId"),
       "carInspectionTypeId": carInspectionType.filter((item: any) => item.Id == selected)[0].InspectionTypeId,
       "carInspectionId": carInspectionType.filter((item: any) => item.Id == selected)[0].Id,
     }).then((res: any) => {
-      localStorage.setItem("inspectionPrice",carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice);
+      localStorage.setItem("inspectionPrice",carInspectionType.filter((item: any) => item.Id == selected)[0]?.Id == 1215 ? (carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice + carInspectionType.filter((item: any) => item.Id == selected)[0]?.AdditionalCost) : carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice);
       localStorage.setItem("inspectionMethod",carInspectionType.filter((item: any) => item.Id == selected)[0]?.InspectionTypeName);
       if (!localStorage.getItem("userId")) {
         router.push("./insert-information");
@@ -112,7 +112,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         <div className="flex flex-col">
           <span className="text-[#101117] font-medium text-sm">{carInspectionType.filter((item: any) => item.Id == selected)[0]?.InspectionTypeName}</span>
           <div className="flex">
-            <span className="text-[#55565A] text-m font-light">{carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice?.toLocaleString()} </span>
+            <span className="text-[#55565A] text-m font-light">{carInspectionType.filter((item: any) => item.Id == selected)[0]?.Id == 1215 ? (carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice + carInspectionType.filter((item: any) => item.Id == selected)[0]?.AdditionalCost)?.toLocaleString() : carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice?.toLocaleString()} </span>
             <span className="text-[#55565A] text-m font-light">تومان </span>
           </div>
         </div>
