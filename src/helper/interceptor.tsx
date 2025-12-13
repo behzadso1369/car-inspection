@@ -76,6 +76,7 @@ instance.interceptors.response.use(
     return response.data.resultObject;
   },
   async (error) => {
+    debugger
     const originalRequest = error.config;
     
     if(error.response.data.statusMessage) {
@@ -88,11 +89,13 @@ instance.interceptors.response.use(
     if (!error.response) {
       message = "اینترنت شما قطع شده است";
       toast("Error", { description: message });
+      debugger
       return Promise.reject(error);
     }
 
     // Handle 401 Unauthorized - Token expired
     if (error.response.status === 401 && !originalRequest._retry) {
+      debugger
       if (isRefreshing) {
         // If already refreshing, queue this request
         return new Promise((resolve, reject) => {
@@ -114,6 +117,7 @@ instance.interceptors.response.use(
 
       // Check if refresh token exists in cookie
       const refreshToken = getCookie("refreshToken");
+      debugger
 
       if (!refreshToken) {
         isRefreshing = false;
