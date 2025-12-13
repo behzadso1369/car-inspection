@@ -47,15 +47,19 @@ export default function InspectionMethodCard({inspectionType,data, selected, onS
                 <div className="flex flex-col">
                     <span className="text-[#101117] font-medium text-sm">قیمت بازار</span>
                     <div className="flex">
-      <span className="text-[#55565A] text-m font-light">{data?.Id == 1215 ? (data.MarketPrice + data.AdditionalCost).toLocaleString() :  data.MarketPrice.toLocaleString()} </span>
+      <span className="text-[#55565A] text-m font-light">{data?.AdditionalCost > 0 ? (data.MarketPrice + data.AdditionalCost).toLocaleString() :  data.MarketPrice.toLocaleString()} </span>
                     <span className="text-[#55565A] text-m font-light">تومان</span>
                     </div>
               
                 </div>
+                {data?.AdditionalCost > 0 &&      <div className="text-base flex items-center">
+                  <span className="text-[#416CEA] font-bold bg-[#F0F2F4] p-2 rounded-3xl"> {data?.AdditionalCost.toLocaleString()}+ تومان</span>
+                </div>}
+           
                 <div className="flex flex-col">
                     <span className="text-[#101117] font-medium text-sm">قیمت کارماچک</span>
                       <div className="flex">
-                         <span className="text-[#55565A] text-m font-light">{data?.Id == 1215 ? (data.OurPrice + data.AdditionalCost).toLocaleString() : data.OurPrice.toLocaleString()} </span>
+                         <span className="text-[#55565A] text-m font-light">{data?.AdditionalCost > 0 ? (data.OurPrice + data.AdditionalCost).toLocaleString() : data.OurPrice.toLocaleString()} </span>
                     <span className="text-[#55565A] text-m font-light">تومان </span>
                       </div>
                    

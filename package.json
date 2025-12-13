@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 5173",
+    "dev:https": "node server-https.js",
+    "generate-cert": "node scripts/generate-cert.js",
+    "generate-cert:ps1": "powershell -ExecutionPolicy Bypass -File scripts/generate-cert.ps1",
     "build": "next build",
     "start": "next start",
     "start:standalone": "node .next/standalone/server.js",
@@ -54,6 +57,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/remarkable": "^2.0.8",
+    "selfsigned": "^2.4.1",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.8",
     "typescript": "^5"

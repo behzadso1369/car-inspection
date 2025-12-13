@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Introduction({data}:any) {
     return (
-        <section className="bg-secondary-background px-4 py-8 font-IranSans   bg-[#F0F2F4] ">
+        <section className="bg-secondary-background px-4 py-8 font-IranSans   bg-[#F0F2F4] lg:py-24">
             <h2 className="text-lg text-black text-center lg:text-2xl my-2">چرا کارماچک؟</h2>
             <div className="flex  flex-wrap justify-between lg:hidden">
                 <div className="w-1/3">

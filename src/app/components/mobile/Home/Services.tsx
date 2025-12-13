@@ -29,9 +29,9 @@ export default function Services({data}:any) {
                 align:"start",
                 loop:true
             }}  >
-        <CarouselContent>
+        <CarouselContent className="-ml-2 md:-ml-4">
           {data?.map((item:any, index:number) => (
-            <CarouselItem key={index} className="basis-4/5 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5" >
+            <CarouselItem key={index} className="pl-2 md:pl-4 basis-4/5 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/4" >
               
                   <ProductCard Id={item.Id} ImagePath={item.ImagePath} Title={item.Title} Description={item.Description} />
               

@@ -74,7 +74,7 @@ import Link from "next/link";export const Slider = ({data}:any) => {
         </CarouselContent>
       </Carousel>
       <div className="flex items-center flex-col lg:h-8 lg:flex-row absolute right-4 lg:right-0  rounded-l-2xl lg:rounded-none bg-white top-1/2  lg:top-full lg:w-full lg:justify-center -translate-y-1/2 lg:translate-y-0  py-6 lg:py-4 px-2">
-        {items.map((_, i) => (
+        {data.map((item:any, i:number) => (
           <button
             key={i}
             className={`w-2 my-0.5 h-2 lg:w-3 lg:h-3 rounded-full lg:mx-1 ${i === current ? "bg-blue-500" : "bg-gray-300"}`}
