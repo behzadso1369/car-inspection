@@ -51,7 +51,7 @@ export default function ClientWrapper() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     instance.post(ApiHelper.get("UserRegister"), values)
       .then((res: any) => {
-        debugger
+        
         if (res) {
           if (res?.isRegistered) {
             login(values.phoneNumber);
@@ -62,7 +62,7 @@ export default function ClientWrapper() {
         }
       }).catch((err: any) => {
         setOpenModal(false);
-        debugger
+        
         console.log(err);
       });
   }

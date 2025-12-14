@@ -7,6 +7,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useEffect, useState } from "react";
+import { handleLogout } from "@/helper/logout";
 
 export default function InspectionReport() {
     const params = useParams();
@@ -30,20 +31,7 @@ export default function InspectionReport() {
             orderById();
         },[])
             const logOut = () => {
-    instance.post(ApiHelper.get("Logout"))
-      .then((res: any) => {
-        if (typeof window !== 'undefined') {
-          localStorage.clear();
-        }
-        router.push("/");
-      })
-      .catch((err: any) => {
-        console.error("Error logging out:", err);
-        if (typeof window !== 'undefined') {
-          localStorage.clear();
-        }
-        router.push("/");
-      });
+    handleLogout("/");
   }
     return (
           <div className="grid grid-cols-3 gap-4 pt-4 pb-20 lg:pb-0 font-IranSans">

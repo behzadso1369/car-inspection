@@ -8,6 +8,7 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
+import { handleLogout } from "@/helper/logout";
 
 export default function RequestDetail() {
     const params = useParams();
@@ -24,20 +25,7 @@ export default function RequestDetail() {
             orderById();
         },[])
             const logOut = () => {
-    instance.post(ApiHelper.get("Logout"))
-      .then((res: any) => {
-        if (typeof window !== 'undefined') {
-          localStorage.clear();
-        }
-        router.push("/");
-      })
-      .catch((err: any) => {
-        console.error("Error logging out:", err);
-        if (typeof window !== 'undefined') {
-          localStorage.clear();
-        }
-        router.push("/");
-      });
+    handleLogout("/");
   }
     return (
           <div className="grid grid-cols-3 gap-4 py-4 font-IranSans">

@@ -25,6 +25,7 @@ export default function VerifyOtp() {
        const [value,setValue] = useState<any>("")
   const router = useRouter();
    const [timer, setTimer] = useState(120);
+   const [isResending, setIsResending] = useState(false);
    
   // ⏳ Countdown effect
   useEffect(() => {
@@ -49,6 +50,29 @@ export default function VerifyOtp() {
       const expires = new Date();
       expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
       document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+    };
+
+    const resendOtp = () => {
+      const phoneNumber = localStorage.getItem("phoneNumber");
+      if (!phoneNumber) {
+        console.error("Phone number not found");
+        return;
+      }
+
+      setIsResending(true);
+      instance.post(ApiHelper.get("CheckPhoneNumber"), {
+        phoneNumber: phoneNumber
+      }).then((res: any) => {
+        if (res?.isRegistered) {
+          localStorage.setItem("userId", res?.userId);
+        }
+        // Reset timer
+        setTimer(120);
+        setIsResending(false);
+      }).catch((err: any) => {
+        console.error("Error resending OTP:", err);
+        setIsResending(false);
+      });
     };
 
     const verifyOtp = (e:any) => {
@@ -101,7 +125,17 @@ export default function VerifyOtp() {
     </InputOTP>
             </div>
 
-            <span className="text-xs font-extralight text-[#55565A] text-center"> {formatTime(timer)}مانده تا دریافت مجدد کد</span>
+            {timer > 0 ? (
+              <span className="text-xs font-extralight text-[#55565A] text-center"> {formatTime(timer)}مانده تا دریافت مجدد کد</span>
+            ) : (
+              <Button 
+                onClick={resendOtp}
+                disabled={isResending}
+                className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4 disabled:opacity-50"
+              >
+                {isResending ? 'در حال ارسال...' : 'ارسال مجدد کد'}
+              </Button>
+            )}
 
         </Card>
     </div>

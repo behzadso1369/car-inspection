@@ -7,6 +7,7 @@ import { useState } from "react";
 
 
 export default function InspectionTimeCard({inspectionType,data, selected, onSelect}:any) {
+  
       const isSelected = selected === inspectionType;
       
       

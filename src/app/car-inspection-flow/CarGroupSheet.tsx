@@ -13,7 +13,7 @@ import instance from '@/helper/interceptor';
 import { ApiHelper } from '@/helper/api-request';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
-export default function OpenSheet({inputValue,setInputValue,openModal,setOpenModal}:any) {
+export default function OpenSheet({inputValue,setInputValue,openModal,setOpenModal,moveToInspectionMethod}:any) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [products,setProducts] = useState<any>([]);
   const [disableDrag,setDisableDrag] = useState<boolean>(false);
@@ -91,8 +91,11 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
                 ))}
                 {carGroups?.map((item:any) => (
                   <div key={`group-${item.Id}`} className="flex w-full items-center my-4 border-b border-[#CFCFD0] py-2" onClick={() => {
-                    setInputValue({name: item.Name,value:item.Id})
-                    setOpenModal();
+                    setInputValue({name: item.Name,value:item.Id});
+                    // فراخوانی مستقیم moveToInspectionMethod با carGroupId
+                    if (moveToInspectionMethod) {
+                      moveToInspectionMethod(item.Id);
+                    }
                   }}>
                      <Image width={25} height={25} src={"https://api.carmacheck.com/" + item.ImagePath} alt={item.Name}/>
                   <span className='mx-2'>{item.Name}</span>
@@ -118,8 +121,11 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
               <div className='w-full'>
                 {carGroups?.map((item:any) => (
                   <div key={item.id} className="flex w-full items-center my-4 border-b border-[#CFCFD0] py-2" onClick={() => {
-                    setInputValue({name: item.Name,value:item.Id})
-                    setOpenModal();
+                    setInputValue({name: item.Name,value:item.Id});
+                    // فراخوانی مستقیم moveToInspectionMethod با carGroupId
+                    if (moveToInspectionMethod) {
+                      moveToInspectionMethod(item.Id);
+                    }
                   }}>
                      <Image width={25} height={25} src={"https://api.carmacheck.com/" + item.ImagePath} alt={item.Name}/>
                   <span className='mx-2'>{item.Name}</span>

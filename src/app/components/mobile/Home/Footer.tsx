@@ -2,21 +2,22 @@ import { Clock01Icon, Location01Icon, SmartPhone01Icon } from "hugeicons-react"
 import Image from "next/image"
 import Link from "next/link"
 
-export const Footer = () => {
+export const Footer = (data: any) => {
+  
     return (
       <>
         <footer className="px-4 py-12 bg-[#F0F2F4] text-black font-IranSans w-full lg:hidden">
         <div className="flex my-3">
             <Location01Icon size={24}/>
-            <span className="text-base mx-2">تهران،ونک،ملاصدرا،بن‌بست صدر، پلاک ۶ واحد ۴</span>
+            <span className="text-base mx-2">{data?.data?.Address}</span>
           </div>
           <div className="flex my-3">
             <Clock01Icon size={24}/>
-            <span className="text-base mx-2">شنبه تا چهارشنبه از ساعت 15-17</span>
+            <span className="text-base mx-2">{data?.data?.WorkingHours}</span>
           </div>
           <div className="flex my-3">
             <SmartPhone01Icon size={24}/>
-            <span className="text-base mx-2">02191001740 - 09981982905</span>
+            <span className="text-base mx-2">{data?.data?.PhoneNumbers}</span>
           </div>
           <div className="mt-8 flex justify-between flex-wrap">
             <Link href="./faq" prefetch={false}>سوالات متداول</Link>
@@ -40,15 +41,15 @@ export const Footer = () => {
  <div className="flex flex-wrap ">
   <h3 className="my-4 w-full text-[#101117] font-bold text-xl">اطلاعات تماس</h3>
             <Location01Icon size={24}/>
-            <span className="text-base mx-2">تهران،ونک،ملاصدرا،بن‌بست صدر، پلاک ۶ واحد ۴</span>
+            <span className="text-base mx-2">{data?.data?.Address}</span>
           </div>
           <div className="flex my-4">
             <Clock01Icon size={24}/>
-            <span className="text-base mx-2">شنبه تا چهارشنبه از ساعت 15-17</span>
+            <span className="text-base mx-2">{data?.data?.WorkingHours}</span>
           </div>
           <div className="flex my-4">
             <SmartPhone01Icon size={24}/>
-            <span className="text-base mx-2">02191001740 - 09981982905</span>
+            <span className="text-base mx-2">{data?.data?.PhoneNumbers}</span>
           </div>
           </div>
        

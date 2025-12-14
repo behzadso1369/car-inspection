@@ -9,6 +9,7 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import { handleLogout } from "@/helper/logout";
 
 // CSR - Client Side Rendering
 // صفحه پروفایل باید CSR باشد چون:
@@ -67,30 +68,8 @@ export default function Profile() {
                 });
         }
     }, [decoded]);
-  // Cookie helper function to delete cookie
-  const deleteCookie = (name: string) => {
-    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
-  };
-
   const logOut = () => {
-    instance.post(ApiHelper.get("Logout"))
-      .then((res: any) => {
-        if (typeof window !== 'undefined') {
-          localStorage.clear();
-          // Clear refresh token cookie
-          deleteCookie("refreshToken");
-          router.push("/");
-        }
-      })
-      .catch((err: any) => {
-        console.error("Error logging out:", err);
-        // حتی اگه API fail شد، localStorage رو پاک کن و redirect کن
-        if (typeof window !== 'undefined') {
-          localStorage.clear();
-          deleteCookie("refreshToken");
-          router.push("/");
-        }
-      });
+    handleLogout("/");
   }
 
   // Loading state

@@ -27,7 +27,8 @@ SearchCategoryWithId: "SiteBlog/SearchCategoryWithId",
 GetFAQ_CategoryData: "Site/GetFAQ_CategoryData",
 GetFAQWithCategoryId: "Site/GetFAQWithCategoryId",
 GetRegulationsData: "Site/GetRegulationsData",
-GetUserOirderDetailReport:"User/GetUserOrderDetailsReport"
+GetUserOirderDetailReport:"User/GetUserOrderDetailsReport",
+GetBlogDetail:"SiteBlog/SearchPostWithId"
 
 
 

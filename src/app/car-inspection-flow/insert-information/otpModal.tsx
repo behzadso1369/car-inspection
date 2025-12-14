@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 
 export default function OtpMoldal({openModal,setOpnModal}:any) {
       const [timer, setTimer] = useState(60);
+      const [isResending, setIsResending] = useState(false);
        const router = useRouter();
      
          const moveToInspectionLocation = () => {
@@ -58,6 +59,29 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
         const expires = new Date();
         expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
         document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+      };
+
+      const resendOtp = () => {
+        const phoneNumber = localStorage.getItem("phoneNumber");
+        if (!phoneNumber) {
+          console.error("Phone number not found");
+          return;
+        }
+
+        setIsResending(true);
+        instance.post(ApiHelper.get("CheckPhoneNumber"), {
+          phoneNumber: phoneNumber
+        }).then((res: any) => {
+          if (res?.isRegistered) {
+            localStorage.setItem("userId", res?.userId);
+          }
+          // Reset timer
+          setTimer(60);
+          setIsResending(false);
+        }).catch((err: any) => {
+          console.error("Error resending OTP:", err);
+          setIsResending(false);
+        });
       };
 
       const verifyOtp = (e:any) => {
@@ -115,7 +139,17 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
     </InputOTP>
             </div>
 
-            <span className="text-xs font-extralight text-[#55565A] text-center"> {formatTime(timer)}مانده تا دریافت مجدد کد</span>
+            {timer > 0 ? (
+              <span className="text-xs font-extralight text-[#55565A] text-center"> {formatTime(timer)}مانده تا دریافت مجدد کد</span>
+            ) : (
+              <Button 
+                onClick={resendOtp}
+                disabled={isResending}
+                className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4 disabled:opacity-50"
+              >
+                {isResending ? 'در حال ارسال...' : 'ارسال مجدد کد'}
+              </Button>
+            )}
 
           </div>
           

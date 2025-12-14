@@ -1,129 +1,142 @@
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { SearchIcon } from "lucide-react";
-import SuggestionCard from "../components/SuggestionCard";
-import { Metadata } from "next";
-import { serverApiHelper } from "@/helper/server-fetcher";
+"use client"
 
-// ISR - Incremental Static Regeneration
-// صفحات جزئیات بلاگ با ISR بهینه می‌شوند
-export const revalidate = 1800; // 30 minutes
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import instance from "@/helper/interceptor";
+import { ApiHelper } from "@/helper/api-request";
+import { NextSeo } from "next-seo";
 
-// این function برای pre-rendering صفحات محبوب بلاگ استفاده می‌شود
-export async function generateStaticParams() {
-  try {
-    const data = await serverApiHelper.post("SearchWithTermsCategory", { terms: "" });
-    const categories = data?.CategoryItems || [];
-    
-    // فقط 10 صفحه اول را pre-render می‌کنیم
-    return categories.slice(0, 10).map((category: any) => ({
-      id: String(category.Id),
-    }));
-  } catch (error) {
-    console.error('Error generating static params:', error);
-    return [];
+export default function BlogDetail() {
+  const params = useParams();
+  const id = params?.id as string;
+  const [blogData, setBlogData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getBlogDetail = () => {
+      if (!id) return;
+      
+      instance.get(ApiHelper.get("GetBlogDetail") + `?id=${id}`)
+        .then((res: any) => {
+          setBlogData(res?.PostDetails?.[0]);
+          setIsLoading(false);
+        })
+        .catch((err: any) => {
+          console.error("Error fetching blog detail:", err);
+          setIsLoading(false);
+        });
+    };
+
+    getBlogDetail();
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="px-4 font-IranSans py-8 text-center">
+        <p className="text-[#55565A]">در حال بارگذاری...</p>
+      </div>
+    );
   }
-}
 
-// Dynamic Metadata برای هر صفحه بلاگ
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  if (!blogData) {
+    return (
+      <div className="px-4 font-IranSans py-8 text-center">
+        <p className="text-[#55565A]">مقاله مورد نظر یافت نشد.</p>
+      </div>
+    );
+  }
+
+  const {
+    Title,
+    Content,
+    ImagePath,
+    Excerpt,
+    CreatedDate,
+  } = blogData;
+
   const siteURL = process.env.NEXT_PUBLIC_SITE_URL || 'https://carmacheck.com';
-  
-  // Await params در Next.js 15
-  const { id } = await params;
-  
-  try {
-    // فچ کردن اطلاعات دسته‌بندی با استفاده از serverApiHelper
-    const data = await serverApiHelper.get(`SearchCategoryWithId?id=${id}`, 1800);
-    const categoryName = data?.CategoryName || 'مقاله';
-    const posts = data?.CategoryPosts || [];
-    
-    // تولید description از تعداد مقالات
-    const postsCount = posts.length;
-    const description = `${postsCount} مقاله در دسته‌بندی ${categoryName} | راهنمای کامل ${categoryName} | نکات کارشناسی خودرو | مطالب آموزشی خرید ماشین`;
-    
-    return {
-      title: `${categoryName} | مقالات کارشناسی خودرو`,
-      description: description.slice(0, 160), // محدود به 160 کاراکتر
-      keywords: [
-        categoryName,
-        "کارشناسی خودرو",
-        "مقالات خودرو",
-        "آموزش خرید ماشین",
-        "کارماچک",
-        "بلاگ خودرو",
-      ],
-      alternates: {
-        canonical: `${siteURL}/blog/${id}`,
-      },
-      openGraph: {
-        title: `${categoryName} | مقالات کارشناسی خودرو`,
-        description: description.slice(0, 160),
-        url: `${siteURL}/blog/${id}`,
-        siteName: "کارماچک",
-        locale: "fa_IR",
-        type: "article",
-        images: posts[0]?.ImagePath ? [
+  const description = Excerpt || `${Title} | راهنمای کامل کارشناسی خودرو | نکات کارشناسی خودرو | مطالب آموزشی خرید ماشین`;
+
+  return (
+    <>
+      <NextSeo
+        title={`${Title} | مقالات کارشناسی خودرو`}
+        description={description.slice(0, 160)}
+        canonical={`${siteURL}/blog/${id}`}
+        openGraph={{
+          title: `${Title} | مقالات کارشناسی خودرو`,
+          description: description.slice(0, 160),
+          url: `${siteURL}/blog/${id}`,
+          siteName: "کارماچک",
+          locale: "fa_IR",
+          type: "article",
+          images: ImagePath ? [
+            {
+              url: `https://api.carmacheck.com/${ImagePath}`,
+              width: 1200,
+              height: 630,
+              alt: Title,
+            }
+          ] : [],
+        }}
+        twitter={{
+          cardType: "summary_large_image",
+        }}
+        additionalMetaTags={[
           {
-            url: `https://api.carmacheck.com/${posts[0].ImagePath}`,
-            width: 1200,
-            height: 630,
-            alt: categoryName,
-          }
-        ] : [],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: `${categoryName} | کارماچک`,
-        description: description.slice(0, 160),
-      },
-      robots: {
-        index: true,
-        follow: true,
-      },
-    };
-  } catch (error) {
-    // در صورت خطا، metadata پیش‌فرض
-    return {
-      title: "مقاله | کارشناسی خودرو کارماچک",
-      description: "مقالات تخصصی کارشناسی خودرو و خرید ماشین",
-      alternates: {
-        canonical: `${siteURL}/blog/${id}`,
-      },
-    };
-  }
-}
+            name: "keywords",
+            content: `${Title}, کارشناسی خودرو, مقالات خودرو, آموزش خرید ماشین, کارماچک, بلاگ خودرو`,
+          },
+        ]}
+      />
+      <div className="px-4 font-IranSans py-4 max-w-4xl mx-auto">
+        {/* عنوان مقاله */}
+        <h1 className="text-2xl md:text-3xl font-bold text-[#101117] mb-4">
+          {Title}
+        </h1>
 
-export default function BlogCategory({ params }: { params: Promise<{ id: string }> }) {
-        return (
-        <div className="px-4 font-IranSans py-4">
-          
-      <InputGroup  className="px-4 flex items-center !py-0 border border-[#DFDFDF] rounded-full text-[#55565A]">
-  <InputGroupInput placeholder="جستجو در مقاله‌ها" />
+        {/* تصویر مقاله */}
+        {ImagePath && (
+          <div className="relative w-full h-64 md:h-96 mb-6 rounded-lg overflow-hidden">
+            <Image
+              src={`https://api.carmacheck.com/${ImagePath}`}
+              alt={Title || 'تصویر مقاله'}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 800px"
+            />
+          </div>
+        )}
 
-  <InputGroupAddon align="inline-end">
-  <SearchIcon />
-  </InputGroupAddon>
-</InputGroup>
-<div>
-    <div className="flex justify-center flex-wrap">
+        {/* خلاصه مقاله */}
+        {Excerpt && (
+          <p className="text-lg text-[#55565A] mb-6 leading-relaxed">
+            {Excerpt}
+          </p>
+        )}
 
-   
-<div className="flex justify-center flex-wrap">
-<h2 className="w-auto border-b py-2 text-center inline-block m-auto">کارشناسی خودرو</h2>
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard1.png" link="/" />
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard2.jpg" link="/" />
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard3.jpg" link="/" />
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title="۵ اشتباه رایج مدیران تازه‌کار و روش‌های جلوگیری از آن‌ها" imageSrc="/suggestionCard1.png" link="/" />
-</div>
-    </div>
+        {/* محتوای HTML مقاله */}
+        {Content && (
+          <div 
+            className="prose prose-lg max-w-none text-[#101117] leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: Content }}
+            style={{
+              direction: 'rtl',
+              textAlign: 'right',
+            }}
+          />
+        )}
 
-
-</div>
-
-    
-     
-    
-            
-        </div>
-    )
+        {/* تاریخ انتشار */}
+        {CreatedDate && (
+          <div className="mt-8 pt-6 border-t border-[#DFDFDF]">
+            <p className="text-sm text-[#55565A]">
+              تاریخ انتشار: {new Date(CreatedDate).toLocaleDateString('fa-IR')}
+            </p>
+          </div>
+        )}
+      </div>
+    </>
+  );
 }

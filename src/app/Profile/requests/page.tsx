@@ -11,6 +11,7 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { handleLogout } from "@/helper/logout";
 
 export default function Profile() {
     const [doneRequests,setDoneRequest] = useState([]);
@@ -27,20 +28,7 @@ export default function Profile() {
       });
   }, []);
     const logOut = () => {
-    instance.post(ApiHelper.get("Logout"))
-      .then((res: any) => {
-        if (typeof window !== 'undefined') {
-          localStorage.clear();
-        }
-        router.push("/");
-      })
-      .catch((err: any) => {
-        console.error("Error logging out:", err);
-        if (typeof window !== 'undefined') {
-          localStorage.clear();
-        }
-        router.push("/");
-      });
+    handleLogout("/");
   }
  
     // const doneRequests = [

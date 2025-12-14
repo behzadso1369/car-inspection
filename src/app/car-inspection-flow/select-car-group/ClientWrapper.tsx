@@ -61,12 +61,20 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
     localStorage.setItem("CarGroupName", String(inputValue.name));
   }, [inputValue]);
 
-  const moveToInspectionMethod = () => {
+  const moveToInspectionMethod = (carGroupId?: number) => {
+    const idToUse = carGroupId || inputValue.value;
+    if (!idToUse) {
+      console.error("CarGroupId is required");
+      return;
+    }
+    
     instance.post(ApiHelper.get("CreateOrder"), {
-      carGroupId: inputValue.value
+      carGroupId: idToUse
     }).then((res: any) => {
       if (res?.orderId) {
         localStorage.setItem("OrderId", res?.orderId);
+        // بستن modal قبل از navigate
+        setOpenModal(false);
         // استفاده از navigate بهینه‌سازی شده
         navigate('./inspection-method');
       }
@@ -98,13 +106,19 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
             </div>
           </div>
           <Dialog open={openModal} onOpenChange={setOpenModal}>
-            <OpenSheet openModal={openModal} setOpenModal={setOpenModal} inputValue={inputValue} setInputValue={setInputValue} />
+            <OpenSheet 
+              openModal={openModal} 
+              setOpenModal={setOpenModal} 
+              inputValue={inputValue} 
+              setInputValue={setInputValue}
+              moveToInspectionMethod={moveToInspectionMethod}
+            />
           </Dialog>
           <Label onClick={() => setOpenModal(true)} className="my-2">نام خودرو</Label>
           <Input onClick={() => setOpenModal(true)} value={inputValue.name} readOnly placeholder="نام خودرو را انتخاب کنید" className="items-center !py-4 border w-full border-[#DFDFDF] rounded-full text-[#55565A] text-xs h-11" />
 
           <Button 
-            onClick={moveToInspectionMethod} 
+            onClick={() => moveToInspectionMethod()} 
             disabled={isPending}
             className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4 disabled:opacity-50"
           >
