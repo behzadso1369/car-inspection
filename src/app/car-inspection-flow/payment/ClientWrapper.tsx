@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
+import { Payment02Icon } from "hugeicons-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,13 +14,7 @@ export default function ClientWrapper() {
   const [discountCode, setDiscountCode] = useState<any>("");
 
   const moveToPaymentSucceed = () => {
-    const params: any = {
-      "isBack": false,
-      "orderId": Number(localStorage.getItem("OrderId"))
-    };
-    instance.post(ApiHelper.get("MovePrivateOrder"), params).then((res: any) => {
-      setDiscountCode(res?.discountCode);
-    });
+  
   };
 
   const getUserOrderDetails = () => {
@@ -28,13 +23,26 @@ export default function ClientWrapper() {
     });
   };
 
-  const moveToProfile = () => {
-    router.push("../../Profile");
+  const moveToGateway = () => {
+      const params: any = {
+      "isBack": false,
+      "orderId": Number(localStorage.getItem("OrderId"))
+    };
+    instance.post(ApiHelper.get("MovePrivateOrder"), params).then((res: any) => {
+      
+      if(res?.isEndFlow) {
+        
+           router.push(res?.paymentUrl);
+      }
+         
+   
+    });
+
   };
 
   useEffect(() => {
     getUserOrderDetails();
-    moveToPaymentSucceed();
+    // moveToPaymentSucceed();
   }, []);
 
   return (
@@ -42,29 +50,24 @@ export default function ClientWrapper() {
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl mt-6">
           <div className="flex flex-wrap items-center w-full justify-center">
-            <div className="aspect-[1] relative w-16 h-auto ml-4">
-              <Image src="/final-success.png" alt="step2.png" fill className="object-fill" />
-            </div>
-            <h3 className="w-full text-center my-4 text-base text-[#101117] font-bold">سفارش با موفقیت ثبت گردید</h3>
+            <Payment02Icon color="#416CEA" size={80}/>
+            <h3 className="w-full text-center my-4 text-base text-[#101117] font-bold">پرداخت سفارش</h3>
           </div>
         </div>
       </div>
 
       <div className="px-4 border-b border-[#DFDFDF] py-2">
-        <div className="flex my-4 justify-between">
-          <span className="text-[#6B6C70] text-sm"> کد پیگیری سفارش:</span>
-          <span className="text-sm">{discountCode}</span>
-        </div>
+        
         <div className="flex justify-between">
           <span className="text-[#6B6C70] text-sm">تاریخ ثبت سفارش:</span>
-          <span>{orderDetail?.username}</span>
+          <span>{orderDetail?.orderCreated}</span>
         </div>
       </div>
 
       <div className="px-4 border-b border-[#DFDFDF] py-2">
         <div className="flex my-4 justify-between">
           <span className="text-[#6B6C70] text-sm">مبلغ :</span>
-          <span className="text-sm">{orderDetail?.totalPrice} تومان</span>
+          <span className="text-sm">{orderDetail?.totalPrice?.toLocaleString()} تومان</span>
         </div>
         <div className="flex my-4 justify-between">
           <span className="text-[#6B6C70] text-sm">زمان کارشناسی:</span>
@@ -76,7 +79,7 @@ export default function ClientWrapper() {
         </div>
         <div className="flex my-4 justify-between">
           <span className="text-[#6B6C70] text-sm">قابل پرداخت:</span>
-          <span className="text-sm">{orderDetail?.finalPrice} تومان</span>
+          <span className="text-sm">{orderDetail?.finalPrice?.toLocaleString()} تومان</span>
         </div>
       </div>
 
@@ -89,7 +92,7 @@ export default function ClientWrapper() {
       </div>
 
       <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button onClick={moveToProfile} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+        <Button onClick={moveToGateway} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
            پرداخت
         </Button>
       </div>

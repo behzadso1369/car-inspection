@@ -28,7 +28,7 @@ export default function ClientWrapper() {
     };
     instance.post(ApiHelper.get("MovePrivateOrder"), params).then((res: any) => {
       if (res) {
-        router.push("./payment-success");
+        router.push("./payment");
       }
     });
   };
@@ -76,7 +76,7 @@ export default function ClientWrapper() {
         <h1>خلاصه سفارش</h1>
         <div className="flex my-4 justify-between">
           <span className="text-[#6B6C70] text-sm">مبلغ کل:</span>
-          <span className="text-sm">{orderDetail?.totalPrice} تومان</span>
+          <span className="text-sm">{orderDetail?.totalPrice?.toLocaleString()} تومان</span>
         </div>
         <div className="flex justify-between">
           <span className="text-[#6B6C70] text-sm">تخفیف:</span>
@@ -92,7 +92,7 @@ export default function ClientWrapper() {
         </div>
         <div className="flex my-4 justify-between">
           <span className="text-[#6B6C70] text-sm">قابل پرداخت:</span>
-          <span className="text-sm">{orderDetail?.finalPrice} تومان</span>
+          <span className="text-sm">{orderDetail?.finalPrice?.toLocaleString()} تومان</span>
         </div>
       </div>
 
