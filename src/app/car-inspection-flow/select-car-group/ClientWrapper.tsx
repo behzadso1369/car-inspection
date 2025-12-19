@@ -83,13 +83,6 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
 
   return (
     <div className="bg-white font-IranSans">
-      <Banner data={data} />
-      <div className="hidden lg:block px-20 mb-6 bg-transparent sticky top-11 z-20">
-        <Header data={data} />
-      </div>
-      <div className="lg:hidden sticky top-11 z-10 bg-white">
-        <CallAction data={data} />
-      </div>
 
       <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10">
         <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">
@@ -202,7 +195,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       <div className="lg:hidden">
         <NavigationBar />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

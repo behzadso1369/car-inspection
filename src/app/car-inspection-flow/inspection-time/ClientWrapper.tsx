@@ -38,7 +38,13 @@ export default function ClientWrapper() {
     instance.post(ApiHelper.get("MovePrivateOrder"), params)
       .then((res: any) => {
         if (res) {
-          router.push("./final-confirm");
+             if(res?.isEndFlow) {
+        
+           router.push(res?.paymentUrl);
+      }else {
+     router.push("./final-confirm");
+      }
+     
         }
       }).catch((err: any) => {
         console.log(err);
@@ -73,7 +79,6 @@ export default function ClientWrapper() {
 
   useEffect(() => {
     GetCarInspectionDateType();
-    GetCarInspectionDateTime();
   }, []);
 
   // بررسی اینکه آیا نوع انتخاب شده کارشناسی فوری است (دارای MaxMinutes)
@@ -87,6 +92,13 @@ export default function ClientWrapper() {
     selectedType.MaxMinutes !== "" &&
     (typeof selectedType.MaxMinutes === 'number' ? selectedType.MaxMinutes >= 0 : true);
   const shouldShowTimeTabs = selected && !hasMaxMinutes;
+
+  // فراخوانی GetCarInspectionDateTime فقط زمانی که نوع انتخاب شده کارشناسی عادی باشد
+  useEffect(() => {
+    if (selected && !hasMaxMinutes && carInspectionDateTime.length === 0) {
+      GetCarInspectionDateTime();
+    }
+  }, [selected, hasMaxMinutes]);
   
   // برای دیباگ - می‌توانید این خط را بعداً حذف کنید
   if (selected && selectedType) {

@@ -76,6 +76,7 @@ export default async function Home() {
   console.log('⏰ Time:', new Date().toISOString());
 
   const data = await getMasterPageData();
+  debugger
   console.log('📊 Data fetched:', data ? 'Success' : 'Failed');
   console.log('📊 Data fetched:', data);
 

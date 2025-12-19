@@ -15,15 +15,6 @@ export default function ProfileLayout({
      const [data,setData] = useState<any>([]);
        const pathname = usePathname();
   const isBaseFlow = pathname === "/car-inspection-flow/select-car-group";
-       useEffect(() => {
-    instance.get(ApiHelper.get("GetMasterPageData"))
-      .then((res: any) => {
-        setData(res);
-      })
-      .catch((err: any) => {
-        console.error("Error fetching data:", err);
-      });
-  }, []);
 
   const handleBack = () => {
     const userId = localStorage.getItem("userId");

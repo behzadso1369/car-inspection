@@ -15,16 +15,17 @@ const ROUTES_WITH_FOOTER = [
   "/regulations",
   "/new-service",
   "/contact-us",
+  "/car-inspection-flow/select-car-group",
+  "/payment/success",
+  "/payment/failed",
 ];
 
 interface ConditionalFooterProps {
   data?: any; // Data از server-side (اختیاری)
 }
 
-export default function ConditionalFooter({ data: initialData }: ConditionalFooterProps) {
+export default function ConditionalFooter({ data }: ConditionalFooterProps) {
   const pathname = usePathname();
-  const [data, setData] = useState<any>(initialData || null);
-  const [isLoading, setIsLoading] = useState(!initialData);
 
   // بررسی اینکه آیا مسیر فعلی باید footer را نمایش دهد
   // مستثنی کردن مسیرهای Profile و Blog (که layout های خاص خود را دارند)
@@ -32,54 +33,17 @@ export default function ConditionalFooter({ data: initialData }: ConditionalFoot
   const shouldShowFooter =
     ROUTES_WITH_FOOTER.includes(pathname) &&
     !pathname.startsWith("/Profile") &&
-    !pathname.startsWith("/blog") &&
-    !pathname.startsWith("/car-inspection-flow");
+    !pathname.startsWith("/blog") 
 
-  useEffect(() => {
-    if (shouldShowFooter) {
-      // اگه initialData موجود بود، از اون استفاده کن
-      if (initialData) {
-        setData(initialData);
-        setIsLoading(false);
-        return;
-      }
-
-      // در غیر این صورت، از API fetch کن
-      setIsLoading(true);
-      instance
-        .get(ApiHelper.get("GetMasterPageData"))
-        .then((res: any) => {
-          setData(res);
-          setIsLoading(false);
-        })
-        .catch((err: any) => {
-          console.error("Error fetching footer data:", err);
-          setIsLoading(false);
-        });
-    } else {
-      // پاک کردن داده وقتی از مسیر خارج می‌شویم
-      setData(null);
-      setIsLoading(false);
-    }
-  }, [shouldShowFooter, pathname, initialData]);
 
   if (!shouldShowFooter) {
-    return null;
-  }
-
-  // اگه در حال loading هست و data نداریم، null برگردون
-  if (isLoading && !data) {
-    return null;
-  }
-
-  // اگه data نداریم (حتی بعد از loading)، null برگردون
-  if (!data) {
     return null;
   }
 
   // پاس دادن MasterSiteData به Footer چون Footer انتظار دارد که Address, PhoneNumber, WorkingHours مستقیماً در data باشند
   return <Footer data={data?.MasterSiteData || data} />;
 }
+
 
 
 

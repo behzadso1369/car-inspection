@@ -30,7 +30,7 @@ import Link from "next/link";export const Slider = ({data}:any) => {
         opts={{
           align: "center",
           loop: true,
-          duration: data?.[0]?.DurationTime  || 90,
+          duration:  90,
           active:true,
           
 
@@ -38,7 +38,7 @@ import Link from "next/link";export const Slider = ({data}:any) => {
         
         plugins={[
             Autoplay({
-              delay: 3000,
+              delay: data?.[0]?.DurationTime  || 3000,
                 
             }),
 

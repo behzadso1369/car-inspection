@@ -11,6 +11,7 @@ export const Header = memo(({data}:any) => {
     const pathname = usePathname();
     const router = useRouter();
     
+    
     // Prefetch صفحات مهم در background
     useEffect(() => {
         router.prefetch("/");
@@ -39,12 +40,12 @@ export const Header = memo(({data}:any) => {
                         alt="کارماچک" 
                         width={62} 
                         height={57} 
-                        src={"https://api.carmacheck.com/" + data?.MasterSiteData?.ImagePath}
+                        src={"https://api.carmacheck.com/" + data?.ImagePath}
                         priority
                         loading="eager"
                     />
                     <h1 className="font-IranSans-UltraLight text-4xl text-black mx-1 font-semibold">
-                        {data?.MasterSiteData?.CompanyName}
+                        {data?.CompanyName}
                     </h1>
                 </div>
 
@@ -71,9 +72,9 @@ export const Header = memo(({data}:any) => {
                 <span className="text-[#101117] flex items-center font-IranSans">
                     <a 
                         className="rounded-3xl font-IranSans-UltraLight border border-white px-2" 
-                        href={`tel:${data?.MasterSiteData?.NavbarPhoneNumber}`}
+                        href={`tel:${data?.NavbarPhoneNumber}`}
                     >
-                        {data?.MasterSiteData?.NavbarPhoneNumber}
+                        {data?.NavbarPhoneNumber}
                     </a>
                     <Call02Icon size={16}/>
                     <NavigationLink href="/Profile" prefetch={true} className="mx-2">

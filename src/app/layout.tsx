@@ -6,8 +6,6 @@ import { Toaster } from "sonner";
 import ConditionalHeader from "./components/ConditionalHeader";
 import ConditionalFooter from "./components/ConditionalFooter";
 import { serverApiHelper } from "@/helper/server-fetcher";
-import instance from "@/helper/interceptor";
-import { ApiHelper } from "@/helper/api-request";
 
 export const dynamic = 'force-dynamic'
 
@@ -71,13 +69,10 @@ export default async function RootLayout({
   let initialData = null;
   
   try {
-   instance.get(ApiHelper.get("GetMasterPageData")).then((res:any) => {
-    
-    initialData = res?.MasterSiteData;
-
-    });
-    
+    const data = await serverApiHelper.get("GetMasterPageData", 3600);
+    initialData = data?.MasterSiteData;
   } catch (error) {
+    debugger
     console.error("Error fetching master data in layout:", error);
   }
 
@@ -87,7 +82,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
      <SeoWrapper/>
-        <ConditionalHeader initialData={initialData} />
+        <ConditionalHeader data={initialData} />
         {children}
         <ConditionalFooter data={initialData} />
                 <Toaster richColors position="top-center" />

@@ -52,6 +52,20 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
     router.prefetch('./inspection-location');
     router.prefetch('./insert-information');
   }, [router]);
+  const moveToInspectionLocation = () => {
+    instance.post(ApiHelper.get("MoveOrder"), {
+      "isBack": false,
+      "orderId": localStorage.getItem("OrderId"),
+      "carInspectionTypeId": carInspectionType.filter((item: any) => item.Id == selected)[0].InspectionTypeId,
+      "carInspectionId": carInspectionType.filter((item: any) => item.Id == selected)[0].Id,
+    }).then((res: any) => {
+      if (res) {
+        router.push("./inspection-location");
+      }
+    }).catch((err: any) => {
+      console.log(err);
+    });
+  }
 
   const moveToInsertInformation = () => {
     instance.post(ApiHelper.get("MoveOrder"), {
@@ -66,7 +80,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         router.push("./insert-information");
         
       } else {
-        router.push("./inspection-location");
+        moveToInspectionLocation();
       }
     }).catch((err: any) => {
       console.log(err);

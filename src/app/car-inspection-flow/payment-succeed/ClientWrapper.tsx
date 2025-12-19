@@ -15,7 +15,7 @@ export default function ClientWrapper() {
   const getUserOrderDetails = () => {
     instance.get(ApiHelper.get("GetUserOrderDetails") + "?OrderId=" + localStorage.getItem("OrderId")).then((res: any) => {
       setOrderDetail(res);
-      debugger
+      
          setDiscountCode(res?.discountCode);
     });
   };

@@ -9,7 +9,7 @@ export const Footer = (data: any) => {
         <footer className="px-4 py-12 bg-[#F0F2F4] text-black font-IranSans w-full lg:hidden">
         <div className="flex my-3">
             <Location01Icon size={24}/>
-            <span className="text-base mx-2">{data?.data?.Address}</span>
+            <span className="text-base mx-2 leading-8">{data?.data?.Address}</span>
           </div>
           <div className="flex my-3">
             <Clock01Icon size={24}/>

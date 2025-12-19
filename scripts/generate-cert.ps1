@@ -49,3 +49,4 @@ if ($opensslPath) {
     Write-Host "  openssl pkcs12 -in $certPath -out $(Join-Path $certsDir 'localhost-key.pem') -nocerts -nodes -passin pass:development" -ForegroundColor Yellow
 }
 
+
