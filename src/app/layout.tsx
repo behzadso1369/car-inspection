@@ -20,42 +20,109 @@ const geistMono = Geist_Mono({
 });
 
 const API_BASE_URL = 'https://api.carmacheck.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com";
 
-// Dynamic metadata با icon از API
-export async function generateMetadata(): Promise<Metadata> {
-  let iconUrl = '/favicon.ico'; // fallback
-  let siteName = 'کارماچک';
-  let siteDescription = 'کارشناسی تخصصی خودرو با کارشناسان مجرب';
-
+async function fetchMasterData() {
   try {
     const data = await serverApiHelper.get("GetMasterPageData", 3600);
-    
-    // ساخت URL کامل برای icon
-    if (data?.MasterSiteData?.ImagePath) {
-      const imagePath = data.MasterSiteData.ImagePath;
-      iconUrl = imagePath.startsWith('/') 
-        ? `${API_BASE_URL}${imagePath}`
-        : `${API_BASE_URL}/${imagePath}`;
-    }
-    
-    if (data?.MasterSiteData?.CompanyName) {
-      siteName = data.MasterSiteData.CompanyName;
-    }
-    
-    if (data?.MasterSiteData?.Description) {
-      siteDescription = data.MasterSiteData.Description;
-    }
+    return data?.MasterSiteData || null;
   } catch (error) {
-    console.error('Error fetching metadata:', error);
+    console.error('Error fetching master data:', error);
+    return null;
   }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const masterData = await fetchMasterData();
+  
+  const siteName = masterData?.CompanyName || 'کارماچک';
+  const siteDescription = masterData?.Description || 'کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق | کارشناسی در محل یا مرکز | دریافت گزارش فوری | تهران';
 
   return {
-    title: siteName,
+    title: {
+      default: `${siteName} | کارشناسی تخصصی خودرو با کارشناسان مجرب`,
+      template: `%s | ${siteName}`,
+    },
     description: siteDescription,
+    
+    // Robots
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    
+    // Icons
     icons: {
-      icon: '/icon',
-      shortcut: '/icon',
-      apple: '/icon',
+      icon: '/favicon.ico',
+      shortcut: '/favicon.ico',
+      apple: '/apple-touch-icon.png',
+    },
+    
+    // Manifest
+    manifest: '/site.webmanifest',
+    
+    // Theme Color
+    themeColor: '#3456bb',
+    
+    // Viewport
+    viewport: {
+      width: 'device-width',
+      initialScale: 1,
+      maximumScale: 5,
+    },
+    
+    // Open Graph
+    openGraph: {
+      type: 'website',
+      locale: 'fa_IR',
+      url: SITE_URL,
+      siteName: `${siteName} - کارشناسی خودرو`,
+      title: `${siteName} | کارشناسی تخصصی خودرو با کارشناسان مجرب`,
+      description: siteDescription,
+      images: [
+        {
+          url: `${SITE_URL}/og-default.jpg`,
+          width: 1200,
+          height: 630,
+          alt: `${siteName} - کارشناسی خودرو`,
+          type: 'image/jpeg',
+        },
+      ],
+    },
+    
+    // Twitter
+    twitter: {
+      card: 'summary_large_image',
+      site: '@carmacheck',
+      creator: '@carmacheck',
+    },
+    
+    // Other metadata
+    authors: [{ name: 'کارماچک - CarmaCheck' }],
+    creator: 'کارماچک',
+    publisher: 'کارماچک',
+    formatDetection: {
+      telephone: false,
+    },
+    
+    // Alternates
+    alternates: {
+      canonical: SITE_URL,
+      languages: {
+        'fa-IR': SITE_URL,
+      },
+    },
+    
+    // Additional meta tags
+    other: {
+      'msapplication-TileColor': '#3456bb',
     },
   };
 }
@@ -81,7 +148,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-     <SeoWrapper/>
+     {/* <SeoWrapper/> */}
         <ConditionalHeader data={initialData} />
         {children}
         <ConditionalFooter data={initialData} />

@@ -90,7 +90,7 @@ export default async function Home() {
       <Statistics data={data?.StatisticsData}/>
       <BlogShort data={data?.BlogPosts}/>
       <div className="block lg:hidden">
-  <NavigationBar/>
+         <NavigationBar/>
       </div>
    </div>
   );
