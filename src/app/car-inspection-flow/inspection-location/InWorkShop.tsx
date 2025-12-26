@@ -30,7 +30,7 @@ export default function InWorkShop({LocationTypeDescription}:any) {
             </Button>
           </div>
                  <Dialog open={openModal} onOpenChange={setOpenModal}>
-                   <DirectionsMap LocationTypeDescription={LocationTypeDescription}/>
+                   <DirectionsMap LocationTypeDescription={LocationTypeDescription} onClose={() => setOpenModal(false)}/>
                  </Dialog>
  </div>
     )

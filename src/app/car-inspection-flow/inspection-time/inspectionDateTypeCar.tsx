@@ -23,7 +23,7 @@ export default function InspectionDateTypeCar({inspectionType,data, selected, on
   <Label htmlFor={String(data.Id)} className="text-[#101117]">{data.Name}</Label>
   </div>
     
-        {data?.MaxMinutes === 0 &&      <div className="text-sm flex items-center">
+        {data?.MaxMinutes &&      <div className="text-sm flex items-center">
                   <span className="text-[#416CEA] font-bold bg-[#F0F2F4] px-2 py-1 rounded-3xl"> {data?.AdditionalCost.toLocaleString()}+ تومان</span>
                 </div>}
       </div>
@@ -32,6 +32,10 @@ export default function InspectionDateTypeCar({inspectionType,data, selected, on
         {data.InspectionTypeDescription}
     
       </div>
+      {data?.MaxMinutes &&  <div className="text-[#416CEA] my-2 text-sm flex">
+        شما حداکثر باید تا {data?.MaxMinutes} دقیقه  دیگر در محل حضور داشته باشید
+    
+      </div>}
       
      
             </div>

@@ -23,7 +23,8 @@ export default function InspectionReport() {
       const getUserOirderDetailReport = () => {
         
         instance.get(ApiHelper.get("GetUserOirderDetailReport") + "?OrderId=" + params.id).then((res:any) => {
-            setOrderDetail(res);
+          
+            downloadImage(res?.reportImage);
         })
 
     }
@@ -33,6 +34,39 @@ export default function InspectionReport() {
             const logOut = () => {
     handleLogout("/");
   }
+  const downloadImage = async (imageUrl: string, filename: string = "inspection-report") => {
+    if (!imageUrl) {
+        console.error("Image URL is missing");
+        return;
+    }
+    
+    const imgUrl = "https://api.carmacheck.com/" + imageUrl;
+    try {
+        // Fetch the image as a blob
+        const response = await fetch(imgUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        // Create download link
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = filename || `inspection-report-${params.id}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Clean up the object URL
+        window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+        console.error("Error downloading image:", error);
+        // Fallback: open in new tab
+        window.open(imgUrl, "_blank");
+    }
+}
     return (
           <div className="grid grid-cols-3 gap-4 pt-4 pb-20 lg:pb-0 font-IranSans">
           <div className="col-span-3 lg:col-span-1 order-1 lg:order-0 lg:border lg:border-[#D9D9D9] lg:max-h-[243px] rounded-2xl">           
@@ -63,7 +97,7 @@ export default function InspectionReport() {
         
                 </h6>
                 </div>
-                 <div className="py-6 font-IranSans px-4 order-0 lg-order-1 col-span-3 lg:col-span-2 lg:border lg:border-[#D9D9D9]  rounded-2xl">
+                {orderDetail?.id ?      <div className="py-6 font-IranSans px-4 order-0 lg-order-1 col-span-3 lg:col-span-2 lg:border lg:border-[#D9D9D9]  rounded-2xl">
                         {/* Car schematic and details */}
                         <div className="flex flex-col md:flex-row gap-6 mb-6">
                           
@@ -120,7 +154,8 @@ export default function InspectionReport() {
                         <div className="flex justify-end">
                             <button onClick={getUserOirderDetailReport} className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">چاپ گزارش کارشناسی</button>
                         </div>
-        </div>
+        </div> : <div className="w-full flex items-center justify-center !text-yellow-600 text-lg py-6 font-IranSans px-4 order-0 lg-order-1 col-span-3 lg:col-span-2 lg:border lg:border-[#D9D9D9]  rounded-2xl">در حال حاضر هیچ گزارشی برای کارشناسی شما ثبت نشده است</div>}
+            
                 </div>
        
     )

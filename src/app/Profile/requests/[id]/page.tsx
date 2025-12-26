@@ -65,7 +65,6 @@ export default function RequestDetail() {
    <span className={`px-1 text-sm rounded-4xl py-1 mb-2  ${orderDetail?.isComplete ?  "bg-[#E6FEE6] text-[#2CFF21] " : "bg-[#FEF4E6] text-[#F8A94D]" }`}>{orderDetail?.isComplete ? "تکمیل شده" : "تکمیل نشده"}</span>
    <h5 className="text-[#416CEA] text-sm my-2"> کار شناسی ماشین     {orderDetail?.carGroup} </h5>
    <h5 className="text-[#101117] text-base my-2"> وضعیت سفارش :  {orderDetail?.flowState} </h5>
-   <strong className="text-sm text-[#101117] font-light">عدم پرداخت</strong>
    {/* <div className="w-full">
    <Button className="rounded-3xl w-1/2 my-4 bg-[#3456bb] text-white">جزییات سفارش</Button>
    </div> */}
@@ -85,7 +84,7 @@ export default function RequestDetail() {
 <div className="my-6 border-b border-[#DFDFDF] box-content w-full">
     <div className="flex justify-between text-sm my-2">
     <span className="text-[#55565A]">مبلغ:</span>
-    <span className="text-[#101117] text-base font-medium">{orderDetail?.totalPrice} تومان</span>
+    <span className="text-[#101117] text-base font-medium">{orderDetail?.totalPrice?.toLocaleString()} تومان</span>
     </div>
     <div className="flex justify-between text-sm my-2">
     <span className="text-[#55565A]">نوع کارشناسی:</span>
@@ -101,7 +100,7 @@ export default function RequestDetail() {
     <div className="flex w-full justify-between">
     <div className="flex flex-col text-base text-[#101117] mx-4">
         <span>خودرو سواری  {orderDetail?.carGroup}</span>
-        <span>مالک :  {orderDetail?.username}</span>
+        <span>کاربر :  {orderDetail?.username}</span>
     </div>
     <Link prefetch={false} href={`./${params?.id}/inspection-report` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#3456bb] text-white">گزارش کارشناسی</Link>
     </div>

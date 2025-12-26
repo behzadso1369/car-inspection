@@ -3,12 +3,13 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-
 import "leaflet/dist/leaflet.css"
 import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Location01Icon } from "hugeicons-react"
-import { useEffect, useState } from "react"
+import { Location01Icon, Cancel01Icon } from "hugeicons-react"
+import { useEffect, useState, useRef } from "react"
 import L from "leaflet"
 
 // Fix for default marker icon in react-leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
+
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -18,14 +19,14 @@ L.Icon.Default.mergeOptions({
 // Component to fit map bounds
 function MapBounds({ userLocation, destination }: { userLocation: [number, number] | null, destination: [number, number] }) {
   const map = useMap();
-  
+
   useEffect(() => {
     if (userLocation) {
       const bounds = L.latLngBounds([userLocation, destination]);
       map.fitBounds(bounds, { padding: [50, 50] });
     }
   }, [userLocation, destination, map]);
-  
+
   return null;
 }
 
@@ -58,16 +59,40 @@ function createCurvedPath(start: [number, number], end: [number, number], numPoi
   return points;
 }
 
-export default function DirectionsMap({LocationTypeDescription}:any) {
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+export default function DirectionsMap({LocationTypeDescription, onClose}:any) {
+   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const destination: [number, number] = [35.752854, 51.508942];
   const center: [number, number] = userLocation || destination;
+  const isBackPressedRef = useRef(false);
   
-  const mapProps: any = { 
-    center, 
-    zoom: userLocation ? 12 : 15, 
-    className: "h-full w-full" 
+  const mapProps: any = {
+    center,
+    zoom: userLocation ? 12 : 15,
+    className: "h-full w-full"
   };
+
+  // Handle Android back button
+  useEffect(() => {
+    // Push a new state to history when component mounts
+    window.history.pushState({ modalOpen: true }, '');
+
+    const handlePopState = (event: PopStateEvent) => {
+      // Mark that back button was pressed
+      isBackPressedRef.current = true;
+      // Close the modal
+      onClose();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      // Only go back if the modal was closed by clicking close button (not back button)
+      if (!isBackPressedRef.current && window.history.state?.modalOpen) {
+        window.history.back();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -117,11 +142,15 @@ export default function DirectionsMap({LocationTypeDescription}:any) {
   };
 
   return (
-    <DialogContent className="w-[100vw] h-[100vh] max-w-[100vw] max-h-[100vh] overflow-hidden p-0 border-none bg-white font-IranSans m-0 rounded-none lg:rounded-lg lg:w-[90vw] lg:h-[90vh] lg:max-w-[1200px]">
-      <DialogHeader className="h-auto px-4 pt-4 pb-2">
-        <DialogTitle className="text-base text-[#101117] py-4 font-bold">
-          آدرس و ساعت مراجعه
-        </DialogTitle>
+  <DialogContent showCloseButton={false} className="w-[100vw] h-[100vh] max-w-[100vw] max-h-[100vh] overflow-hidden p-0 border-none bg-white font-IranSans m-0 rounded-none lg:rounded-lg lg:w-[90vw] lg:h-[90vh] lg:max-w-[1200px]">
+      <DialogHeader className="px-4 pt-6 pb-2 lg:pt-4 relative">
+        <Button
+          onClick={onClose}
+          className="absolute left-4 top-4 lg:top-2 bg-transparent hover:bg-gray-100 p-3 h-auto w-auto text-gray-600"
+          variant="ghost"
+        >
+          <Cancel01Icon size={32} />
+        </Button>
          <div className="flex my-3">
             <Location01Icon size={20}/>
             <span className="text-sm mx-2 break-words">{LocationTypeDescription}</span>

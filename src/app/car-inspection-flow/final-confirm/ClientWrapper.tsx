@@ -41,7 +41,7 @@ export default function ClientWrapper() {
   }, []);
 
   return (
-    <div className="bg-white font-IranSans lg:px-4 lg:py-4">
+    <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-24">
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -83,7 +83,7 @@ export default function ClientWrapper() {
         </div>
         <div className="flex justify-between">
           <span className="text-[#6B6C70] text-sm">تخفیف:</span>
-          <span>{orderDetail?.discount} تومان</span>
+          <span>{orderDetail?.discount?.toLocaleString()} تومان</span>
         </div>
         <div className="flex my-4 justify-between">
           <span className="text-[#6B6C70] text-sm">نوع کارشناسی:</span>
@@ -99,7 +99,7 @@ export default function ClientWrapper() {
         </div>
       </div>
 
-      <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+      <div className="px-4 w-full lg:my-4 bg-white lg:static lg:mt-8 fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
         <Button onClick={moveToPaymentSucceed} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
            تایید و پرداخت
         </Button>

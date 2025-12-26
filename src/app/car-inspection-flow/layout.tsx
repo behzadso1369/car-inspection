@@ -41,6 +41,14 @@ export default function ProfileLayout({
       window.history.back();
     }
   };
+  const getMasterData = () => {
+    instance.get(ApiHelper.get("GetMasterPageData")).then((res:any) => {
+      setData(res);
+    })
+  }
+  useEffect(() => {
+    getMasterData();
+  },[])
     return (
 
 

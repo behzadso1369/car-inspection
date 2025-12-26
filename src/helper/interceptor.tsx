@@ -70,15 +70,14 @@ instance.interceptors.response.use(
     return response.data.resultObject;
   },
   async (error) => {
-    
+    let message = "";
     const originalRequest = error.config;
     
-    // if(error.response.data.statusMessage) {
-    //   toast("Error", { description: error.response.data.statusMessage });
-    //   return
-    // }
+    if(error.response.data.statusMessage) {
+    message  = error.response.data.statusMessage;
+    }
     
-    let message = "";
+    
 
     if (!error.response) {
       message = "اینترنت شما قطع شده است";

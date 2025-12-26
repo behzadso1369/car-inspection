@@ -43,7 +43,7 @@ export default function Requests({data}:any) {
           {data?.map((item:any, index:number) => (
             <CarouselItem key={index} className="basis-4/5 " >
               
-                  <RequestCard Status={item.isComplete  ? "compepelted" : "unknown"} Id={item.id} CarName={item.carGroup} Title={item.isComplete ? "تکمیل شده" : "تکمیل نشده"} paymentStatus={item.flowState} Description={item.Description} />
+                  <RequestCard orderCreated={item?.orderCreated} Status={item.isComplete  ? "compepelted" : "unknown"} Id={item.id} CarName={item.carGroup} Title={item.isComplete ? "تکمیل شده" : "تکمیل نشده"} paymentStatus={item.flowState} Description={item.Description} />
               
            
             </CarouselItem>
@@ -56,7 +56,7 @@ export default function Requests({data}:any) {
                {data?.map((item:any, index:number) => (
             
               
-                  <RequestCard Status={item.isComplete  ? "compepelted" : "unknown"} Id={item.id} CarName={item.carGroup} Title={item.isComplete ? "تکمیل شده" : "تکمیل نشده"} paymentStatus={item.flowState} Description={item.Description} />
+                  <RequestCard orderCreated={item?.orderCreated} Status={item.isComplete  ? "compepelted" : "unknown"} Id={item.id} CarName={item.carGroup} Title={item.isComplete ? "تکمیل شده" : "تکمیل نشده"} paymentStatus={item.flowState} Description={item.Description} />
               
            
        

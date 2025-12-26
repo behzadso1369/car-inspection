@@ -55,37 +55,28 @@ export default function OurCustomer() {
 
           ]}
         
-        orientation="horizontal"
         
-        className="w-full"
+        className="w-full max-w-full"
       >
-        <CarouselContent className="w-full h-auto lg:h-[500px]">
-          {data?.CarInspectionServices?.map((item:any) => {
+         <CarouselContent className="-ml-2 md:-ml-4">
+          {data?.CarInspectionServices?.map((item:any,index:number) => {
  return (
   <CarouselItem
-              key={item?.Id}
-              className="basis-full"
+           key={index} className="pl-2 md:pl-4 basis-4/5 lg:basis-1/3 xl:basis-1/3 2xl:basis-1/3" 
 
             >
-              <div className="flex flex-wrap px-2 lg:px-60">
+              <div className="flex flex-wrap px-2">
                 <div className="w-full flex flex-wrap ">
-                  <div className="w-full lg:w-1/3 flex justify-center relative h-[320px]">
-  <Image
-                src={"https://api.carmacheck.com/" + item.ImagePath}
-                alt=""
-            fill
-                className=" mx-2"
-                
-                quality={100}
-              />
-                  </div>
+               <div className="relative w-full h-52 overflow-hidden">
+                   <Image className="w-full rounded-3xl h-full object-cover" src={"https://api.carmacheck.com/" + item?.ImagePath} alt={item?.Title}  height={256} width={256} />
+                   </div>
               
            
                 </div>
-                <div className="mt-2">
-                  <h3 className="text-2xl font-medium my-2">{item?.Title}</h3>
+                <div className="mt-2 w-full">
+                  <h3 className="text-2xl font-medium my-2 w-full">{item?.Title}</h3>
         
-                  <p className="text-lg text-[#55565A]">
+                  <p className="text-lg text-[#55565A] w-full">
                     {item?.InspectionServiceDescription}
                   </p>
                 </div>

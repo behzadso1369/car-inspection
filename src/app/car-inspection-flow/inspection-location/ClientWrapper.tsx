@@ -83,16 +83,16 @@ export default function ClientWrapper() {
 
       <div className="overflow-x-hidden">
         {/* <h1>رزرو کارشناسی</h1> */}
-        <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full bg-white py-6 font-IranSans px-2 lg:px-4" dir="rtl">
+        <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full  bg-white py-6 font-IranSans px-2 lg:px-4" dir="rtl">
           <TabsList className="px-2 w-full overflow-x-auto scrollbar-hide flex-nowrap">
             {locations.map((item: any) => (
-              <TabsTrigger key={item.Id} className="text-[#404040] !px-0 !mx-0 data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA]  whitespace-nowrap flex-shrink-0" value={item.Id}>
+              <TabsTrigger key={item.Id} className="text-[#404040] !px-0 !mx-0 data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA]   flex-shrink-0" value={item.Id}>
                 {item.Name}
               </TabsTrigger>
             ))}
             <TabsTrigger disabled className="text-[#2C2C2C] data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] mx-1 flex items-center gap-1.5 relative disabled:text-black disabled:opacity-100 whitespace-nowrap flex-shrink-0" value="0">
               <span>در محل شما</span>
-              <span className="relative rounded-xl bg-gradient-to-r from-[#D63031] via-[#E74C3C] to-[#C0392B] text-white text-xs font-bold px-2.5 py-1  whitespace-nowrap flex items-center gap-1 shadow-lg shadow-[#E74C3C]/40 animate-pulse">
+              <span className="relative rounded-xl bg-gradient-to-r from-[#D63031] via-[#E74C3C] to-[#C0392B] text-white text-xs font-bold px-2.5 py-1   flex items-center gap-1 shadow-lg shadow-[#E74C3C]/40 animate-pulse">
                 {/* <Car02Icon size={16} className="w-3 h-3 animate-bounce" style={{ animationDuration: '1.5s' }} /> */}
                 به زودی
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-300 rounded-full animate-ping"></span>
