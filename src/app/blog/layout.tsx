@@ -29,7 +29,7 @@ export default async function BlogLayout({
              
                   <BlogHeader data={initialData} />
                 </div>
-                <div className="block lg:hidden mb-2 bg-transparent sticky top-0 z-10">
+                <div className="block lg:hidden mb-2 bg-transparent sticky top-11 z-10">
              
                   <BlogMobileHeader data={initialData} />
                 </div>

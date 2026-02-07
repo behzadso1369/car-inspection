@@ -90,7 +90,7 @@ export default function BlogDetail() {
           },
         ]}
       />
-      <div className="px-4 font-IranSans py-4 max-w-4xl mx-auto">
+      <div className="px-4 font-IranSans py-4 max-w-6xl mx-auto">
         {/* عنوان مقاله */}
         <h1 className="text-2xl md:text-3xl font-bold text-[#101117] mb-4">
           {Title}
@@ -119,7 +119,7 @@ export default function BlogDetail() {
         {/* محتوای HTML مقاله */}
         {Content && (
           <div 
-            className="prose prose-lg max-w-none text-[#101117] leading-relaxed"
+            className="prose prose-lg max-w-none text-[#101117] leading-relaxed [&_a]:text-blue-600"
             dangerouslySetInnerHTML={{ __html: Content }}
             style={{
               direction: 'rtl',

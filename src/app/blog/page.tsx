@@ -66,7 +66,7 @@ export default function Blog() {
        
         return (
         <>
-          <NextSeo
+          {/* <NextSeo
             title="مقالات کارشناسی خودرو | مجله کارماچک"
             description="مقالات تخصصی درباره کارشناسی خودرو، نکات خرید ماشین، بررسی عیوب رایج، راهنمای خرید خودرو و مطالب آموزشی برای خریداران"
             canonical={`${baseUrl}/blog`}
@@ -84,7 +84,7 @@ export default function Blog() {
                 content: "مقالات خودرو,آموزش خرید ماشین,نکات کارشناسی,مجله خودرو,کارشناسی خودرو,بلاگ خودرو",
               },
             ]}
-          />
+          /> */}
         <div className="px-4  font-IranSans py-4">
             <Tabs onValueChange={(e:any) => {
    console.log(e);
@@ -133,7 +133,7 @@ export default function Blog() {
 <div className="grid grid-cols-4 gap-4 w-full">
     {posts && posts.length > 0 ? <>
     {posts.map((item:any) => (
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title={item?.Title} imageSrc={"https://api.carmacheck.com/" + item?.ImagePath} link={`../blog/${item?.Id}`} />
+  <SuggestionCard  date={item?.CreatedOn} title={item?.Title} imageSrc={"https://api.carmacheck.com/" + item?.ImagePath} link={`../blog/${item?.Id}`} />
     ))}
     </> : <div className="col-span-4">هیچ بلاگی برای این دسته بندی وجود ندارد</div>}
     
