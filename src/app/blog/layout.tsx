@@ -2,29 +2,38 @@ import { Call02Icon } from "hugeicons-react";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import BlogFooter from "./components/BlogFooter";
+import instance from "@/helper/interceptor";
+import { ApiHelper } from "@/helper/api-request";
+import { serverApiHelper } from "@/helper/server-fetcher";
+import { BlogHeader } from "./components/BlogHeader";
+import Banner from "../components/mobile/Home/Banner";
+import { BlogMobileHeader } from "./components/BlogMobileHeader";
 
-export default function BlogLayout({
+export default async function BlogLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;
   }>) {
+        let initialData = null;
+         
+         try {
+           const data = await serverApiHelper.get("GetMasterPageData", 3600);
+           initialData = data?.MasterSiteData;
+         } catch (error) {
+           console.error("Error fetching master data in layout:", error);
+         }
     return (
         <div>
-                 <div className="px-8 py-3 flex justify-between   shadow-[0px_6px_20px_-2px_#10182814]">
-           <ArrowRight/>
-                <div className="flex items-center">
-            <Image alt="کارماچک" width={32} height={30} src={"/assets/images/logo.svg"}/>
-            <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">کارماچک</h1>
-            </div>
-            <span className="text-[#101117] flex items-center font-IranSans">
-               
-                <Call02Icon size={16}/>
-            </span>
-
-
-        </div>
+           <Banner data={[]}/>
+             <div className="hidden lg:block mb-2 bg-transparent sticky top-11 z-10">
+             
+                  <BlogHeader data={initialData} />
+                </div>
+                <div className="block lg:hidden mb-2 bg-transparent sticky top-0 z-10">
+             
+                  <BlogMobileHeader data={initialData} />
+                </div>
         {children}
-        <BlogFooter/>
         </div>
     )
 }

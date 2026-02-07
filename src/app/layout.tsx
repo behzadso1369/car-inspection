@@ -139,7 +139,6 @@ export default async function RootLayout({
     const data = await serverApiHelper.get("GetMasterPageData", 3600);
     initialData = data?.MasterSiteData;
   } catch (error) {
-    debugger
     console.error("Error fetching master data in layout:", error);
   }
 

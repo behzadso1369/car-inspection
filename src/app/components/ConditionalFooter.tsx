@@ -18,6 +18,7 @@ const ROUTES_WITH_FOOTER = [
   "/car-inspection-flow/select-car-group",
   "/payment/success",
   "/payment/failed",
+  "/blog"
 ];
 
 interface ConditionalFooterProps {
@@ -32,8 +33,7 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
   // و همچنین car-inspection-flow (که layout خاص خود را دارد)
   const shouldShowFooter =
     ROUTES_WITH_FOOTER.includes(pathname) &&
-    !pathname.startsWith("/Profile") &&
-    !pathname.startsWith("/blog") 
+    !pathname.startsWith("/Profile")
 
 
   if (!shouldShowFooter) {

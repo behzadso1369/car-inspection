@@ -71,7 +71,7 @@ async function getMasterPageData() {
 }
 
 export default async function Home() {
-  // لاگ در Terminal (server-side)
+  debugger
   console.log('🏠 Home page rendering - Server Side');
   console.log('⏰ Time:', new Date().toISOString());
 
