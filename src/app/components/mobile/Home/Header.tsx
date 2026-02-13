@@ -61,9 +61,13 @@ export const Header = memo(({data}:any) => {
                     <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
                         <NavigationLink href="/services" prefetch={true}>خدمات کارماچک</NavigationLink>
                     </li>
+                     <li className={`mx-4 ${isActive("/blog") ? "text-[#3456bb]" : ""}`}>
+                        <NavigationLink href="/blog" prefetch={true}>بلاگ</NavigationLink>
+                    </li>
                     <li className={`mx-4 ${isActive("/contact-us") ? "text-[#3456bb]" : ""}`}>
                         <NavigationLink href="/contact-us" prefetch={true}>ارتباط با ما</NavigationLink>
                     </li>
+                   
                     <li className={`mx-4 ${isActive("/about-us") ? "text-[#3456bb]" : ""}`}>
                         <NavigationLink href="/about-us" prefetch={true}>درباره ما</NavigationLink>
                     </li>

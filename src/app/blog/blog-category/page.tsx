@@ -1,123 +1,89 @@
 "use client"
 
 export const dynamic = 'force-dynamic'
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { SearchIcon } from "lucide-react";
 import SuggestionCard from "../components/SuggestionCard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
+import { useSearchParams } from "next/navigation";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 
 export default function BlogCategory() {
-     const [api, setApi] = useState<CarouselApi>();
-       const [carouselTabData,setCategoryTabData] = useState<any>([]);
-       const [firstCategoryData,setFirstCategoryData] = useState<number>(1);
-       const [categoryId,setCategoryId] = useState<any>(null);
-       const [posts,setPosts] = useState<any>([])
-        const getCategory = () => {
-            instance.post(ApiHelper.get("SearchWithTermsCategory"),{
-                terms: ""
-            }).then((res:any) => {
-                if(res) {
-   setCategoryTabData(res?.CategoryItems);
-                setFirstCategoryData(res?.CategoryItems[0]?.Id);
-                setCategoryId(res?.CategoryItems[0]?.Id);
-                }
-             
-                
-            })
-        }
-        const getCategoryWithId = (categoryId:number) => {
-            instance.get(ApiHelper.get("SearchCategoryWithId") + "?id=" +  categoryId).then((res:any) => {
-                if(res) {
-   setPosts(res?.CategoryPosts);
-                }
-             
-                
-            })
-        }
-      useEffect(() => {
-        getCategory();
-      
-          if (!api) {
-            return
-          }
-          
-        }, [api])
-        useEffect(() => {
-            getCategoryWithId(firstCategoryData);
-        },[firstCategoryData])
+     const searchParams = useSearchParams();
+     const categoryName = searchParams.get("category") || "";
+     const categoryIdParam = searchParams.get("id");
+     const [posts,setPosts] = useState<any>([])
+     const [isLoading, setIsLoading] = useState(true);
+     
+     const getCategoryWithId = (categoryId:number) => {
+         if (!categoryId) return;
+         setIsLoading(true);
+         instance.get(ApiHelper.get("SearchCategoryWithId") + "?id=" +  categoryId).then((res:any) => {
+             if(res) {
+                 setPosts(res?.CategoryPosts);
+             }
+             setIsLoading(false);
+         }).catch((err: any) => {
+             console.error("Error fetching category posts:", err);
+             setIsLoading(false);
+         })
+     }
+        
+     useEffect(() => {
+         if (categoryIdParam) {
+             const id = Number(categoryIdParam);
+             getCategoryWithId(id);
+         }
+     }, [categoryIdParam])
        
+        const decodedCategoryName = categoryName ? decodeURIComponent(categoryName) : "";
+        
+        if (isLoading) {
+            return (
+                <div className="px-4 font-IranSans py-8 text-center">
+                    <p className="text-[#55565A]">در حال بارگذاری...</p>
+                </div>
+            );
+        }
+        
         return (
         <div className="px-4 font-IranSans py-4">
-          
-      <InputGroup  className="px-4 flex items-center !py-0 border border-[#DFDFDF] rounded-full text-[#55565A]">
-  <InputGroupInput placeholder="جستجو در مقاله‌ها" />
-
-  <InputGroupAddon align="inline-end">
-  <SearchIcon />
-  </InputGroupAddon>
-</InputGroup>
- <Tabs onValueChange={(e:any) => {
-   console.log(e);
-   setFirstCategoryData(Number(e))
- }} defaultValue={String(firstCategoryData)} className="w-full bg-[#fbfbfc] py-6 font-IranSans" dir="rtl">
-              <TabsList  className="px-2 w-full" >
-                      <Carousel  setApi={setApi}  className="w-full max-w-full my-4" opts={{
-                direction: "rtl",
-                align:"start",
-                loop:false
-            }}  >
-        <CarouselContent>
-          {carouselTabData?.map((item:any, index:number) => (
-            <CarouselItem key={index} className="basis-auto" >
-              
-
-      
-          <TabsTrigger key={index} className="rounded-4xl text-[#A6A6A6] border data-[state=active]:bg-[#3456bb] data-[state=active]:border-none  data-[state=active]:text-white  border-[#A6A6A6] px-4 mx-2" value={String(item.Id)}>{item.Name}</TabsTrigger>
-
-        
-       
-              
-           
-            </CarouselItem>
+            <Breadcrumb 
+              items={[
+                { label: "خانه", href: "/" },
+                { label: "بلاگ", href: "/blog" },
+                ...(decodedCategoryName ? [{ label: decodedCategoryName }] : [])
+              ]}
+              className="mb-4"
+            />
             
-          ))}
-        </CarouselContent>
-    
-   
-      </Carousel>
-      </TabsList>
-     {carouselTabData?.map((item:any, index:number) => (
-   <TabsContent key={item.Id} value={String(item.Id)}>
-           <div className="flex justify-center flex-wrap">
-
-   
-<div className="grid grid-cols-4 gap-4">
-    {posts && posts.length > 0 ? <>
-    {posts.map((item:any) => (
-  <SuggestionCard date="۲۵ بهمن ۱۴۰۳" title={item?.Title} imageSrc={"https://api.carmacheck.com/" + item?.ImagePath} link="/" />
-    ))}
-    </> : <div className="col-span-4">هیچ بلاگی برای این دسته بندی وجود ندارد</div>}
-    
-</div>
-    </div>
+            {decodedCategoryName && (
+                <h1 className="text-2xl md:text-3xl font-bold text-[#101117] mb-6">
+                    {decodedCategoryName}
+                </h1>
+            )}
             
-        </TabsContent>
-       ))}
-      </Tabs>
-<div>
-    
-
-
-</div>
-
-    
-     
-    
-            
+            <div className="flex justify-center flex-wrap">
+                <div className="grid grid-cols-4 gap-4 w-full">
+                    {posts && posts.length > 0 ? (
+                        <>
+                            {posts.map((item:any) => (
+                                <SuggestionCard 
+                                    key={item?.Id}
+                                    date={item?.CreatedOn} 
+                                    title={item?.Title} 
+                                    imageSrc={"https://api.carmacheck.com/" + item?.ImagePath} 
+                                    link={`/blog/${item?.Id}`} 
+                                />
+                            ))}
+                        </>
+                    ) : (
+                        <div className="col-span-4 text-center py-8 text-[#55565A]">
+                            هیچ بلاگی برای این دسته بندی وجود ندارد
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }

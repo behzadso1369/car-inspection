@@ -4,15 +4,16 @@ import   moment from "jalali-moment";
 
 export default function SuggestionCard({title,imageSrc,link,date}:any) {
     return (
-        <Link prefetch={false} href={link}   className="flex px-2 rounded-2xl mt-4 flex-col items-center w-full col-span-4 lg:col-span-1 hover:border hover:border-[#B1B1B3] hover:shadow-[0px_8px_16px_0px_#0000000F]">
+        <Link prefetch={false} href={link}   className=" px-2 rounded-2xl mt-4 flex-col items-center w-full col-span-4 lg:col-span-1 hover:border hover:border-[#B1B1B3] hover:shadow-[0px_8px_16px_0px_#0000000F]">
             
                 <figure className="my-4">
-                    <div className="relative  aspect-[1.77] w-full">
+                    <div className="relative h-52 flex-shrink-0 bg-gray-50 rounded-t-3xl overflow-hidden">
                     <Image
           src={imageSrc}
           alt={title}
            fill
-    className="object-cover rounded-2xl"
+           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+           className="w-full h-full rounded-3xl object-cover" 
         />
         
                     </div>
