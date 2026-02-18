@@ -5,7 +5,7 @@ import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";export const Slider = ({data}:any) => {
-  debugger
+  
   console.log(data);
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState<number>(1)

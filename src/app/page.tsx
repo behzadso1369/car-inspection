@@ -71,12 +71,12 @@ async function getMasterPageData() {
 }
 
 export default async function Home() {
-  debugger
+  
   console.log('🏠 Home page rendering - Server Side');
   console.log('⏰ Time:', new Date().toISOString());
 
   const data = await getMasterPageData();
-  debugger
+  
   console.log('📊 Data fetched:', data ? 'Success' : 'Failed');
   console.log('📊 Data fetched:', data);
 
