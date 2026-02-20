@@ -62,30 +62,15 @@ async function getMasterPageData() {
 
 const experts = [
   {
-    name: "صالح حردانی",
-    title: "برق کار خودرو",
+    name: "بهنام زارعی",
+    title: "کارشناس  حرفه ای فنی و بدنه خودرو",
     img: "/expert1.png",
   },
   {
-    name: "مهران احمدی",
-    title: "تکنسین تعمیر بدنه",
+    name: "حمید حاجی قبادلو",
+    title: "کارشناس فنی خودرو",
     img: "/expert2.png",
-  },
-  {
-    name: "علیرضا کوشکی",
-    title: "تکنسین صافکاری",
-    img: "/expert3.png",
-  },
-  {
-    name: "روزبه چشمی",
-    title: "تکنسین لاستیک و بالانس",
-    img: "/expert4.png",
-  },
-  {
-    name: "روزبه چشمی",
-    title: "تکنسین لاستیک و بالانس",
-    img: "/expert4.png",
-  },
+  }
 ];
 
 export default async function AboutUsPage() {
@@ -150,7 +135,7 @@ export default async function AboutUsPage() {
             ارزش یعنی خدمت همراه با اعتماد. اعتمادی که مشتریان به شما دارند. اعتمادی که شما به تیم، استراتژی‌ها و سیستم‌های خود دارید و اینکه همیشه مطابق انتظار نتیجه را تحویل دهید.
           </p>
           
-          <Link href="./car-inspection-flow/select-car-group" className="bg-[#3456bb] hover:bg-[#3563E9] text-white rounded-3xl px-36 py-4 text-lg mb-8">
+          <Link href="./car-inspection-flow/select-car-group" className="bg-[#3456bb] hover:bg-[#3563E9] text-white rounded-3xl px-6 lg:px-36 py-2 lg:py-4 text-lg mb-8">
             ثبت درخواست
           </Link>
           

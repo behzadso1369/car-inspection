@@ -65,7 +65,7 @@ export default function Blog() {
      }, [activeTab])
        
         return (
-        <div className="px-4 font-IranSans py-4">
+        <div className="px-4 font-IranSans py-4 max-w-6xl mx-auto">
             <Breadcrumb 
               items={[
                 { label: "خانه", href: "/" },
@@ -135,6 +135,7 @@ export default function Blog() {
                             <SuggestionCard 
                               key={item?.Id}
                               date={item?.CreatedOn} 
+                              excerpt={item?.Excerpt}
                               title={item?.Title} 
                               imageSrc={"https://api.carmacheck.com/" + item?.ImagePath} 
                               link={`../blog/${item?.BlogPostId}`} 

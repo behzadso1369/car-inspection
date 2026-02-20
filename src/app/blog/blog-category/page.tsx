@@ -47,7 +47,7 @@ export default function BlogCategory() {
         }
         
         return (
-        <div className="px-4 font-IranSans py-4">
+        <div className="px-4 font-IranSans py-4 max-w-6xl mx-auto">
             <Breadcrumb 
               items={[
                 { label: "خانه", href: "/" },
@@ -58,7 +58,7 @@ export default function BlogCategory() {
             />
             
             {decodedCategoryName && (
-                <h1 className="text-2xl md:text-3xl font-bold text-[#101117] mb-6">
+                <h1 className="text-lg md:text-xl w-auto border-b-2 py-2 border-blue-100 font-bold text-[#101117] mb-6">
                     {decodedCategoryName}
                 </h1>
             )}

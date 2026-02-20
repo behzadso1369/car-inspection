@@ -87,8 +87,20 @@ export default function RequestDetail() {
     <span className="text-[#101117] text-base font-medium">{orderDetail?.totalPrice?.toLocaleString()} تومان</span>
     </div>
     <div className="flex justify-between text-sm my-2">
+    <span className="text-[#55565A]">تخفیف:</span>
+    <span className="text-[#101117] text-base font-medium">{orderDetail?.discount?.toLocaleString()} تومان</span>
+    </div>
+    <div className="flex justify-between text-sm my-2">
+    <span className="text-[#55565A]">مبلغ نهایی:</span>
+    <span className="text-[#101117] text-base font-medium">{orderDetail?.finalPrice?.toLocaleString()} تومان</span>
+    </div>
+    <div className="flex justify-between text-sm my-2">
     <span className="text-[#55565A]">نوع کارشناسی:</span>
     <span className="text-[#101117] text-base font-medium">{orderDetail?.inspectionType}</span>
+    </div>
+    <div className="flex justify-between text-sm my-2">
+    <span className="text-[#55565A]">محل کارشناسی:</span>
+    <span className="text-[#101117] text-base font-medium text-left leading-8">{orderDetail?.carInspectionLocationTypeAddress}</span>
     </div>
     {/* <div className="flex justify-between text-sm my-2">
     <span className="text-[#55565A]">زمان کارشناسی:</span>

@@ -28,8 +28,7 @@ export const BlogCard = ({Title,ImagePath,Excerpt,Id,Slug}:any) => {
 
   <figcaption className="px-4 flex-1 flex flex-col relative z-10 mt-6">
     <h4 className="text-[#101117] text-lg mb-2 line-clamp-2">{Title}</h4>
-    <h5 className="text-sm text-[#55565A] mb-2">{Slug}</h5>
-    <strong className="text-sm text-[#55565A] font-normal line-clamp-2">{Excerpt}</strong>
+    <strong className="text-sm text-[#55565A] font-normal ">{Excerpt}</strong>
     
   </figcaption>
 </figure>
