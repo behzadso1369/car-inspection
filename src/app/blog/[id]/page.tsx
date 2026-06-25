@@ -16,8 +16,11 @@ async function getBlogDetail(id: string) {
 type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+
   const { id } = await params;
   const post = await getBlogDetail(id);
+  console.log("post is werwer    "+`https://api.carmacheck.com/${post.ImagePath}`);
+  
   if (!post) {
     return { title: "مقاله یافت نشد" };
   }
@@ -26,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = post.BlogPostDescription ?? post.Excerpt ?? undefined;
   const keywords = post.BlogPostKeyword ?? undefined;
   const canonical = post.BlogPostCanonical ?? undefined;
-  const siteURL = process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com";
+  const siteURL =  "https://carmacheck.com";
 
   return {
     title,
@@ -36,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description: description?.slice?.(0, 160) ?? description,
-      url: canonical ?? `${siteURL}/blog/${id}`,
+      url: `${siteURL}/blog/${id}`,
       siteName: "کارماچک",
       locale: "fa_IR",
       type: "article",
@@ -57,7 +60,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+
 export default async function BlogDetailPage({ params }: Props) {
+  
   const { id } = await params;
   const blogData = await getBlogDetail(id);
 

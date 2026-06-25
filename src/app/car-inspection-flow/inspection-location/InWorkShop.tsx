@@ -2,7 +2,7 @@
 import { Dialog } from "@/components/ui/dialog";
 import { Clock01Icon, Location01Icon, SmartPhone01Icon } from "hugeicons-react";
 import { useState } from "react";
-import DirectionsMap from "./workshop-map/page";
+import DirectionsMap from "./workshop-map-2/page";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 

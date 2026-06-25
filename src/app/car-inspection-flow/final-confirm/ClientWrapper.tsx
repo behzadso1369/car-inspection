@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const router = useRouter();
+   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     router.prefetch('./payment-success');
@@ -22,17 +23,22 @@ export default function ClientWrapper() {
   };
 
   const moveToPaymentSucceed = () => {
+    setLoading(true);
     const params: any = {
       "isBack": false,
       "orderId": Number(localStorage.getItem("OrderId"))
     };
     instance.post(ApiHelper.get("MovePrivateOrder"), params).then((res: any) => {
+      setLoading(false);
       if (res) {
         if(res?.isEndFlow) {
         
            router.push(res?.paymentUrl);
       }
       }
+    }).catch((err:any) => {
+      console.log(err);
+      setLoading(false);
     });
   };
 
@@ -100,8 +106,12 @@ export default function ClientWrapper() {
       </div>
 
       <div className="px-4 w-full lg:my-4 bg-white lg:static lg:mt-8 fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button onClick={moveToPaymentSucceed} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
-           تایید و پرداخت
+        <Button disabled={loading} onClick={moveToPaymentSucceed} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+           
+            {
+            loading ? "لطفا منتظر بمانید..." : "تایید و پرداخت"
+          }
+           
         </Button>
       </div>
     </div>

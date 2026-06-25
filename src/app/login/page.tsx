@@ -15,7 +15,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 // 2. فرم‌های تعاملی با validation لحظه‌ای
 // 3. نیازی به SEO ندارند (صفحات خصوصی)
 export default function Login() {
-    const [value,setValue] = useState<any>("")
+    const [value,setValue] = useState<any>("");
+        const [sendSMS,setSendSMS] = useState<boolean>(false);
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -28,20 +30,25 @@ export default function Login() {
   }, [searchParams]);
 
     const login = () => {
+      setSendSMS(true);
         instance.post(ApiHelper.get("CheckPhoneNumber"),{
             phoneNumber:value
         }).then((res:any) => {
             if (res?.isRegistered) {
+              setSendSMS(false);
                 localStorage.setItem("userId",res?.userId);
                 localStorage.setItem("phoneNumber",value);
-                   const expiryTimestamp = Date.now() + res?.remainingSeconds * 1000;
+                   const expiryTimestamp = res?.remainingSeconds;
                 
       
            router.push(`/verify-otp?expiry=${expiryTimestamp}`);
       } else {
+        setSendSMS(false)
    
         router.push("/register");
       }
+        }).catch((res:any) => {
+          setSendSMS(false);
         })
     }
     return (
@@ -57,7 +64,7 @@ export default function Login() {
             }} placeholder="09123456789" className="px-4  items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A]  text-xs"/>
             <span className="text-xs font-extralight text-[#55565A]">لطفا شماره را همراه با صفر وارد کنید</span>
             
-                <Button onClick={login} className="w-full rounded-3xl inline-block py-2 px-1 text-center text-sm  my-4 bg-[#3456bb] text-white">ورود</Button>
+                <Button disabled={sendSMS} onClick={login} className="w-full rounded-3xl inline-block py-2 px-1 text-center text-sm  my-4 bg-[#3456bb] text-white">{!sendSMS ? "ورود" : "لطفا منتظر بمانید..."}</Button>
 
         </Card>
     </div>

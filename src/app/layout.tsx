@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SeoWrapper from "./SeoWrapper";
 import { Toaster } from "sonner";
@@ -9,15 +8,6 @@ import { serverApiHelper } from "@/helper/server-fetcher";
 
 export const dynamic = 'force-dynamic'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const API_BASE_URL = 'https://api.carmacheck.com';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com";
@@ -145,7 +135,7 @@ export default async function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` antialiased`}
       >
      {/* <SeoWrapper/> */}
         <ConditionalHeader data={initialData} />

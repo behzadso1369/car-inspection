@@ -18,12 +18,14 @@ export default function ClientWrapper() {
   const [carInspectionDateTime, setCarInspectionDateTime] = useState<any>([]);
   const router = useRouter();
   const [defaultTab, setDefaultTab] = useState<string>("");
+   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     router.prefetch('./final-confirm');
   }, [router]);
 
   const moveToFinalConfirm = () => {
+    setLoading(true);
     const params: any = {
       "isBack": false,
       "orderId": Number(localStorage.getItem("OrderId")),
@@ -37,6 +39,7 @@ export default function ClientWrapper() {
 
     instance.post(ApiHelper.get("MovePrivateOrder"), params)
       .then((res: any) => {
+        setLoading(false);
         if (res) {
              if(res?.isEndFlow) {
         
@@ -47,6 +50,7 @@ export default function ClientWrapper() {
      
         }
       }).catch((err: any) => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -149,8 +153,11 @@ export default function ClientWrapper() {
           </TabsList>
 
           <TabsContent value={defaultTab} className="grid grid-cols-2 px-2 gap-2 pb-20">
+
+                                  {carInspectionDateTime?.filter((item: any) => item.Id == defaultTab)?.[0]?.Hours.every((item:any) => item.IsDisabled) && <div className="col-span-2 flex justify-center my-4 text-lg font-extrabold text-red-500">متاسفانه زمان خالی برای رزرو وجود ندارد</div>}
             {carInspectionDateTime?.filter((item: any) => item.Id == defaultTab)?.[0]?.Hours.map((item: any) => (
               <div key={item.Id} className="px-2">
+
                 <RadioGroup value={selectedTime} onValueChange={setSelectedTime}>
                   <InspectionTimeCard
                     selected={selectedTime}
@@ -159,15 +166,19 @@ export default function ClientWrapper() {
                     data={item}
                   />
                 </RadioGroup>
+                      
               </div>
             ))}
+
           </TabsContent>
         </Tabs>
       )}
 
       <div className="px-4 w-full lg:my-4 lg:sticky lg:bg-white lg:mt-8 fixed flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button onClick={moveToFinalConfirm} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
-          تایید و ادامه
+        <Button  disabled={loading || (Number(selected) === 2 && selectedTime == "" ? true : false)} onClick={moveToFinalConfirm} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+          {
+            loading ? "لطفا منتظر بمانید..." : "تایید و ادامه"
+          }
         </Button>
       </div>
     </div>

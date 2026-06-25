@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -24,8 +24,10 @@ import { Button } from "@/components/ui/button";
 export default function VerifyOtp() {
        const [value,setValue] = useState<any>("")
   const router = useRouter();
-   const [timer, setTimer] = useState(120);
    const [isResending, setIsResending] = useState(false);
+   const params = useSearchParams();
+   const expiry = Number(params.get("expiry"));
+   const [timer, setTimer] = useState(expiry);
    
   // ⏳ Countdown effect
   useEffect(() => {

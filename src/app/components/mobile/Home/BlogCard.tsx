@@ -18,7 +18,7 @@ export const BlogCard = ({Title,ImagePath,Excerpt,Id,Slug}:any) => {
      />
      </div>
 
-     <div className="bg-white absolute z-30 w-14 h-14 top-44 left-4  rounded-full  flex justify-center items-center">
+     <div className="bg-white absolute  w-14 h-14 top-44 left-4  rounded-full  flex justify-center items-center">
      <Link href={"./blog/" + Id} prefetch={false} className="bg-[#416CEA]  w-12 h-12 text-white flex justify-center rounded-full items-center">
         <ArrowLeft01Icon color="white" size={24} />
 
@@ -26,7 +26,7 @@ export const BlogCard = ({Title,ImagePath,Excerpt,Id,Slug}:any) => {
      
      </div>
 
-  <figcaption className="px-4 flex-1 flex flex-col relative z-10 mt-6">
+  <figcaption className="px-4 flex-1 flex flex-col relative mt-6">
     <h4 className="text-[#101117] text-lg mb-2 line-clamp-2">{Title}</h4>
     <strong className="text-sm text-[#55565A] font-normal ">{Excerpt}</strong>
     

@@ -21,6 +21,7 @@ interface CustomJwtPayload extends JwtPayload {
 
 export default function ClientWrapper() {
   const [locations, setLocations] = useState<any>([]);
+   const [loading, setLoading] = useState(false);
   const [defaultTab, setDefaultTab] = useState<string>("");
   const router = useRouter();
    const token:any = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
@@ -30,6 +31,7 @@ export default function ClientWrapper() {
   }, [router]);
 
   const moveToCarInspectionTime = () => {
+    setLoading(true);
     const params: any = {
       "isBack": false,
       "orderId": Number(localStorage.getItem("OrderId")),
@@ -38,10 +40,12 @@ export default function ClientWrapper() {
 
     instance.post(ApiHelper.get("MovePrivateOrder"), params)
       .then((res: any) => {
+        setLoading(false);
         if (res) {
           router.push("./inspection-time");
         }
       }).catch((err: any) => {
+         setLoading(false);
         console.log(err);
       });
   };
@@ -112,8 +116,10 @@ export default function ClientWrapper() {
       </div>
 
       <div className="px-4 lg:my-4 w-full fixed lg:static lg:mt-8 flex justify-between bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button onClick={moveToCarInspectionTime} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
-          تایید محل کارشناسی
+        <Button disabled={loading} onClick={moveToCarInspectionTime} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
+          {
+            loading ? "لطفا منتظر بمانید..." : "تایید محل کارشناسی"
+          }
         </Button>
         <div className="flex flex-col">
           <span className="text-[#101117] font-medium text-sm">{localStorage.getItem("inspectionMethod")}</span>

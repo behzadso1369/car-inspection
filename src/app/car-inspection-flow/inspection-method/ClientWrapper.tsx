@@ -17,6 +17,7 @@ interface ClientWrapperProps {
 
 export default function ClientWrapper({ initialData }: ClientWrapperProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [carInspectionType, setCarInspectionType] = useState<any[]>(initialData?.CarInspectionPage || []);
   const [selected, setSelected] = useState("");
@@ -53,6 +54,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
     router.prefetch('./insert-information');
   }, [router]);
   const moveToInspectionLocation = () => {
+    setLoading(true);
     instance.post(ApiHelper.get("MoveOrder"), {
       "isBack": false,
       "orderId": localStorage.getItem("OrderId"),
@@ -60,20 +62,24 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       "carInspectionId": carInspectionType.filter((item: any) => item.Id == selected)[0].Id,
     }).then((res: any) => {
       if (res) {
+        setLoading(false);
         router.push("./inspection-location");
       }
     }).catch((err: any) => {
+      setLoading(false);
       console.log(err);
     });
   }
 
   const moveToInsertInformation = () => {
+    setLoading(true);
     instance.post(ApiHelper.get("MoveOrder"), {
       "isBack": false,
       "orderId": localStorage.getItem("OrderId"),
       "carInspectionTypeId": carInspectionType.filter((item: any) => item.Id == selected)[0].InspectionTypeId,
       "carInspectionId": carInspectionType.filter((item: any) => item.Id == selected)[0].Id,
     }).then((res: any) => {
+      setLoading(false);
       localStorage.setItem("inspectionPrice",carInspectionType.filter((item: any) => item.Id == selected)[0]?.AdditionalCost > 0 ? (carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice + carInspectionType.filter((item: any) => item.Id == selected)[0]?.AdditionalCost) : carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice);
       localStorage.setItem("inspectionMethod",carInspectionType.filter((item: any) => item.Id == selected)[0]?.InspectionTypeName);
       if (!localStorage.getItem("userId")) {
@@ -83,6 +89,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         moveToInspectionLocation();
       }
     }).catch((err: any) => {
+      setLoading(false);
       console.log(err);
     });
   };
@@ -120,8 +127,10 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       </div>
 
       <div className="px-4 lg:my-4 w-full fixed lg:static lg:mt-8 flex justify-between bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button className="bg-[#416CEA] text-white rounded-3xl py-6 px-12" onClick={moveToInsertInformation}>
-          تایید و ادامه
+        <Button disabled={loading} className="bg-[#416CEA] text-white rounded-3xl py-6 px-12" onClick={moveToInsertInformation}>
+          {
+            loading ? "لطفا منتظر بمانید..." : "تایید و ادامه"
+          }
         </Button>
         <div className="flex flex-col">
           <span className="text-[#101117] font-medium text-sm">{carInspectionType.filter((item: any) => item.Id == selected)[0]?.InspectionTypeName}</span>

@@ -6,7 +6,7 @@ import { BlogCard } from "./BlogCard"
 import Link from "next/link"
 
 export default function BlogShort({data}:any) {
-    debugger
+    
     
     return (
         <section className="bg-white  py-16 px-4 font-IranSans">

@@ -17,6 +17,8 @@ import * as z from "zod";
 
 export default function ClientWrapper() {
   const [openModal, setOpenModal] = useState(false);
+  const [sendSMS, setSendSMS] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState<any>(null);
   const router = useRouter();
   
   useEffect(() => {
@@ -37,18 +39,29 @@ export default function ClientWrapper() {
   });
 
   const login = (value: any) => {
+    setSendSMS(true);
     instance.post(ApiHelper.get("CheckPhoneNumber"), {
       phoneNumber: value
     }).then((res: any) => {
+      
       if (res?.isRegistered) {
+        if(res?.remainingSeconds) {
+          setRemainingSeconds(res?.remainingSeconds);
+        }
+        setSendSMS(false);
+        setOpenModal(true);
         localStorage.setItem("userId", res?.userId);
       } else {
+        setSendSMS(false);
         router.push("/register");
       }
+    }).catch((res:any) => {
+      setSendSMS(false);
     });
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    localStorage.setItem("phoneNumber",values.phoneNumber);
     instance.post(ApiHelper.get("UserRegister"), values)
       .then((res: any) => {
         
@@ -56,7 +69,7 @@ export default function ClientWrapper() {
           if (res?.isRegistered) {
             login(values.phoneNumber);
           }
-          setOpenModal(true);
+          
         } else {
           setOpenModal(false);
         }
@@ -116,11 +129,14 @@ export default function ClientWrapper() {
               )}
             />
             <div className="px-4 lg:my-4 lg:static lg:mt-8 fixed left-0 right-0 flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-              <Dialog open={openModal} onOpenChange={setOpenModal}>
-                <OtpMoldal openModal={openModal} setOpnModal={setOpenModal} />
+              {
+                openModal && <Dialog open={openModal} onOpenChange={setOpenModal}>
+                <OtpMoldal openModal={openModal} setOpnModal={setOpenModal}  remainingSeconds={remainingSeconds} />
               </Dialog>
-              <Button type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
-                ارسال پیامک
+              }
+              
+              <Button disabled={sendSMS} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+                {!sendSMS ? "ارسال پیامک" : "...لطفا منتظر بمانید"} 
               </Button>
             </div>
           </form>

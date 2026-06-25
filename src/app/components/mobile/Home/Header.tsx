@@ -33,7 +33,7 @@ export const Header = memo(({data}:any) => {
     };
     
     return (
-        <header className="w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 bg-white rounded-b-3xl font-IranSans">
+        <header className="w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 !bg-white rounded-b-3xl font-IranSans">
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <Image 

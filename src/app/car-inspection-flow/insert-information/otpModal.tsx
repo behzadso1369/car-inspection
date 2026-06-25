@@ -8,8 +8,8 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function OtpMoldal({openModal,setOpnModal}:any) {
-      const [timer, setTimer] = useState(60);
+export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) {
+      const [timer, setTimer] = useState(remainingSeconds ? remainingSeconds : 120);
       const [isResending, setIsResending] = useState(false);
        const router = useRouter();
      
@@ -38,9 +38,10 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
        
       // ⏳ Countdown effect
       useEffect(() => {
+        
         if (timer <= 0) return;
         const interval = setInterval(() => {
-          setTimer((prev) => prev - 1);
+          setTimer((prev:any) => prev - 1);
         }, 1000);
     
         return () => clearInterval(interval);
@@ -76,7 +77,7 @@ export default function OtpMoldal({openModal,setOpnModal}:any) {
             localStorage.setItem("userId", res?.userId);
           }
           // Reset timer
-          setTimer(60);
+          setTimer(remainingSeconds ? remainingSeconds : 120);
           setIsResending(false);
         }).catch((err: any) => {
           console.error("Error resending OTP:", err);
