@@ -1,8 +1,7 @@
 "use client"
-import { ArrowLeft01Icon, Call02Icon, Edit01Icon, Edit02Icon, Location01Icon, Logout01Icon, Logout02Icon, Logout03Icon, LogoutSquare01Icon } from "hugeicons-react";
-import { ArrowLeft, ArrowRight, Edit3Icon } from "lucide-react";
+import { ArrowLeft01Icon, Edit01Icon, Logout03Icon } from "hugeicons-react";
 import Image from "next/image";
-import Requests from "./components/Requests";
+import Requests from "../components/Requests";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import instance from "@/helper/interceptor";
@@ -11,18 +10,12 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { handleLogout } from "@/helper/logout";
 
-// CSR - Client Side Rendering
-// صفحه پروفایل باید CSR باشد چون:
-// 1. نیاز به احراز هویت (token در localStorage)
-// 2. داده‌های شخصی کاربر (نباید pre-render شوند)
-// 3. تعاملات زیاد (logout، ویرایش، نمایش درخواست‌ها)
 export default function Profile() {
     const [orders, setOrders] = useState<any>([]);
     const [decoded, setDecoded] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
     
-    // Decode token safely in useEffect (client-side only)
     useEffect(() => {
         try {
             if (typeof window !== 'undefined') {
@@ -31,16 +24,13 @@ export default function Profile() {
                     try {
                         const decodedToken = jwtDecode(token);
                         setDecoded(decodedToken);
-                        console.log(decodedToken);
                         setIsLoading(false);
                     } catch (decodeError) {
                         console.error("Error decoding token:", decodeError);
-                        // Token invalid - redirect to login
                         localStorage.removeItem("token");
                         router.push("/login");
                     }
                 } else {
-                    // اگر token نبود، به صفحه login redirect کن
                     router.push("/login");
                 }
             } else {
@@ -49,7 +39,6 @@ export default function Profile() {
         } catch (error) {
             console.error("Error in Profile component:", error);
             setIsLoading(false);
-            // در صورت خطا، به login redirect کن
             if (typeof window !== 'undefined') {
                 router.push("/login");
             }
@@ -57,7 +46,6 @@ export default function Profile() {
     }, [router]);
 
     useEffect(() => {
-        // فقط اگه decoded موجود بود، orders رو fetch کن
         if (decoded) {
             instance.get(ApiHelper.get("GetOrders"))
                 .then((res: any) => {
@@ -72,7 +60,6 @@ export default function Profile() {
     handleLogout("/");
   }
 
-  // Loading state
   if (isLoading || !decoded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white font-IranSans">
@@ -85,10 +72,7 @@ export default function Profile() {
   }
  
     return (
-
-
         <div className="font-IranSans pb-16">
-            
         <div className="flex justify-between lg:hidden px-8 items-center pt-6 pb-4 border-b border-[#DFDFDF]">
             <div className="flex flex-col">
                 <span>{decoded?.name || "کاربر"}</span>
@@ -105,34 +89,17 @@ export default function Profile() {
             <Image alt="کارشناسی خودرو" src="/car-inspection-icon.svg" width={24} height={24}/>
             <Link href={"/Profile/requests"} className="mx-2 text-base" prefetch={false}>تمامی درخواست ها  </Link>
             </div>
-     
         <ArrowLeft01Icon/>
-
         </h6>
-        {/* <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
-        <div className="text-[#101117] flex">
-           <Location01Icon size={24}/>
-            <span className="mx-2 text-base">آدرس ها</span>
-            </div>
-        <ArrowLeft01Icon/>
-
-        </h6> */}
         <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
         <div className="text-[#101117] flex" onClick={logOut}>
             <Logout03Icon size={24}/>
             <span className="mx-2 text-base" >خروج</span>
             </div>
         <ArrowLeft01Icon/>
-
         </h6>
         </div>
         </div>
-       
-
-                       
         </div>
-     
-   
-
     )
 }

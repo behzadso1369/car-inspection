@@ -102,14 +102,6 @@ export async function generateMetadata(): Promise<Metadata> {
       telephone: false,
     },
     
-    // Alternates
-    alternates: {
-      canonical: SITE_URL,
-      languages: {
-        'fa-IR': SITE_URL,
-      },
-    },
-    
     // Additional meta tags
     other: {
       'msapplication-TileColor': '#3456bb',
