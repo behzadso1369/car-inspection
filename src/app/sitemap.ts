@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { serverApiHelper } from '@/helper/server-fetcher';
+import { CARS } from '@/app/car-inspection/carsData';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://carmacheck.com';
 
@@ -54,7 +55,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    {
+      url: `${SITE_URL}/car-inspection`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
   ];
+
+  // صفحات کارشناسی خودروها (معایب و مزایا) — عالی برای جذب ترافیک ارگانیک
+  const carInspectionRoutes: MetadataRoute.Sitemap = CARS.map((car) => ({
+    url: `${SITE_URL}/car-inspection/${car.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
 
   // Dynamic blog routes
   let blogRoutes: MetadataRoute.Sitemap = [];
@@ -86,6 +101,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ترکیب تمام routes
-  return [...staticRoutes, ...blogRoutes];
+  return [...staticRoutes, ...carInspectionRoutes, ...blogRoutes];
 }
 

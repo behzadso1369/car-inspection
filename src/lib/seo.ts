@@ -10,6 +10,26 @@
 // Base URL سایت - باید از environment variable بیاید
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://carmacheck.com';
 
+// اطلاعات ثابت کسب‌وکار برای استفاده در Schema و صفحات
+export const COMPANY = {
+  name: 'کارماچک',
+  alternateName: 'CarmaCheck',
+  phone: '+98-21-91001740',
+  phoneDisplay: '۰۲۱-۹۱۰۰۱۷۴۰',
+  email: 'info@carmacheck.com',
+  streetAddress: 'تهران، ونک، ملاصدرا، بن‌بست صدر، پلاک ۶ واحد ۴',
+  addressLocality: 'تهران',
+  addressRegion: 'تهران',
+  postalCode: '',
+  addressCountry: 'IR',
+  latitude: 35.7575,
+  longitude: 51.4102,
+  priceRange: '﷼﷼',
+  openingHours: 'Sa-We 09:00-18:00',
+  logo: `${BASE_URL}/assets/images/logo.svg`,
+  ogImage: `${BASE_URL}/og-default.jpg`,
+};
+
 /**
  * تولید Canonical URL استاندارد
  */
@@ -59,26 +79,102 @@ export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'کارماچک',
-    alternateName: 'CarmaCheck',
+    '@id': `${BASE_URL}/#organization`,
+    name: COMPANY.name,
+    alternateName: COMPANY.alternateName,
     url: BASE_URL,
-    logo: `${BASE_URL}/assets/images/logo.svg`,
+    logo: COMPANY.logo,
+    image: COMPANY.ogImage,
     description: 'ارائه‌دهنده خدمات تخصصی کارشناسی خودرو در ایران',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'تهران، ونک، ملاصدرا، بن‌بست صدر، پلاک ۶ واحد ۴',
-      addressLocality: 'تهران',
-      addressCountry: 'IR',
+      streetAddress: COMPANY.streetAddress,
+      addressLocality: COMPANY.addressLocality,
+      addressRegion: COMPANY.addressRegion,
+      addressCountry: COMPANY.addressCountry,
     },
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+98-21-91001740',
+      telephone: COMPANY.phone,
       contactType: 'customer service',
       availableLanguage: 'Persian',
     },
     sameAs: [
       // اضافه کردن لینک‌های شبکه‌های اجتماعی
     ],
+  };
+}
+
+/**
+ * تولید WebSite Schema (برای SearchAction و شناخت برند)
+ */
+export function generateWebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${BASE_URL}/#website`,
+    url: BASE_URL,
+    name: COMPANY.name,
+    inLanguage: 'fa-IR',
+    publisher: { '@id': `${BASE_URL}/#organization` },
+  };
+}
+
+/**
+ * تولید LocalBusiness Schema (برای سئوی محلی و نمایش در نقشه)
+ * اگر area داده شود، areaServed مخصوص همان منطقه ست می‌شود.
+ */
+export function generateLocalBusinessSchema(options?: {
+  area?: string;
+  path?: string;
+  extraAreas?: string[];
+}) {
+  const areas =
+    options?.extraAreas ??
+    [
+      'تهران',
+      'شرق تهران',
+      'تهرانپارس',
+      'نارمک',
+      'رسالت',
+      'پیروزی',
+      'فرجام',
+    ];
+
+  const areaServed = options?.area
+    ? [{ '@type': 'Place', name: options.area }]
+    : areas.map((name) => ({ '@type': 'Place', name }));
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AutomotiveBusiness',
+    '@id': `${options?.path ? `${BASE_URL}${options.path}` : BASE_URL}/#localbusiness`,
+    name: options?.area ? `${COMPANY.name} | کارشناسی خودرو ${options.area}` : COMPANY.name,
+    image: COMPANY.ogImage,
+    url: options?.path ? `${BASE_URL}${options.path}` : BASE_URL,
+    telephone: COMPANY.phone,
+    priceRange: COMPANY.priceRange,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: COMPANY.streetAddress,
+      addressLocality: COMPANY.addressLocality,
+      addressRegion: COMPANY.addressRegion,
+      addressCountry: COMPANY.addressCountry,
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: COMPANY.latitude,
+      longitude: COMPANY.longitude,
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday'],
+        opens: '09:00',
+        closes: '18:00',
+      },
+    ],
+    areaServed,
   };
 }
 

@@ -29,8 +29,14 @@ interface ConditionalHeaderProps {
 export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
   const pathname = usePathname();
 
+  // صفحات راهنمای خودرو (car-inspection و زیرمجموعه‌ها) - به جز car-inspection-flow
+  const isCarInspection =
+    pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+
   // بررسی اینکه آیا مسیر فعلی باید header را نمایش دهد
-  const shouldShowHeader = ROUTES_WITH_HEADER.includes(pathname) && !pathname.startsWith("/Profile");
+  const shouldShowHeader =
+    (ROUTES_WITH_HEADER.includes(pathname) || isCarInspection) &&
+    !pathname.startsWith("/Profile");
 
 
   // اگه نباید header رو نشون بده، null برگردون

@@ -1,13 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import SeoWrapper from "./SeoWrapper";
 import { Toaster } from "sonner";
 import ConditionalHeader from "./components/ConditionalHeader";
 import ConditionalFooter from "./components/ConditionalFooter";
 import { serverApiHelper } from "@/helper/server-fetcher";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { generateOrganizationSchema, generateLocalBusinessSchema, generateWebSiteSchema } from "@/lib/seo";
 
-export const dynamic = 'force-dynamic'
-
+// صفحات جداگانه خودشان revalidate/ISR تعیین می‌کنند؛ روت را داینامیک اجباری نمی‌کنیم
+export const revalidate = 3600;
 
 const API_BASE_URL = 'https://api.carmacheck.com';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com";
@@ -29,6 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteDescription = masterData?.Description || 'کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق | کارشناسی در محل یا مرکز | دریافت گزارش فوری | تهران';
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: {
       default: `${siteName} | کارشناسی تخصصی خودرو با کارشناسان مجرب`,
       template: `%s | ${siteName}`,
@@ -57,16 +60,6 @@ export async function generateMetadata(): Promise<Metadata> {
     
     // Manifest
     manifest: '/site.webmanifest',
-    
-    // Theme Color
-    themeColor: '#3456bb',
-    
-    // Viewport
-    viewport: {
-      width: 'device-width',
-      initialScale: 1,
-      maximumScale: 5,
-    },
     
     // Open Graph
     openGraph: {
@@ -109,6 +102,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#3456bb',
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -130,6 +130,7 @@ export default async function RootLayout({
         className={` antialiased`}
       >
      {/* <SeoWrapper/> */}
+        <JsonLd data={[generateOrganizationSchema(), generateLocalBusinessSchema(), generateWebSiteSchema()]} />
         <ConditionalHeader data={initialData} />
         {children}
         <ConditionalFooter data={initialData} />

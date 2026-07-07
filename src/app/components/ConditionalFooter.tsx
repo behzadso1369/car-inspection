@@ -31,8 +31,12 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
   // بررسی اینکه آیا مسیر فعلی باید footer را نمایش دهد
   // مستثنی کردن مسیرهای Profile و Blog (که layout های خاص خود را دارند)
   // و همچنین car-inspection-flow (که layout خاص خود را دارد)
+  // صفحات راهنمای خودرو (car-inspection و زیرمجموعه‌ها) - به جز car-inspection-flow
+  const isCarInspection =
+    pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+
   const shouldShowFooter =
-    ROUTES_WITH_FOOTER.includes(pathname) &&
+    (ROUTES_WITH_FOOTER.includes(pathname) || isCarInspection) &&
     !pathname.startsWith("/Profile")
 
 
