@@ -71,14 +71,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Dynamic blog routes
+  // Dynamic blog routes — مقالات واقعی بلاگ (نه دسته‌بندی‌ها)
   let blogRoutes: MetadataRoute.Sitemap = [];
-  
+
   try {
-    // فچ کردن لیست دسته‌بندی‌های بلاگ با استفاده از BASE_URL درست
     // استفاده از همون BASE_URL که در interceptor هست
     const BASE_URL = "https://api.carmacheck.com/api/";
-    const response = await fetch(`${BASE_URL}SiteBlog/SearchWithTermsCategory`, {
+    const response = await fetch(`${BASE_URL}SiteBlog/SearchWithTerms`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ terms: "" }),
@@ -87,17 +86,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     if (response.ok) {
       const data = await response.json();
-      const categories = data?.CategoryItems || [];
+      const posts = data?.SearchItems || data?.resultObject?.SearchItems || [];
 
-      blogRoutes = categories.map((category: any) => ({
-        url: `${SITE_URL}/blog/${category.Id}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.7,
-      }));
+      blogRoutes = posts
+        .filter((post: any) => post?.BlogPostId != null)
+        .map((post: any) => ({
+          url: `${SITE_URL}/blog/${post.BlogPostId}`,
+          lastModified: post.ModifiedDate ? new Date(post.ModifiedDate) : new Date(),
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        }));
     }
   } catch (error) {
-    console.error('Error fetching blog categories for sitemap:', error);
+    console.error('Error fetching blog posts for sitemap:', error);
   }
 
   // ترکیب تمام routes

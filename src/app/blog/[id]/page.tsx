@@ -1,26 +1,58 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { ApiHelper } from "@/helper/api-request";
-import { serverFetch } from "@/helper/server-fetcher";
+import { serverFetch, serverApiHelper } from "@/helper/server-fetcher";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo";
+import { processBlogContent } from "@/lib/blog-content";
 import { BlogDetailClient } from "./BlogDetailClient";
 
 const BLOG_REVALIDATE = 3600;
+const API_BASE_URL = "https://api.carmacheck.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com";
 
-async function getBlogDetail(id: string) {
+/**
+ * پارامتر روت یک slug است (مثل khodro-moshkel-dar-bad-az-kharid).
+ * برای سازگاری با لینک‌های قدیمی، اگر مقدار کاملاً عددی باشد همان را به‌عنوان id برمی‌گردانیم.
+ * در غیر این صورت از لیست بلاگ‌ها، آیتمی که canonical آن به همین slug ختم می‌شود را پیدا می‌کنیم.
+ */
+async function resolvePostId(param: string): Promise<string | null> {
+  const decoded = decodeURIComponent(param);
+  if (/^\d+$/.test(decoded)) return decoded;
+
+  const data = await serverApiHelper.post<{ SearchItems?: any[] }>(
+    "SiteBlogSearchWithTerms",
+    { terms: "", take: 1000, skip: 0 },
+    BLOG_REVALIDATE
+  );
+  const items = data?.SearchItems ?? [];
+
+  const found = items.find((it: any) => {
+    const canonical = String(it?.BlogPostCanonical ?? "");
+    const m = canonical.match(/\/blog\/([^/?#]+)\/?$/);
+    return m && decodeURIComponent(m[1]) === decoded;
+  });
+
+  return found?.BlogPostId != null ? String(found.BlogPostId) : null;
+}
+
+async function getPost(param: string) {
+  const id = await resolvePostId(param);
+  if (!id) return null;
   const endpoint = `${ApiHelper.get("GetBlogDetail")}?id=${id}`;
   const data = await serverFetch<{ PostDetails?: any[] }>(endpoint, {
     next: { revalidate: BLOG_REVALIDATE },
   });
-  return data?.PostDetails?.[0] ?? null;
+  const post = data?.PostDetails?.[0] ?? null;
+  return post ? { ...post, __resolvedId: id } : null;
 }
 
 type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id: slug } = await params;
+  const post = await getPost(slug);
 
-  const { id } = await params;
-  const post = await getBlogDetail(id);
-  console.log("post is werwer    "+`https://api.carmacheck.com/${post.ImagePath}`);
-  
   if (!post) {
     return { title: "مقاله یافت نشد" };
   }
@@ -28,25 +60,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = post.BlogPostTitle ?? post.Title ?? "مقالات کارشناسی خودرو";
   const description = post.BlogPostDescription ?? post.Excerpt ?? undefined;
   const keywords = post.BlogPostKeyword ?? undefined;
-  const canonical = post.BlogPostCanonical ?? undefined;
-  const siteURL =  "https://carmacheck.com";
+
+  // canonical همیشه آدرس واقعی همین صفحه (slug) است تا صفحه خودش را canonical کند
+  const pageUrl = `${SITE_URL}/blog/${slug}`;
 
   return {
     title,
     description: description?.slice?.(0, 160) ?? description,
-    keywords: keywords ? (typeof keywords === "string" ? keywords.split(/[،,]/).map((k) => k.trim()) : keywords) : undefined,
-    alternates: canonical ? { canonical } : { canonical: `${siteURL}/blog/${id}` },
+    keywords: keywords
+      ? typeof keywords === "string"
+        ? keywords.split(/[،,]/).map((k) => k.trim())
+        : keywords
+      : undefined,
+    alternates: { canonical: pageUrl },
     openGraph: {
       title,
       description: description?.slice?.(0, 160) ?? description,
-      url: `${siteURL}/blog/${id}`,
+      url: pageUrl,
       siteName: "کارماچک",
       locale: "fa_IR",
       type: "article",
       images: post.ImagePath
         ? [
             {
-              url: `https://api.carmacheck.com/${post.ImagePath}`,
+              url: `${API_BASE_URL}/${post.ImagePath}`,
               width: 1200,
               height: 630,
               alt: title,
@@ -60,19 +97,49 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-
 export default async function BlogDetailPage({ params }: Props) {
-  
-  const { id } = await params;
-  const blogData = await getBlogDetail(id);
+  const { id: slug } = await params;
+  const blogData = await getPost(slug);
 
   if (!blogData) {
-    return (
-      <div className="px-4 font-IranSans py-8 text-center">
-        <p className="text-[#55565A]">مقاله مورد نظر یافت نشد.</p>
-      </div>
-    );
+    notFound();
   }
 
-  return <BlogDetailClient id={id} blogData={blogData} />;
+  // پردازش محتوا در سمت سرور تا در HTML اولیه (SSR) حاضر و قابل خزش باشد
+  const { processed, toc } = processBlogContent(blogData.Content ?? "");
+
+  const title = blogData.BlogPostTitle ?? blogData.Title ?? "";
+  const description = blogData.BlogPostDescription ?? blogData.Excerpt ?? "";
+  const image = blogData.ImagePath
+    ? `${API_BASE_URL}/${blogData.ImagePath}`
+    : undefined;
+
+  const articleSchema = generateArticleSchema({
+    title,
+    description,
+    path: `/blog/${slug}`,
+    datePublished:
+      blogData.CreatedDate ?? blogData.CreatedOn ?? new Date().toISOString(),
+    dateModified:
+      blogData.ModifiedDate ?? blogData.CreatedDate ?? blogData.CreatedOn,
+    image,
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "خانه", path: "/" },
+    { name: "بلاگ", path: "/blog" },
+    { name: title, path: `/blog/${slug}` },
+  ]);
+
+  return (
+    <>
+      <JsonLd data={[articleSchema, breadcrumbSchema]} />
+      <BlogDetailClient
+        id={blogData.__resolvedId}
+        blogData={blogData}
+        processedContent={processed}
+        tocItems={toc}
+      />
+    </>
+  );
 }

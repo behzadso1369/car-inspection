@@ -27,7 +27,7 @@ export const COMPANY = {
   priceRange: '﷼﷼',
   openingHours: 'Sa-We 09:00-18:00',
   logo: `${BASE_URL}/assets/images/logo.svg`,
-  ogImage: `${BASE_URL}/og-default.jpg`,
+  ogImage: `${BASE_URL}/opengraph-image`,
 };
 
 /**
@@ -63,7 +63,7 @@ export function generateOGTags(config: {
     siteName: 'کارماچک - کارشناسی خودرو',
     images: [
       {
-        url: config.image || `${BASE_URL}/og-default.jpg`,
+        url: config.image || `${BASE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
         alt: config.title,
@@ -211,7 +211,7 @@ export function generateArticleSchema(config: {
     '@type': 'Article',
     headline: config.title,
     description: config.description,
-    image: config.image || `${BASE_URL}/og-default.jpg`,
+    image: config.image || `${BASE_URL}/opengraph-image`,
     datePublished: config.datePublished,
     dateModified: config.dateModified || config.datePublished,
     author: {

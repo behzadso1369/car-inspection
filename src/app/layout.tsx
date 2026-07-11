@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import SeoWrapper from "./SeoWrapper";
 import { Toaster } from "sonner";
 import ConditionalHeader from "./components/ConditionalHeader";
 import ConditionalFooter from "./components/ConditionalFooter";
 import { serverApiHelper } from "@/helper/server-fetcher";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { generateOrganizationSchema, generateLocalBusinessSchema, generateWebSiteSchema } from "@/lib/seo";
 
 // صفحات جداگانه خودشان revalidate/ISR تعیین می‌کنند؛ روت را داینامیک اجباری نمی‌کنیم
@@ -55,12 +55,11 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: {
       icon: '/favicon.ico',
       shortcut: '/favicon.ico',
-      apple: '/apple-touch-icon.png',
     },
-    
-    // Manifest
-    manifest: '/site.webmanifest',
-    
+
+    // Manifest از app/manifest.ts سرو می‌شود (/manifest.webmanifest)
+    // فیلد دستی حذف شد تا لینک تکراری/۴۰۴ ایجاد نشود
+
     // Open Graph
     openGraph: {
       type: 'website',
@@ -69,15 +68,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: `${siteName} - کارشناسی خودرو`,
       title: `${siteName} | کارشناسی تخصصی خودرو با کارشناسان مجرب`,
       description: siteDescription,
-      images: [
-        {
-          url: `${SITE_URL}/og-default.jpg`,
-          width: 1200,
-          height: 630,
-          alt: `${siteName} - کارشناسی خودرو`,
-          type: 'image/jpeg',
-        },
-      ],
+      // تصویر OG به‌صورت داینامیک از app/opengraph-image.tsx تولید می‌شود
     },
     
     // Twitter
@@ -129,7 +120,7 @@ export default async function RootLayout({
       <body
         className={` antialiased`}
       >
-     {/* <SeoWrapper/> */}
+        <GoogleAnalytics />
         <JsonLd data={[generateOrganizationSchema(), generateLocalBusinessSchema(), generateWebSiteSchema()]} />
         <ConditionalHeader data={initialData} />
         {children}

@@ -6,46 +6,23 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { TableOfContents } from "@/components/blog/TableOfContents";
-import { generateUUID } from "@/lib/uuid";
+import type { TocItem } from "@/lib/blog-content";
 
 interface BlogDetailClientProps {
   id: string;
   blogData: any;
+  processedContent: string;
+  tocItems: TocItem[];
 }
 
-const processContent = (htmlContent: string) => {
-  if (!htmlContent) return { processed: "", toc: [] };
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlContent, "text/html");
-  const h2Elements = doc.querySelectorAll("h2");
-  const toc: Array<{ id: string; text: string; level: number }> = [];
-
-  h2Elements.forEach((h2) => {
-    const uuid = generateUUID();
-    h2.id = uuid;
-    const text = h2.textContent || "";
-    toc.push({ id: uuid, text: text.trim(), level: 2 });
-  });
-
-  return {
-    processed: doc.body.innerHTML,
-    toc,
-  };
-};
-
-export function BlogDetailClient({ id, blogData }: BlogDetailClientProps) {
+export function BlogDetailClient({
+  id,
+  blogData,
+  processedContent,
+  tocItems,
+}: BlogDetailClientProps) {
   const [categoryName, setCategoryName] = useState<string>("");
   const [categoryId, setCategoryId] = useState<number>(0);
-  const [processedContent, setProcessedContent] = useState<string>("");
-  const [tocItems, setTocItems] = useState<Array<{ id: string; text: string; level: number }>>([]);
-
-  useEffect(() => {
-    if (!blogData?.Content) return;
-    const { processed, toc } = processContent(blogData.Content);
-    setProcessedContent(processed);
-    setTocItems(toc);
-  }, [blogData?.Content]);
 
   useEffect(() => {
     if (!blogData?.CategoryId) return;
@@ -80,7 +57,7 @@ export function BlogDetailClient({ id, blogData }: BlogDetailClientProps) {
     }
   }, [processedContent]);
 
-  const { Title, Content, ImagePath, Excerpt, CreatedDate } = blogData;
+  const { Title, ImagePath, Excerpt, CreatedDate } = blogData;
 
   return (
     <div className="px-4 font-IranSans py-4 max-w-6xl mx-auto">

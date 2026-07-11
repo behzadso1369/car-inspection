@@ -39,14 +39,7 @@ export const metadata: Metadata = {
     siteName: "کارماچک",
     locale: "fa_IR",
     type: "website",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/og-home.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "کارماچک - کارشناسی خودرو",
-      },
-    ],
+    // تصویر OG به‌صورت داینامیک از app/opengraph-image.tsx تولید می‌شود
   },
   twitter: {
     card: "summary_large_image",

@@ -20,7 +20,8 @@ Disallow: /car-inspection-flow/inspection-location
 Disallow: /car-inspection-flow/inspection-time
 Disallow: /car-inspection-flow/insert-information
 Disallow: /car-inspection-flow/final-confirm
-Disallow: /car-inspection-flow/payment-success
+Disallow: /car-inspection-flow/payment
+Disallow: /car-inspection-flow/payment-succeed
 Disallow: /Profile/
 Disallow: /login
 Disallow: /register
@@ -31,8 +32,6 @@ Disallow: /new-service
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
-Disallow: /*.json$
-Disallow: /*?*
 
 # 🗺️ Sitemap
 Sitemap: https://carmacheck.com/sitemap.xml
