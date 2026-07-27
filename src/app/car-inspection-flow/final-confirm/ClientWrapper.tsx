@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
+import { DiscountTag01Icon } from "hugeicons-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -87,10 +88,29 @@ export default function ClientWrapper() {
           <span className="text-[#6B6C70] text-sm">مبلغ کل:</span>
           <span className="text-sm">{orderDetail?.totalPrice?.toLocaleString()} تومان</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-[#6B6C70] text-sm">تخفیف:</span>
-          <span>{orderDetail?.discount?.toLocaleString()} تومان</span>
-        </div>
+
+        {(orderDetail?.discount ?? 0) > 0 ? (
+          <div className="my-4 flex items-center justify-between gap-3 rounded-2xl border border-[#86EFAC]/50 bg-gradient-to-l from-[#ECFDF5] via-[#F0FDF4] to-[#F7FEF9] px-4 py-3.5 shadow-[0_6px_20px_rgba(34,197,94,0.12)]">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[#16A34A]">
+                <DiscountTag01Icon size={22} />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold text-[#101117]">تخفیف شما</span>
+                <span className="text-xs font-light text-[#55565A]">مبلغ کسر شده از سفارش</span>
+              </div>
+            </div>
+            <span className="whitespace-nowrap text-base font-extrabold text-[#16A34A]">
+              {orderDetail?.discount?.toLocaleString()}− تومان
+            </span>
+          </div>
+        ) : (
+          <div className="flex justify-between">
+            <span className="text-[#6B6C70] text-sm">تخفیف:</span>
+            <span>{orderDetail?.discount?.toLocaleString()} تومان</span>
+          </div>
+        )}
+
         <div className="flex my-4 justify-between">
           <span className="text-[#6B6C70] text-sm">نوع کارشناسی:</span>
           <span className="text-sm">{orderDetail?.inspectionType}</span>
@@ -99,9 +119,11 @@ export default function ClientWrapper() {
           <span className="text-[#6B6C70] text-sm">محل کارشناسی:</span>
           <span>{orderDetail?.carInspectionLocationType}</span>
         </div>
-        <div className="flex my-4 justify-between">
-          <span className="text-[#6B6C70] text-sm">قابل پرداخت:</span>
-          <span className="text-sm">{orderDetail?.finalPrice?.toLocaleString()} تومان</span>
+        <div className="mt-4 flex items-center justify-between rounded-2xl border border-[#416CEA]/25 bg-[#416CEA]/6 px-4 py-3.5">
+          <span className="text-sm font-medium text-[#101117]">قابل پرداخت:</span>
+          <span className="text-base font-extrabold text-[#416CEA]">
+            {orderDetail?.finalPrice?.toLocaleString()} تومان
+          </span>
         </div>
       </div>
 

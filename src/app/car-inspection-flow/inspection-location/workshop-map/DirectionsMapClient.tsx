@@ -115,8 +115,14 @@ function AnimatedRouteLine({ path }: { path: [number, number][] }) {
   );
 }
 
-export default function DirectionsMap({LocationTypeDescription, onClose}:any) {
-   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+export default function DirectionsMap({
+  LocationTypeDescription,
+  onClose,
+  userLocation = null,
+  isLocating = false,
+  locationError = null,
+  onRetryLocation,
+}: any) {
   const [mounted, setMounted] = useState(false);
   const destination: [number, number] = [35.752854, 51.508942];
   const center: [number, number] = userLocation || destination;
@@ -154,19 +160,13 @@ export default function DirectionsMap({LocationTypeDescription, onClose}:any) {
     };
   }, []);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation([position.coords.latitude, position.coords.longitude]);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          // If geolocation fails, just show destination
-        }
-      );
-    }
-  }, []);
+  const locationMessage = locationError === "denied"
+    ? "دسترسی به موقعیت مکانی رد شد. برای نمایش مسیر، اجازه دسترسی را فعال کنید."
+    : locationError === "insecure"
+      ? "برای نمایش موقعیت شما، سایت باید با HTTPS باز شود."
+      : locationError
+        ? "دریافت موقعیت مکانی با خطا مواجه شد."
+        : null;
 
   const curvedPath = useMemo(
     () => (userLocation ? createCurvedPath(userLocation, destination) : []),
@@ -223,6 +223,30 @@ export default function DirectionsMap({LocationTypeDescription, onClose}:any) {
       </DialogHeader>
 
    <div className="w-full h-[calc(100vh-180px)] lg:h-[650px] relative">
+      {(isLocating || locationMessage) && (
+        <div className="absolute top-4 left-1/2 z-[1001] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border border-[#416CEA]/20 bg-white/95 px-4 py-3 text-center shadow-[0_8px_24px_rgba(65,108,234,0.12)] backdrop-blur-sm">
+          {isLocating ? (
+            <div className="flex items-center justify-center gap-2 text-sm text-[#416CEA]">
+              <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-[#416CEA]" />
+              <span>در حال دریافت موقعیت شما...</span>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <p className="text-sm leading-6 text-[#55565A]">{locationMessage}</p>
+              {onRetryLocation && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onRetryLocation}
+                  className="h-9 rounded-full border-[#416CEA]/30 text-[#416CEA]"
+                >
+                  تلاش مجدد
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
       <MapContainer {...mapProps}>
         <TileLayer {...({ attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' } as any)} />
         <MapBounds userLocation={userLocation} destination={destination} />

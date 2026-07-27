@@ -10,6 +10,7 @@ import InspectionTimeCard from "./inspectionTimeCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { CalendarRemove01Icon } from "hugeicons-react";
 
 export default function ClientWrapper() {
   const [selected, setSelected] = useState("");
@@ -154,7 +155,21 @@ export default function ClientWrapper() {
 
           <TabsContent value={defaultTab} className="grid grid-cols-2 px-2 gap-2 pb-20">
 
-                                  {carInspectionDateTime?.filter((item: any) => item.Id == defaultTab)?.[0]?.Hours.every((item:any) => item.IsDisabled) && <div className="col-span-2 flex justify-center my-4 text-lg font-extrabold text-red-500">متاسفانه زمان خالی برای رزرو وجود ندارد</div>}
+            {carInspectionDateTime?.filter((item: any) => item.Id == defaultTab)?.[0]?.Hours.every((item:any) => item.IsDisabled) && (
+              <div className="col-span-2 my-6 flex justify-center px-2">
+                <div className="flex w-full max-w-md flex-col items-center rounded-3xl border border-[#FFD8B8] bg-gradient-to-b from-[#FFF9F3] to-[#FFF3E8] px-6 py-8 text-center shadow-[0_8px_28px_rgba(255,122,24,0.1)]">
+                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#FF8A3D]/15 text-[#FF7A18]">
+                    <CalendarRemove01Icon size={34} />
+                  </div>
+                  <p className="text-base font-semibold leading-7 text-[#101117]">
+                    متاسفانه زمان خالی برای رزرو وجود ندارد
+                  </p>
+                  <p className="mt-2 text-sm font-light leading-6 text-[#55565A]">
+                    لطفاً روز دیگری را انتخاب کنید.
+                  </p>
+                </div>
+              </div>
+            )}
             {carInspectionDateTime?.filter((item: any) => item.Id == defaultTab)?.[0]?.Hours.map((item: any) => (
               <div key={item.Id} className="px-2">
 

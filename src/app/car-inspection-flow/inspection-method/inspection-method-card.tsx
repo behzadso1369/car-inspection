@@ -19,10 +19,11 @@ function DiscountRibbon() {
   return (
     <div className="pointer-events-none absolute top-0 left-4 z-20">
       <div
-        className="relative flex h-[54px] w-[36px] items-start justify-center bg-gradient-to-b from-[#FFB020] via-[#FF8A3D] to-[#FF5E62] pt-2 text-[15px] font-extrabold tracking-tight text-white shadow-[0_6px_18px_rgba(255,94,98,0.45)]"
+        className="relative pb-2 flex flex-col items-center h-[58px] w-[40px]  justify-center bg-gradient-to-b from-[#FFB020] via-[#FF8A3D] to-[#FF5E62] text-[15px] font-extrabold tracking-tight text-white shadow-[0_6px_18px_rgba(255,94,98,0.45)]"
         style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%)" }}
       >
-        <span className="drop-shadow-sm">۲۰٪</span>
+        <div className="drop-shadow-sm text-xl font-extrabold">1 </div>
+        <div className="drop-shadow-sm text-xs"> میلیون</div>
       </div>
     </div>
   );
