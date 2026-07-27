@@ -12,14 +12,13 @@ async function getMasterPageData() {
 // SEO Metadata (fallbacks; page can override with dynamic data if needed)
 export const metadata: Metadata = {
   title: "تماس با کارماچک | ۰۲۱-۹۱۰۰۱۷۴۰",
-  description: "تماس با کارماچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: تهران، ونک، ملاصدرا، بن‌بست صدر، پلاک ۶ | ساعات کاری: شنبه تا چهارشنبه ۹-۱۸",
+  description: "تماس با کارماچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: میدان رسالت,خیابان هنگام,نبش خیابان دوازدهم,پلاک497(نمایندگی زارعی)",
   keywords: [
     "تماس با کارماچک",
     "شماره تماس کارشناسی",
     "آدرس کارماچک",
     "ساعات کاری",
     "کارشناسی خودرو",
-    "تهران ونک",
     "پشتیبانی کارماچک",
   ],
   alternates: {
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "تماس با کارماچک | ۰۲۱-۹۱۰۰۱۷۴۰",
-    description: "تماس با کارماچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: تهران، ونک، ملاصدرا",
+    description: "تماس با کارماچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: میدان رسالت,خیابان هنگام,نبش خیابان دوازدهم,پلاک497(نمایندگی زارعی)",
     url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/contact-us`,
     siteName: "کارماچک",
     locale: "fa_IR",
@@ -47,7 +46,7 @@ export const metadata: Metadata = {
 export default async function ContactUs() {
   const data = await getMasterPageData();
   const master = data?.MasterSiteData;
-  const address = master?.Address ?? "تهران،ونک،ملاصدرا،بن‌بست صدر، پلاک ۶ واحد ۴";
+  const address = master?.Address ?? "میدان رسالت,خیابان هنگام,نبش خیابان دوازدهم,پلاک497(نمایندگی زارعی)";
   const workingHours = master?.WorkingHours ?? "شنبه تا چهارشنبه از ساعت 15-17";
   const phoneNumbers = master?.PhoneNumbers ?? "02191001740 - 09981982905";
 

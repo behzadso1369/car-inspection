@@ -80,8 +80,8 @@ export default function ClientWrapper() {
       <div className="flex px-4">
         <Image src="/sample-car.png" width={74} height={74} alt="کارشناسی خودرو" />
         <div className="flex flex-col text-base text-[#101117] mx-4">
-          <span>خودرو سواری {typeof window !== 'undefined' && localStorage.getItem("CarGroupName")}</span>
-          <span>مالک :  {token ? (jwtDecode<CustomJwtPayload>(token)?.name || "") : ""}</span>
+          <span className="font-medium">خودرو سواری {typeof window !== 'undefined' && localStorage.getItem("CarGroupName")}</span>
+          {/* <span>مالک :  {token ? (jwtDecode<CustomJwtPayload>(token)?.name || "") : ""}</span> */}
         </div>
       </div>
 
@@ -122,7 +122,7 @@ export default function ClientWrapper() {
           }
         </Button>
         <div className="flex flex-col">
-          <span className="text-[#101117] font-medium text-sm">{localStorage.getItem("inspectionMethod")}</span>
+          <span className="text-[#101117] font-medium text-sm">{typeof window !== 'undefined' ? localStorage.getItem("inspectionMethod") : ''}</span>
           <div className="flex">
             <span className="text-[#55565A] text-m font-light">
               {typeof window !== 'undefined' && localStorage.getItem("inspectionPrice") 

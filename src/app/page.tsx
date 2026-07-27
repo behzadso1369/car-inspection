@@ -6,7 +6,9 @@ import Statistics from "./components/mobile/Home/Statistics";
 import BlogShort from "./components/mobile/Home/BlogShort";
 import { NavigationBar } from "./components/mobile/Home/NavigationBar";
 import { Metadata } from "next";
+import Link from "next/link";
 import { serverApiHelper } from "@/helper/server-fetcher";
+import { LOCAL_AREAS } from "@/lib/local-areas";
 
 // ISR - Incremental Static Regeneration (revalidate هر 10 دقیقه)
 // صفحه اصلی محتوای دینامیک دارد (بلاگ‌ها، سرویس‌ها) اما نیازی به fetch در هر request نیست
@@ -14,8 +16,8 @@ export const revalidate = 600; // 10 minutes
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: "کارماچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
-  description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق | کارشناسی در محل یا مرکز | دریافت گزارش فوری | تهران",
+  title: "کارماچک | کارشناسی خودرو شرق تهران، تهرانپارس، نارمک و رسالت",
+  description: "کارشناسی خودرو در محل، شرق تهران (تهرانپارس، نارمک، رسالت، فرجام) و سراسر تهران | ۹۰٪ دقت، بیش از ۲۵ هزار کارشناسی موفق | گزارش فوری",
   keywords: [
     "کارشناسی خودرو",
     "کارشناسی ماشین",
@@ -24,10 +26,16 @@ export const metadata: Metadata = {
     "کارماچک",
     "carmacheck",
     "کارشناسی خودرو تهران",
+    "کارشناسی ماشین تهران",
+    "کارشناسی خودرو شرق تهران",
+    "کارشناسی ماشین شرق تهران",
+    "کارشناسی خودرو تهرانپارس",
+    "کارشناسی خودرو نارمک",
+    "کارشناسی خودرو فرجام",
+    "کارشناسی خودرو میدان رسالت",
     "کارشناسی آنلاین",
     "کارشناسی در محل",
     "قیمت کارشناسی خودرو",
-    "بهترین کارشناس خودرو",
   ],
   alternates: {
     canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com",
@@ -83,6 +91,30 @@ export default async function Home() {
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
       <Statistics data={data?.StatisticsData}/>
       <BlogShort data={data?.BlogPosts}/>
+
+      {/* بخش سئوی محلی — مناطق تحت پوشش شرق تهران */}
+      <section className="font-IranSans max-w-6xl mx-auto px-4 py-10" dir="rtl">
+        <h2 className="text-lg lg:text-2xl font-bold text-[#1E2A38] text-center">
+          کارشناسی خودرو در شرق تهران
+        </h2>
+        <p className="mt-3 text-center text-[#6B6C70] leading-8 max-w-3xl mx-auto text-sm lg:text-base">
+          کارماچک خدمات <strong>کارشناسی خودرو</strong> و <strong>کارشناسی ماشین</strong> را
+          به‌صورت در محل در سراسر تهران و به‌ویژه شرق تهران — تهرانپارس، نارمک، فرجام و
+          میدان رسالت — با ۹۰٪ دقت و گزارش فوری ارائه می‌دهد.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          {LOCAL_AREAS.map((a) => (
+            <Link
+              key={a.slug}
+              href={`/car-inspection-tehran/${a.slug}`}
+              className="rounded-full border border-[#A6A6A6] text-[#55565A] px-4 py-1.5 text-sm hover:text-[#3456bb] hover:border-[#3456bb] transition-colors"
+            >
+              کارشناسی خودرو {a.name}
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <div className="block lg:hidden">
          <NavigationBar/>
       </div>

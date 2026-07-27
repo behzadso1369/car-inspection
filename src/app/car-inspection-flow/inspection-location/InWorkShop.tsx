@@ -2,7 +2,8 @@
 import { Dialog } from "@/components/ui/dialog";
 import { Clock01Icon, Location01Icon, SmartPhone01Icon } from "hugeicons-react";
 import { useState } from "react";
-import DirectionsMap from "./workshop-map-2/page";
+import dynamic from "next/dynamic";
+const DirectionsMap = dynamic(() => import("./workshop-map/page"), { ssr: false });
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
@@ -24,9 +25,10 @@ export default function InWorkShop({LocationTypeDescription}:any) {
           </div> */}
            <div className="flex my-3">
            
-            <Button className="bg-transparent text-[#382ACC] text-sm" onClick={() => setOpenModal(true)}>
+            <Button className="bg-transparent text-[#382ACC] text-sm hover:bg-transparent hover:cursor-pointer" onClick={() => setOpenModal(true)}>
+               <Plus/>
               <span>مشاهده آدرس</span>
-              <Plus/>
+             
             </Button>
           </div>
                  <Dialog open={openModal} onOpenChange={setOpenModal}>

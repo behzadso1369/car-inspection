@@ -13,7 +13,7 @@ import Link from "next/link";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 
 // CSR - Client Side Rendering
@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 // 1. نیاز به timer و countdown دارد
 // 2. تعامل زیاد با کاربر (ورود کد)
 // 3. مدیریت localStorage و cookies
-export default function VerifyOtp() {
+function VerifyOtpContent() {
        const [value,setValue] = useState<any>("")
   const router = useRouter();
    const [isResending, setIsResending] = useState(false);
@@ -144,4 +144,11 @@ export default function VerifyOtp() {
     )
    
 
+}
+export default function VerifyOtp() {
+    return (
+        <Suspense fallback={<div className="py-16 text-center font-IranSans text-[#55565A]">در حال بارگذاری...</div>}>
+            <VerifyOtpContent />
+        </Suspense>
+    );
 }

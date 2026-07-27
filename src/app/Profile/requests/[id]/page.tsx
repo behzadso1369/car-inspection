@@ -6,11 +6,11 @@ import { ArrowLeft01Icon, Location01Icon, Logout03Icon } from "hugeicons-react"
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { ArrowLeft } from "lucide-react";
 import { handleLogout } from "@/helper/logout";
 
-export default function RequestDetail() {
+function RequestDetailContent() {
     const params = useParams();
     const router = useRouter();
     const [orderDetail,setOrderDetail] = useState<any>({})
@@ -128,3 +128,10 @@ export default function RequestDetail() {
        
     )
 } 
+export default function RequestDetail() {
+    return (
+        <Suspense fallback={<div className="py-16 text-center font-IranSans text-[#55565A]">در حال بارگذاری...</div>}>
+            <RequestDetailContent />
+        </Suspense>
+    );
+}

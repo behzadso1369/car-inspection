@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 // CSR - Client Side Rendering
@@ -14,7 +14,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 // 1. نیاز به localStorage و session management دارند
 // 2. فرم‌های تعاملی با validation لحظه‌ای
 // 3. نیازی به SEO ندارند (صفحات خصوصی)
-export default function Login() {
+function LoginContent() {
     const [value,setValue] = useState<any>("");
         const [sendSMS,setSendSMS] = useState<boolean>(false);
 
@@ -56,7 +56,7 @@ export default function Login() {
 
 
 
-        <Card className="shadow-[0px_4px_24px_0px_#EAEAEA] px-4 h-[300px] w-full">
+        <Card className="shadow-[0px_4px_24px_0px_#EAEAEA] px-4 py-4 w-full">
             <h1 className="text-[#101117] font-medium text-base">ورود کاربر</h1>
             <Label className="text-sm text-[#101117] font-light">لطفا شماره موبایل خود را وارد نمایید</Label>
             <Input onChange={(e:any) => {
@@ -64,11 +64,21 @@ export default function Login() {
             }} placeholder="09123456789" className="px-4  items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A]  text-xs"/>
             <span className="text-xs font-extralight text-[#55565A]">لطفا شماره را همراه با صفر وارد کنید</span>
             
-                <Button disabled={sendSMS} onClick={login} className="w-full rounded-3xl inline-block py-2 px-1 text-center text-sm  my-4 bg-[#3456bb] text-white">{!sendSMS ? "ورود" : "لطفا منتظر بمانید..."}</Button>
+                <Button disabled={sendSMS} onClick={login} className="w-full rounded-3xl inline-block py-2 px-1 text-center text-sm  bg-[#3456bb] text-white">{!sendSMS ? "ورود" : "لطفا منتظر بمانید..."}</Button>
+                <Button asChild variant="outline" className="w-full rounded-3xl py-2 text-sm border-[#3456bb] text-[#3456bb] hover:bg-[#3456bb]/5">
+                    <Link href="/">بازگشت به صفحه اصلی</Link>
+                </Button>
 
         </Card>
     </div>
     )
    
 
+}
+export default function Login() {
+    return (
+        <Suspense fallback={<div className="py-16 text-center font-IranSans text-[#55565A]">در حال بارگذاری...</div>}>
+            <LoginContent />
+        </Suspense>
+    );
 }

@@ -120,7 +120,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         </div>
       </div>
 
-      <div className="w-full bg-[#416CEA] relative mt-28 lg:mt-0 py-8 lg:py-28">
+      <div className="w-full bg-[#416CEA] relative mt-28 lg:mt-0 py-6 lg:py-8">
         <div className="absolute left-1/2 lg:left-0 -top-2 lg:-top-2/3 -translate-y-1/2 -translate-x-1/2 lg:translate-0 -rotate-y-180">
           <div className="w-[353px] lg:w-[739px] relative aspect-[2.09]">
             <Image alt="flow-car" src="/flow-car.png" fill className="object-cover" />
@@ -179,8 +179,8 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         </div>
         <div className="w-full flex justify-end my-4">
           <div className="flex flex-col w-2/5 pr-5">
-            <span className="text-sm text-[#101117]">تایید و پردخت</span>
-            <span className="text-xs text-[#55565A]">ثبت و تایید و پرداخت مبلغ نهایی کارشناسی</span>
+            <span className="text-sm text-[#101117] lg:text-2xl">تایید و پردخت</span>
+            <span className="text-xs text-[#55565A] lg:text-base">ثبت و تایید و پرداخت مبلغ نهایی کارشناسی</span>
           </div>
         </div>
         <div className="absolute w-16 top-24 h-[calc(100%-96px)] bg-way bg-cover">
@@ -188,9 +188,9 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         </div>
       </div>
 
-      <div className="h-[600px] lg:h-[800px]">
+      {/* <div className="h-[600px] lg:h-[800px]">
         <OurCustomer />
-      </div>
+      </div> */}
       <Statistics data={data?.StatisticsData} />
       <div className="lg:hidden">
         <NavigationBar />

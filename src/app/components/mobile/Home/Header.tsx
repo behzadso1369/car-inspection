@@ -36,17 +36,17 @@ export const Header = memo(({data}:any) => {
         <header className="w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 !bg-white rounded-b-3xl font-IranSans">
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                    <Image 
-                        alt="کارماچک" 
-                        width={62} 
-                        height={57} 
-                        src={"https://api.carmacheck.com/" + data?.ImagePath}
-                        priority
-                        loading="eager"
-                    />
-                    <h1 className="font-IranSans-UltraLight text-4xl text-black mx-1 font-semibold">
-                        {data?.CompanyName}
-                    </h1>
+                    <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
+                        <Image 
+                            alt="کارماچک" 
+                            width={140} 
+                            height={57} 
+                            src={"https://api.carmacheck.com/" + data?.ImagePath}
+                            priority
+                            loading="eager"
+                        />
+                    </Link>
+                
                 </div>
 
                 <ul className="flex text-base">
@@ -58,9 +58,9 @@ export const Header = memo(({data}:any) => {
                             کارشناسی خودرو
                         </NavigationLink>
                     </li>
-                    <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
+                    {/* <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
                         <NavigationLink href="/services" prefetch={true}>خدمات کارماچک</NavigationLink>
-                    </li>
+                    </li> */}
                      <li className={`mx-4 ${isActive("/blog") ? "text-[#3456bb]" : ""}`}>
                         <NavigationLink href="/blog" prefetch={true}>بلاگ</NavigationLink>
                     </li>

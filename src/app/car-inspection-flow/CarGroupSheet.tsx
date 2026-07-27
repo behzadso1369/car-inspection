@@ -1,31 +1,21 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { Sheet } from 'react-modal-sheet';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation'
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
 import { DialogClose, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { X } from 'lucide-react';
-import { DialogDescription } from '@radix-ui/react-dialog';
 import instance from '@/helper/interceptor';
 import { ApiHelper } from '@/helper/api-request';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export default function OpenSheet({inputValue,setInputValue,openModal,setOpenModal,moveToInspectionMethod}:any) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [products,setProducts] = useState<any>([]);
-  const [disableDrag,setDisableDrag] = useState<boolean>(false);
   const [brands,setBrands] = useState([]);
   const [carGroups,setCarGroups] = useState([]);
   const [showGroup,setShowGroups] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  
-  const pathname = usePathname()
-  const currentLocale = pathname.split('/')[1]
-  const getAllData = (e:any) => {
+  const getAllData = useCallback((e:any) => {
     setSearchTerm(e);
                    instance.get(ApiHelper.get("GetAllData") + "?terms=" + e)
       .then((res: any) => {
@@ -38,12 +28,24 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
         console.error("Error fetching data:", err);
       });
 
-            }
+            }, []);
+
+  const resetSheet = useCallback(() => {
+    setShowGroups(false);
+    setSearchTerm("");
+    getAllData("");
+  }, [getAllData]);
           
             useEffect(() => {
               getAllData("");
 
-            },[])
+            }, [getAllData])
+
+  useEffect(() => {
+    if (!openModal) {
+      resetSheet();
+    }
+  }, [openModal, resetSheet]);
 
   const getGroupById = (id:any) => {
      instance.get(ApiHelper.get("GetCarGroupWithBrandId") + "?CarBrandId=" + id)
@@ -60,7 +62,11 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
   }
 
   return (
-<DialogContent className="w-screen h-full overflow-auto  max-w-none p-0 border-none  bg-white font-IranSans">
+<DialogContent showCloseButton={false} className="w-screen h-full overflow-auto  max-w-none p-0 border-none  bg-white font-IranSans">
+            <DialogClose className="absolute top-4 right-4 z-10 rounded-full p-1 text-[#101117] opacity-80 transition-opacity hover:opacity-100 focus:outline-none">
+              <X size={32} strokeWidth={2.25} />
+              <span className="sr-only">بستن</span>
+            </DialogClose>
             <div className="px-4">
  <DialogHeader>
             <DialogTitle className="text-base text-[#101117] font-medium flex justify-center py-4 font-bold ">انتخاب خودرو</DialogTitle>

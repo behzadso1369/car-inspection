@@ -1,5 +1,5 @@
 "use client";
-import { Home01Icon } from "hugeicons-react"
+import { BookOpen02Icon, Home01Icon } from "hugeicons-react"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { memo, useEffect } from "react"
@@ -14,7 +14,7 @@ export const NavigationBar = memo(() => {
     useEffect(() => {
         router.prefetch("/");
         router.prefetch("/car-inspection-flow/select-car-group");
-        router.prefetch("/services");
+        router.prefetch("/blog");
         router.prefetch("/Profile");
     }, [router]);
     
@@ -60,20 +60,12 @@ export const NavigationBar = memo(() => {
             </NavigationLink>
             
             <NavigationLink 
-                href="/services" 
+                href="/blog" 
                 prefetch={true}
-                className={`flex flex-col justify-between items-center ${isActive("/services") ? "text-[#3456bb]" : "text-[#999A9C]"}`}
+                className={`flex flex-col justify-between items-center ${isActive("/blog") ? "text-[#3456bb]" : "text-[#999A9C]"}`}
             >
-                <div style={{ filter: isActive("/services") ? activeFilter : inactiveFilter }}>
-                    <Image 
-                        alt="خدمات کارماچک" 
-                        src="/car-service.svg" 
-                        width={24} 
-                        height={24}
-                        loading="lazy"
-                    />
-                </div>
-                <span className="text-xs my-1">خدمات کارماچک</span>
+                <BookOpen02Icon size={24} strokeWidth={isActive("/blog") ? 2.2 : 1.8} />
+                <span className="text-xs my-1">بلاگ</span>
             </NavigationLink>
             
             <NavigationLink 

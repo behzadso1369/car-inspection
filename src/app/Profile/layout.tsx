@@ -2,6 +2,7 @@
 import { Call02Icon } from "hugeicons-react";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { NavigationBar } from "../components/mobile/Home/NavigationBar";
 import { Header } from "../components/mobile/Home/Header";
 import Banner from "../components/mobile/Home/Banner";
@@ -40,14 +41,16 @@ export default function ProfileLayout({
                             }
                         }}/>
                         <div className="flex items-center">
+                            <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
                             <Image 
                                 alt="کارماچک" 
-                                width={32} 
+                                width={140} 
                                 height={30} 
                                 src={data?.MasterSiteData?.ImagePath 
                                     ? `https://api.carmacheck.com/${data.MasterSiteData.ImagePath}` 
                                     : "/assets/images/logo.svg"}
                             />
+                            </Link>
                             <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">
                                 {data?.MasterSiteData?.CompanyName || "کارماچک"}
                             </h1>

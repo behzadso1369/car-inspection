@@ -49,17 +49,17 @@ export const BlogMobileHeader = memo(({data}:any) => {
       <SheetHeader className="!p-0">
         <SheetTitle className="border-b border-gray-300 w-full py-4">
              <div className="flex items-center">
-                    <Image 
-                        alt="کارماچک" 
-                        width={62} 
-                        height={57} 
-                        src={"https://api.carmacheck.com/" + data?.ImagePath}
-                        priority
-                        loading="eager"
-                    />
-                    <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">
-                        {data?.CompanyName}
-                    </h1>
+                    <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
+                        <Image 
+                            alt="کارماچک" 
+                            width={140} 
+                            height={57} 
+                            src={"https://api.carmacheck.com/" + data?.ImagePath}
+                            priority
+                            loading="eager"
+                        />
+                    </Link>
+                 
                 </div>
         </SheetTitle>
       </SheetHeader>
@@ -72,9 +72,9 @@ export const BlogMobileHeader = memo(({data}:any) => {
                                  کارشناسی خودرو
                              </NavigationLink>
                          </li>
-                         <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
+                         {/* <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
                              <NavigationLink href="/services" prefetch={true}>خدمات کارماچک</NavigationLink>
-                         </li>
+                         </li> */}
                          <li className={`mx-4 ${isActive("/contact-us") ? "text-[#3456bb]" : ""}`}>
                              <NavigationLink href="/contact-us" prefetch={true}>ارتباط با ما</NavigationLink>
                          </li>
@@ -85,17 +85,17 @@ export const BlogMobileHeader = memo(({data}:any) => {
     </SheetContent>
   </Sheet>
   <div className="flex items-center">
-                    <Image 
-                        alt="کارماچک" 
-                        width={62} 
-                        height={57} 
-                        src={"https://api.carmacheck.com/" + data?.ImagePath}
-                        priority
-                        loading="eager"
-                    />
-                    <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">
-                        {data?.CompanyName}
-                    </h1>
+                    <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
+                        <Image 
+                            alt="کارماچک" 
+                            width={140} 
+                            height={57} 
+                            src={"https://api.carmacheck.com/" + data?.ImagePath}
+                            priority
+                            loading="eager"
+                        />
+                    </Link>
+                   
                 </div>
 
              

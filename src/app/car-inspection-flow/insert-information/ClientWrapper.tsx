@@ -129,11 +129,9 @@ export default function ClientWrapper() {
               )}
             />
             <div className="px-4 lg:my-4 lg:static lg:mt-8 fixed left-0 right-0 flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-              {
-                openModal && <Dialog open={openModal} onOpenChange={setOpenModal}>
-                <OtpMoldal openModal={openModal} setOpnModal={setOpenModal}  remainingSeconds={remainingSeconds} />
+              <Dialog open={openModal} onOpenChange={setOpenModal}>
+                <OtpMoldal openModal={openModal} setOpnModal={setOpenModal} remainingSeconds={remainingSeconds} />
               </Dialog>
-              }
               
               <Button disabled={sendSMS} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
                 {!sendSMS ? "ارسال پیامک" : "...لطفا منتظر بمانید"} 

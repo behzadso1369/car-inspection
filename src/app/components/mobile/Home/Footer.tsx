@@ -2,6 +2,35 @@ import { Clock01Icon, Location01Icon, SmartPhone01Icon } from "hugeicons-react"
 import Image from "next/image"
 import Link from "next/link"
 
+function toTelHref(phone: string) {
+  return `tel:${phone.replace(/[^\d+]/g, "")}`;
+}
+
+function parsePhoneNumbers(phoneNumbers?: string) {
+  if (!phoneNumbers) return [];
+  return phoneNumbers.split(/\s*[-–—/|]\s*/).map((phone) => phone.trim()).filter(Boolean);
+}
+
+function FooterPhoneNumbers({ phoneNumbers }: { phoneNumbers?: string }) {
+  const phones = parsePhoneNumbers(phoneNumbers);
+
+  return (
+    <div className="flex my-3 lg:my-4">
+      <SmartPhone01Icon size={24} />
+      <span className="text-base mx-2">
+        {phones.map((phone, index) => (
+          <span key={`${phone}-${index}`}>
+            <a href={toTelHref(phone)} className="hover:text-[#3456bb] transition-colors">
+              {phone}
+            </a>
+            {index < phones.length - 1 ? " - " : ""}
+          </span>
+        ))}
+      </span>
+    </div>
+  );
+}
+
 export const Footer = (data: any) => {
   
     return (
@@ -15,16 +44,15 @@ export const Footer = (data: any) => {
             <Clock01Icon size={24}/>
             <span className="text-base mx-2">{data?.data?.WorkingHours}</span>
           </div>
-          <div className="flex my-3">
-            <SmartPhone01Icon size={24}/>
-            <span className="text-base mx-2">{data?.data?.PhoneNumbers}</span>
-          </div>
+          <FooterPhoneNumbers phoneNumbers={data?.data?.PhoneNumbers} />
           <div className="mt-8 flex justify-between flex-wrap">
             <Link href="./faq" prefetch={false}>سوالات متداول</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
             <Link href="./contact-us">ارتباط با ما</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
             <Link href="about-us" prefetch={false}>درباره ما</Link>
+            <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
+            <Link href="/blog" prefetch={false}>بلاگ</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
             <Link href="./regulations">قوانین و مقررات</Link>
 
@@ -47,10 +75,7 @@ export const Footer = (data: any) => {
             <Clock01Icon size={24}/>
             <span className="text-base mx-2">{data?.data?.WorkingHours}</span>
           </div>
-          <div className="flex my-4">
-            <SmartPhone01Icon size={24}/>
-            <span className="text-base mx-2">{data?.data?.PhoneNumbers}</span>
-          </div>
+          <FooterPhoneNumbers phoneNumbers={data?.data?.PhoneNumbers} />
           </div>
        
           <div className="mx-16 flex flex-col">
@@ -62,6 +87,8 @@ export const Footer = (data: any) => {
              <Link href="./contact-us" className="my-1">ارتباط با ما</Link>
             
                        <Link href="./faq" prefetch={false} className="my-1">سوالات متداول</Link>
+
+             <Link href="/blog" prefetch={false} className="my-1">بلاگ</Link>
 
           </div>
           <div className="my-8 mr-96">

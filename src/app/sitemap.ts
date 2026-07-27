@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { serverApiHelper } from '@/helper/server-fetcher';
 import { CARS } from '@/app/car-inspection/carsData';
+import { LOCAL_AREAS } from '@/lib/local-areas';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://carmacheck.com';
 
@@ -71,6 +72,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // صفحات فرود محلی (سئوی محلی شرق تهران)
+  const localRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE_URL}/car-inspection-tehran`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    ...LOCAL_AREAS.map((a) => ({
+      url: `${SITE_URL}/car-inspection-tehran/${a.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })),
+  ];
+
   // Dynamic blog routes — مقالات واقعی بلاگ (نه دسته‌بندی‌ها)
   let blogRoutes: MetadataRoute.Sitemap = [];
 
@@ -80,7 +97,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const response = await fetch(`${BASE_URL}SiteBlog/SearchWithTerms`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ terms: "" }),
+      body: JSON.stringify({ terms: "", take: 1000, skip: 0 }),
       next: { revalidate: 3600 } // Cache برای 1 ساعت
     });
 
@@ -88,10 +105,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const data = await response.json();
       const posts = data?.SearchItems || data?.resultObject?.SearchItems || [];
 
+      // slug را از BlogPostCanonical درمی‌آوریم؛ اگر نبود از id عددی استفاده می‌کنیم
+      const slugOf = (post: any): string => {
+        const c = String(post?.BlogPostCanonical ?? "");
+        const m = c.match(/\/blog\/([^/?#]+)\/?$/);
+        if (m && m[1] && !/^\d+$/.test(m[1])) return m[1];
+        return String(post?.BlogPostId);
+      };
+
       blogRoutes = posts
         .filter((post: any) => post?.BlogPostId != null)
         .map((post: any) => ({
-          url: `${SITE_URL}/blog/${post.BlogPostId}`,
+          url: `${SITE_URL}/blog/${slugOf(post)}`,
           lastModified: post.ModifiedDate ? new Date(post.ModifiedDate) : new Date(),
           changeFrequency: 'monthly' as const,
           priority: 0.7,
@@ -102,6 +127,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ترکیب تمام routes
-  return [...staticRoutes, ...carInspectionRoutes, ...blogRoutes];
+  return [...staticRoutes, ...localRoutes, ...carInspectionRoutes, ...blogRoutes];
 }
 

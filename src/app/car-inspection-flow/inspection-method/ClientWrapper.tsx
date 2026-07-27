@@ -114,13 +114,14 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
 
       <div className="px-4 mb-24">
         <RadioGroup value={selected} onValueChange={setSelected}>
-          {carInspectionType?.map((item: any) => (
+          {carInspectionType?.map((item: any, index: number) => (
             <InspectionMethodCard
               key={item.Id}
               selected={selected}
               onSelect={setSelected}
               inspectionType={String(item.Id)}
               data={item}
+              isFirst={index === 0}
             />
           ))}
         </RadioGroup>

@@ -4,6 +4,7 @@ import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Call02Icon } from "hugeicons-react";
 import { usePathname } from "next/navigation";
 
@@ -54,18 +55,18 @@ export default function ProfileLayout({
 
   <div className={`bg-white font-IranSans  ${!isBaseFlow ? "lg:max-w-xl lg:container lg:mx-auto lg:my-10 lg:pt-8" : ""}   shadow-[0px_4px_24px_0px_#EAEAEA]`}>
                        {!isBaseFlow && (
-                       <div className="px-8 py-3 flex justify-between  shadow-[0px_6px_20px_-2px_#10182814] lg:shadow-none">
+                       <div className="px-4 py-3 flex justify-between  shadow-[0px_6px_20px_-2px_#10182814] lg:shadow-none">
                    <ArrowRight onClick={handleBack}/>
                 <div className="flex items-center">
+            <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
             <Image 
                 alt="کارماچک" 
-                width={32} 
-                height={30} 
+                width={140} 
+                height={58} 
                 src={data?.MasterSiteData?.ImagePath ? `https://api.carmacheck.com/${data.MasterSiteData.ImagePath}` : "/assets/images/logo.svg"}
             />
-            <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">
-                {data?.MasterSiteData?.CompanyName || "کارماچک"}
-            </h1>
+            </Link>
+          
             </div>
             <span className="text-[#101117] flex items-center font-IranSans">
                 

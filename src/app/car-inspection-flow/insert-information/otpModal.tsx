@@ -1,7 +1,8 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { Label } from "@/components/ui/label";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
@@ -11,8 +12,14 @@ import { useEffect, useState } from "react";
 export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) {
       const [timer, setTimer] = useState(remainingSeconds ? remainingSeconds : 120);
       const [isResending, setIsResending] = useState(false);
+      const [isVerifying, setIsVerifying] = useState(false);
+      const [phoneNumber, setPhoneNumber] = useState("");
        const router = useRouter();
-     
+
+      useEffect(() => {
+        if (!openModal || typeof window === "undefined") return;
+        setPhoneNumber(localStorage.getItem("phoneNumber") || "");
+      }, [openModal]);     
          const moveToInspectionLocation = () => {
          instance.post(ApiHelper.get("MoveOrder"), {
             "isBack": false,
@@ -23,6 +30,8 @@ export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) 
         .then((res:any) => {
           if(res) {
    router.push("./inspection-location")
+          } else {
+            setIsVerifying(false);
           }
          
            
@@ -31,6 +40,7 @@ export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) 
             
         }).catch((err:any) => {
           console.log(err)
+          setIsVerifying(false);
         })
        }
         
@@ -86,7 +96,7 @@ export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) 
       };
 
       const verifyOtp = (e:any) => {
-      console.log(e)
+        setIsVerifying(true);
         instance.post(ApiHelper.get("UserVerify"),{
             userId:localStorage.getItem("userId"),
             otpCode:e
@@ -108,22 +118,33 @@ export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) 
               } else {
                 moveToInspectionLocation();
               }
-      } 
+      } else {
+        setIsVerifying(false);
+      }
+        }).catch((err:any) => {
+          console.log(err);
+          setIsVerifying(false);
         })
     }
     return (
           <>
               <DialogContent className="sm:max-w-[425px] bg-white font-IranSans px-2 py-8">
+          <div className="relative">
+          {isVerifying && (
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-lg bg-white/85">
+              <div className="mb-3 h-12 w-12 animate-spin rounded-full border-b-2 border-[#416CEA]" />
+              <span className="text-sm font-light text-[#55565A]">در حال تایید کد...</span>
+            </div>
+          )}
           <DialogHeader>
             <DialogTitle className="text-base text-[#101117] font-medium text-center">کد تایید را وارد کنید</DialogTitle>
             <DialogDescription className="text-sm text-[#101117] font-light text-center">
-              کد تایید برای شماره {localStorage.getItem("phoneNumber")} ارسال گردید
-            </DialogDescription>
-          </DialogHeader>
+              کد تایید برای شماره {phoneNumber || "..."} ارسال گردید
+            </DialogDescription>          </DialogHeader>
           <div className="grid gap-4">
            
             <div className="w-full flex justify-center">
-                  <InputOTP   onComplete={verifyOtp}  className="w-auto"  maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
+                  <InputOTP disabled={isVerifying} onComplete={verifyOtp} className="w-auto" maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
       <InputOTPGroup dir="ltr" >
         <InputOTPSlot index={0} className="mr-2 border border-[#B1B1B3] w-10 h-10 !rounded-[8px]"   />
       
@@ -145,13 +166,14 @@ export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) 
             ) : (
               <Button 
                 onClick={resendOtp}
-                disabled={isResending}
+                disabled={isResending || isVerifying}
                 className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4 disabled:opacity-50"
               >
                 {isResending ? 'در حال ارسال...' : 'ارسال مجدد کد'}
               </Button>
             )}
 
+          </div>
           </div>
           
         </DialogContent>

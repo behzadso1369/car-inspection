@@ -6,10 +6,10 @@ import { ArrowLeft01Icon, ArrowLeft02Icon } from "hugeicons-react"
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { handleLogout } from "@/helper/logout";
 
-export default function InspectionReport() {
+function InspectionReportContent() {
     const params = useParams();
     const router = useRouter();
     const [orderDetail,setOrderDetail] = useState<any>({})
@@ -160,3 +160,10 @@ export default function InspectionReport() {
        
     )
 } 
+export default function InspectionReport() {
+    return (
+        <Suspense fallback={<div className="py-16 text-center font-IranSans text-[#55565A]">در حال بارگذاری...</div>}>
+            <InspectionReportContent />
+        </Suspense>
+    );
+}
