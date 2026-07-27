@@ -15,6 +15,7 @@ const ROUTES_WITH_FOOTER = [
   "/regulations",
   "/new-service",
   "/contact-us",
+  "/car-price",
   "/car-inspection-flow/select-car-group",
   "/payment/success",
   "/payment/failed",

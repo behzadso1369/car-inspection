@@ -1,0 +1,2063 @@
+{
+    "metadata": {
+        "last_updated": "2026-07-27T23:54:19.103526",
+        "total_count": 293,
+        "source_counts": {
+            "bama": 0,
+            "hamrah": 293
+        }
+    },
+    "cars": [
+        {
+            "id": 1,
+            "carName": "آرتابان توکا توربو1500 1405",
+            "carPrice": "5,100,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 2,
+            "carName": "اونترا U75 Plus توربو2000 1405",
+            "carPrice": "6,500,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 3,
+            "carName": "اکستریم VX توربو 2000 1405",
+            "carPrice": "11,400,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 4,
+            "carName": "اکستریم LX توربو 1600 1404",
+            "carPrice": "6,400,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 5,
+            "carName": "اکستریم TXL توربو 2000 1404",
+            "carPrice": "8,350,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 6,
+            "carName": "پژو 207 اتوماتیک - TU5P 1405",
+            "carPrice": "2,650,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 7,
+            "carName": "پژو 207 اتوماتیک سقف شیشه ای - TU5P 1405",
+            "carPrice": "2,800,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 8,
+            "carName": "پژو 207 دنده ای  - TU5P 1405",
+            "carPrice": "1,820,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 9,
+            "carName": "پژو 207 دنده ای با موتور  ESP - TU3 1405",
+            "carPrice": "1,670,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 10,
+            "carName": "پژو 207 دنده ای سقف شیشه ای - TU5P 1405",
+            "carPrice": "2,100,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 11,
+            "carName": "پژو 207 دنده ای نیمه فول - ESP 1405",
+            "carPrice": "1,780,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 12,
+            "carName": "تارا اتومات V4 1405",
+            "carPrice": "2,650,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 13,
+            "carName": "تارا اتومات V4 توربو 1405",
+            "carPrice": "294,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 14,
+            "carName": "تارا دنده ای V1 پلاس 1405",
+            "carPrice": "2,050,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 15,
+            "carName": "دنا پلاس 6 دنده 1405",
+            "carPrice": "2,170,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 16,
+            "carName": "دنا پلاس توربو اتوماتیک - آپشنال 1405",
+            "carPrice": "2,740,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 17,
+            "carName": "دنا پلاس لو آپشن 1405",
+            "carPrice": "1,900,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 18,
+            "carName": "ایران خودرو رانا پلاس TU5P 1405",
+            "carPrice": "1,680,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 19,
+            "carName": "ری را بنزینی 1405",
+            "carPrice": "3,700,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 20,
+            "carName": "سمند سورن پلاس XU7P 1405",
+            "carPrice": "1,620,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 21,
+            "carName": "سمند سورن پلاس دوگانه سوز 1405",
+            "carPrice": "1,970,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 22,
+            "carName": "سمند سورن پلاسTU5P 1405",
+            "carPrice": "2,140,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 23,
+            "carName": "آریسان 2 دوگانه سوز 1405",
+            "carPrice": "1,600,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 24,
+            "carName": "پژو 207 اتوماتیک - ESP 1404",
+            "carPrice": "2,500,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 25,
+            "carName": "پژو 207 اتوماتیک سقف شیشه ای - ESP ارتقا یافته 1404",
+            "carPrice": "2,650,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 26,
+            "carName": "پژو 207 دنده ای سقف شیشه ای - ESP ارتقا یافته 1404",
+            "carPrice": "2,000,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 27,
+            "carName": "پژو 207 دنده ای سقف شیشه ای - ESP ارتقا یافته- رینگ فولادی 1404",
+            "carPrice": "1,950,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 28,
+            "carName": "ایران خودرو رانا پلاس - ESP ارتقا یافته 1404",
+            "carPrice": "1,580,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 29,
+            "carName": "سمند سورن پلاس 1404",
+            "carPrice": "1,780,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 30,
+            "carName": "پژو 207 اتوماتیک سقف شیشه ای 1403",
+            "carPrice": "2,270,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 31,
+            "carName": "پژو 207 اتوماتیک سقف شیشه ای - ESP 1403",
+            "carPrice": "2,300,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 32,
+            "carName": "پژو 207 دنده ای سقف شیشه ای - ESP 1403",
+            "carPrice": "1,780,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 33,
+            "carName": "پژو پارس LX با دریچه گاز برقی 1403",
+            "carPrice": "1,900,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 34,
+            "carName": "پژو پارس LX با دریچه گاز سیمی 1403",
+            "carPrice": "1,940,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 35,
+            "carName": "پژو پارس معمولی - موتور جدید 1403",
+            "carPrice": "1,590,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 36,
+            "carName": "پژو پارس معمولی (سفارشی) - موتور جدید-ELX 1403",
+            "carPrice": "1,670,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 37,
+            "carName": "تارا اتوماتیک 1403",
+            "carPrice": "2,000,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 38,
+            "carName": "تارا دنده - ESP 1403",
+            "carPrice": "1,700,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 39,
+            "carName": "دنا پلاس توربو 6 دنده 1403",
+            "carPrice": "2,050,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 40,
+            "carName": "دنا پلاس توربو اتوماتیک - ESP 1403",
+            "carPrice": "2,250,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 41,
+            "carName": "ایران خودرو رانا پلاس - ESP 1403",
+            "carPrice": "1,400,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 42,
+            "carName": "ایران خودرو رانا پلاس سقف شیشه ای - ESP 1403",
+            "carPrice": "1,600,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 43,
+            "carName": "لونا GRE برقی 1403",
+            "carPrice": "3,400,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 44,
+            "carName": "پژو 206 تیپ 3 1402",
+            "carPrice": "1,400,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 45,
+            "carName": "پژو 207 اتوماتیک 1402",
+            "carPrice": "2,100,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 46,
+            "carName": "پژو 207 تیپ 5 1402",
+            "carPrice": "1,570,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 47,
+            "carName": "پژو 207 دنده ای با موتور TU3 1402",
+            "carPrice": "1,400,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 48,
+            "carName": "پژو 207 دنده ای سقف شیشه ای 1402",
+            "carPrice": "1,700,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 49,
+            "carName": "پژو 207 دنده ای فول 1402",
+            "carPrice": "1,580,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 50,
+            "carName": "پژو 207 دنده ای فول - ESP 1402",
+            "carPrice": "1,600,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 51,
+            "carName": "پژو 207 دنده ای نیمه فول 1402",
+            "carPrice": "1,540,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 52,
+            "carName": "پژو 207 مولتی کالر اتوماتیک 6 سرعته 1402",
+            "carPrice": "1,950,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 53,
+            "carName": "پژو پارس معمولی (سفارشی) - موتور جدید 1402",
+            "carPrice": "1,575,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 54,
+            "carName": "تارا اتوماتیک - ESP 1402",
+            "carPrice": "1,950,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 55,
+            "carName": "تارا دنده ای 1402",
+            "carPrice": "1,600,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 56,
+            "carName": "دنا پلاس توربو اتوماتیک 1402",
+            "carPrice": "2,060,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 57,
+            "carName": "ایران خودرو رانا پلاس 1402",
+            "carPrice": "1,330,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 58,
+            "carName": "ایران خودرو رانا پلاس سقف شیشه ای 1402",
+            "carPrice": "1,520,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 59,
+            "carName": "پژو 206 تیپ 2 1401",
+            "carPrice": "1,270,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 60,
+            "carName": "پژو پارس ELX (سفارشی) - موتور TU5 1401",
+            "carPrice": "1,785,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 61,
+            "carName": "پژو پارس LX (سفارشی) 1401",
+            "carPrice": "1,750,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 62,
+            "carName": "پژو پارس معمولی 1401",
+            "carPrice": "1,370,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 63,
+            "carName": "دنا دنده ای 1401",
+            "carPrice": "1,530,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 64,
+            "carName": "دنا پلاس توربو 4 ایربگ 1401",
+            "carPrice": "1,790,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 65,
+            "carName": "دنا پلاس معمولی 2 ایربگ - نیمه فول 1401",
+            "carPrice": "1,600,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 66,
+            "carName": "سمند LX Ef7 1401",
+            "carPrice": "1,420,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 67,
+            "carName": "سمند LX Ef7 - دوگانه سوز(مخزن بزرگ) 1401",
+            "carPrice": "1,535,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 68,
+            "carName": "سمند LX معمولی 1401",
+            "carPrice": "1,150,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 69,
+            "carName": "پژو 206 صندوقدار V8 1400",
+            "carPrice": "1,475,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 70,
+            "carName": "پژو 405 SLX دنده ای 1400",
+            "carPrice": "1,600,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 71,
+            "carName": "پژو پارس LX 1400",
+            "carPrice": "1,720,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 72,
+            "carName": "پژو پارس دوگانه سوز 1400",
+            "carPrice": "1,445,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 73,
+            "carName": "پژو 2008 اتوماتیک 1399",
+            "carPrice": "3,700,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 74,
+            "carName": "پژو 206 تیپ 5 1399",
+            "carPrice": "1,300,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 75,
+            "carName": "پژو 207 دنده‌ای 1399",
+            "carPrice": "1,460,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 76,
+            "carName": "پژو 207 صندوقدار اتوماتیک 1399",
+            "carPrice": "1,800,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 77,
+            "carName": "پژو 207 صندوقدار دنده ای 1399",
+            "carPrice": "1,500,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 78,
+            "carName": "پژو 405 Glx 1399",
+            "carPrice": "1,180,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 79,
+            "carName": "پژو 405 GLX - دوگانه سوز 1399",
+            "carPrice": "1,240,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 80,
+            "carName": "پژو پارس اتوماتیک 1399",
+            "carPrice": "1,700,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 81,
+            "carName": "ایران خودرو رانا LX 1399",
+            "carPrice": "1,150,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 82,
+            "carName": "سمند سورن Elx 1399",
+            "carPrice": "1,250,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 83,
+            "carName": "وانت آریسان دوگانه سوز 1399",
+            "carPrice": "850,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 84,
+            "carName": "بک X3 پرو 1405",
+            "carPrice": "3,000,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 85,
+            "carName": "پارس نوا تیپ3 1405",
+            "carPrice": "2,100,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 86,
+            "carName": "پارس تندر گیربکس JHQ + مولتی مدیا 1399",
+            "carPrice": "1,760,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 87,
+            "carName": "وانت ریچ دنده ای 1399",
+            "carPrice": "2,400,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 88,
+            "carName": "تیگارد X35 اتوماتیک 1405",
+            "carPrice": "3,700,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 89,
+            "carName": "تیگارد تیسان توربو 1500 1405",
+            "carPrice": "3,700,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 90,
+            "carName": "جک J4 اتوماتیک 1405",
+            "carPrice": "2,350,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 91,
+            "carName": "جک S3 اتوماتیک 1404",
+            "carPrice": "2,700,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 92,
+            "carName": "KMC T8 دنده ای 1404",
+            "carPrice": "4,830,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 93,
+            "carName": "جک S5 اتوماتیک - فیس جدید 1403",
+            "carPrice": "3,450,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 94,
+            "carName": "جک S5 اتوماتیک 1400",
+            "carPrice": "3,100,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 95,
+            "carName": "اطلس G 1405",
+            "carPrice": "1,510,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 96,
+            "carName": "اطلس GL 1405",
+            "carPrice": "1,390,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 97,
+            "carName": "پراید 151 GX 1405",
+            "carPrice": "1,150,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 98,
+            "carName": "ساینا S - ESP 1405",
+            "carPrice": "1,200,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 99,
+            "carName": "سهند S 1405",
+            "carPrice": "1,390,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 100,
+            "carName": "شاهین G دنده ای 1405",
+            "carPrice": "2,000,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 101,
+            "carName": "شاهین GL دنده ای 1405",
+            "carPrice": "1,870,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 102,
+            "carName": "شاهین اتومات 1405",
+            "carPrice": "2,300,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 103,
+            "carName": "شاهین پلاس اتوماتیک 1405",
+            "carPrice": "2,650,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 104,
+            "carName": "وانت زامیاد اکستند EX دوگانه آپشنال 1405",
+            "carPrice": "2,000,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 105,
+            "carName": "کوییک RS دنده‌ای 1405",
+            "carPrice": "1,235,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 106,
+            "carName": "کوییک S 1405",
+            "carPrice": "1,230,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 107,
+            "carName": "کوییک دنده ای  GX-L 1405",
+            "carPrice": "1,225,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 108,
+            "carName": "کوییک دنده ای  GXR-L 1405",
+            "carPrice": "1,190,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 109,
+            "carName": "زوتی DL5 توربو 1500 1404",
+            "carPrice": "3,600,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 110,
+            "carName": "اطلس S 1404",
+            "carPrice": "1,310,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 111,
+            "carName": "اطلس پلاس اتوماتیک 1404",
+            "carPrice": "1,750,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 112,
+            "carName": "پراید 151 SE 1404",
+            "carPrice": "1,050,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 113,
+            "carName": "ساینا GX دوگانه سوز 1404",
+            "carPrice": "1,340,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 114,
+            "carName": "ساینا S اتوماتیک 1404",
+            "carPrice": "1,550,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 115,
+            "carName": "سهند اتوماتیک 1404",
+            "carPrice": "1,700,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 116,
+            "carName": "شاهین اتومات GL 1404",
+            "carPrice": "2,100,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 117,
+            "carName": "پادرا پلاس دنده ای 1404",
+            "carPrice": "2,100,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 118,
+            "carName": "وانت زامیاد اکستند EX بنزینی 1404",
+            "carPrice": "1,900,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 119,
+            "carName": "وانت زامیاد اکستند EX دوگانه 1404",
+            "carPrice": "1,950,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 120,
+            "carName": "وانت زامیاد بنزینی آپشنال 1404",
+            "carPrice": "1,900,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 121,
+            "carName": "وانت زامیاد دوگانه سوز آپشنال 1404",
+            "carPrice": "1,850,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 122,
+            "carName": "وانت کارون دنده ای 1404",
+            "carPrice": "2,600,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 123,
+            "carName": "زامیاد زاگرس موتور 2400 1403",
+            "carPrice": "1,700,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 124,
+            "carName": "ساینا S  دوگانه سوز 1403",
+            "carPrice": "1,120,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 125,
+            "carName": "سهند G 1403",
+            "carPrice": "1,300,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 126,
+            "carName": "وانت زامیاد بنزینی آپشنال - دریچه سیمی 1403",
+            "carPrice": "1,750,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 127,
+            "carName": "کوییک R اتوماتیک فول پلاس 1403",
+            "carPrice": "1,200,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 128,
+            "carName": "کوییک اتوماتیک فول پلاس 1403",
+            "carPrice": "1,190,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 129,
+            "carName": "کوییک دنده ای  GXH 1403",
+            "carPrice": "1,090,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 130,
+            "carName": "کوییک دنده ای GXH-R 1403",
+            "carPrice": "1,100,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 131,
+            "carName": "ساینا S 1402",
+            "carPrice": "980,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 132,
+            "carName": "وانت زامیاد بنزینی آپشنال با هیدرولیک و رادیال 1402",
+            "carPrice": "1,700,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 133,
+            "carName": "وانت زامیاد دیزل آپشنال 1402",
+            "carPrice": "1,650,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 134,
+            "carName": "کوییک R دنده ای 1402",
+            "carPrice": "940,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 135,
+            "carName": "کوییک دنده ای 1402",
+            "carPrice": "930,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 136,
+            "carName": "پراید 151 آپشنال 1401",
+            "carPrice": "870,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 137,
+            "carName": "تیبا SX 1401",
+            "carPrice": "860,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 138,
+            "carName": "تیبا 2 EX 1401",
+            "carPrice": "900,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 139,
+            "carName": "ساینا EX 1401",
+            "carPrice": "900,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 140,
+            "carName": "وانت زامیاد دیزلی 1401",
+            "carPrice": "1,570,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 141,
+            "carName": "آریو سایپا 1600 اتوماتیک 1400",
+            "carPrice": "1,880,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 142,
+            "carName": "آریو سایپا 1600 دنده ای 1400",
+            "carPrice": "1,770,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 143,
+            "carName": "تیبا پلاس 1400",
+            "carPrice": "840,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 144,
+            "carName": "تیبا 2 پلاس 1400",
+            "carPrice": "870,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 145,
+            "carName": "ساینا پلاس 1400",
+            "carPrice": "920,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 146,
+            "carName": "کوییک R پلاس 1400",
+            "carPrice": "860,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 147,
+            "carName": "پراید 111 SE 1399",
+            "carPrice": "695,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 148,
+            "carName": "پراید 131 SE 1399",
+            "carPrice": "700,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 149,
+            "carName": "وانت زامیاد دوگانه سوز 1399",
+            "carPrice": "1,400,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 150,
+            "carName": "سیتروئن C3-XR V1 1405",
+            "carPrice": "4,200,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 151,
+            "carName": "6hev 1500توربو 1405",
+            "carPrice": "5,800,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 152,
+            "carName": "فردا موتورز 511 اتوماتیک 1405",
+            "carPrice": "2,700,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 153,
+            "carName": "فردا موتورز SX5 اتوماتیک 1405",
+            "carPrice": "3,900,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 154,
+            "carName": "فردا موتورز  T5 اتوماتیک 1404",
+            "carPrice": "4,500,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 155,
+            "carName": "فردا موتورز سوبا هفت نفره 1404",
+            "carPrice": "5,500,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 156,
+            "carName": "فوتون تونلند G7 بنزینی 1405",
+            "carPrice": "5,700,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 157,
+            "carName": "فوتون پیکاپ دوکابین دیزل 1402",
+            "carPrice": "2,750,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 158,
+            "carName": "فوتون ساوانا اتوماتیک 1399",
+            "carPrice": "2,400,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 159,
+            "carName": "فونیکس FX پریمیوم 1405",
+            "carPrice": "5,800,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 160,
+            "carName": "فونیکس تیگو 7 پرو مکس دو دیفرانسیل 1405",
+            "carPrice": "6,200,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 161,
+            "carName": "فونیکس تیگو 7 پرو هیبرید e+ 1405",
+            "carPrice": "6,100,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 162,
+            "carName": "فونیکس تیگو 8  پرو مکس IE 1405",
+            "carPrice": "8,000,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 163,
+            "carName": "فونیکس FX AWD 1404",
+            "carPrice": "6,000,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 164,
+            "carName": "فونیکس FX EV برقی 1404",
+            "carPrice": "5,000,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 165,
+            "carName": "فونیکس آریزو 6 پرو اتوماتیک 1404",
+            "carPrice": "4,800,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 166,
+            "carName": "آریزو 6 جی تی توربو 1600 1404",
+            "carPrice": "4,900,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 167,
+            "carName": "فونیکس آریزو 8 توربو 2000 1404",
+            "carPrice": "6,500,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 168,
+            "carName": "فونیکس آریزو 8 هیبرید 1404",
+            "carPrice": "6,400,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 169,
+            "carName": "فونیکس تیگو 7 پرو پریمیوم 1404",
+            "carPrice": "5,400,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 170,
+            "carName": "فونیکس تیگو 7 پرو مکس 1404",
+            "carPrice": "5,700,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 171,
+            "carName": "فونیکس تیگو 8  پرو هیبرید 1404",
+            "carPrice": "8,200,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 172,
+            "carName": "فونیکس تیگو 8  پرو هیبرید نیوفیس 1404",
+            "carPrice": "8,500,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 173,
+            "carName": "فونیکس تیگو 7 پرو اکسلنت 1402",
+            "carPrice": "4,100,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 174,
+            "carName": "فونیکس تیگو 8  پرو پریمیوم 1402",
+            "carPrice": "5,200,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 175,
+            "carName": "فونیکس تیگو 8  پرو مکس 1402",
+            "carPrice": "5,750,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 176,
+            "carName": "فونیکس FX اکسلنت 1401",
+            "carPrice": "3,800,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 177,
+            "carName": "بهمن اینوی هیبرید 1405",
+            "carPrice": "3,300,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 178,
+            "carName": "بهمن موتور رسپکت 2 جدید 1405",
+            "carPrice": "3,700,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 179,
+            "carName": "فیدلیتی الیت 5 نفره 1405",
+            "carPrice": "5,050,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 180,
+            "carName": "فیدلیتی الیت 7 نفره 1405",
+            "carPrice": "5,150,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 181,
+            "carName": "فیدلیتی پرستیژ (7نفره) 1405",
+            "carPrice": "6,300,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 182,
+            "carName": "ون اینرودز دنده ای 1405",
+            "carPrice": "1,850,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 183,
+            "carName": "پیکاپ G9 توربو 2000 1404",
+            "carPrice": "8,300,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 184,
+            "carName": "فیدلیتی پرایم(5 نفره) 1404",
+            "carPrice": "4,600,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 185,
+            "carName": "فیدلیتی پرایم(7 نفره) 1404",
+            "carPrice": "4,700,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 186,
+            "carName": "فیدلیتی پرستیژ (5نفره) 1404",
+            "carPrice": "5,900,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 187,
+            "carName": "کاپرا U دو دیفرانسیل 1404",
+            "carPrice": "3,400,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 188,
+            "carName": "کاپرا B تک‌ کابین 1404",
+            "carPrice": "2,050,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 189,
+            "carName": "کاپرا B دو کابین 1404",
+            "carPrice": "2,850,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 190,
+            "carName": "بهمن موتور رسپکت پرایم 1402",
+            "carPrice": "2,900,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 191,
+            "carName": "وانت کارا تک کابین موتور 2000 1402",
+            "carPrice": "1,776,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 192,
+            "carName": "وانت کارا دو کابین موتور 2000 1402",
+            "carPrice": "1,890,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 193,
+            "carName": "کاپرا دو کابین دو دیفرانسیل دنده ای 1402",
+            "carPrice": "3,600,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 194,
+            "carName": "فیدلیتی پرایم(5نفره) گیربکس قدیم 1401",
+            "carPrice": "3,600,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 195,
+            "carName": "فیدلیتی پرایم(7نفره) گیربکس قدیم 1401",
+            "carPrice": "3,700,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 196,
+            "carName": "لاماری ایما اتوماتیک 1405",
+            "carPrice": "5,300,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 197,
+            "carName": "لاماری نئو 1500توربو 1405",
+            "carPrice": "4,850,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 198,
+            "carName": "لاماری اکو 1500توربو 1404",
+            "carPrice": "4,100,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 199,
+            "carName": "لاماری ایما هیبرید 1404",
+            "carPrice": "6,200,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 200,
+            "carName": "ام وی ام X33 CROSS اتوماتیک 1405",
+            "carPrice": "3,150,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 201,
+            "carName": "ام وی ام X55 پرو IE 1405",
+            "carPrice": "3,700,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 202,
+            "carName": "ام وی ام X77 توربو 1500 1405",
+            "carPrice": "4,700,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 203,
+            "carName": "ام وی ام X33 CROSS دنده ای 1404",
+            "carPrice": "2,850,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 204,
+            "carName": "ام وی ام X22 pro دنده 1404",
+            "carPrice": "2,600,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 205,
+            "carName": "چری آریزو 5 برقی 1404",
+            "carPrice": "3,400,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 206,
+            "carName": "چری  آریزو 5 FL اسپرت اکسلنت 1404",
+            "carPrice": "3,500,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 207,
+            "carName": "ام وی ام X55 پرو IE اسپرت 1403",
+            "carPrice": "3,500,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 208,
+            "carName": "ام وی ام X55 پرو اکسلنت 1403",
+            "carPrice": "3,260,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 209,
+            "carName": "ام وی ام X55 پرو اکسلنت اسپرت 1403",
+            "carPrice": "3,360,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 210,
+            "carName": "ام وی ام X22 Pro اتوماتیک 1402",
+            "carPrice": "2,100,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 211,
+            "carName": "ام وی ام X22 دنده ای اسپرت لاکچری 1402",
+            "carPrice": "1,930,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 212,
+            "carName": "چری آریزو 5 توربو  اتومات اکسلنت - فیس جدید 1402",
+            "carPrice": "2,800,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 213,
+            "carName": "چری تیگو 7 جدید IE 1402",
+            "carPrice": "3,320,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 214,
+            "carName": "ام وی ام  X33 s اتوماتیک اسپرت فیس جدید 1401",
+            "carPrice": "2,600,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 215,
+            "carName": "ام وی ام X22 اتوماتیک اسپرت لاکچری 1401",
+            "carPrice": "1,980,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 216,
+            "carName": "چری آریزو 6 اکسلنت 1401",
+            "carPrice": "3,050,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 217,
+            "carName": "ام وی ام  X33 s اتوماتیک اسپرت 1400",
+            "carPrice": "2,350,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 218,
+            "carName": "ام وی ام 315 هاچ بک پلاس اتوماتیک 1400",
+            "carPrice": "1,600,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 219,
+            "carName": "ام وی ام X22 اتوماتیک اسپرت اکسلنت 1400",
+            "carPrice": "1,950,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 220,
+            "carName": "ام وی ام X22 دنده ای اسپرت اکسلنت 1400",
+            "carPrice": "1,850,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 221,
+            "carName": "ام وی ام X55 اسپرت اکسلنت 1400",
+            "carPrice": "3,040,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 222,
+            "carName": "ام وی ام X55 اکسلنت 1400",
+            "carPrice": "2,945,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 223,
+            "carName": "چری آریزو 5 توربو اتوماتیک اکسلنت 1400",
+            "carPrice": "2,500,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 224,
+            "carName": "چری تیگو 5 IE (فول) 1400",
+            "carPrice": "2,850,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 225,
+            "carName": "ام وی ام 315 هاچ بک اسپرت اکسلنت 1399",
+            "carPrice": "1,400,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 226,
+            "carName": "ام وی ام X22 اتوماتیک لاکچری 1399",
+            "carPrice": "1,850,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 227,
+            "carName": "ام وی ام X22 دنده ای لاکچری 1399",
+            "carPrice": "1,770,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 228,
+            "carName": "چری آریزو 5 دنده ای لاکچری 1399",
+            "carPrice": "2,000,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 229,
+            "carName": "هایما 7x توربو 1600 1405",
+            "carPrice": "4,300,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 230,
+            "carName": "هایما S5 پرو توربو 1500 1405",
+            "carPrice": "4,050,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 231,
+            "carName": "هایما S7 توربو پرو 1405",
+            "carPrice": "4,450,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 232,
+            "carName": "هایما 8S اتوماتیک 1405",
+            "carPrice": "4,980,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 233,
+            "carName": "هایما S5 6 دنده اتوماتیک 1404",
+            "carPrice": "3,850,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 234,
+            "carName": "هایما S7 توربو پلاس 1403",
+            "carPrice": "4,230,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 235,
+            "carName": "هایما S5 توربو 1500 1400",
+            "carPrice": "2,900,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 236,
+            "carName": "هایما S7 توربو اتوماتیک 1400",
+            "carPrice": "3,350,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 237,
+            "carName": "KMC J7 اتوماتیک 1405",
+            "carPrice": "4,600,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 238,
+            "carName": "J7 برقی برقی 1403",
+            "carPrice": "3,300,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 239,
+            "carName": "KMC K7 اتوماتیک 1402",
+            "carPrice": "3,900,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 240,
+            "carName": "کی ام سی SR3 موتور 1600 1405",
+            "carPrice": "3,050,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 241,
+            "carName": "کی ام سی SR6 اتوماتیک 1405",
+            "carPrice": "5,000,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 242,
+            "carName": "کی ام سی T9 توربو 2000 1405",
+            "carPrice": "7,200,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 243,
+            "carName": "KMC X5 توربو 1500 1405",
+            "carPrice": "4,500,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 244,
+            "carName": "کی ام سی ایگل موتور 1500 1405",
+            "carPrice": "2,500,000,000",
+            "lastYear": "1405",
+            "source": "hamrah"
+        },
+        {
+            "id": 245,
+            "carName": "کی ام سی A5 توربو 1500 1404",
+            "carPrice": "4,000,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 246,
+            "carName": "J7 برقی برقی پلاس 1404",
+            "carPrice": "3,400,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 247,
+            "carName": "بیجینگ U5 موتور 1500 1404",
+            "carPrice": "330,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 248,
+            "carName": "چانگان CS35 پلاس مونتاژ 1404",
+            "carPrice": "4,300,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 249,
+            "carName": "چانگان CS55 پلاس مونتاژ 1404",
+            "carPrice": "5,500,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 250,
+            "carName": "دانگ فنگ دیگنیتی پرایم 1404",
+            "carPrice": "4,600,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 251,
+            "carName": "دانگ فنگ دیگنیتی پرستیژ 1404",
+            "carPrice": "5,500,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 252,
+            "carName": "دانگ فنگ شاین مکس بنزینی 1403",
+            "carPrice": "4,650,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 253,
+            "carName": "دانگ فنگ شاین مکس هیبرید 1403",
+            "carPrice": "4,800,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 254,
+            "carName": "دایون Y7 پلاس 1404",
+            "carPrice": "5,600,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 255,
+            "carName": "دایون Y5 پلاس 1402",
+            "carPrice": "3,200,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 256,
+            "carName": "دایون Y5 اتوماتیک 1401",
+            "carPrice": "3,100,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 257,
+            "carName": "لاماکو فلو توربو 1500 1404",
+            "carPrice": "3,700,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 258,
+            "carName": "مکسوس استارH توربو2000 1404",
+            "carPrice": "6,800,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 259,
+            "carName": "هوندا ENS1 برقی 1404",
+            "carPrice": "5,600,000,000",
+            "lastYear": "1404",
+            "source": "hamrah"
+        },
+        {
+            "id": 260,
+            "carName": "پیکاپ آمیکو آسنا دنده ای 1403",
+            "carPrice": "5,000,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 261,
+            "carName": "پیکاپ آمیکو آسنا اتوماتیک 1400",
+            "carPrice": "1,800,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 262,
+            "carName": "بیجینگ X7 توربو 1500 1403",
+            "carPrice": "5,500,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 263,
+            "carName": "امزوم GS3 توربو 1500 1403",
+            "carPrice": "5,000,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 264,
+            "carName": "مکث موتور تیارا پرایم 1403",
+            "carPrice": "3,500,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 265,
+            "carName": "کلوت اتوماتیک 1403",
+            "carPrice": "4,300,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 266,
+            "carName": "مکث موتور تیارا اتوماتیک 1402",
+            "carPrice": "3,300,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 267,
+            "carName": "مکث موتور تیام هفت نفره 1402",
+            "carPrice": "2,500,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 268,
+            "carName": "کلوت دنده ای 1402",
+            "carPrice": "3,400,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 269,
+            "carName": "ونوسیا D60 بنزینی 1403",
+            "carPrice": "4,200,000,000",
+            "lastYear": "1403",
+            "source": "hamrah"
+        },
+        {
+            "id": 270,
+            "carName": "سانگ یانگ تیوولی مونتاژ اسپشیال 1402",
+            "carPrice": "5,400,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 271,
+            "carName": "سانگ یانگ رکستون مونتاژ امپرور 1402",
+            "carPrice": "6,380,000,000",
+            "lastYear": "1402",
+            "source": "hamrah"
+        },
+        {
+            "id": 272,
+            "carName": "سانگ یانگ تیوولی مونتاژ سولار 1400",
+            "carPrice": "4,600,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 273,
+            "carName": "سانگ یانگ تیوولی مونتاژ فایتر 1400",
+            "carPrice": "5,100,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 274,
+            "carName": "سانگ یانگ تیوولی مونتاژ آرمور 1399",
+            "carPrice": "3,050,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 275,
+            "carName": "بسترن B30 اتوماتیک 1401",
+            "carPrice": "3,000,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 276,
+            "carName": "لیفان X70 اتوماتیک 1401",
+            "carPrice": "2,900,000,000",
+            "lastYear": "1401",
+            "source": "hamrah"
+        },
+        {
+            "id": 277,
+            "carName": "اس دبلیو ام g01 فول 1400",
+            "carPrice": "2,100,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 278,
+            "carName": "اس دبلیو ام g01f فول 1400",
+            "carPrice": "2,250,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 279,
+            "carName": "برلیانس H220 دنده‌ای 1400",
+            "carPrice": "1,350,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 280,
+            "carName": "برلیانس H320 اتوماتیک 1650 1400",
+            "carPrice": "1,900,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 281,
+            "carName": "برلیانس H330 اتوماتیک 1650 1400",
+            "carPrice": "1,900,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 282,
+            "carName": "برلیانس H330 دنده ای 1650 1400",
+            "carPrice": "1,750,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 283,
+            "carName": "برلیانس کراس اتوماتیک 1650 1399",
+            "carPrice": "1,800,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 284,
+            "carName": "برلیانس H230 اتوماتیک 1399",
+            "carPrice": "1,420,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 285,
+            "carName": "برلیانس H230 دنده‌ای 1399",
+            "carPrice": "1,270,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 286,
+            "carName": "برلیانس H320 دنده ای 1650 1399",
+            "carPrice": "1,650,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 287,
+            "carName": "سوئیست Dx3 DX3 1400",
+            "carPrice": "1,800,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 288,
+            "carName": "یوآز پاتریوت دنده ای 1400",
+            "carPrice": "3,900,000,000",
+            "lastYear": "1400",
+            "source": "hamrah"
+        },
+        {
+            "id": 289,
+            "carName": "بیسو T3 LU 1399",
+            "carPrice": "2,700,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 290,
+            "carName": "هن تنگ X5 مونتاژ 1399",
+            "carPrice": "2,200,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 291,
+            "carName": "هن تنگ X7 مونتاژ 1399",
+            "carPrice": "2,500,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 292,
+            "carName": "کوپا T210 رویال 1399",
+            "carPrice": "2,300,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        },
+        {
+            "id": 293,
+            "carName": "کوپا T210 فلگشیپ فیس جدید 1399",
+            "carPrice": "2,240,000,000",
+            "lastYear": "1399",
+            "source": "hamrah"
+        }
+    ]
+}

@@ -136,6 +136,115 @@
     margin-right: -50vw;
   }
 
+.glass-card {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 8px 32px rgba(53, 99, 233, 0.08), 0 2px 8px rgba(16, 17, 23, 0.04);
+  backdrop-filter: blur(16px);
+}
+
+.modern-gradient {
+  background:
+    radial-gradient(circle at top right, rgba(53, 99, 233, 0.14), transparent 35%),
+    radial-gradient(circle at top left, rgba(65, 108, 234, 0.1), transparent 32%),
+    radial-gradient(circle at 50% 100%, rgba(53, 99, 233, 0.06), transparent 45%),
+    linear-gradient(180deg, #eef2fd 0%, #f1f3f7 42%, #ffffff 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(to left, #3456bb, #3563E9, #416CEA);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Car Price Page — Carmacheck brand palette */
+.car-price-badge {
+  background: linear-gradient(135deg, #eef2fd 0%, #e8edfc 100%);
+  color: #3456bb;
+  border: 1px solid rgba(53, 99, 233, 0.18);
+  font-weight: 600;
+}
+
+.car-price-icon-box {
+  background: linear-gradient(135deg, #eef2fd 0%, #e4ebfc 100%);
+  color: #3456bb;
+  box-shadow: 0 2px 8px rgba(53, 99, 233, 0.1);
+}
+
+.car-price-step-active {
+  border-color: rgba(53, 99, 233, 0.28);
+  background: linear-gradient(135deg, #eef2fd 0%, #f5f7fe 100%);
+  box-shadow: 0 2px 12px rgba(53, 99, 233, 0.08);
+}
+
+.car-price-step-done {
+  border-color: rgba(65, 108, 234, 0.22);
+  background: linear-gradient(135deg, #f0f4ff 0%, #f8faff 100%);
+}
+
+.car-price-step-idle {
+  border-color: #e8ecf4;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.car-price-interactive {
+  border-color: #e8ecf4;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.22s ease;
+}
+
+.car-price-interactive:hover {
+  border-color: rgba(53, 99, 233, 0.35);
+  background: linear-gradient(135deg, #fafbff 0%, #eef2fd 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(53, 99, 233, 0.12);
+}
+
+.car-price-result-card {
+  background: linear-gradient(135deg, #2d4aa8 0%, #3456bb 35%, #3563E9 70%, #416CEA 100%);
+  box-shadow: 0 16px 48px rgba(53, 99, 233, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.car-price-btn {
+  background: linear-gradient(135deg, #3456bb 0%, #3563E9 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(53, 99, 233, 0.3);
+  transition: all 0.2s ease;
+}
+
+.car-price-btn:hover {
+  background: linear-gradient(135deg, #3563E9 0%, #416CEA 100%);
+  box-shadow: 0 6px 24px rgba(53, 99, 233, 0.4);
+  transform: translateY(-1px);
+}
+
+.car-price-progress-track {
+  background: #e8ecf4;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.car-price-progress-fill {
+  background: linear-gradient(to left, #3456bb, #416CEA);
+  border-radius: 9999px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px rgba(53, 99, 233, 0.4);
+}
+
+.car-price-summary-box {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, #f8faff 100%);
+  border: 1px solid rgba(53, 99, 233, 0.1);
+}
+
+.car-price-accent {
+  color: #3456bb;
+}
+
+.car-price-accent-light {
+  color: #416CEA;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

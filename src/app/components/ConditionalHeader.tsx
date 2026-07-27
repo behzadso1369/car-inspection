@@ -17,6 +17,7 @@ const ROUTES_WITH_HEADER = [
   "/regulations",
   "/new-service",
   "/contact-us",
+  "/car-price",
   "/car-inspection-flow/select-car-group",
   "/payment/success",
   "/payment/failed",

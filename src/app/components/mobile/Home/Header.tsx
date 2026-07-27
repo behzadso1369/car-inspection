@@ -19,6 +19,7 @@ export const Header = memo(({data}:any) => {
         router.prefetch("/services");
         router.prefetch("/contact-us");
         router.prefetch("/about-us");
+        router.prefetch("/car-price");
         router.prefetch("/Profile");
     }, [router]);
     
@@ -56,6 +57,11 @@ export const Header = memo(({data}:any) => {
                     <li className={`mx-4 ${isActive("/car-inspection-flow/select-car-group") ? "text-[#3456bb]" : ""}`}>
                         <NavigationLink href="/car-inspection-flow/select-car-group" prefetch={true}>
                             کارشناسی خودرو
+                        </NavigationLink>
+                    </li>
+                    <li className={`mx-4 ${isActive("/car-price") ? "text-[#3456bb]" : ""}`}>
+                        <NavigationLink href="/car-price" prefetch={true}>
+                            قیمت گذاری خودرو
                         </NavigationLink>
                     </li>
                     {/* <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
