@@ -5,7 +5,7 @@ import {
   type ChassisStatus,
 } from "@/lib/car-price/pricing"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Search, CarFront, Palette, ShieldCheck, BadgeDollarSign, RotateCcw } from "lucide-react"
+import { Search, CarFront, Palette, ShieldCheck, BadgeDollarSign, RotateCcw, ArrowRight } from "lucide-react"
 
 import cars from "@/data/car.json"
 
@@ -47,6 +47,62 @@ const CHASSIS_OPTIONS: { label: ChassisStatus; desc?: string }[] = [
   { label: "ضربه خورده" },
   { label: "آسیب شدید" },
 ]
+
+const INPUT_CLASS =
+  "car-price-input h-12 rounded-2xl border-[#E8ECF4] bg-white focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
+const INPUT_CLASS_LG =
+  "car-price-input h-14 rounded-2xl border-[#E8ECF4] bg-white text-base focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
+
+const BACK_BTN_CLASS =
+  "rounded-2xl border-[#3456bb]/25 text-[#3456bb] hover:bg-[#eef2fd]"
+
+function CarPricingSeoContent() {
+  return (
+    <article className="rounded-3xl border border-[#E8ECF4] bg-white/80 p-5 md:p-6">
+      <h2 className="text-lg font-black leading-8 text-[#101117] md:text-xl">
+        <strong>قیمت‌گذاری خودرو</strong> چگونه انجام می‌شود؟
+      </h2>
+      <p className="mt-3 text-sm leading-7 text-[#6B6C70]">
+        <strong>قیمت‌گذاری خودرو</strong> فرآیندی است که در آن ارزش واقعی یک خودرو بر اساس
+        مشخصات فنی، وضعیت ظاهری، کارکرد و شرایط بازار تعیین می‌شود. در کارماچک می‌توانید با
+        وارد کردن اطلاعات خودرو، قیمت حدودی آن را به‌صورت هوشمند محاسبه کنید.
+      </p>
+      <h3 className="mt-5 text-base font-extrabold text-[#101117] md:text-lg">
+        <strong>عوامل تأثیرگذار بر قیمت‌گذاری خودرو</strong>
+      </h3>
+      <ul className="mt-3 space-y-2 text-sm leading-7 text-[#6B6C70]">
+        <li>
+          <strong className="text-[#101117]">مدل و برند خودرو:</strong> خودروهای پرتقاضا و
+          محبوب معمولاً ارزش بازفروش بالاتری دارند.
+        </li>
+        <li>
+          <strong className="text-[#101117]">سال ساخت:</strong> هرچه خودرو جدیدتر باشد،
+          افت قیمت ناشی از کهنگی کمتر است.
+        </li>
+        <li>
+          <strong className="text-[#101117]">کارکرد (کیلومتر):</strong> پیمایش بالاتر معمولاً
+          باعث کاهش قیمت خودرو می‌شود.
+        </li>
+        <li>
+          <strong className="text-[#101117]">وضعیت رنگ و بدنه:</strong> خط و خش، رنگ‌شدگی
+          و صافکاری بر ارزش نهایی خودرو اثر مستقیم دارد.
+        </li>
+        <li>
+          <strong className="text-[#101117]">وضعیت شاسی و اتاق:</strong> آسیب‌های جدی
+          ساختاری می‌توانند قیمت خودرو را به‌شدت کاهش دهند.
+        </li>
+        <li>
+          <strong className="text-[#101117]">شرایط بازار:</strong> عرضه و تقاضا، نرخ ارز و
+          قیمت خودروهای نو نیز بر قیمت دست‌دوم تأثیر می‌گذارد.
+        </li>
+      </ul>
+      <p className="mt-4 text-sm leading-7 text-[#6B6C70]">
+        برای شروع <strong>قیمت‌گذاری خودرو</strong>، نام مدل موردنظر را در کادر جستجو وارد
+        کنید تا لیست خودروهای مرتبط نمایش داده شود.
+      </p>
+    </article>
+  )
+}
 
 function normalizePrice(value: string | number) {
   if (typeof value === "number") return value
@@ -102,7 +158,7 @@ const stepContentRef = useRef<HTMLDivElement | null>(null)
 
   const filteredCars = useMemo(() => {
     const q = query.trim()
-    if (!q) return carList.slice(0, 12)
+    if (!q) return []
     return carList.filter((car) => car.name.includes(q)).slice(0, 20)
   }, [query, carList])
 
@@ -252,6 +308,34 @@ function handleMileageSubmit() {
     setStep("result")
   }
 
+  function handleBack() {
+    switch (step) {
+      case "year":
+        setYear("")
+        setStep("search_car")
+        break
+      case "mileage":
+        setMileage("")
+        setSelectedColor(null)
+        setSelectedChassis(null)
+        setStep("year")
+        break
+      case "color":
+        setSelectedColor(null)
+        setSelectedChassis(null)
+        setStep("mileage")
+        break
+      case "chassis":
+        setSelectedChassis(null)
+        setStep("color")
+        break
+      case "result":
+        setSelectedChassis(null)
+        setStep("chassis")
+        break
+    }
+  }
+
   function resetAll() {
   setStep("search_car")
   setQuery("")
@@ -323,11 +407,15 @@ function handleMileageSubmit() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="مثلاً دنا پلاس توربو"
-                    className="h-12 rounded-2xl border-[#E8ECF4] bg-white pr-10 text-right focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
+                    className={`${INPUT_CLASS} pr-10 text-right`}
                   />
                 </div>
 
-                <div className="max-h-72 space-y-2 overflow-y-auto">
+                <div className={query.trim() ? "max-h-72 space-y-2 overflow-y-auto" : "space-y-2"}>
+                  {!query.trim() ? (
+                    <CarPricingSeoContent />
+                  ) : (
+                    <>
                   {filteredCars.map((car) => (
                     <button
                       key={car.id}
@@ -344,10 +432,12 @@ function handleMileageSubmit() {
                     </button>
                   ))}
 
-                  {!filteredCars.length && (
+                  {!filteredCars.length && query.trim() && (
                     <div className="rounded-2xl border border-dashed border-[#E8ECF4] bg-white/70 px-4 py-6 text-center text-sm text-[#6B6C70]">
                       خودرویی با این عبارت پیدا نشد.
                     </div>
+                  )}
+                    </>
                   )}
                 </div>
               </CardContent>
@@ -423,12 +513,18 @@ function handleMileageSubmit() {
         value={year}
         onChange={(e) => setYear(toEnglishDigits(e.target.value))}
         placeholder="مثلاً 1401"
-        className="h-12 rounded-2xl border-[#E8ECF4] bg-white focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
+        className={INPUT_CLASS}
         inputMode="numeric"
       />
-      <Button onClick={handleYearSubmit} className="car-price-btn h-11 w-full rounded-2xl border-0">
-        ادامه
-      </Button>
+      <div className="flex gap-3">
+        <Button variant="outline" onClick={handleBack} className={`h-11 flex-1 ${BACK_BTN_CLASS}`}>
+          <ArrowRight className="ml-2 h-4 w-4" />
+          بازگشت
+        </Button>
+        <Button onClick={handleYearSubmit} className="car-price-btn h-11 flex-1 rounded-2xl border-0">
+          ادامه
+        </Button>
+      </div>
     </div>
   </div>
 )}
@@ -447,12 +543,18 @@ function handleMileageSubmit() {
         value={mileage}
         onChange={(e) => setMileage(toEnglishDigits(e.target.value))}
         placeholder="مثلاً 85000"
-        className="h-12 rounded-2xl border-[#E8ECF4] bg-white focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
+        className={INPUT_CLASS}
         inputMode="numeric"
       />
-      <Button onClick={handleMileageSubmit} className="car-price-btn h-11 w-full rounded-2xl border-0">
-        ادامه
-      </Button>
+      <div className="flex gap-3">
+        <Button variant="outline" onClick={handleBack} className={`h-11 flex-1 ${BACK_BTN_CLASS}`}>
+          <ArrowRight className="ml-2 h-4 w-4" />
+          بازگشت
+        </Button>
+        <Button onClick={handleMileageSubmit} className="car-price-btn h-11 flex-1 rounded-2xl border-0">
+          ادامه
+        </Button>
+      </div>
     </div>
   </div>
 )}
@@ -477,6 +579,10 @@ function handleMileageSubmit() {
                 </button>
               ))}
             </div>
+            <Button variant="outline" onClick={handleBack} className={`mt-3 h-11 w-full ${BACK_BTN_CLASS}`}>
+              <ArrowRight className="ml-2 h-4 w-4" />
+              بازگشت
+            </Button>
           </div>
         )}
 
@@ -500,6 +606,10 @@ function handleMileageSubmit() {
                 </button>
               ))}
             </div>
+            <Button variant="outline" onClick={handleBack} className={`mt-3 h-11 w-full ${BACK_BTN_CLASS}`}>
+              <ArrowRight className="ml-2 h-4 w-4" />
+              بازگشت
+            </Button>
           </div>
         )}
 
@@ -540,10 +650,16 @@ function handleMileageSubmit() {
               </div>
             </div>
 
-            <Button onClick={resetAll} className="car-price-btn h-11 w-full rounded-2xl border-0">
-              <RotateCcw className="ml-2 h-4 w-4" />
-              شروع دوباره
-            </Button>
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={handleBack} className={`h-11 flex-1 ${BACK_BTN_CLASS}`}>
+                <ArrowRight className="ml-2 h-4 w-4" />
+                بازگشت
+              </Button>
+              <Button onClick={resetAll} className="car-price-btn h-11 flex-1 rounded-2xl border-0">
+                <RotateCcw className="ml-2 h-4 w-4" />
+                شروع دوباره
+              </Button>
+            </div>
           </div>
         )}
       </CardContent>
@@ -670,10 +786,13 @@ function handleMileageSubmit() {
                           value={query}
                           onChange={(e) => setQuery(e.target.value)}
                           placeholder="مثلاً پژو 207، دنا پلاس، تارا..."
-                          className="h-14 rounded-2xl border-[#E8ECF4] bg-white pr-12 text-base focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
+                          className={`${INPUT_CLASS_LG} pr-12`}
                         />
                       </div>
 
+                      {!query.trim() ? (
+                        <CarPricingSeoContent />
+                      ) : (
                       <div className="grid grid-cols-2 gap-3 xl:grid-cols-3">
                         {filteredCars.map((car) => (
                           <button
@@ -691,8 +810,9 @@ function handleMileageSubmit() {
                           </button>
                         ))}
                       </div>
+                      )}
 
-                      {!filteredCars.length && (
+                      {!filteredCars.length && query.trim() && (
                         <div className="rounded-3xl border border-dashed border-[#E8ECF4] bg-white/70 px-4 py-10 text-center text-[#6B6C70]">
                           خودرویی با این عبارت پیدا نشد.
                         </div>
@@ -713,12 +833,18 @@ function handleMileageSubmit() {
         value={year}
         onChange={(e) => setYear(toEnglishDigits(e.target.value))}
         placeholder="مثلاً 1401"
-        className="h-14 rounded-2xl border-[#E8ECF4] bg-white focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
+        className={INPUT_CLASS_LG}
         inputMode="numeric"
       />
-      <Button onClick={handleYearSubmit} className="car-price-btn rounded-2xl border-0 px-6">
-        ادامه به مرحله کارکرد
-      </Button>
+      <div className="flex gap-3">
+        <Button variant="outline" onClick={handleBack} className={BACK_BTN_CLASS + " rounded-2xl px-6"}>
+          <ArrowRight className="ml-2 h-4 w-4" />
+          بازگشت
+        </Button>
+        <Button onClick={handleYearSubmit} className="car-price-btn rounded-2xl border-0 px-6">
+          ادامه به مرحله کارکرد
+        </Button>
+      </div>
     </div>
   </div>
 )}
@@ -737,12 +863,18 @@ function handleMileageSubmit() {
         value={mileage}
         onChange={(e) => setMileage(toEnglishDigits(e.target.value))}
         placeholder="مثلاً 85000"
-        className="h-14 rounded-2xl border-[#E8ECF4] bg-white focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
+        className={INPUT_CLASS_LG}
         inputMode="numeric"
       />
-      <Button onClick={handleMileageSubmit} className="car-price-btn rounded-2xl border-0 px-6">
-        ادامه به مرحله رنگ
-      </Button>
+      <div className="flex gap-3">
+        <Button variant="outline" onClick={handleBack} className={BACK_BTN_CLASS + " rounded-2xl px-6"}>
+          <ArrowRight className="ml-2 h-4 w-4" />
+          بازگشت
+        </Button>
+        <Button onClick={handleMileageSubmit} className="car-price-btn rounded-2xl border-0 px-6">
+          ادامه به مرحله رنگ
+        </Button>
+      </div>
     </div>
   </div>
 )}
@@ -770,6 +902,10 @@ function handleMileageSubmit() {
                           </button>
                         ))}
                       </div>
+                      <Button variant="outline" onClick={handleBack} className={`mt-4 ${BACK_BTN_CLASS} rounded-2xl px-6`}>
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                        بازگشت
+                      </Button>
                     </div>
                   )}
 
@@ -796,6 +932,10 @@ function handleMileageSubmit() {
                           </button>
                         ))}
                       </div>
+                      <Button variant="outline" onClick={handleBack} className={`mt-4 ${BACK_BTN_CLASS} rounded-2xl px-6`}>
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                        بازگشت
+                      </Button>
                     </div>
                   )}
 
@@ -864,10 +1004,16 @@ function handleMileageSubmit() {
                         </div>
                       </div>
 
-                      <Button onClick={resetAll} className="car-price-btn mt-6 rounded-2xl border-0 px-6">
-                        <RotateCcw className="ml-2 h-4 w-4" />
-                        شروع دوباره
-                      </Button>
+                      <div className="mt-6 flex gap-3">
+                        <Button variant="outline" onClick={handleBack} className={`${BACK_BTN_CLASS} rounded-2xl px-6`}>
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                          بازگشت
+                        </Button>
+                        <Button onClick={resetAll} className="car-price-btn rounded-2xl border-0 px-6">
+                          <RotateCcw className="ml-2 h-4 w-4" />
+                          شروع دوباره
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </CardContent>

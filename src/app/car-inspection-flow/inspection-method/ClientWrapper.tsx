@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import InspectionMethodCard from "./inspection-method-card";
+import { getInspectionPrices, persistInspectionPrices } from "../lib/pricing";
+import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
 import { RadioGroup } from "@/components/ui/radio-group";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
@@ -53,6 +55,13 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
     router.prefetch('./inspection-location');
     router.prefetch('./insert-information');
   }, [router]);
+
+  useEffect(() => {
+    const selectedItem = carInspectionType.find((item: any) => String(item.Id) === selected);
+    if (!selectedItem) return;
+    const { fullPrice, discountedPrice } = getInspectionPrices(selectedItem);
+    persistInspectionPrices(fullPrice, discountedPrice, selectedItem.InspectionTypeName ?? "");
+  }, [selected, carInspectionType]);
   const moveToInspectionLocation = () => {
     setLoading(true);
     instance.post(ApiHelper.get("MoveOrder"), {
@@ -80,8 +89,9 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       "carInspectionId": carInspectionType.filter((item: any) => item.Id == selected)[0].Id,
     }).then((res: any) => {
       setLoading(false);
-      localStorage.setItem("inspectionPrice",carInspectionType.filter((item: any) => item.Id == selected)[0]?.AdditionalCost > 0 ? (carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice + carInspectionType.filter((item: any) => item.Id == selected)[0]?.AdditionalCost) : carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice);
-      localStorage.setItem("inspectionMethod",carInspectionType.filter((item: any) => item.Id == selected)[0]?.InspectionTypeName);
+      const selectedItem = carInspectionType.filter((item: any) => item.Id == selected)[0];
+      const { fullPrice, discountedPrice } = getInspectionPrices(selectedItem);
+      persistInspectionPrices(fullPrice, discountedPrice, selectedItem?.InspectionTypeName ?? "");
       if (!localStorage.getItem("userId")) {
         router.push("./insert-information");
         
@@ -133,13 +143,17 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
             loading ? "لطفا منتظر بمانید..." : "تایید و ادامه"
           }
         </Button>
-        <div className="flex flex-col">
-          <span className="text-[#101117] font-medium text-sm">{carInspectionType.filter((item: any) => item.Id == selected)[0]?.InspectionTypeName}</span>
-          <div className="flex">
-            <span className="text-[#55565A] text-m font-light">{carInspectionType.filter((item: any) => item.Id == selected)[0]?.AdditionalCost > 0 ? (carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice + carInspectionType.filter((item: any) => item.Id == selected)[0]?.AdditionalCost)?.toLocaleString() : carInspectionType.filter((item: any) => item.Id == selected)[0]?.OurPrice?.toLocaleString()} </span>
-            <span className="text-[#55565A] text-m font-light">تومان </span>
-          </div>
-        </div>
+        <DiscountPriceDisplay
+          {...getInspectionPrices(
+            carInspectionType.filter((item: any) => item.Id == selected)[0] ?? {
+              OurPrice: 0,
+            }
+          )}
+          label={
+            carInspectionType.filter((item: any) => item.Id == selected)[0]
+              ?.InspectionTypeName
+          }
+        />
       </div>
     </div>
   );

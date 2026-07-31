@@ -10,7 +10,7 @@ import InLocation from "./InLocation";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useRouter } from "next/navigation";
-import { Car02Icon } from "hugeicons-react";
+import { StoredInspectionPriceDisplay } from "../components/DiscountPriceDisplay";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jwt-decode";
 
@@ -121,17 +121,7 @@ export default function ClientWrapper() {
             loading ? "لطفا منتظر بمانید..." : "تایید محل کارشناسی"
           }
         </Button>
-        <div className="flex flex-col">
-          <span className="text-[#101117] font-medium text-sm">{typeof window !== 'undefined' ? localStorage.getItem("inspectionMethod") : ''}</span>
-          <div className="flex">
-            <span className="text-[#55565A] text-m font-light">
-              {typeof window !== 'undefined' && localStorage.getItem("inspectionPrice") 
-                ? Number(localStorage.getItem("inspectionPrice")).toLocaleString('fa-IR')
-                : '0'}
-            </span>
-            <span className="text-[#55565A] text-m font-light">تومان </span>
-          </div>
-        </div>
+        <StoredInspectionPriceDisplay />
       </div>
     </div>
   );

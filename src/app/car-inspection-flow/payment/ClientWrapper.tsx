@@ -7,6 +7,7 @@ import { Payment02Icon } from "hugeicons-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
 
 export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
@@ -65,9 +66,13 @@ export default function ClientWrapper() {
       </div>
 
       <div className="px-4 border-b border-[#DFDFDF] py-2">
-        <div className="flex my-4 justify-between">
+        <div className="flex my-4 justify-between items-center">
           <span className="text-[#6B6C70] text-sm">مبلغ :</span>
-          <span className="text-sm">{orderDetail?.totalPrice?.toLocaleString()} تومان</span>
+          <DiscountPriceDisplay
+            fullPrice={orderDetail?.totalPrice ?? 0}
+            discountedPrice={orderDetail?.finalPrice ?? orderDetail?.totalPrice ?? 0}
+            variant="summary"
+          />
         </div>
         <div className="flex my-4 justify-between">
           <span className="text-[#6B6C70] text-sm">زمان کارشناسی:</span>
@@ -77,9 +82,13 @@ export default function ClientWrapper() {
           <span className="text-[#6B6C70] text-sm">محل کارشناسی:</span>
           <span>{orderDetail?.carInspectionLocationType}</span>
         </div>
-        <div className="flex my-4 justify-between">
+        <div className="flex my-4 justify-between items-center">
           <span className="text-[#6B6C70] text-sm">قابل پرداخت:</span>
-          <span className="text-sm">{orderDetail?.finalPrice?.toLocaleString()} تومان</span>
+          <DiscountPriceDisplay
+            fullPrice={orderDetail?.totalPrice ?? 0}
+            discountedPrice={orderDetail?.finalPrice ?? orderDetail?.totalPrice ?? 0}
+            variant="summary"
+          />
         </div>
       </div>
 
@@ -91,10 +100,14 @@ export default function ClientWrapper() {
         </div>
       </div>
 
-      <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button onClick={moveToGateway} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+      <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-between bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+        <Button onClick={moveToGateway} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
            پرداخت
         </Button>
+        <DiscountPriceDisplay
+          fullPrice={orderDetail?.totalPrice ?? 0}
+          discountedPrice={orderDetail?.finalPrice ?? orderDetail?.totalPrice ?? 0}
+        />
       </div>
     </div>
   );

@@ -23,9 +23,9 @@ export default function InspectionDateTypeCar({inspectionType,data, selected, on
   <Label htmlFor={String(data.Id)} className="text-[#101117]">{data.Name}</Label>
   </div>
     
-        {data?.MaxMinutes &&      <div className="text-sm flex items-center">
+        {/* {data?.MaxMinutes &&      <div className="text-sm flex items-center">
                   <span className="text-[#416CEA] font-bold bg-[#F0F2F4] px-2 py-1 rounded-3xl"> {data?.AdditionalCost.toLocaleString()}+ تومان</span>
-                </div>}
+                </div>} */}
       </div>
     
       <div className="text-[#55565A] my-2 text-sm flex">

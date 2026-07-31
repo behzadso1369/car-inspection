@@ -31,9 +31,9 @@ onSelect(inspectionType)
          {data?.IsDisabled && <Button className="bg-[#F0F2F4] text-[#A6A6A6] rounded-4xl text-xs px-1  !py-0 h-6">{data?.DisabledReason}</Button>}
         <Label htmlFor={String(data.Id)}>{data.Display}</Label>
       </div>
-      {Number(data.AdditionalCost) > 0 &&    <div className="flex justify-center w-full mt-2">
+      {/* {Number(data.AdditionalCost) > 0 &&    <div className="flex justify-center w-full mt-2">
           <Button className={`${data.IsDisabled ? "bg-[#bec3c5] text-[#555555]"  :"bg-[#416CEA] text-white"}  rounded-4xl text-xs px-2  !py-0 h-6`}>{data.AdditionalCost.toLocaleString()} + تومان  </Button>
-      </div>}
+      </div>} */}
    
     
       

@@ -11,6 +11,19 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { CalendarRemove01Icon } from "hugeicons-react";
+import { StoredInspectionPriceDisplay } from "../components/DiscountPriceDisplay";
+
+function hasAvailableHours(day: { Hours?: { IsDisabled?: boolean }[] }) {
+  return day?.Hours?.some((hour) => !hour.IsDisabled) ?? false;
+}
+
+function findFirstDayWithHours(days: { Id: string; Hours?: { IsDisabled?: boolean }[] }[]) {
+  return days.find((day) => hasAvailableHours(day));
+}
+
+function getFirstEnabledHour(day: { Hours?: { Id: string | number; IsDisabled?: boolean }[] }) {
+  return day?.Hours?.find((hour) => !hour.IsDisabled);
+}
 
 export default function ClientWrapper() {
   const [selected, setSelected] = useState("");
@@ -61,13 +74,32 @@ export default function ClientWrapper() {
       .then((res: any) => {
         setCarInspectionDateTime(res);
         if (res?.length > 0) {
-          const firstEnabled = res?.[0]?.Hours.filter((item: any) => item.IsDisabled == false);
-          setSelectedTime(String(firstEnabled[0].Id));
-          setDefaultTab(res[0].Id);
+          const dayWithHours = findFirstDayWithHours(res) ?? res[0];
+          setDefaultTab(dayWithHours.Id);
+          const firstEnabled = getFirstEnabledHour(dayWithHours);
+          setSelectedTime(firstEnabled ? String(firstEnabled.Id) : "");
         }
       }).catch((err: any) => {
         console.log(err);
       });
+  };
+
+  const handleTabChange = (tabId: string) => {
+    const selectedDay = carInspectionDateTime.find((item: any) => item.Id == tabId);
+
+    if (!hasAvailableHours(selectedDay)) {
+      const dayWithHours = findFirstDayWithHours(carInspectionDateTime);
+      if (dayWithHours && dayWithHours.Id !== tabId) {
+        setDefaultTab(dayWithHours.Id);
+        const firstEnabled = getFirstEnabledHour(dayWithHours);
+        setSelectedTime(firstEnabled ? String(firstEnabled.Id) : "");
+        return;
+      }
+    }
+
+    setDefaultTab(tabId);
+    const firstEnabled = getFirstEnabledHour(selectedDay);
+    setSelectedTime(firstEnabled ? String(firstEnabled.Id) : "");
   };
 
   const GetCarInspectionDateType = () => {
@@ -104,6 +136,20 @@ export default function ClientWrapper() {
       GetCarInspectionDateTime();
     }
   }, [selected, hasMaxMinutes]);
+
+  useEffect(() => {
+    if (!carInspectionDateTime.length || !defaultTab) return;
+
+    const currentDay = carInspectionDateTime.find((item: any) => item.Id == defaultTab);
+    if (hasAvailableHours(currentDay)) return;
+
+    const dayWithHours = findFirstDayWithHours(carInspectionDateTime);
+    if (dayWithHours && dayWithHours.Id !== defaultTab) {
+      setDefaultTab(dayWithHours.Id);
+      const firstEnabled = getFirstEnabledHour(dayWithHours);
+      setSelectedTime(firstEnabled ? String(firstEnabled.Id) : "");
+    }
+  }, [carInspectionDateTime, defaultTab]);
   
   // برای دیباگ - می‌توانید این خط را بعداً حذف کنید
   if (selected && selectedType) {
@@ -144,7 +190,7 @@ export default function ClientWrapper() {
       </div>
 
       {shouldShowTimeTabs && (
-        <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full mt-4 bg-white py-6 font-IranSans" dir="rtl">
+        <Tabs value={defaultTab} onValueChange={handleTabChange} className="w-full mt-4 bg-white py-6 font-IranSans" dir="rtl">
           <TabsList className="w-full">
             {carInspectionDateTime.map((item: any) => (
               <TabsTrigger key={item.Id} className="flex flex-col text-[#55565A] data-[state=active]:text-[#416CEA] data-[state=active]:!border-b pb-6 data-[state=active]:border-b-[#416CEA] px-2 mx-1" value={item.Id}>
@@ -189,12 +235,13 @@ export default function ClientWrapper() {
         </Tabs>
       )}
 
-      <div className="px-4 w-full lg:my-4 lg:sticky lg:bg-white lg:mt-8 fixed flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button  disabled={loading || (Number(selected) === 2 && selectedTime == "" ? true : false)} onClick={moveToFinalConfirm} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+      <div className="px-4 w-full lg:my-4 lg:sticky lg:bg-white lg:mt-8 fixed flex justify-between bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+        <Button  disabled={loading || (Number(selected) === 2 && selectedTime == "" ? true : false)} onClick={moveToFinalConfirm} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
           {
             loading ? "لطفا منتظر بمانید..." : "تایید و ادامه"
           }
         </Button>
+        <StoredInspectionPriceDisplay />
       </div>
     </div>
   );

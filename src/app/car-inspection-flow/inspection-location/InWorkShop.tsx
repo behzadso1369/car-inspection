@@ -62,9 +62,19 @@ export default function InWorkShop({ LocationTypeDescription }: any) {
 
   return (
     <div className="my-4">
-      <div className="flex my-3">
-        <Location01Icon size={20} />
-        <span className="text-sm mx-2">{LocationTypeDescription}</span>
+      <div className="rounded-2xl border border-[#E8ECF4] bg-gradient-to-b from-[#F8FAFF] to-white px-4 py-3.5 lg:px-5 lg:py-4">
+        <div className="flex items-start gap-3 lg:gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#EEF2FD] text-[#416CEA] lg:h-11 lg:w-11">
+            <Location01Icon size={20} className="lg:hidden" />
+            <Location01Icon size={22} className="hidden lg:block" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-medium text-[#6B6C70] lg:text-sm">آدرس مرکز کارشناسی</p>
+            <p className="mt-1 text-sm font-semibold leading-7 text-[#101117] lg:text-base lg:leading-8">
+              {LocationTypeDescription}
+            </p>
+          </div>
+        </div>
       </div>
       <div className="my-4">
         <Button

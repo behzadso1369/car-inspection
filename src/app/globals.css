@@ -245,6 +245,38 @@
   color: #416CEA;
 }
 
+.car-price-input {
+  color: #101117;
+}
+
+.car-price-input::placeholder {
+  color: #b0b2b8;
+  font-weight: 400;
+  opacity: 1;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #e8ecf4 0%,
+    #f5f7fa 42%,
+    #eef2fd 50%,
+    #f5f7fa 58%,
+    #e8ecf4 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

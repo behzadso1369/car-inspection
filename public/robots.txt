@@ -12,9 +12,10 @@ Allow: /blog
 Allow: /blog/
 Allow: /faq
 Allow: /regulations
+Allow: /car-price
 Allow: /car-inspection-flow/select-car-group
 
-# ❌ منع دسترسی به صفحات خصوصی
+# ❌ سایر مراحل فرآیند کارشناسی — فقط select-car-group قابل index است
 Disallow: /car-inspection-flow/inspection-method
 Disallow: /car-inspection-flow/inspection-location
 Disallow: /car-inspection-flow/inspection-time

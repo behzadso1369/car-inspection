@@ -138,7 +138,7 @@ export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) 
           )}
           <DialogHeader>
             <DialogTitle className="text-base text-[#101117] font-medium text-center">کد تایید را وارد کنید</DialogTitle>
-            <DialogDescription className="text-sm text-[#101117] font-light text-center">
+            <DialogDescription className="text-sm text-[#101117] font-light text-center py-4">
               کد تایید برای شماره {phoneNumber || "..."} ارسال گردید
             </DialogDescription>          </DialogHeader>
           <div className="grid gap-4">

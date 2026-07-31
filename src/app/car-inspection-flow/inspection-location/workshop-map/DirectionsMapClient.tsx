@@ -1,7 +1,7 @@
 "use client"
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
-import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Location01Icon, Cancel01Icon } from "hugeicons-react"
 import { useEffect, useMemo, useState, useRef } from "react"
@@ -26,6 +26,20 @@ function MapBounds({ userLocation, destination }: { userLocation: [number, numbe
       map.fitBounds(bounds, { padding: [50, 50] });
     }
   }, [userLocation, destination, map]);
+
+  return null;
+}
+
+function MapResizeOnMount({ userLocation }: { userLocation: [number, number] | null }) {
+  const map = useMap();
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      map.invalidateSize();
+    }, 150);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [map, userLocation]);
 
   return null;
 }
@@ -134,7 +148,7 @@ export default function DirectionsMap({
   const mapProps: any = {
     center,
     zoom: userLocation ? 12 : 15,
-    className: "h-full w-full"
+    className: "h-full w-full",
   };
 
   // Handle Android back button
@@ -207,24 +221,41 @@ export default function DirectionsMap({
   if (!mounted) return null;
 
   return (
-  <DialogContent showCloseButton={false} className="w-[100vw] h-[100vh] max-w-[100vw] max-h-[100vh] overflow-hidden p-0 border-none bg-white font-IranSans m-0 rounded-none lg:rounded-lg lg:w-[90vw] lg:h-[90vh] lg:max-w-[1200px]">
-      <DialogHeader className="px-4 pt-6 pb-2 lg:pt-4 relative">
-        <Button
-          onClick={onClose}
-          className="absolute left-4 top-4 lg:top-2 bg-transparent hover:bg-gray-100 p-3 h-auto w-auto text-gray-600"
-          variant="ghost"
-        >
-          <Cancel01Icon size={32} />
-        </Button>
-         <div className="flex my-3">
-            <Location01Icon size={20}/>
-            <span className="text-sm mx-2 break-words">{LocationTypeDescription}</span>
-          </div>
-      </DialogHeader>
+  <DialogContent
+    showCloseButton={false}
+    className="flex max-h-[100dvh] w-[100vw] max-w-[100vw] flex-col gap-0 overflow-hidden border-none bg-white p-0 font-IranSans m-0 h-[100dvh] rounded-none lg:h-[90vh] lg:w-[90vw] lg:max-w-[1200px] lg:rounded-2xl"
+  >
+    <DialogTitle className="sr-only">نقشه آدرس کارشناسی</DialogTitle>
 
-   <div className="w-full h-[calc(100vh-180px)] lg:h-[650px] relative">
+    <div className="relative z-20 shrink-0 border-b border-[#E8ECF4] bg-white px-4 pb-4 pt-5 lg:px-6 lg:pb-5 lg:pt-6">
+      <Button
+        type="button"
+        onClick={onClose}
+        aria-label="بستن نقشه"
+        className="absolute end-3 top-3 flex h-11 w-11 items-center justify-center rounded-2xl border border-[#E8ECF4] bg-white p-0 text-[#55565A] shadow-sm hover:bg-[#F8FAFF] hover:text-[#101117] lg:end-4 lg:top-4 lg:h-12 lg:w-12"
+        variant="ghost"
+      >
+        <Cancel01Icon size={24} className="lg:hidden" />
+        <Cancel01Icon size={28} className="hidden lg:block" />
+      </Button>
+
+      <div className="flex items-start gap-3 pe-14 ps-1 lg:pe-16 lg:gap-4">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#EEF2FD] text-[#416CEA] lg:h-12 lg:w-12">
+          <Location01Icon size={22} className="lg:hidden" />
+          <Location01Icon size={26} className="hidden lg:block" />
+        </div>
+        <div className="min-w-0 flex-1 pt-0.5">
+          <p className="text-xs font-medium text-[#6B6C70] lg:text-sm">آدرس مرکز کارشناسی</p>
+          <p className="mt-1 text-sm font-semibold leading-7 text-[#101117] break-words lg:text-base lg:leading-8">
+            {LocationTypeDescription}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="relative min-h-0 flex-1 overflow-hidden bg-[#F0F2F4]">
       {(isLocating || locationMessage) && (
-        <div className="absolute top-4 left-1/2 z-[1001] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border border-[#416CEA]/20 bg-white/95 px-4 py-3 text-center shadow-[0_8px_24px_rgba(65,108,234,0.12)] backdrop-blur-sm">
+        <div className="absolute top-4 left-1/2 z-[10] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border border-[#416CEA]/20 bg-white/95 px-4 py-3 text-center shadow-[0_8px_24px_rgba(65,108,234,0.12)] backdrop-blur-sm">
           {isLocating ? (
             <div className="flex items-center justify-center gap-2 text-sm text-[#416CEA]">
               <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-[#416CEA]" />
@@ -247,42 +278,45 @@ export default function DirectionsMap({
           )}
         </div>
       )}
-      <MapContainer {...mapProps}>
+
+      <MapContainer {...mapProps} style={{ height: "100%", width: "100%", zIndex: 0 }}>
+        <MapResizeOnMount userLocation={userLocation} />
         <TileLayer {...({ attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>', url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' } as any)} />
         <MapBounds userLocation={userLocation} destination={destination} />
-        
-        {/* Destination Marker */}
+
         <Marker position={destination}>
           <Popup>مقصد</Popup>
         </Marker>
-        
-        {/* User Location Marker */}
+
         {userLocation && (
           <Marker position={userLocation}>
             <Popup>موقعیت شما</Popup>
           </Marker>
         )}
-        
-        {/* Animated curved route */}
+
         {curvedPath.length > 0 && <AnimatedRouteLine path={curvedPath} />}
       </MapContainer>
-      
-      {/* Action Buttons Overlay - positioned on map */}
-      <div className="absolute bottom-0 left-0 right-0 px-4 py-4 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] z-[1000] flex justify-between gap-3">
-        <Button 
+    </div>
+
+    <div className="relative z-20 shrink-0 border-t border-[#E8ECF4] bg-white px-4 py-4 shadow-[0_-4px_24px_rgba(203,213,224,0.45)] lg:px-6 lg:py-5">
+      <div className="flex gap-3">
+        <Button
+          type="button"
           onClick={handleNavigation}
-          className="bg-[#416CEA] text-white rounded-3xl py-4 lg:py-6 px-6 lg:px-12 flex-1 text-sm lg:text-base" 
+          className="h-12 flex-1 rounded-3xl bg-[#416CEA] px-6 text-sm font-semibold text-white lg:h-14 lg:text-base"
         >
           مسیریابی
         </Button>
-        <Button 
+        <Button
+          type="button"
           onClick={handleSMS}
-          className="bg-transparent text-[#416CEA] rounded-3xl py-4 lg:py-6 px-6 lg:px-12 flex-1 border border-[#416CEA] text-sm lg:text-base" 
+          variant="outline"
+          className="h-12 flex-1 rounded-3xl border-[#416CEA] px-6 text-sm font-semibold text-[#416CEA] hover:bg-[#EEF2FD] lg:h-14 lg:text-base"
         >
           پیامک
         </Button>
       </div>
     </div>
-    </DialogContent>
+  </DialogContent>
   )
 }

@@ -9,6 +9,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { serverApiHelper } from "@/helper/server-fetcher";
 import { LOCAL_AREAS } from "@/lib/local-areas";
+import { getFaqPreviewItems } from "@/lib/faq-data";
+import { FaqPreviewSection } from "./components/FaqPreviewSection";
 
 // ISR - Incremental Static Regeneration (revalidate هر 10 دقیقه)
 // صفحه اصلی محتوای دینامیک دارد (بلاگ‌ها، سرویس‌ها) اما نیازی به fetch در هر request نیست
@@ -77,12 +79,7 @@ export default async function Home() {
   console.log('⏰ Time:', new Date().toISOString());
 
   const data = await getMasterPageData();
-  
-  
-  console.log('📊 Data fetched:', data ? 'Success' : 'Failed');
-  console.log('📊 Data fetched:', data);
-
- 
+  const faqPreviewItems = await getFaqPreviewItems(5, 600);
   return (
    <div className="bg-white">
       <Slider data={data?.Sliders}/>
@@ -114,6 +111,12 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      <FaqPreviewSection
+        items={faqPreviewItems}
+        limit={5}
+        className="bg-gradient-to-b from-[#F8FAFF] to-white"
+      />
 
       <div className="block lg:hidden">
          <NavigationBar/>

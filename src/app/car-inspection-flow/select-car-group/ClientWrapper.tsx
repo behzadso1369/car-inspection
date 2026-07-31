@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 import { useOptimizedNavigation } from "@/hooks/useOptimizedNavigation";
 import { Header } from "@/app/components/mobile/Home/Header";
 import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar";
+import { FaqPreviewSection } from "@/app/components/FaqPreviewSection";
+import type { FaqItem } from "@/lib/faq-data";
 import { Footer } from "@/app/components/mobile/Home/Footer";
 
 // Lazy load کامپوننت‌های سنگین
@@ -30,17 +32,19 @@ const OurCustomer = dynamic(() => import("./slider/page"), {
   loading: () => <div className="h-[600px] lg:h-[800px] flex items-center justify-center">در حال بارگذاری...</div>
 });
 
-const Statistics = dynamic(() => import("@/app/components/mobile/Home/Statistics"), {
-  ssr: false,
-  loading: () => <div className="h-32" />
-});
+import {
+  InspectionFlowStats,
+  InspectionIntroSection,
+  InspectionSeoArticle,
+} from "./InspectionLandingSections";
 
 interface ClientWrapperProps {
-  initialData: any;
+  inspectionFaqs?: FaqItem[];
 }
 
-export default function ClientWrapper({ initialData }: ClientWrapperProps) {
-  const [data, setData] = useState<any>(initialData);
+export default function ClientWrapper({
+  inspectionFaqs = [],
+}: ClientWrapperProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -86,16 +90,29 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
 
       <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10">
         <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">
-          <h1 className="text-black text-lg my-2 font-medium">کارشناسی خودرو</h1>
-          <h2 className="text-[#55565A] font-light text-base">جهت شروع فرآیند کارشناسی اطلاعات زیر را وارد کنید.</h2>
+                    <h1 className="text-black text-lg my-2 font-medium">کارشناسی خودرو</h1>
+                              <h2 className="text-[#55565A] font-light text-base">جهت شروع فرآیند کارشناسی اطلاعات زیر را وارد کنید.</h2>
+          {/* <h1 className="text-black text-lg my-2 font-bold leading-8 lg:text-xl">
+            کارشناسی خودرو در محل
+          </h1> */}
+          {/* <p className="text-[#55565A] font-light text-sm leading-7 lg:text-base">
+            کارشناسی خودرو در محل تهران با اعزام کارشناس به تهران و شرق تهران؛ بررسی
+            فنی، رنگ و بدنه، شاسی و دیاگ. رزرو آنلاین، هزینه شفاف و گزارش کامل
+            کارشناسی.
+          </p>
+          <p className="mt-3 text-[#101117] text-sm leading-7 lg:text-base">
+            پیش از خرید یا فروش خودرو، کارشناس کارماچک را به آدرسی که خودرو در آن
+            قرار دارد اعزام کنید و بدون جابه‌جایی ماشین، وضعیت فنی، رنگ و بدنه،
+            شاسی، دیاگ و آپشن‌ها را با یک گزارش کامل بررسی کنید.
+          </p> */}
           <div className="flex items-center">
             <div className="aspect-[2] relative w-16 h-8 ml-4">
-              <Image src="/step1.png" alt="step1.png" fill className="object-fill" />
+              <Image src="/step1.png" alt="مرحله اول رزرو کارشناسی خودرو" fill className="object-fill" />
             </div>
 
             <div>
-              <h3 className="text-base text-black my-2 font-medium">مرحله اول: مشخصات اولیه خودرو</h3>
-              <h4 className="text-[#55565A] font-light text-sm"> بعدی: انتخاب روش کارشناسی</h4>
+              <h2 className="text-base text-black my-2 font-medium">مرحله اول: مشخصات اولیه خودرو</h2>
+              <p className="text-[#55565A] font-light text-sm">بعدی: انتخاب روش کارشناسی</p>
             </div>
           </div>
           <Dialog open={openModal} onOpenChange={setOpenModal}>
@@ -127,33 +144,45 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
           </div>
         </div>
         <div className="mt-24 lg:mt-14 px-4 lg:px-24 text-white w-full lg:w-1/2">
-          <h3 className="text-lg font-medium">سرویس‌های کارشناسی کارماچک</h3>
+          <h2 className="text-lg font-medium">کارشناسی خودرو در محل با کارماچک</h2>
           <p className="text-base leading-8">
-            ما تمامی خدمات کارشناسی خودرو را هم در محل مورد نظر شما و هم درب مغازه به‌صورت کامل انجام می‌دهیم. موارد شامل:
+            کارشناس ما به آدرس شما در تهران و شرق تهران اعزام می‌شود و بدون نیاز به
+            جابه‌جایی خودرو، موارد زیر را بررسی می‌کند:
           </p>
         </div>
         <div className="grid grid-cols-3 gap-3 w-full lg:w-1/2 px-4 lg:px-24 text-white">
           <p className="flex"><Tick01Icon size={24} /><span>فنی و موتور</span></p>
-          <p className="flex"><Tick01Icon size={24} /><span>قیمت‌گذاری</span></p>
-          <p className="flex"><Tick01Icon size={24} /><span>رنگ بدنه</span></p>
-          <p className="flex"><Tick01Icon size={24} /><span>تست دیباگ</span></p>
-          <p className="flex"><Tick01Icon size={24} /><span>تست‌ آپشن</span></p>
-          <p className="flex"><Tick01Icon size={24} /><span>تست رانندگی</span></p>
-          <p className="flex col-span-3"><Tick01Icon size={24} /><span>تنظیم رایگان قولنامه رسمی و عقد قرارداد</span></p>
+          <p className="flex"><Tick01Icon size={24} /><span>رنگ و بدنه</span></p>
+          <p className="flex"><Tick01Icon size={24} /><span>شاسی</span></p>
+          <p className="flex"><Tick01Icon size={24} /><span>دیاگ</span></p>
+          <p className="flex"><Tick01Icon size={24} /><span>آپشن‌ها</span></p>
+          <p className="flex"><Tick01Icon size={24} /><span>گزارش کامل</span></p>
+          <p className="flex col-span-3"><Tick01Icon size={24} /><span>رزرو آنلاین با هزینه شفاف</span></p>
         </div>
       </div>
 
       <div className="px-4 py-16 flex flex-wrap justify-center font-medium" ref={ref}>
-        <h3 className="font-bold w-full text-center">انتخاب محل کارشناسی خودرو با شما</h3>
+        <h2 className="font-bold w-full text-center">اعزام کارشناس به محل شما</h2>
+        <p className="mt-3 w-full max-w-3xl text-center text-sm leading-7 text-[#55565A] px-4">
+          کارشناسی خودرو در محل تهران و شرق تهران — کارشناس کارماچک در زمان
+          مقرر به آدرس شما می‌آید و گزارش کامل کارشناسی را در اختیارتان قرار
+          می‌دهد.
+        </p>
         <div className="px-3 w-full lg:w-1/3 mx-4 border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
-          <h2 className="text-sm text-[#101117] font-light">مراجعه شما به مرکز کارشناسی کارچک</h2>
-          <h3 className="text-base text-[#55565A] my-1 font-light">شرق  تهران</h3>
-          <h4 className="text-[#55565A] text-sm font-light">در این سرویس پس از ثبت درخواست، برای انجام کارشناسی باید به مرکز کارچک (شرق تهران)مراجعه کنید.</h4>
+          <h3 className="text-sm text-[#101117] font-semibold">کارشناسی در محل شما</h3>
+          <p className="text-base text-[#55565A] my-1 font-light">تهران و شرق تهران</p>
+          <p className="text-[#55565A] text-sm font-light leading-7">
+            پس از رزرو آنلاین، کارشناس به آدرسی که خودرو در آن قرار دارد اعزام
+            می‌شود و بدون جابه‌جایی ماشین، بررسی کامل انجام می‌شود.
+          </p>
         </div>
         <div className="px-3 w-full lg:w-1/3 mx-4 border border-[#DCDCDC] shadow-[8px_4px_24px_0px_#EAEAEA40] py-4 mt-4 rounded-3xl">
-          <h2 className="text-sm text-[#101117] font-light">اعزام کارشناس به محل انتخابی شما</h2>
-          <h3 className="text-base text-[#55565A] my-1 font-light">شهر تهران</h3>
-          <h4 className="text-[#55565A] text-sm font-light">در این سرویس کارشناس برای انجام کارشناسی به محلی که شما تعیین کرده‌اید مراجعه می‌کند.</h4>
+          <h3 className="text-sm text-[#101117] font-semibold">مراجعه به مرکز کارشناسی</h3>
+          <p className="text-base text-[#55565A] my-1 font-light">شرق تهران</p>
+          <p className="text-[#55565A] text-sm font-light leading-7">
+            در صورت تمایل می‌توانید خودرو را به مرکز کارشناسی کارماچک در شرق
+            تهران بیاورید و کارشناسی را در محل مرکز انجام دهید.
+          </p>
         </div>
       </div>
 
@@ -191,7 +220,19 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       {/* <div className="h-[600px] lg:h-[800px]">
         <OurCustomer />
       </div> */}
-      <Statistics data={data?.StatisticsData} />
+      <InspectionIntroSection />
+      <InspectionFlowStats />
+      <InspectionSeoArticle />
+
+      {inspectionFaqs.length > 0 && (
+        <FaqPreviewSection
+          title="سوالات متداول کارشناسی خودرو"
+          subtitle="پاسخ سوالات رایج قبل از شروع فرآیند رزرو کارشناسی"
+          items={inspectionFaqs}
+          className="bg-[#F0F2F4] lg:max-w-4xl lg:mx-auto lg:rounded-3xl lg:my-8"
+        />
+      )}
+
       <div className="lg:hidden">
         <NavigationBar />
       </div>

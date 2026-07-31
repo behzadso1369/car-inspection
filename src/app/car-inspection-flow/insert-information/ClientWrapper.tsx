@@ -14,6 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { StoredInspectionPriceDisplay } from "../components/DiscountPriceDisplay";
 
 export default function ClientWrapper() {
   const [openModal, setOpenModal] = useState(false);
@@ -128,14 +129,15 @@ export default function ClientWrapper() {
                 </FormItem>
               )}
             />
-            <div className="px-4 lg:my-4 lg:static lg:mt-8 fixed left-0 right-0 flex justify-center bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+            <div className="px-4 lg:my-4 lg:static lg:mt-8 fixed left-0 right-0 flex justify-between bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
               <Dialog open={openModal} onOpenChange={setOpenModal}>
                 <OtpMoldal openModal={openModal} setOpnModal={setOpenModal} remainingSeconds={remainingSeconds} />
               </Dialog>
               
-              <Button disabled={sendSMS} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+              <Button disabled={sendSMS} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
                 {!sendSMS ? "ارسال پیامک" : "...لطفا منتظر بمانید"} 
               </Button>
+              <StoredInspectionPriceDisplay />
             </div>
           </form>
         </Form>
