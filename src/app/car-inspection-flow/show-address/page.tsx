@@ -1,10 +1,14 @@
 "use client";
-import React from "react";
 
-export default function ShowAddress() {
-	return (
-		<div className="p-4">
-			{/* Placeholder page for show-address. Replace with real UI. */}
-		</div>
-	);
+import dynamic from "next/dynamic";
+
+const ShowAddressClient = dynamic(() => import("./ClientWrapper"), {
+  ssr: false,
+  loading: () => (
+    <div className="py-16 text-center font-IranSans text-[#55565A]">در حال بارگذاری...</div>
+  ),
+});
+
+export default function ShowAddressPage() {
+  return <ShowAddressClient />;
 }

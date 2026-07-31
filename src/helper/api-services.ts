@@ -31,10 +31,11 @@ GetRegulationsData: "Site/GetRegulationsData",
 GetUserOirderDetailReport:"User/GetUserOrderDetailsReport",
 GetBlogDetail:"SiteBlog/SearchPostWithId",
 Payment: "Payment/Order",
+PaymentRequest: "Payment/Request",
 
-
-
-
-
+// User — on-site: ثبت آدرس (مطابق مستند فلو — فقط Create)
+CreateUserAddress: "User/CreateUserAddress",
+GetOrderExpertStatus: "User/GetOrderExpertStatus",
+GetOrderBodyReport: "User/GetOrderBodyReport",
 
 } as { [type: string]: string };

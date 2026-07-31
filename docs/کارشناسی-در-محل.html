@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>راهنمای کارشناسی در محل — کارماچک</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a2332;
+      --text: #e8eef7;
+      --muted: #9db0c9;
+      --accent: #3d9cf0;
+      --accent2: #2ecc71;
+      --warn: #f0b429;
+      --border: #314158;
+      --radius: 12px;
+      --font: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: radial-gradient(1200px 600px at 80% -10%, #1b3a5f 0%, var(--bg) 55%);
+      color: var(--text);
+      line-height: 1.85;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 28px 18px 80px; }
+    header {
+      background: linear-gradient(135deg, #1e4d7b, #16324f);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      margin-bottom: 22px;
+    }
+    header h1 { margin: 0 0 8px; font-size: 1.6rem; }
+    header p { margin: 0; color: var(--muted); }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+    h2 { margin: 0 0 12px; font-size: 1.15rem; color: var(--accent); }
+    h3 { margin: 16px 0 8px; font-size: 1rem; }
+    ul, ol { margin: 8px 0; padding-right: 22px; }
+    li { margin-bottom: 6px; }
+    code {
+      background: #0b1220;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: .88rem;
+      direction: ltr;
+      display: inline-block;
+    }
+    a { color: var(--accent); }
+    .role {
+      display: inline-block;
+      font-size: .72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 6px;
+      font-weight: 600;
+    }
+    .role-user { background: #2ecc7133; color: #8dffb5; }
+    .role-admin { background: #5b4bff33; color: #b7b0ff; }
+    .role-expert { background: #f0b42933; color: #ffd57a; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .9rem;
+      margin: 12px 0;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: right;
+    }
+    th { background: #243044; color: var(--accent); }
+    .note {
+      background: #2a2416;
+      border: 1px solid #5a4a22;
+      color: #ffd98a;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 12px 0;
+      font-size: .9rem;
+    }
+    footer { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 32px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>راهنمای پیاده‌سازی «کارشناسی در محل»</h1>
+      <p>مستند فارسی برای تیم — فلو کامل از رزرو تا گزارش بدنه (سناریو نمونه: سمند سفید)</p>
+    </header>
+
+    <section>
+      <h2>۱. نمای کلی</h2>
+      <p>کارشناسی در محل یعنی مشتری آدرس خود را ثبت می‌کند، پرداخت می‌کند، ادمین کارشناس اعزام می‌کند، کارشناس به محل می‌رود و گزارش بدنه ثبت می‌کند و مشتری گزارش را می‌بیند.</p>
+      <ol>
+        <li>آماده‌سازی ادمین (کارشناس + پوشش جغرافیایی)</li>
+        <li>ورود مشتری (OTP)</li>
+        <li>ثبت آدرس مشتری</li>
+        <li>ساخت سفارش و حرکت فلو تا پرداخت</li>
+        <li>پرداخت → وضعیت <code>PendingAssignment</code></li>
+        <li>ادمین: پیشنهاد و تخصیص کارشناس</li>
+        <li>کارشناس: پذیرش و وضعیت میدانی</li>
+        <li>ثبت چک‌لیست + گزارش بدنه</li>
+        <li>مشتری: پیگیری اعزام + مشاهده گزارش</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>۲. مسیرهای فرانت‌اند (Next.js)</h2>
+      <table>
+        <tr><th>نقش</th><th>مسیر</th><th>توضیح</th></tr>
+        <tr>
+          <td><span class="role role-user">مشتری</span></td>
+          <td><code>/car-inspection-flow/inspection-location</code></td>
+          <td>انتخاب «در محل» + ثبت/انتخاب آدرس</td>
+        </tr>
+        <tr>
+          <td><span class="role role-user">مشتری</span></td>
+          <td><code>/car-inspection-flow/show-address</code></td>
+          <td>تایید آدرس روی نقشه</td>
+        </tr>
+        <tr>
+          <td><span class="role role-user">مشتری</span></td>
+          <td><code>/Profile/requests/[id]</code></td>
+          <td>پیگیری وضعیت کارشناس (EnRoute و …)</td>
+        </tr>
+        <tr>
+          <td><span class="role role-user">مشتری</span></td>
+          <td><code>/Profile/requests/[id]/body-report</code></td>
+          <td>مشاهده گزارش بدنه پس از Submit</td>
+        </tr>
+        <tr>
+          <td><span class="role role-expert">کارشناس</span></td>
+          <td><code>car-inspection-expert-panel</code> — <code>/login</code></td>
+          <td>ورود OTP با ExpertAuth/CheckPhone و Verify (پروژه جدا — پورت 5180)</td>
+        </tr>
+        <tr>
+          <td><span class="role role-expert">کارشناس</span></td>
+          <td><code>car-inspection-expert-panel</code> — <code>/assignments/[id]</code></td>
+          <td>پذیرش، وضعیت میدانی، ثبت گزارش بدنه</td>
+        </tr>
+        <tr>
+          <td><span class="role role-admin">ادمین</span></td>
+          <td>پنل جدا (در حال توسعه)</td>
+          <td>تخصیص کارشناس و تعریف کارشناسان — خارج از این ریپو</td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>۳. فایل‌های کلیدی پروژه</h2>
+      <ul>
+        <li><code>src/helper/api-services.ts</code> — endpointهای API (فقط مشتری)</li>
+        <li><code>car-inspection-expert-panel/</code> — پنل جداگانه کارشناس (ExpertAuth + اعزام‌ها)</li>
+        <li><code>src/types/on-site.ts</code> — تایپ‌های مشترک</li>
+        <li><code>src/app/car-inspection-flow/inspection-location/InLocation.tsx</code> — UI آدرس</li>
+        <li><code>src/components/on-site/ExpertStatusTracker.tsx</code> — پیگیری اعزام</li>
+        <li><code>src/components/on-site/BodyReportViewer.tsx</code> — نمایش گزارش بدنه</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>۴. سناریو تست (سمند سفید)</h2>
+      <ul>
+        <li>مشتری: رضا احمدی — <code>09121234567</code></li>
+        <li>کارشناس: علی محمدی — <code>09120000000</code> (ExpertId=5)</li>
+        <li>آدرس: تهران، ولیعصر، پلاک ۱۲ — AddressId=45</li>
+        <li>پلاک: <code>124 ص 12 ایران 11</code> — شاسی: <code>147874</code></li>
+        <li>نتیجه: گلگیر جلو راست <strong>رنگ‌شده (Painted)</strong></li>
+      </ul>
+      <div class="note">
+        API پایه: <code>https://api.carmacheck.com/api/</code><br />
+        توکن‌ها: <code>token</code> (مشتری)، <code>adminToken</code> (ادمین)، <code>expertToken</code> (کارشناس) در localStorage
+      </div>
+    </section>
+
+    <section>
+      <h2>۵. APIهای مهم</h2>
+      <h3><span class="role role-user">مشتری</span></h3>
+      <ul>
+        <li><code>POST User/CreateUserAddress</code> — ثبت آدرس و دریافت AddressId</li>
+        <li><code>POST OrderSite/Move/Private</code> با <code>addressId</code> برای کارشناسی در محل (Id=1)</li>
+        <li><code>GET User/GetOrderExpertStatus?OrderId=</code></li>
+        <li><code>GET User/GetOrderBodyReport?OrderId=</code></li>
+      </ul>
+      <h3><span class="role role-admin">ادمین</span></h3>
+      <ul>
+        <li><code>GET admin/OrderExpertAssignment/UnassignedOnSiteOrders</code></li>
+        <li><code>GET admin/OrderExpertAssignment/SuggestExperts?orderId=</code></li>
+        <li><code>POST admin/OrderExpertAssignment/AssignExpert</code></li>
+      </ul>
+      <h3><span class="role role-expert">کارشناس</span></h3>
+      <ul>
+        <li><code>POST Expert/Accept</code></li>
+        <li><code>POST Expert/UpdateStatus</code> — EnRoute → Arrived → InProgress</li>
+        <li><code>POST Expert/SubmitBodyReport</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>۶. وضعیت‌های زون بدنه</h2>
+      <ul>
+        <li><code>Ok</code> — سالم (سبز)</li>
+        <li><code>Painted</code> — رنگ‌شده (نارنجی)</li>
+        <li><code>Damaged</code> — آسیب‌دیده (قرمز)</li>
+        <li><code>Replaced</code> — تعویض‌شده (بنفش)</li>
+        <li><code>NotChecked</code> — بررسی‌نشده (خاکستری)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>۷. پیش‌نیاز بک‌اند</h2>
+      <p>فرانت آماده است؛ برای کارکرد کامل، API باید:</p>
+      <ul>
+        <li>نوع محل کارشناسی با <code>IsOnSite=true</code> در <code>GetCarInspectionLocationData</code> برگرداند</li>
+        <li>پس از پرداخت موفق، رکورد <code>PendingAssignment</code> بسازد</li>
+        <li>endpointهای admin و expert مطابق مستند API فعال باشند</li>
+      </ul>
+    </section>
+
+    <footer>
+      کارماچک — کارشناسی در محل<br />
+      فایل: <code>docs/کارشناسی-در-محل.html</code>
+    </footer>
+  </div>
+</body>
+</html>

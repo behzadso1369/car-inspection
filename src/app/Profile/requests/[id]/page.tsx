@@ -9,6 +9,7 @@ import { ApiHelper } from "@/helper/api-request";
 import { useEffect, useState, Suspense } from "react";
 import { ArrowLeft } from "lucide-react";
 import { handleLogout } from "@/helper/logout";
+import ExpertStatusTracker from "@/components/on-site/ExpertStatusTracker";
 
 function RequestDetailContent() {
     const params = useParams();
@@ -102,6 +103,7 @@ function RequestDetailContent() {
     <span className="text-[#55565A]">محل کارشناسی:</span>
     <span className="text-[#101117] text-base font-medium text-left leading-8">{orderDetail?.carInspectionLocationTypeAddress}</span>
     </div>
+    <ExpertStatusTracker orderId={String(params.id)} />
     {/* <div className="flex justify-between text-sm my-2">
     <span className="text-[#55565A]">زمان کارشناسی:</span>
     <span className="text-[#101117] text-base font-medium">کارشناسی فوری</span>
@@ -115,6 +117,7 @@ function RequestDetailContent() {
         <span>کاربر :  {orderDetail?.username}</span>
     </div>
     <Link prefetch={false} href={`./${params?.id}/inspection-report` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#3456bb] text-white">گزارش کارشناسی</Link>
+    <Link prefetch={false} href={`./${params?.id}/body-report` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#416CEA] text-white mr-2">گزارش بدنه</Link>
     </div>
 
 
