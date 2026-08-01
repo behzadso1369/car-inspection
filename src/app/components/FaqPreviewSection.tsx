@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -18,6 +19,7 @@ type FaqPreviewSectionProps = {
   viewAllHref?: string;
   className?: string;
   limit?: number;
+  expandInline?: boolean;
 };
 
 export function FaqPreviewSection({
@@ -28,10 +30,13 @@ export function FaqPreviewSection({
   viewAllHref = "/faq",
   className = "",
   limit,
+  expandInline = false,
 }: FaqPreviewSectionProps) {
-  const visibleItems = (limit ? items.slice(0, limit) : items).filter(
-    (item) => item?.Question && item?.Answer
-  );
+  const [isExpanded, setIsExpanded] = useState(false);
+  const validItems = items.filter((item) => item?.Question && item?.Answer);
+  const visibleItems =
+    limit && !isExpanded ? validItems.slice(0, limit) : validItems;
+  const hasHiddenItems = validItems.length > visibleItems.length;
 
   if (!visibleItems.length) return null;
 
@@ -77,14 +82,24 @@ export function FaqPreviewSection({
           ))}
         </Accordion>
 
-        {showViewAll ? (
+        {showViewAll && (!expandInline || hasHiddenItems) ? (
           <div className="mt-8 flex justify-center">
-            <Link
-              href={viewAllHref}
-              className="inline-flex items-center justify-center rounded-2xl border border-[#3456bb]/25 bg-white px-6 py-3 text-sm font-semibold text-[#3456bb] shadow-[0_4px_16px_rgba(53,99,233,0.08)] transition hover:border-[#3456bb]/40 hover:bg-[#EEF2FD]"
-            >
-              مشاهده همه
-            </Link>
+            {expandInline ? (
+              <button
+                type="button"
+                onClick={() => setIsExpanded(true)}
+                className="inline-flex items-center justify-center rounded-2xl border border-[#3456bb]/25 bg-white px-6 py-3 text-sm font-semibold text-[#3456bb] shadow-[0_4px_16px_rgba(53,99,233,0.08)] transition hover:border-[#3456bb]/40 hover:bg-[#EEF2FD]"
+              >
+                مشاهده همه
+              </button>
+            ) : (
+              <Link
+                href={viewAllHref}
+                className="inline-flex items-center justify-center rounded-2xl border border-[#3456bb]/25 bg-white px-6 py-3 text-sm font-semibold text-[#3456bb] shadow-[0_4px_16px_rgba(53,99,233,0.08)] transition hover:border-[#3456bb]/40 hover:bg-[#EEF2FD]"
+              >
+                مشاهده همه
+              </Link>
+            )}
           </div>
         ) : null}
       </div>

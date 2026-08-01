@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar"
+import CarPricingSeoContent from "@/components/car-price/CarPricingSeoContent"
 
 type Step = "search_car" | "year" | "mileage" | "color" | "chassis" | "result"
 
@@ -56,54 +57,6 @@ const INPUT_CLASS_LG =
 const BACK_BTN_CLASS =
   "rounded-2xl border-[#3456bb]/25 text-[#3456bb] hover:bg-[#eef2fd]"
 
-function CarPricingSeoContent() {
-  return (
-    <article className="rounded-3xl border border-[#E8ECF4] bg-white/80 p-5 md:p-6">
-      <h2 className="text-lg font-black leading-8 text-[#101117] md:text-xl">
-        <strong>قیمت‌گذاری خودرو</strong> چگونه انجام می‌شود؟
-      </h2>
-      <p className="mt-3 text-sm leading-7 text-[#6B6C70]">
-        <strong>قیمت‌گذاری خودرو</strong> فرآیندی است که در آن ارزش واقعی یک خودرو بر اساس
-        مشخصات فنی، وضعیت ظاهری، کارکرد و شرایط بازار تعیین می‌شود. در کارماچک می‌توانید با
-        وارد کردن اطلاعات خودرو، قیمت حدودی آن را به‌صورت هوشمند محاسبه کنید.
-      </p>
-      <h3 className="mt-5 text-base font-extrabold text-[#101117] md:text-lg">
-        <strong>عوامل تأثیرگذار بر قیمت‌گذاری خودرو</strong>
-      </h3>
-      <ul className="mt-3 space-y-2 text-sm leading-7 text-[#6B6C70]">
-        <li>
-          <strong className="text-[#101117]">مدل و برند خودرو:</strong> خودروهای پرتقاضا و
-          محبوب معمولاً ارزش بازفروش بالاتری دارند.
-        </li>
-        <li>
-          <strong className="text-[#101117]">سال ساخت:</strong> هرچه خودرو جدیدتر باشد،
-          افت قیمت ناشی از کهنگی کمتر است.
-        </li>
-        <li>
-          <strong className="text-[#101117]">کارکرد (کیلومتر):</strong> پیمایش بالاتر معمولاً
-          باعث کاهش قیمت خودرو می‌شود.
-        </li>
-        <li>
-          <strong className="text-[#101117]">وضعیت رنگ و بدنه:</strong> خط و خش، رنگ‌شدگی
-          و صافکاری بر ارزش نهایی خودرو اثر مستقیم دارد.
-        </li>
-        <li>
-          <strong className="text-[#101117]">وضعیت شاسی و اتاق:</strong> آسیب‌های جدی
-          ساختاری می‌توانند قیمت خودرو را به‌شدت کاهش دهند.
-        </li>
-        <li>
-          <strong className="text-[#101117]">شرایط بازار:</strong> عرضه و تقاضا، نرخ ارز و
-          قیمت خودروهای نو نیز بر قیمت دست‌دوم تأثیر می‌گذارد.
-        </li>
-      </ul>
-      <p className="mt-4 text-sm leading-7 text-[#6B6C70]">
-        برای شروع <strong>قیمت‌گذاری خودرو</strong>، نام مدل موردنظر را در کادر جستجو وارد
-        کنید تا لیست خودروهای مرتبط نمایش داده شود.
-      </p>
-    </article>
-  )
-}
-
 function normalizePrice(value: string | number) {
   if (typeof value === "number") return value
   return Number(String(value).replaceAll(",", "").trim())
@@ -126,6 +79,11 @@ function toEnglishDigits(value: string) {
   return value
     .replace(/[۰-۹]/g, (d) => String(fa.indexOf(d)))
     .replace(/[٠-٩]/g, (d) => String(ar.indexOf(d)))
+}
+
+function formatMileageInput(value: string) {
+  const digits = toEnglishDigits(value).replace(/\D/g, "")
+  return digits ? Number(digits).toLocaleString("en-US") : ""
 }
 
 
@@ -373,7 +331,7 @@ function handleMileageSubmit() {
               </Badge>
 
               <h1 className="mt-3 text-2xl font-black leading-9 text-gradient">
-                قیمت حدودی خودروت رو سریع پیدا کن
+                محاسبه قیمت خودرو کارکرده و قیمت‌گذاری آنلاین
               </h1>
 
               <p className="mt-2 text-sm leading-7 text-[#6B6C70]">
@@ -413,7 +371,7 @@ function handleMileageSubmit() {
 
                 <div className={query.trim() ? "max-h-72 space-y-2 overflow-y-auto" : "space-y-2"}>
                   {!query.trim() ? (
-                    <CarPricingSeoContent />
+                    <CarPricingSeoContent variant="intro" />
                   ) : (
                     <>
                   {filteredCars.map((car) => (
@@ -541,7 +499,7 @@ function handleMileageSubmit() {
     <div className="space-y-3">
       <Input
         value={mileage}
-        onChange={(e) => setMileage(toEnglishDigits(e.target.value))}
+        onChange={(e) => setMileage(formatMileageInput(e.target.value))}
         placeholder="مثلاً 85000"
         className={INPUT_CLASS}
         inputMode="numeric"
@@ -791,7 +749,7 @@ function handleMileageSubmit() {
                       </div>
 
                       {!query.trim() ? (
-                        <CarPricingSeoContent />
+                        <CarPricingSeoContent variant="intro" />
                       ) : (
                       <div className="grid grid-cols-2 gap-3 xl:grid-cols-3">
                         {filteredCars.map((car) => (
@@ -861,7 +819,7 @@ function handleMileageSubmit() {
     <div className="max-w-md space-y-4">
       <Input
         value={mileage}
-        onChange={(e) => setMileage(toEnglishDigits(e.target.value))}
+        onChange={(e) => setMileage(formatMileageInput(e.target.value))}
         placeholder="مثلاً 85000"
         className={INPUT_CLASS_LG}
         inputMode="numeric"
@@ -1021,6 +979,7 @@ function handleMileageSubmit() {
             </div>
           </div>
         </div>
+        <CarPricingSeoContent variant="details" />
       </div>
       <div className="block lg:hidden">
         <NavigationBar />

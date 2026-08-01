@@ -51,9 +51,9 @@ export default function ProfileLayout({
                                     : "/assets/images/logo.svg"}
                             />
                             </Link>
-                            <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">
+                            {/* <h1 className="font-IranSans-UltraLight text-xl text-black mx-1 font-semibold">
                                 {data?.MasterSiteData?.CompanyName || "کارماچک"}
-                            </h1>
+                            </h1> */}
                         </div>
                         <span className="text-[#101117] flex items-center font-IranSans">
                             <Call02Icon size={16}/>

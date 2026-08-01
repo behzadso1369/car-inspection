@@ -1,694 +1,537 @@
+// @ts-nocheck -- Experimental Three.js viewer is still JavaScript-style code.
 "use client"
-import { useState, useRef, Suspense, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Environment, Html } from "@react-three/drei";
+import { useState, useRef, useMemo, useEffect, Suspense } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls, useGLTF, Html, useProgress, Center } from "@react-three/drei";
 import * as THREE from "three";
 
-// ─── Car Parts Definition ─────────────────────────────────────────────────────
-const CAR_PARTS = [
-  {
-    id: "body",
-    label: "بدنه اصلی",
-    labelEn: "Main Body",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#e53935",
-    position: [0, 0.18, 0],
-    geometry: "body",
-  },
-  {
-    id: "hood",
-    label: "کاپوت",
-    labelEn: "Hood",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#e53935",
-    position: [0, 0.52, 1.35],
-    geometry: "hood",
-  },
-  {
-    id: "roof",
-    label: "سقف",
-    labelEn: "Roof",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#e53935",
-    position: [0, 0.88, 0],
-    geometry: "roof",
-  },
-  {
-    id: "trunk",
-    label: "صندوق عقب",
-    labelEn: "Trunk",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#e53935",
-    position: [0, 0.42, -1.38],
-    geometry: "trunk",
-  },
-  {
-    id: "door_fl",
-    label: "در جلو چپ",
-    labelEn: "Front-Left Door",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#e53935",
-    position: [-0.72, 0.25, 0.38],
-    geometry: "door",
-  },
-  {
-    id: "door_fr",
-    label: "در جلو راست",
-    labelEn: "Front-Right Door",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#e53935",
-    position: [0.72, 0.25, 0.38],
-    geometry: "door",
-  },
-  {
-    id: "door_rl",
-    label: "در عقب چپ",
-    labelEn: "Rear-Left Door",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#e53935",
-    position: [-0.72, 0.25, -0.52],
-    geometry: "door",
-  },
-  {
-    id: "door_rr",
-    label: "در عقب راست",
-    labelEn: "Rear-Right Door",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#e53935",
-    position: [0.72, 0.25, -0.52],
-    geometry: "door",
-  },
-  {
-    id: "bumper_f",
-    label: "سپر جلو",
-    labelEn: "Front Bumper",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#ff7043",
-    position: [0, 0.05, 1.78],
-    geometry: "bumper",
-  },
-  {
-    id: "bumper_r",
-    label: "سپر عقب",
-    labelEn: "Rear Bumper",
-    hasPaint: true,
-    color: "#00aaff",
-    paintColor: "#ff7043",
-    position: [0, 0.05, -1.78],
-    geometry: "bumper",
-  },
-  {
-    id: "windshield",
-    label: "شیشه جلو",
-    labelEn: "Windshield",
-    hasPaint: false,
-    color: "#88ccff",
-    position: [0, 0.66, 0.82],
-    geometry: "windshield",
-  },
-  {
-    id: "rear_glass",
-    label: "شیشه عقب",
-    labelEn: "Rear Glass",
-    hasPaint: false,
-    color: "#88ccff",
-    position: [0, 0.66, -0.82],
-    geometry: "rear_glass",
-  },
-  {
-    id: "wheel_fl",
-    label: "چرخ جلو چپ",
-    labelEn: "Front-Left Wheel",
-    hasPaint: false,
-    color: "#334455",
-    position: [-0.88, -0.22, 1.1],
-    geometry: "wheel",
-  },
-  {
-    id: "wheel_fr",
-    label: "چرخ جلو راست",
-    labelEn: "Front-Right Wheel",
-    hasPaint: false,
-    color: "#334455",
-    position: [0.88, -0.22, 1.1],
-    geometry: "wheel",
-  },
-  {
-    id: "wheel_rl",
-    label: "چرخ عقب چپ",
-    labelEn: "Rear-Left Wheel",
-    hasPaint: false,
-    color: "#334455",
-    position: [-0.88, -0.22, -1.1],
-    geometry: "wheel",
-  },
-  {
-    id: "wheel_rr",
-    label: "چرخ عقب راست",
-    labelEn: "Rear-Right Wheel",
-    hasPaint: false,
-    color: "#334455",
-    position: [0.88, -0.22, -1.1],
-    geometry: "wheel",
-  },
-  {
-    id: "headlight_l",
-    label: "چراغ جلو چپ",
-    labelEn: "Left Headlight",
-    hasPaint: false,
-    color: "#ffffaa",
-    position: [-0.6, 0.18, 1.76],
-    geometry: "headlight",
-  },
-  {
-    id: "headlight_r",
-    label: "چراغ جلو راست",
-    labelEn: "Right Headlight",
-    hasPaint: false,
-    color: "#ffffaa",
-    position: [0.6, 0.18, 1.76],
-    geometry: "headlight",
-  },
-  {
-    id: "taillight_l",
-    label: "چراغ عقب چپ",
-    labelEn: "Left Taillight",
-    hasPaint: false,
-    color: "#ff2200",
-    position: [-0.6, 0.25, -1.76],
-    geometry: "taillight",
-  },
-  {
-    id: "taillight_r",
-    label: "چراغ عقب راست",
-    labelEn: "Right Taillight",
-    hasPaint: false,
-    color: "#ff2200",
-    position: [0.6, 0.25, -1.76],
-    geometry: "taillight",
-  },
-  {
-    id: "engine",
-    label: "موتور",
-    labelEn: "Engine",
-    hasPaint: false,
-    color: "#aaaaaa",
-    position: [0, 0.1, 1.1],
-    geometry: "engine",
-  },
-  {
-    id: "chassis",
-    label: "شاسی",
-    labelEn: "Chassis",
-    hasPaint: false,
-    color: "#556677",
-    position: [0, -0.35, 0],
-    geometry: "chassis",
-  },
+/* ══════════════════════════════════════════════════════════════════════
+   1. PART MAP
+   The GLB's mesh names come from the original SketchUp material names
+   (Portuguese). This table translates them into user-facing groups and
+   marks which ones are painted body panels.
+   ══════════════════════════════════════════════════════════════════════ */
+const PART_MAP = {
+  "PINTURA CARRO":  { fa: "رنگ بدنه",          en: "Body Paint",    painted: true,  cat: "body"  },
+  "METAL":          { fa: "قطعات فلزی",        en: "Metal Trim",    painted: false, cat: "trim"  },
+  "PLASTICO PRETO": { fa: "پلاستیک مشکی",      en: "Black Plastic", painted: false, cat: "trim"  },
+  "PLASTICO CINZA": { fa: "پلاستیک خاکستری",   en: "Grey Plastic",  painted: false, cat: "trim"  },
+  "ESPELHO":        { fa: "آینه بغل",           en: "Mirrors",       painted: false, cat: "trim"  },
+  "PNEU":           { fa: "لاستیک",             en: "Tyres",         painted: false, cat: "wheel" },
+  "RODAS":          { fa: "رینگ چرخ",           en: "Rims",          painted: false, cat: "wheel" },
+  "VIDRO":          { fa: "شیشه",               en: "Glass",         painted: false, cat: "glass" },
+  "VIDRO PRETO":    { fa: "شیشه دودی",          en: "Tinted Glass",  painted: false, cat: "glass" },
+  "VIDRO VERMELHO": { fa: "چراغ عقب",           en: "Taillights",    painted: false, cat: "light" },
+  "FAROL1":         { fa: "چراغ جلو",           en: "Headlight",     painted: false, cat: "light" },
+  "FAROL 2":        { fa: "کاسه چراغ",          en: "Lamp Housing",  painted: false, cat: "light" },
+  "FAROL 3":        { fa: "لنز چراغ",           en: "Lamp Lens",     painted: false, cat: "light" },
+  "FAROL 4":        { fa: "چراغ ترمز",          en: "Brake Light",   painted: false, cat: "light" },
+};
+
+const CATEGORIES = {
+  body:  { fa: "بدنه",     icon: "🚗" },
+  glass: { fa: "شیشه",     icon: "🪟" },
+  light: { fa: "چراغ",     icon: "💡" },
+  wheel: { fa: "چرخ",      icon: "🛞" },
+  trim:  { fa: "تزیینات",  icon: "⚙️" },
+  other: { fa: "سایر",     icon: "📦" },
+};
+
+const PAINTS = [
+  { hex: "#B31B1B", fa: "قرمز تانگو" },
+  { hex: "#0B0F14", fa: "مشکی فانتوم" },
+  { hex: "#E8E8E6", fa: "سفید صدفی" },
+  { hex: "#1B2A4A", fa: "آبی نیمه‌شب" },
+  { hex: "#8E9294", fa: "نقره‌ای فلزی" },
+  { hex: "#1D3B2A", fa: "سبز زمردی" },
 ];
 
-// ─── Geometry builder ─────────────────────────────────────────────────────────
-function getGeometry(type) {
-  switch (type) {
-    case "body":
-      return <boxGeometry args={[1.36, 0.52, 3.4]} />;
-    case "hood":
-      return <boxGeometry args={[1.3, 0.07, 1.0]} />;
-    case "roof":
-      return <boxGeometry args={[1.2, 0.18, 1.5]} />;
-    case "trunk":
-      return <boxGeometry args={[1.3, 0.07, 0.7]} />;
-    case "door":
-      return <boxGeometry args={[0.06, 0.46, 0.82]} />;
-    case "bumper":
-      return <boxGeometry args={[1.3, 0.22, 0.18]} />;
-    case "windshield":
-      return <boxGeometry args={[1.14, 0.38, 0.06]} />;
-    case "rear_glass":
-      return <boxGeometry args={[1.14, 0.32, 0.06]} />;
-    case "wheel":
-      return <cylinderGeometry args={[0.28, 0.28, 0.22, 20]} />;
-    case "headlight":
-      return <boxGeometry args={[0.3, 0.1, 0.06]} />;
-    case "taillight":
-      return <boxGeometry args={[0.28, 0.1, 0.06]} />;
-    case "engine":
-      return <boxGeometry args={[0.9, 0.36, 0.7]} />;
-    case "chassis":
-      return <boxGeometry args={[1.2, 0.08, 3.2]} />;
-    default:
-      return <boxGeometry args={[0.5, 0.5, 0.5]} />;
-  }
+const WIRE = "#3FA9F5";
+const HOVER = "#00E5FF";
+const SELECT = "#FFD54F";
+
+/* ══════════════════════════════════════════════════════════════════════
+   2. THE MODEL
+   ══════════════════════════════════════════════════════════════════════ */
+function CarModel({ url, hovered, selected, onHover, onSelect, paintOn, paintColor, onReady }) {
+  const { scene } = useGLTF(url);
+  const rootRef = useRef();
+
+  // Clone once so hot-reloads don't accumulate material overrides
+  const model = useMemo(() => scene.clone(true), [scene]);
+
+  // Discover every named group inside the GLB
+  const groups = useMemo(() => {
+    const found = [];
+    model.traverse((o) => {
+      if (!o.isMesh) return;
+      const raw = (o.name || "UNNAMED").replace(/^EDGES_/, "");
+      if (o.name.startsWith("EDGES_")) { o.visible = false; return; } // hide SketchUp edge lines
+      const meta = PART_MAP[raw];
+      const id = raw;
+      let g = found.find((x) => x.id === id);
+      if (!g) {
+        g = {
+          id,
+          fa: meta?.fa || `قطعه ${raw}`,
+          en: meta?.en || raw,
+          painted: meta?.painted ?? false,
+          cat: meta?.cat || "other",
+          meshes: [],
+          tris: 0,
+        };
+        found.push(g);
+      }
+      g.meshes.push(o);
+      g.tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3;
+    });
+    return found;
+  }, [model]);
+
+  useEffect(() => { onReady(groups); }, [groups, onReady]);
+
+  // Normalise position + scale so any GLB lands nicely in frame
+  useEffect(() => {
+    const box = new THREE.Box3().setFromObject(model);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const scale = 4.2 / Math.max(size.x, size.y, size.z);
+    model.scale.setScalar(scale);
+    model.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
+  }, [model]);
+
+  // Repaint every frame-relevant change
+  useEffect(() => {
+    groups.forEach((g) => {
+      const isHov = hovered === g.id;
+      const isSel = selected === g.id;
+      const lit = isHov || isSel;
+      const isGlass = g.cat === "glass";
+      const isLight = g.cat === "light";
+      const showPaint = paintOn && g.painted;
+
+      g.meshes.forEach((m) => {
+        const orig = m.material;
+        const base = new THREE.Color(
+          showPaint ? paintColor
+          : lit     ? (isSel ? SELECT : HOVER)
+          : isGlass ? "#7FD4FF"
+          : isLight ? "#FFE9A8"
+          :           "#2E6FA8"
+        );
+
+        const mat = new THREE.MeshPhysicalMaterial({
+          color: base,
+          transparent: true,
+          opacity: lit ? 0.92 : showPaint ? 0.62 : isGlass ? 0.16 : 0.24,
+          roughness: isGlass ? 0.02 : 0.28,
+          metalness: isGlass ? 0.0 : 0.65,
+          transmission: isGlass && !lit ? 0.7 : 0,
+          thickness: 0.4,
+          emissive: new THREE.Color(
+            isSel ? SELECT : isHov ? HOVER : showPaint ? paintColor : "#082A4A"
+          ),
+          emissiveIntensity: isSel ? 0.5 : isHov ? 0.6 : showPaint ? 0.12 : 0.28,
+          side: THREE.DoubleSide,
+          depthWrite: lit,
+        });
+
+        m.material = mat;
+        if (orig && orig.dispose && orig.userData.__generated) orig.dispose();
+        mat.userData.__generated = true;
+      });
+    });
+  }, [groups, hovered, selected, paintOn, paintColor]);
+
+  return (
+    <group
+      ref={rootRef}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        const n = (e.object.name || "").replace(/^EDGES_/, "");
+        onHover(n);
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={(e) => {
+        e.stopPropagation();
+        onHover(null);
+        document.body.style.cursor = "auto";
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        const n = (e.object.name || "").replace(/^EDGES_/, "");
+        onSelect(n);
+      }}
+    >
+      <primitive object={model} />
+    </group>
+  );
 }
 
-// ─── Single Part Mesh ─────────────────────────────────────────────────────────
-function CarPart({ part, highlighted, selected, onClick, showPaint }) {
-  const meshRef = useRef();
-  const isWheel = part.geometry === "wheel";
+/* ══════════════════════════════════════════════════════════════════════
+   3. GYRO CONTROL — tilt the phone to orbit
+   ══════════════════════════════════════════════════════════════════════ */
+function GyroControls({ enabled }) {
+  const { camera } = useThree();
+  const tilt = useRef({ beta: 0, gamma: 0 });
+  const origin = useRef(null);
+  const radius = useRef(7);
 
-  const isHighlighted = highlighted === part.id;
-  const isSelected = selected === part.id;
-  const paintVisible = showPaint && part.hasPaint;
+  useEffect(() => {
+    if (!enabled) { origin.current = null; return; }
+    radius.current = camera.position.length();
+    const onOrient = (e) => {
+      if (e.beta == null || e.gamma == null) return;
+      if (!origin.current) origin.current = { beta: e.beta, gamma: e.gamma };
+      tilt.current = {
+        beta: e.beta - origin.current.beta,
+        gamma: e.gamma - origin.current.gamma,
+      };
+    };
+    window.addEventListener("deviceorientation", onOrient, true);
+    return () => window.removeEventListener("deviceorientation", onOrient, true);
+  }, [enabled, camera]);
 
-  useFrame((_, delta) => {
-    if (meshRef.current && (isHighlighted || isSelected)) {
-      meshRef.current.rotation.y += delta * 0.3;
-    } else if (meshRef.current && isWheel) {
-      meshRef.current.rotation.x += delta * 1.2;
-    }
+  useFrame(() => {
+    if (!enabled) return;
+    const az = THREE.MathUtils.degToRad(tilt.current.gamma * 2.5);
+    const el = THREE.MathUtils.clamp(
+      THREE.MathUtils.degToRad(28 + tilt.current.beta * 1.2), 0.15, 1.4
+    );
+    const r = radius.current;
+    camera.position.lerp(
+      new THREE.Vector3(
+        r * Math.cos(el) * Math.sin(az),
+        r * Math.sin(el),
+        r * Math.cos(el) * Math.cos(az)
+      ),
+      0.08
+    );
+    camera.lookAt(0, 0.7, 0);
   });
 
-  const opacity = isHighlighted || isSelected ? 0.85 : 0.28;
-  const emissiveIntensity = isHighlighted ? 0.7 : isSelected ? 0.5 : 0.1;
-
-  const baseColor = paintVisible
-    ? part.paintColor || part.color
-    : isHighlighted
-    ? "#ffffff"
-    : part.color;
-
-  return (
-    <group position={part.position} rotation={isWheel ? [Math.PI / 2, 0, 0] : [0, 0, 0]}>
-      <mesh
-        ref={isWheel ? null : meshRef}
-        onClick={(e) => {
-          e.stopPropagation();
-          onClick(part.id);
-        }}
-        castShadow
-      >
-        {getGeometry(part.geometry)}
-        <meshPhysicalMaterial
-          color={baseColor}
-          transparent
-          opacity={opacity}
-          roughness={0.15}
-          metalness={0.6}
-          transmission={isHighlighted || isSelected ? 0 : 0.4}
-          thickness={0.5}
-          emissive={isHighlighted ? "#00ffff" : isSelected ? "#ffaa00" : paintVisible ? part.paintColor || "#000" : "#001133"}
-          emissiveIntensity={emissiveIntensity}
-          side={THREE.DoubleSide}
-          depthWrite={false}
-          wireframe={false}
-        />
-      </mesh>
-
-      {/* Wireframe overlay for blueprint effect */}
-      {!isHighlighted && !isSelected && (
-        <mesh>
-          {getGeometry(part.geometry)}
-          <meshBasicMaterial
-            color={paintVisible ? part.paintColor : "#00aaff"}
-            wireframe
-            transparent
-            opacity={0.25}
-          />
-        </mesh>
-      )}
-
-      {/* Paint highlight ring */}
-      {paintVisible && !isHighlighted && !isSelected && (
-        <mesh scale={[1.02, 1.02, 1.02]}>
-          {getGeometry(part.geometry)}
-          <meshBasicMaterial
-            color={part.paintColor}
-            wireframe={false}
-            transparent
-            opacity={0.15}
-            side={THREE.BackSide}
-          />
-        </mesh>
-      )}
-
-      {/* Glow for highlighted */}
-      {(isHighlighted || isSelected) && (
-        <mesh scale={[1.06, 1.06, 1.06]}>
-          {getGeometry(part.geometry)}
-          <meshBasicMaterial
-            color={isHighlighted ? "#00ffff" : "#ffaa00"}
-            transparent
-            opacity={0.18}
-            side={THREE.BackSide}
-          />
-        </mesh>
-      )}
-    </group>
-  );
+  return null;
 }
 
-// ─── Floating label in 3D ─────────────────────────────────────────────────────
-function PartLabel({ part }) {
+/* ══════════════════════════════════════════════════════════════════════
+   4. LOADER
+   ══════════════════════════════════════════════════════════════════════ */
+function Loader() {
+  const { progress } = useProgress();
   return (
-    <group position={[part.position[0], part.position[1] + 0.55, part.position[2]]}>
-      <Html center distanceFactor={6} occlude>
-        <div style={{
-          background: "rgba(0,20,60,0.85)",
-          border: "1px solid #00ffff",
-          borderRadius: 6,
-          padding: "3px 10px",
-          color: "#00ffff",
-          fontSize: 11,
-          fontFamily: "Vazirmatn, Tahoma, sans-serif",
-          whiteSpace: "nowrap",
-          boxShadow: "0 0 12px #00ffff44",
-          userSelect: "none",
-          direction: "rtl",
-        }}>
-          {part.label}
+    <Html center>
+      <div style={{
+        fontFamily: "Vazirmatn, Tahoma, sans-serif", direction: "rtl",
+        color: WIRE, textAlign: "center", width: 180,
+      }}>
+        <div style={{ fontSize: 12, marginBottom: 10 }}>در حال بارگذاری مدل</div>
+        <div style={{ height: 3, background: "#0A2540", borderRadius: 2, overflow: "hidden" }}>
+          <div style={{
+            height: "100%", width: `${progress}%`,
+            background: `linear-gradient(90deg, ${WIRE}, ${HOVER})`,
+            transition: "width .2s",
+          }} />
         </div>
-      </Html>
-    </group>
+        <div style={{ fontSize: 11, marginTop: 8, color: "#1E5580" }}>{Math.round(progress)}٪</div>
+      </div>
+    </Html>
   );
 }
 
-// ─── Car Assembly ─────────────────────────────────────────────────────────────
-function Car({ highlighted, selected, onSelect, showPaint, showLabels }) {
-  return (
-    <group>
-      {CAR_PARTS.map((part) => (
-        <CarPart
-          key={part.id}
-          part={part}
-          highlighted={highlighted}
-          selected={selected}
-          onClick={onSelect}
-          showPaint={showPaint}
-        />
-      ))}
-      {showLabels && selected && CAR_PARTS.filter(p => p.id === selected).map(part => (
-        <PartLabel key={part.id + "_lbl"} part={part} />
-      ))}
-    </group>
-  );
-}
-
-// ─── Grid floor ───────────────────────────────────────────────────────────────
-function GridFloor() {
-  return (
-    <gridHelper
-      args={[12, 24, "#003366", "#001a33"]}
-      position={[0, -0.65, 0]}
-    />
-  );
-}
-
-// ─── Paint parts list ─────────────────────────────────────────────────────────
-const paintedParts = CAR_PARTS.filter((p) => p.hasPaint);
-const unpaintedParts = CAR_PARTS.filter((p) => !p.hasPaint);
-
-// ─── Main App ─────────────────────────────────────────────────────────────────
-export default function App() {
-  const [highlighted, setHighlighted] = useState(null);
+/* ══════════════════════════════════════════════════════════════════════
+   5. APP
+   ══════════════════════════════════════════════════════════════════════ */
+export default function CarViewer() {
+  const modelUrl = "/models/audi_a3_optimized.glb";
+  const [groups, setGroups]     = useState([]);
+  const [hovered, setHovered]   = useState(null);
   const [selected, setSelected] = useState(null);
-  const [showPaint, setShowPaint] = useState(false);
-  const [showLabels, setShowLabels] = useState(true);
-  const [activeTab, setActiveTab] = useState("painted");
+  const [paintOn, setPaintOn]   = useState(false);
+  const [paintColor, setPaint]  = useState("#B31B1B");
+  const [autoRotate, setAuto]   = useState(true);
+  const [gyro, setGyro]         = useState(false);
+  const [tab, setTab]           = useState("body");
 
   const handleSelect = (id) => {
-    setSelected((prev) => (prev === id ? null : id));
-    setHighlighted(null);
+    if (!id) return;
+    setSelected((p) => (p === id ? null : id));
+    setAuto(false);
   };
 
-  const selectedPart = CAR_PARTS.find((p) => p.id === selected);
+  const enableGyro = async () => {
+    if (typeof DeviceOrientationEvent?.requestPermission === "function") {
+      const res = await DeviceOrientationEvent.requestPermission();
+      if (res !== "granted") return;
+    }
+    setGyro((g) => !g);
+    setAuto(false);
+  };
+
+  const paintedGroups = groups.filter((g) => g.painted);
+  const visibleGroups = groups.filter((g) => g.cat === tab);
+  const activeCats = [...new Set(groups.map((g) => g.cat))];
+  const sel = groups.find((g) => g.id === selected);
 
   return (
     <div style={{
-      width: "100vw", height: "100vh",
-      background: "linear-gradient(135deg, #020b1a 0%, #041833 60%, #020b1a 100%)",
+      position: "fixed", inset: 0,
+      background: "radial-gradient(ellipse at 45% 35%, #071A2E 0%, #03080F 72%)",
       fontFamily: "Vazirmatn, Tahoma, Arial, sans-serif",
-      direction: "rtl",
-      color: "#cce6ff",
-      display: "flex",
-      flexDirection: "column",
-      overflow: "hidden",
+      direction: "rtl", color: "#CFE6FF",
+      display: "flex", flexDirection: "column", overflow: "hidden",
     }}>
-      {/* Header */}
-      <div style={{
-        padding: "10px 20px",
-        borderBottom: "1px solid #003366",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        background: "rgba(0,10,30,0.7)",
-        backdropFilter: "blur(10px)",
-        zIndex: 10,
-        flexShrink: 0,
+
+      {/* ── HEADER ── */}
+      <header style={{
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        gap: 12, padding: "10px 16px", flexShrink: 0, zIndex: 20,
+        background: "rgba(3,8,18,.82)", borderBottom: "1px solid #0C2440",
+        backdropFilter: "blur(14px)",
       }}>
         <div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: "#00ccff", letterSpacing: 1 }}>
-            🚗 ویوِر سه‌بعدی خودرو
+          <div style={{ fontSize: 15, fontWeight: 800, letterSpacing: .3, color: "#E6F2FF" }}>
+            Audi A3 · نمای فنی
           </div>
-          <div style={{ fontSize: 11, color: "#4488aa", marginTop: 2 }}>
-            Iranian Car Transparent Viewer
+          <div style={{ fontSize: 10, color: "#2A5880", marginTop: 1 }}>
+            {groups.length} گروه قطعه · {paintedGroups.length} گروه رنگ‌شده
           </div>
         </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          <button
-            onClick={() => setShowPaint(p => !p)}
-            style={{
-              background: showPaint ? "linear-gradient(135deg,#e53935,#ff7043)" : "rgba(0,50,100,0.6)",
-              border: `1px solid ${showPaint ? "#ff7043" : "#005588"}`,
-              color: showPaint ? "#fff" : "#88ccff",
-              borderRadius: 8,
-              padding: "6px 14px",
-              cursor: "pointer",
-              fontSize: 12,
-              fontFamily: "inherit",
-              transition: "all .2s",
-            }}
-          >
-            {showPaint ? "🎨 رنگ‌ها فعال" : "🎨 نمایش رنگ"}
-          </button>
-          <button
-            onClick={() => setShowLabels(p => !p)}
-            style={{
-              background: showLabels ? "rgba(0,80,150,0.6)" : "rgba(0,30,60,0.4)",
-              border: "1px solid #005588",
-              color: "#88ccff",
-              borderRadius: 8,
-              padding: "6px 14px",
-              cursor: "pointer",
-              fontSize: 12,
-              fontFamily: "inherit",
-            }}
-          >
-            {showLabels ? "🏷️ برچسب‌ها" : "🏷️ بدون برچسب"}
-          </button>
-        </div>
-      </div>
 
-      {/* Main content */}
-      <div style={{ display: "flex", flex: 1, overflow: "hidden", minHeight: 0 }}>
-        {/* 3D Canvas */}
+        <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
+          <Btn active={paintOn} onClick={() => setPaintOn((p) => !p)}
+               activeBg="linear-gradient(135deg,#7A1010,#B31B1B)" activeBorder="#B31B1B">
+            🎨 {paintOn ? "رنگ روشن" : "نمایش رنگ"}
+          </Btn>
+          <Btn active={autoRotate} onClick={() => setAuto((p) => !p)}>
+            {autoRotate ? "⏸ توقف" : "▶ چرخش"}
+          </Btn>
+          <Btn active={gyro} onClick={enableGyro}
+               activeBg="linear-gradient(135deg,#0A4A6E,#0E7FA8)" activeBorder="#0E7FA8">
+            📱 ژیروسکوپ
+          </Btn>
+        </div>
+      </header>
+
+      {/* ── MAIN ── */}
+      <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
+
+        {/* Canvas */}
         <div style={{ flex: 1, position: "relative" }}>
           <Canvas
-            camera={{ position: [3.5, 2, 5], fov: 45 }}
-            shadows
-            gl={{ antialias: true, alpha: true }}
+            camera={{ position: [4.5, 2.2, 6], fov: 40 }}
+            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+            dpr={[1, 2]}
             style={{ background: "transparent" }}
+            onPointerMissed={() => setSelected(null)}
           >
-            <ambientLight intensity={0.4} color="#3366aa" />
-            <directionalLight position={[5, 8, 5]} intensity={1.2} color="#88ccff" castShadow />
-            <directionalLight position={[-5, 3, -3]} intensity={0.5} color="#0044aa" />
-            <pointLight position={[0, 4, 0]} intensity={0.8} color="#00aaff" />
+            <ambientLight intensity={0.4} color="#2B5FA8" />
+            <directionalLight position={[6, 10, 6]}  intensity={1.5} color="#B9D8FF" />
+            <directionalLight position={[-6, 4, -5]} intensity={0.7} color="#0B4B8C" />
+            <pointLight position={[0, 6, 0]}   intensity={1.1} color="#1E7FD4" />
+            <pointLight position={[-4, .6, 0]} intensity={.6} color="#0A44CC" distance={10} />
+            <pointLight position={[ 4, .6, 0]} intensity={.6} color="#062A88" distance={10} />
 
-            <Suspense fallback={null}>
-              <Car
-                highlighted={highlighted}
+            <Suspense fallback={<Loader />}>
+              <CarModel
+                url={modelUrl}
+                hovered={hovered}
                 selected={selected}
+                onHover={setHovered}
                 onSelect={handleSelect}
-                showPaint={showPaint}
-                showLabels={showLabels}
+                paintOn={paintOn}
+                paintColor={paintColor}
+                onReady={setGroups}
               />
             </Suspense>
 
-            <GridFloor />
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
+              <planeGeometry args={[24, 24]} />
+              <meshBasicMaterial color="#040C18" transparent opacity={0.85} />
+            </mesh>
+            <gridHelper args={[18, 36, "#0E3560", "#071B30"]} position={[0, 0, 0]} />
 
             <OrbitControls
-              enableDamping
-              dampingFactor={0.08}
-              rotateSpeed={0.7}
-              zoomSpeed={0.8}
-              minDistance={2.5}
-              maxDistance={12}
-              autoRotate
-              autoRotateSpeed={0.4}
+              enabled={!gyro}
+              enableDamping dampingFactor={0.06}
+              rotateSpeed={0.6} zoomSpeed={0.8}
+              minDistance={3} maxDistance={14}
+              maxPolarAngle={Math.PI / 2 - 0.03}
+              target={[0, 0.7, 0]}
+              autoRotate={autoRotate} autoRotateSpeed={0.5}
+              touches={{ ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN }}
             />
+            <GyroControls enabled={gyro} />
           </Canvas>
 
-          {/* Click hint */}
-          <div style={{
-            position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)",
-            background: "rgba(0,10,30,0.7)", border: "1px solid #003366",
-            borderRadius: 20, padding: "5px 16px", fontSize: 11, color: "#4488aa",
-            pointerEvents: "none", backdropFilter: "blur(6px)",
-          }}>
-            🖱️ بچرخان • 🔍 زوم • 👆 روی قطعه کلیک کن
-          </div>
-
-          {/* Selected part popup */}
-          {selectedPart && (
+          {/* Hover readout */}
+          {hovered && !selected && (
             <div style={{
-              position: "absolute", top: 16, left: 16,
-              background: "rgba(0,10,30,0.9)",
-              border: `1px solid ${selectedPart.hasPaint ? "#ffaa00" : "#00ccff"}`,
-              borderRadius: 12, padding: "12px 16px",
-              boxShadow: `0 0 24px ${selectedPart.hasPaint ? "#ffaa0044" : "#00ccff44"}`,
-              backdropFilter: "blur(10px)",
-              minWidth: 180,
+              position: "absolute", top: 14, right: 14,
+              background: "rgba(3,8,18,.9)", border: `1px solid ${HOVER}`,
+              borderRadius: 9, padding: "7px 13px", fontSize: 12, color: HOVER,
+              backdropFilter: "blur(10px)", pointerEvents: "none",
             }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: selectedPart.hasPaint ? "#ffaa00" : "#00ccff", marginBottom: 6 }}>
-                {selectedPart.label}
-              </div>
-              <div style={{ fontSize: 11, color: "#7799bb" }}>
-                {selectedPart.labelEn}
-              </div>
-              <div style={{
-                marginTop: 10, padding: "6px 10px",
-                background: selectedPart.hasPaint ? "rgba(229,57,53,0.15)" : "rgba(0,100,150,0.15)",
-                borderRadius: 8, fontSize: 12,
-                color: selectedPart.hasPaint ? "#ffccaa" : "#aaddff",
-                display: "flex", alignItems: "center", gap: 6,
-              }}>
-                {selectedPart.hasPaint ? (
-                  <>
-                    <span style={{
-                      display: "inline-block", width: 12, height: 12,
-                      borderRadius: "50%", background: selectedPart.paintColor,
-                      boxShadow: `0 0 6px ${selectedPart.paintColor}`,
-                    }} />
-                    دارای رنگ‌کاری
-                  </>
-                ) : (
-                  <>⚙️ بدون رنگ‌کاری</>
-                )}
-              </div>
-              <button
-                onClick={() => setSelected(null)}
-                style={{
-                  marginTop: 8, width: "100%",
-                  background: "rgba(0,40,80,0.5)", border: "1px solid #003366",
-                  color: "#4488aa", borderRadius: 6, padding: "4px 0",
-                  cursor: "pointer", fontSize: 11, fontFamily: "inherit",
-                }}
-              >
-                × بستن
-              </button>
+              {groups.find((g) => g.id === hovered)?.fa ?? hovered}
             </div>
           )}
+
+          {/* Selected card */}
+          {sel && (
+            <div style={{
+              position: "absolute", top: 14, left: 14, minWidth: 200,
+              background: "rgba(3,8,18,.93)", border: `1px solid ${SELECT}`,
+              borderRadius: 13, padding: "14px 16px",
+              boxShadow: `0 0 30px ${SELECT}28`, backdropFilter: "blur(12px)",
+            }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: SELECT }}>{sel.fa}</div>
+              <div style={{ fontSize: 10, color: "#2A5880", margin: "3px 0 11px" }}>{sel.en}</div>
+
+              <div style={{
+                padding: "7px 11px", borderRadius: 8, fontSize: 11,
+                display: "flex", alignItems: "center", gap: 8,
+                background: sel.painted ? "rgba(179,27,27,.18)" : "rgba(10,80,160,.18)",
+                color: sel.painted ? "#FFB4B4" : "#8CC8FF",
+              }}>
+                {sel.painted ? (
+                  <>
+                    <span style={{
+                      width: 12, height: 12, borderRadius: "50%", flexShrink: 0,
+                      background: paintColor, boxShadow: `0 0 9px ${paintColor}`,
+                    }} />
+                    این قطعه رنگ‌کاری دارد
+                  </>
+                ) : "⚙️ بدون رنگ‌کاری"}
+              </div>
+
+              <div style={{ fontSize: 10, color: "#1E4A70", marginTop: 9 }}>
+                {sel.tris.toLocaleString("fa-IR")} مثلث
+              </div>
+
+              <button onClick={() => setSelected(null)} style={{
+                marginTop: 10, width: "100%", padding: "5px 0",
+                background: "rgba(6,22,50,.6)", border: "1px solid #0C2440",
+                color: "#2A5880", borderRadius: 7, cursor: "pointer",
+                fontSize: 10, fontFamily: "inherit",
+              }}>× بستن</button>
+            </div>
+          )}
+
+          {/* Hint */}
+          <div style={{
+            position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
+            background: "rgba(3,8,18,.75)", border: "1px solid #0C2440",
+            borderRadius: 20, padding: "5px 18px", fontSize: 10, color: "#2A5880",
+            backdropFilter: "blur(8px)", pointerEvents: "none", whiteSpace: "nowrap",
+          }}>
+            درگ کن تا بچرخد · اسکرول برای زوم · روی قطعه بزن
+          </div>
         </div>
 
-        {/* Side Panel */}
-        <div style={{
-          width: 240, background: "rgba(0,8,24,0.85)",
-          borderRight: "1px solid #002244",
-          display: "flex", flexDirection: "column",
-          overflow: "hidden", flexShrink: 0,
+        {/* ── SIDE PANEL ── */}
+        <aside style={{
+          width: 232, flexShrink: 0, display: "flex", flexDirection: "column",
+          background: "rgba(2,6,14,.92)", borderRight: "1px solid #0A1E36",
         }}>
-          {/* Tabs */}
-          <div style={{ display: "flex", borderBottom: "1px solid #002244" }}>
-            {[
-              { key: "painted", label: `🎨 رنگ‌دار (${paintedParts.length})` },
-              { key: "other", label: `⚙️ سایر (${unpaintedParts.length})` },
-            ].map(tab => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                style={{
-                  flex: 1, padding: "10px 4px",
-                  background: activeTab === tab.key ? "rgba(0,60,120,0.6)" : "transparent",
-                  border: "none",
-                  borderBottom: activeTab === tab.key ? "2px solid #00ccff" : "2px solid transparent",
-                  color: activeTab === tab.key ? "#00ccff" : "#446688",
-                  fontSize: 11, cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-              >
-                {tab.label}
+          {paintOn && (
+            <div style={{ padding: "10px 11px", borderBottom: "1px solid #0A1E36" }}>
+              <div style={{ fontSize: 10, color: "#2A5880", marginBottom: 7 }}>رنگ بدنه</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+                {PAINTS.map((c) => (
+                  <button key={c.hex} title={c.fa} onClick={() => setPaint(c.hex)}
+                    style={{
+                      width: 25, height: 25, borderRadius: "50%", background: c.hex,
+                      border: `2px solid ${paintColor === c.hex ? SELECT : "#0C2440"}`,
+                      cursor: "pointer", transition: "transform .15s",
+                      transform: paintColor === c.hex ? "scale(1.22)" : "scale(1)",
+                      boxShadow: paintColor === c.hex ? `0 0 10px ${c.hex}` : "none",
+                    }} />
+                ))}
+              </div>
+              <div style={{ marginTop: 7, fontSize: 10, color: "#4A80B0" }}>
+                {PAINTS.find((c) => c.hex === paintColor)?.fa}
+              </div>
+            </div>
+          )}
+
+          <div style={{ display: "flex", overflowX: "auto", borderBottom: "1px solid #0A1E36" }}>
+            {activeCats.map((c) => (
+              <button key={c} onClick={() => setTab(c)} style={{
+                flex: "0 0 auto", padding: "9px 11px", cursor: "pointer",
+                background: tab === c ? "rgba(8,52,110,.5)" : "transparent",
+                border: "none", fontFamily: "inherit", fontSize: 10,
+                borderBottom: `2px solid ${tab === c ? WIRE : "transparent"}`,
+                color: tab === c ? WIRE : "#1E4466", whiteSpace: "nowrap",
+              }}>
+                {CATEGORIES[c].icon} {CATEGORIES[c].fa}
               </button>
             ))}
           </div>
 
-          {/* Part List */}
           <div style={{ flex: 1, overflowY: "auto", padding: "8px 6px" }}>
-            {(activeTab === "painted" ? paintedParts : unpaintedParts).map((part) => {
-              const isActive = selected === part.id;
+            {visibleGroups.map((g) => {
+              const isSel = selected === g.id;
+              const isHov = hovered === g.id;
               return (
-                <div
-                  key={part.id}
-                  onMouseEnter={() => setHighlighted(part.id)}
-                  onMouseLeave={() => setHighlighted(null)}
-                  onClick={() => handleSelect(part.id)}
+                <div key={g.id}
+                  onMouseEnter={() => setHovered(g.id)}
+                  onMouseLeave={() => setHovered(null)}
+                  onClick={() => handleSelect(g.id)}
                   style={{
-                    padding: "8px 10px",
-                    marginBottom: 4,
-                    borderRadius: 8,
-                    cursor: "pointer",
-                    background: isActive
-                      ? "rgba(255,170,0,0.15)"
-                      : highlighted === part.id
-                      ? "rgba(0,100,200,0.25)"
-                      : "rgba(0,20,50,0.4)",
-                    border: `1px solid ${isActive ? "#ffaa00" : highlighted === part.id ? "#0088cc" : "#001a3a"}`,
-                    transition: "all .15s",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
-                  {part.hasPaint && (
-                    <span style={{
-                      width: 10, height: 10, borderRadius: "50%",
-                      background: part.paintColor,
-                      boxShadow: `0 0 4px ${part.paintColor}`,
-                      flexShrink: 0,
-                    }} />
-                  )}
-                  <div>
-                    <div style={{ fontSize: 12, color: isActive ? "#ffcc66" : "#99ccee" }}>
-                      {part.label}
-                    </div>
-                    <div style={{ fontSize: 10, color: "#334466", marginTop: 1 }}>
-                      {part.labelEn}
-                    </div>
+                    display: "flex", alignItems: "center", gap: 9,
+                    padding: "9px 10px", marginBottom: 3, borderRadius: 8, cursor: "pointer",
+                    background: isSel ? "rgba(255,213,79,.1)" : isHov ? "rgba(0,90,180,.2)" : "rgba(3,11,28,.5)",
+                    border: `1px solid ${isSel ? SELECT : isHov ? "#1A5A8A" : "#07142A"}`,
+                    transition: "all .12s",
+                  }}>
+                  <span style={{
+                    width: 9, height: 9, borderRadius: "50%", flexShrink: 0,
+                    background: g.painted ? paintColor : "#12324F",
+                    border: g.painted ? "none" : `1px solid ${WIRE}`,
+                    boxShadow: g.painted ? `0 0 6px ${paintColor}` : "none",
+                  }} />
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: 11, color: isSel ? SELECT : "#8AB8D8" }}>{g.fa}</div>
+                    <div style={{ fontSize: 9, color: "#1A3A5C", marginTop: 1 }}>{g.en}</div>
                   </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Legend */}
-          <div style={{
-            padding: "10px 12px",
-            borderTop: "1px solid #002244",
-            fontSize: 10, color: "#334466",
-          }}>
-            <div style={{ marginBottom: 4, color: "#446688", fontWeight: 600 }}>راهنما</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#e53935", display: "inline-block" }} />
-              قطعات دارای رنگ
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00aaff", display: "inline-block" }} />
-              قطعات بدون رنگ
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffaa00", display: "inline-block" }} />
-              قطعه انتخاب‌شده
-            </div>
+          <div style={{ padding: "9px 12px", borderTop: "1px solid #0A1E36", fontSize: 9, color: "#1A3A5C" }}>
+            <Legend color="#B31B1B" label="قطعات رنگ‌دار" />
+            <Legend color="#12324F" border={WIRE} label="قطعات بدون رنگ" />
+            <Legend color={SELECT} label="انتخاب‌شده" />
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   );
 }
+
+/* ── small UI helpers ── */
+function Btn({ children, active, onClick, activeBg, activeBorder }) {
+  return (
+    <button onClick={onClick} style={{
+      background: active ? (activeBg || "rgba(8,52,110,.6)") : "rgba(8,22,46,.7)",
+      border: `1px solid ${active ? (activeBorder || WIRE) : "#0C2440"}`,
+      color: active ? "#fff" : "#4A80B0",
+      borderRadius: 8, padding: "6px 13px", cursor: "pointer",
+      fontSize: 11, fontFamily: "inherit", transition: "all .18s", whiteSpace: "nowrap",
+    }}>{children}</button>
+  );
+}
+
+function Legend({ color, border, label }) {
+  return (
+    <div style={{ display: "flex", gap: 7, alignItems: "center", marginBottom: 3 }}>
+      <span style={{
+        width: 7, height: 7, borderRadius: "50%", background: color,
+        border: border ? `1px solid ${border}` : "none", display: "inline-block",
+      }} />
+      {label}
+    </div>
+  );
+}
+
+useGLTF.preload("/models/audi_a3_optimized.glb");

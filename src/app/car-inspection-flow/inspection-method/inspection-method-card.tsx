@@ -1,27 +1,43 @@
 "use client";
 
+import { Check, Sparkles } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
-import { Check, Sparkles } from "lucide-react";
-import { useState } from "react";
 import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
 import { getInspectionPrices } from "../lib/pricing";
 
-const INITIAL_FEATURE_COUNT = 9;
 export { FESTIVAL_DISCOUNT, getInspectionPrices } from "../lib/pricing";
 
-function FeatureCheckIcon() {
+function FeatureCheckIcon({ isIncluded }: { isIncluded: boolean }) {
   return (
-    <span className="flex size-[18px] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#22C55E] to-[#16A34A] shadow-[0_2px_8px_rgba(34,197,94,0.35)] ring-2 ring-white">
+    <span
+      className={`flex size-[18px] shrink-0 items-center justify-center rounded-full ring-2 ring-white ${
+        isIncluded
+          ? "bg-gradient-to-br from-[#5B7FFF] to-[#416CEA] shadow-[0_2px_8px_rgba(65,108,234,0.35)]"
+          : "bg-[#D1D5DB]"
+      }`}
+    >
       <Check className="size-2.5 text-white" strokeWidth={3.5} />
     </span>
   );
 }
 
-function FeaturePill({ name }: { name: string }) {
+function FeaturePill({
+  name,
+  isIncluded,
+}: {
+  name: string;
+  isIncluded: boolean;
+}) {
   return (
-    <span className="flex items-center justify-center gap-1.5 rounded-full border border-[#DDE6FF] bg-gradient-to-b from-[#F8FAFF] to-[#EEF2FD] px-2.5 py-2.5 text-[11px] font-semibold leading-tight text-[#101117] shadow-[0_2px_8px_rgba(65,108,234,0.06)]">
-      <FeatureCheckIcon />
+    <span
+      className={`flex items-center justify-center gap-1.5 rounded-full border px-2.5 py-2.5 text-[11px] leading-tight ${
+        isIncluded
+          ? "border-[#DDE6FF] bg-gradient-to-b from-[#F8FAFF] to-[#EEF2FD] font-bold text-[#101117] shadow-[0_2px_8px_rgba(65,108,234,0.06)]"
+          : "border-[#E5E7EB] bg-[#F9FAFB] font-normal text-[#9CA3AF] opacity-60"
+      }`}
+    >
+      <FeatureCheckIcon isIncluded={isIncluded} />
       <span className="text-center">{name}</span>
     </span>
   );
@@ -58,13 +74,26 @@ export default function InspectionMethodCard({
   selected,
   onSelect,
   isFirst = false,
+  allFeatures = [],
 }: any) {
-  const [showMore, setShowMore] = useState(false);
   const isSelected = selected === inspectionType;
-  const visibleFeatures = showMore
-    ? data.Features
-    : data.Features.slice(0, INITIAL_FEATURE_COUNT);
-  const hasMoreFeatures = data.Features.length > INITIAL_FEATURE_COUNT;
+  const includedFeatures = Array.isArray(data.Features) ? data.Features : [];
+  const includedFeatureKeys = new Set(
+    includedFeatures.map((feature: any) =>
+      feature.Id != null ? `id:${feature.Id}` : `name:${feature.Name}`,
+    ),
+  );
+  const sortedFeatures = [...allFeatures].sort((first: any, second: any) => {
+    const firstKey =
+      first.Id != null ? `id:${first.Id}` : `name:${first.Name}`;
+    const secondKey =
+      second.Id != null ? `id:${second.Id}` : `name:${second.Name}`;
+
+    return (
+      Number(includedFeatureKeys.has(secondKey)) -
+      Number(includedFeatureKeys.has(firstKey))
+    );
+  });
 
   return (
     <div className="relative mt-5 overflow-visible">
@@ -89,22 +118,18 @@ export default function InspectionMethodCard({
           </div>
 
           <div className="grid grid-cols-3 gap-2">
-            {visibleFeatures.map((item: any) => (
-              <FeaturePill key={item.Id ?? item.Name} name={item.Name} />
-            ))}
+            {sortedFeatures.map((item: any) => {
+              const featureKey =
+                item.Id != null ? `id:${item.Id}` : `name:${item.Name}`;
 
-            {!showMore && hasMoreFeatures && (
-              <button
-                type="button"
-                className="flex items-center justify-center rounded-full border border-[#416CEA]/30 bg-[#EEF2FD] px-2 py-2.5 text-center text-[11px] font-semibold leading-tight text-[#416CEA]"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setShowMore(true);
-                }}
-              >
-                مشاهده بیشتر
-              </button>
-            )}
+              return (
+                <FeaturePill
+                  key={featureKey}
+                  name={item.Name}
+                  isIncluded={includedFeatureKeys.has(featureKey)}
+                />
+              );
+            })}
           </div>
         </div>
 

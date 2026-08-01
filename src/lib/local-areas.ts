@@ -35,6 +35,16 @@ export const LOCAL_AREAS: LocalArea[] = [
     name: "میدان رسالت",
     nearby: ["نارمک", "تهرانپارس", "فرجام", "شرق تهران"],
   },
+  {
+    slug: "hakimiyeh",
+    name: "حکیمیه",
+    nearby: ["لویزان", "تهرانپارس", "میدان رسالت", "شرق تهران"],
+  },
+  {
+    slug: "lavizan",
+    name: "لویزان",
+    nearby: ["حکیمیه", "نارمک", "مجیدیه", "شرق تهران"],
+  },
 ];
 
 export function getAreaBySlug(slug: string): LocalArea | undefined {

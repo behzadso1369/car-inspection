@@ -1,13 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import type { BodyReport, BodyReportZone } from "@/types/on-site";
 import {
   BODY_ZONE_STATUS_COLORS,
   BODY_ZONE_STATUS_LABELS,
 } from "@/types/on-site";
-import Image from "next/image";
 
 const API_ASSET = "https://api.carmacheck.com/";
+
+function getAssetUrl(path: string) {
+  if (/^https?:\/\//i.test(path)) return path;
+  return `${API_ASSET}${path.replace(/^\/+/, "")}`;
+}
 
 interface BodyReportViewerProps {
   report: BodyReport;
@@ -21,19 +26,21 @@ function ZoneBadge({ zone }: { zone: BodyReportZone }) {
       style={{ borderColor: `${color}44`, backgroundColor: `${color}11` }}
     >
       <div className="flex justify-between items-start">
-        <span className="font-medium text-[#101117] text-sm">{zone.NameFa}</span>
+        <span className="font-medium text-[#101117] text-sm">
+          {zone.NameFa}
+        </span>
         <span
           className="text-xs font-bold px-2 py-0.5 rounded-full text-white"
           style={{ backgroundColor: color }}
         >
-          {BODY_ZONE_STATUS_LABELS[zone.Status]}
+          {BODY_ZONE_STATUS_LABELS[zone.Status] ?? zone.Status}
         </span>
       </div>
       {zone.Note && <p className="text-xs text-[#55565A]">{zone.Note}</p>}
       {zone.ImagePath && (
         <div className="relative w-full h-32 rounded-lg overflow-hidden">
           <Image
-            src={`${API_ASSET}${zone.ImagePath}`}
+            src={getAssetUrl(zone.ImagePath)}
             alt={zone.NameFa}
             fill
             className="object-cover"
@@ -45,13 +52,19 @@ function ZoneBadge({ zone }: { zone: BodyReportZone }) {
 }
 
 export default function BodyReportViewer({ report }: BodyReportViewerProps) {
-  const defectZones = report.Zones.filter((z) => z.Status !== "Ok");
-  const okZones = report.Zones.filter((z) => z.Status === "Ok");
+  const zones = [...report.Zones].sort((a, b) => a.SortOrder - b.SortOrder);
+  const defectZones = zones.filter(
+    (z) => !["Ok", "NotChecked"].includes(z.Status),
+  );
+  const okZones = zones.filter((z) => z.Status === "Ok");
+  const uncheckedZones = zones.filter((z) => z.Status === "NotChecked");
 
   return (
     <div className="space-y-6 font-IranSans">
       <div className="rounded-2xl border border-[#DFDFDF] p-4 bg-[#FBFBFB]">
-        <h3 className="text-lg font-semibold text-[#101117] mb-3">گزارش بدنه خودرو</h3>
+        <h3 className="text-lg font-semibold text-[#101117] mb-3">
+          گزارش بدنه خودرو
+        </h3>
         <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
           <span className="text-[#55565A]">خودرو:</span>
           <span className="font-medium">{report.CarDisplayName}</span>
@@ -66,7 +79,9 @@ export default function BodyReportViewer({ report }: BodyReportViewerProps) {
             {report.InspectionDate?.split("T")[0]} — {report.InspectionTime}
           </span>
           <span className="text-[#55565A]">نتیجه کلی:</span>
-          <span className="font-medium text-[#416CEA]">{report.OverallResult}</span>
+          <span className="font-medium text-[#416CEA]">
+            {report.OverallResult}
+          </span>
         </div>
         {report.SummaryNote && (
           <p className="mt-3 text-sm text-[#55565A] border-t border-[#DFDFDF] pt-3">
@@ -88,7 +103,9 @@ export default function BodyReportViewer({ report }: BodyReportViewerProps) {
 
       {okZones.length > 0 && (
         <div>
-          <h4 className="font-medium text-[#101117] mb-3">نواحی سالم ({okZones.length})</h4>
+          <h4 className="font-medium text-[#101117] mb-3">
+            نواحی سالم ({okZones.length})
+          </h4>
           <div className="flex flex-wrap gap-2">
             {okZones.map((z) => (
               <span
@@ -102,6 +119,12 @@ export default function BodyReportViewer({ report }: BodyReportViewerProps) {
         </div>
       )}
 
+      {uncheckedZones.length > 0 && (
+        <p className="rounded-xl bg-[#F5F6F8] px-3 py-2 text-xs text-[#55565A]">
+          {uncheckedZones.length} ناحیه از بدنه در این گزارش بررسی نشده است.
+        </p>
+      )}
+
       <div className="flex flex-wrap gap-3 text-xs text-[#55565A]">
         {Object.entries(BODY_ZONE_STATUS_LABELS).map(([key, label]) => (
           <span key={key} className="flex items-center gap-1">
@@ -109,7 +132,9 @@ export default function BodyReportViewer({ report }: BodyReportViewerProps) {
               className="w-3 h-3 rounded-full inline-block"
               style={{
                 backgroundColor:
-                  BODY_ZONE_STATUS_COLORS[key as keyof typeof BODY_ZONE_STATUS_COLORS],
+                  BODY_ZONE_STATUS_COLORS[
+                    key as keyof typeof BODY_ZONE_STATUS_COLORS
+                  ],
               }}
             />
             {label}

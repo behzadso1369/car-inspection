@@ -1,14 +1,15 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
 import { ArrowLeft01Icon } from "hugeicons-react";
-import instance from "@/helper/interceptor";
-import { ApiHelper } from "@/helper/api-request";
+import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import BodyReportViewer from "@/components/on-site/BodyReportViewer";
+import { ApiHelper } from "@/helper/api-request";
+import instance from "@/helper/interceptor";
 import type { BodyReport } from "@/types/on-site";
+import { normalizeBodyReport } from "@/types/on-site";
 
 function BodyReportContent() {
   const params = useParams();
@@ -20,7 +21,14 @@ function BodyReportContent() {
   useEffect(() => {
     instance
       .get(`${ApiHelper.get("GetOrderBodyReport")}?OrderId=${orderId}`)
-      .then((res: BodyReport) => setReport(res))
+      .then((res: unknown) => {
+        const normalizedReport = normalizeBodyReport(res);
+        if (!normalizedReport) {
+          setError(true);
+          return;
+        }
+        setReport(normalizedReport);
+      })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [orderId]);
@@ -31,8 +39,17 @@ function BodyReportContent() {
         <h3 className="text-[#101117] font-normal my-6 px-4">تنظیمات حساب</h3>
         <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
           <div className="text-[#101117] flex">
-            <Image alt="کارشناسی خودرو" src="/car-inspection-icon.svg" width={24} height={24} />
-            <Link href="/Profile/requests" className="mx-1 text-base" prefetch={false}>
+            <Image
+              alt="کارشناسی خودرو"
+              src="/car-inspection-icon.svg"
+              width={24}
+              height={24}
+            />
+            <Link
+              href="/Profile/requests"
+              className="mx-1 text-base"
+              prefetch={false}
+            >
               تمامی درخواست‌ها
             </Link>
           </div>
@@ -49,15 +66,19 @@ function BodyReportContent() {
         </Link>
 
         {loading && (
-          <p className="text-center text-[#55565A] py-12">در حال بارگذاری گزارش...</p>
+          <p className="text-center text-[#55565A] py-12">
+            در حال بارگذاری گزارش...
+          </p>
         )}
         {error && (
           <p className="text-center text-[#55565A] py-12">
             گزارش بدنه هنوز ثبت نشده یا در دسترس نیست.
           </p>
         )}
-        {report && report.Status === "Submitted" && <BodyReportViewer report={report} />}
-        {report && report.Status !== "Submitted" && (
+        {report && report.Status.toLowerCase() === "submitted" && (
+          <BodyReportViewer report={report} />
+        )}
+        {report && report.Status.toLowerCase() !== "submitted" && (
           <p className="text-center text-yellow-600 py-12">
             گزارش در حال تکمیل است. لطفاً بعداً مراجعه کنید.
           </p>
@@ -71,7 +92,9 @@ export default function BodyReportPage() {
   return (
     <Suspense
       fallback={
-        <div className="py-16 text-center font-IranSans text-[#55565A]">در حال بارگذاری...</div>
+        <div className="py-16 text-center font-IranSans text-[#55565A]">
+          در حال بارگذاری...
+        </div>
       }
     >
       <BodyReportContent />

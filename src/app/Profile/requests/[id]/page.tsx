@@ -10,11 +10,13 @@ import { useEffect, useState, Suspense } from "react";
 import { ArrowLeft } from "lucide-react";
 import { handleLogout } from "@/helper/logout";
 import ExpertStatusTracker from "@/components/on-site/ExpertStatusTracker";
+import { normalizeBodyReport } from "@/types/on-site";
 
 function RequestDetailContent() {
     const params = useParams();
     const router = useRouter();
     const [orderDetail,setOrderDetail] = useState<any>({})
+    const [hasBodyReport, setHasBodyReport] = useState(false);
     const orderById = () => {
         
         instance.get(ApiHelper.get("GetUserOrderDetail") + "?OrderId=" + params.id).then((res:any) => {
@@ -24,6 +26,14 @@ function RequestDetailContent() {
     }
             useEffect(() => {
             orderById();
+            instance
+                .get(`${ApiHelper.get("GetOrderBodyReport")}?OrderId=${params.id}`)
+                .then((res: unknown) => {
+                    setHasBodyReport(Boolean(normalizeBodyReport(res)));
+                })
+                .catch(() => {
+                    setHasBodyReport(false);
+                });
         },[])
             const logOut = () => {
     handleLogout("/");
@@ -116,8 +126,12 @@ function RequestDetailContent() {
         <span>خودرو سواری  {orderDetail?.carGroup}</span>
         <span>کاربر :  {orderDetail?.username}</span>
     </div>
-    <Link prefetch={false} href={`./${params?.id}/inspection-report` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#3456bb] text-white">گزارش کارشناسی</Link>
-    <Link prefetch={false} href={`./${params?.id}/body-report` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#416CEA] text-white mr-2">گزارش بدنه</Link>
+    {hasBodyReport && (
+        <>
+            {/* <Link prefetch={false} href={`./${params?.id}/inspection-report` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#3456bb] text-white">گزارش کارشناسی</Link> */}
+            <Link prefetch={false} href={`./${params?.id}/body-report` } className="rounded-3xl inline-block py-2 px-1 text-center text-sm lg:w-1/4 w-1/2 my-4 bg-[#416CEA] text-white mr-2">گزارش بدنه</Link>
+        </>
+    )}
     </div>
 
 

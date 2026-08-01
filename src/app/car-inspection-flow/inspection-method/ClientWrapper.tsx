@@ -1,17 +1,17 @@
 "use client";
 
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
-import InspectionMethodCard from "./inspection-method-card";
-import { getInspectionPrices, persistInspectionPrices } from "../lib/pricing";
-import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
 import { RadioGroup } from "@/components/ui/radio-group";
-import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import instance from "@/helper/interceptor";
+import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
+import { getInspectionPrices, persistInspectionPrices } from "../lib/pricing";
+import InspectionMethodCard from "./inspection-method-card";
 
 interface ClientWrapperProps {
   initialData: any;
@@ -23,6 +23,20 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
   const router = useRouter();
   const [carInspectionType, setCarInspectionType] = useState<any[]>(initialData?.CarInspectionPage || []);
   const [selected, setSelected] = useState("");
+  const allFeatures = useMemo(() => {
+    const features = carInspectionType.flatMap((item: any) =>
+      Array.isArray(item.Features) ? item.Features : [],
+    );
+
+    return Array.from(
+      new Map(
+        features.map((feature: any) => [
+          feature.Id != null ? `id:${feature.Id}` : `name:${feature.Name}`,
+          feature,
+        ]),
+      ).values(),
+    );
+  }, [carInspectionType]);
 
   // Fetch data from API using instance
   const GetCarInspectionData = () => {
@@ -132,6 +146,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
               inspectionType={String(item.Id)}
               data={item}
               isFirst={index === 0}
+              allFeatures={allFeatures}
             />
           ))}
         </RadioGroup>

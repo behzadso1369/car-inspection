@@ -13,15 +13,25 @@ import Image from "next/image";
 import { CalendarRemove01Icon } from "hugeicons-react";
 import { StoredInspectionPriceDisplay } from "../components/DiscountPriceDisplay";
 
-function hasAvailableHours(day: { Hours?: { IsDisabled?: boolean }[] }) {
+type InspectionHour = {
+  Id: string | number;
+  IsDisabled?: boolean;
+};
+
+type InspectionDay = {
+  Id: string;
+  Hours?: InspectionHour[];
+};
+
+function hasAvailableHours(day: { Hours?: InspectionHour[] }) {
   return day?.Hours?.some((hour) => !hour.IsDisabled) ?? false;
 }
 
-function findFirstDayWithHours(days: { Id: string; Hours?: { IsDisabled?: boolean }[] }[]) {
+function findFirstDayWithHours(days: InspectionDay[]) {
   return days.find((day) => hasAvailableHours(day));
 }
 
-function getFirstEnabledHour(day: { Hours?: { Id: string | number; IsDisabled?: boolean }[] }) {
+function getFirstEnabledHour(day: { Hours?: InspectionHour[] }) {
   return day?.Hours?.find((hour) => !hour.IsDisabled);
 }
 

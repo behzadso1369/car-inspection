@@ -1,12 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import Banner from "./mobile/Home/Banner";
 import CallAction from "./mobile/Home/CallAction";
 import { Header } from "./mobile/Home/Header";
-import instance from "@/helper/interceptor";
-import { ApiHelper } from "@/helper/api-request";
 
 // مسیرهایی که باید Header, Banner, CallAction نمایش داده شوند
 const ROUTES_WITH_HEADER = [
@@ -33,19 +30,21 @@ export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
   // صفحات راهنمای خودرو (car-inspection و زیرمجموعه‌ها) - به جز car-inspection-flow
   const isCarInspection =
     pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+  const isCarInspectionTehran =
+    pathname === "/car-inspection-tehran" ||
+    pathname.startsWith("/car-inspection-tehran/");
 
   // بررسی اینکه آیا مسیر فعلی باید header را نمایش دهد
   const shouldShowHeader =
-    (ROUTES_WITH_HEADER.includes(pathname) || isCarInspection) &&
+    (ROUTES_WITH_HEADER.includes(pathname) ||
+      isCarInspection ||
+      isCarInspectionTehran) &&
     !pathname.startsWith("/Profile");
-
 
   // اگه نباید header رو نشون بده، null برگردون
   if (!shouldShowHeader) {
     return null;
   }
-
-
 
   return (
     <>
@@ -59,4 +58,3 @@ export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
     </>
   );
 }
-

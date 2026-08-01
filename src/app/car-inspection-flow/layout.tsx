@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Call02Icon } from "hugeicons-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   CarInspectionFlowHeaderSkeleton,
   CarInspectionFlowSkeleton,
@@ -34,10 +34,27 @@ export default function ProfileLayout({
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
   const isBaseFlow = pathname === "/car-inspection-flow/select-car-group";
   const isSkeletonRoute = isFlowSkeletonRoute(pathname);
   const showSkeleton = isLoading && isSkeletonRoute;
   const showFlowHeader = !isBaseFlow;
+
+  const navigateBack = () => {
+    const isLoggedIn = Boolean(
+      localStorage.getItem("token") || localStorage.getItem("userId")
+    );
+
+    if (
+      isLoggedIn &&
+      pathname.startsWith("/car-inspection-flow/inspection-location")
+    ) {
+      router.replace("/car-inspection-flow/inspection-method");
+      return;
+    }
+
+    router.back();
+  };
 
   const handleBack = () => {
     if (showSkeleton) return;
@@ -54,15 +71,15 @@ export default function ProfileLayout({
         })
         .then((res: any) => {
           if (res) {
-            window.history.back();
+            navigateBack();
           }
         })
         .catch((err: any) => {
           console.error("Error moving order:", err);
-          window.history.back();
+          navigateBack();
         });
     } else {
-      window.history.back();
+      navigateBack();
     }
   };
 

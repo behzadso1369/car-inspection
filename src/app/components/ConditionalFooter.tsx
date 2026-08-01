@@ -1,10 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Footer } from "./mobile/Home/Footer";
-import instance from "@/helper/interceptor";
-import { ApiHelper } from "@/helper/api-request";
 
 // مسیرهایی که باید Footer نمایش داده شود
 const ROUTES_WITH_FOOTER = [
@@ -19,7 +16,7 @@ const ROUTES_WITH_FOOTER = [
   "/car-inspection-flow/select-car-group",
   "/payment/success",
   "/payment/failed",
-  "/blog"
+  "/blog",
 ];
 
 interface ConditionalFooterProps {
@@ -35,11 +32,15 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
   // صفحات راهنمای خودرو (car-inspection و زیرمجموعه‌ها) - به جز car-inspection-flow
   const isCarInspection =
     pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+  const isCarInspectionTehran =
+    pathname === "/car-inspection-tehran" ||
+    pathname.startsWith("/car-inspection-tehran/");
 
   const shouldShowFooter =
-    (ROUTES_WITH_FOOTER.includes(pathname) || isCarInspection) &&
-    !pathname.startsWith("/Profile")
-
+    (ROUTES_WITH_FOOTER.includes(pathname) ||
+      isCarInspection ||
+      isCarInspectionTehran) &&
+    !pathname.startsWith("/Profile");
 
   if (!shouldShowFooter) {
     return null;
@@ -48,9 +49,3 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
   // پاس دادن MasterSiteData به Footer چون Footer انتظار دارد که Address, PhoneNumber, WorkingHours مستقیماً در data باشند
   return <Footer data={data?.MasterSiteData || data} />;
 }
-
-
-
-
-
-

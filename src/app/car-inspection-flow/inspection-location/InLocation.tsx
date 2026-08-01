@@ -1,19 +1,28 @@
 "use client";
 
+import {
+  Location01Icon,
+  MapsLocation01Icon,
+  Tick01Icon,
+} from "hugeicons-react";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Location01Icon, Tick01Icon, MapsLocation01Icon } from "hugeicons-react";
-import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
-import { extractAddressId, readStoredAddressId } from "@/helper/create-user-address";
+import {
+  extractAddressId,
+  readStoredAddressId,
+} from "@/helper/create-user-address";
+import instance from "@/helper/interceptor";
 import type { GeocodedAddress } from "@/helper/reverse-geocode";
-import dynamic from "next/dynamic";
-import { toast } from "sonner";
 
 export const ON_SITE_ADDRESS_KEY = "OnSiteAddressDraft";
+const ADDRESS_INPUT_CLASS =
+  "mt-2 h-12 rounded-2xl border-[#DFDFDF] bg-white px-4 text-right text-sm focus-visible:border-[#416CEA] focus-visible:ring-2 focus-visible:ring-[#416CEA]/15";
 
 export interface SavedOnSiteAddress {
   AddressId: number;
@@ -25,7 +34,7 @@ export interface SavedOnSiteAddress {
   Lng: number;
 }
 
-const OnSiteMap = dynamic(() => import("./onsite-map/page"), {
+const OnSiteMap = dynamic(() => import("./OnSiteAddressMapModal"), {
   ssr: false,
   loading: () => (
     <DialogContent
@@ -82,7 +91,9 @@ function SelectedAddressCard({
                 <Tick01Icon size={14} />
                 انتخاب شده
               </span>
-              <span className="font-semibold text-[#101117]">{address.Title}</span>
+              <span className="font-semibold text-[#101117]">
+                {address.Title}
+              </span>
             </div>
             <p className="text-sm leading-7 text-[#55565A]">
               {address.City}، {address.Street}
@@ -109,8 +120,11 @@ export default function InLocation({
   locationTypeDescription,
 }: InLocationProps) {
   const [mapOpen, setMapOpen] = useState(false);
+  const [addressFormOpen, setAddressFormOpen] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [savedAddress, setSavedAddress] = useState<SavedOnSiteAddress | null>(null);
+  const [savedAddress, setSavedAddress] = useState<SavedOnSiteAddress | null>(
+    null,
+  );
   const [form, setForm] = useState({
     Title: "منزل",
     City: "تهران",
@@ -148,6 +162,7 @@ export default function InLocation({
       Lng: address.lng,
     }));
     setMapOpen(false);
+    setAddressFormOpen(true);
   };
 
   const createAddress = () => {
@@ -186,6 +201,7 @@ export default function InLocation({
         onSelectAddress(addressId);
         localStorage.setItem("AddressId", String(addressId));
         localStorage.setItem(ON_SITE_ADDRESS_KEY, JSON.stringify(saved));
+        setAddressFormOpen(false);
         toast("Success", { description: "آدرس با موفقیت ثبت شد" });
       })
       .finally(() => setSaving(false));
@@ -196,6 +212,7 @@ export default function InLocation({
     localStorage.removeItem(ON_SITE_ADDRESS_KEY);
     localStorage.removeItem("AddressId");
     onSelectAddress(null);
+    setAddressFormOpen(true);
   };
 
   const hasValidSelection =
@@ -211,7 +228,9 @@ export default function InLocation({
             <Location01Icon size={20} />
           </div>
           <div>
-            <p className="text-xs font-medium text-[#6B6C70]">کارشناسی در محل</p>
+            <p className="text-xs font-medium text-[#6B6C70]">
+              کارشناسی در محل
+            </p>
             <p className="mt-1 text-sm font-semibold text-[#101117]">
               {locationTypeDescription
                 ? `محدوده پوشش: ${locationTypeDescription}`
@@ -235,67 +254,123 @@ export default function InLocation({
             <span>انتخاب آدرس روی نقشه</span>
           </Button>
 
-          <div className="rounded-2xl border border-[#DFDFDF] p-4 space-y-4">
-            <div className="flex items-center justify-between gap-2">
-              <h4 className="font-medium text-[#101117]">ثبت آدرس محل کارشناسی</h4>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setMapOpen(true)}
-                className="text-[#416CEA] text-xs h-auto py-1 px-2"
-              >
-                نقشه
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
+          <Button
+            type="button"
+            onClick={() => setAddressFormOpen(true)}
+            className="h-12 w-full rounded-2xl bg-[#416CEA] text-sm font-medium text-white shadow-[0_6px_20px_rgba(65,108,234,0.2)]"
+          >
+            ثبت دستی آدرس محل کارشناسی
+          </Button>
+        </>
+      )}
+
+      <Dialog open={addressFormOpen} onOpenChange={setAddressFormOpen}>
+        <DialogContent className="flex h-[100dvh] w-screen max-w-none flex-col gap-0 overflow-hidden rounded-none border-0 bg-[#F8FAFF] p-0 font-IranSans sm:h-auto sm:max-h-[90vh] sm:w-[calc(100%-2rem)] sm:max-w-lg sm:rounded-3xl sm:border [&_[data-slot=dialog-close]]:left-4 [&_[data-slot=dialog-close]]:right-auto [&_[data-slot=dialog-close]]:top-4 [&_[data-slot=dialog-close]]:flex [&_[data-slot=dialog-close]]:h-11 [&_[data-slot=dialog-close]]:w-11 [&_[data-slot=dialog-close]]:items-center [&_[data-slot=dialog-close]]:justify-center [&_[data-slot=dialog-close]]:rounded-2xl [&_[data-slot=dialog-close]]:border [&_[data-slot=dialog-close]]:border-[#E8ECF4] [&_[data-slot=dialog-close]]:bg-white [&_[data-slot=dialog-close]]:opacity-100 [&_[data-slot=dialog-close]]:shadow-sm [&_[data-slot=dialog-close]_svg]:!size-7">
+          <div className="shrink-0 border-b border-[#E8ECF4] bg-white px-5 py-5 pe-14">
+            <DialogTitle className="text-base font-bold text-[#101117]">
+              ثبت آدرس محل کارشناسی
+            </DialogTitle>
+            <p className="mt-1 text-xs leading-6 text-[#6B6C70]">
+              اطلاعات آدرس را بررسی و تکمیل کنید.
+            </p>
+          </div>
+
+          <div className="flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <Label className="text-xs text-[#55565A]">عنوان</Label>
+                <Label
+                  htmlFor="onsite-address-title"
+                  className="text-sm text-[#55565A]"
+                >
+                  عنوان آدرس
+                </Label>
                 <Input
+                  id="onsite-address-title"
                   value={form.Title}
                   onChange={(e) => setForm({ ...form, Title: e.target.value })}
-                  className="rounded-xl mt-1"
-                  placeholder="منزل"
+                  className={ADDRESS_INPUT_CLASS}
+                  placeholder="مثلاً منزل"
+                  autoComplete="address-level4"
                 />
               </div>
               <div>
-                <Label className="text-xs text-[#55565A]">شهر</Label>
+                <Label
+                  htmlFor="onsite-address-city"
+                  className="text-sm text-[#55565A]"
+                >
+                  شهر
+                </Label>
                 <Input
+                  id="onsite-address-city"
                   value={form.City}
                   onChange={(e) => setForm({ ...form, City: e.target.value })}
-                  className="rounded-xl mt-1"
-                  placeholder="تهران"
+                  className={ADDRESS_INPUT_CLASS}
+                  placeholder="مثلاً تهران"
+                  autoComplete="address-level2"
                 />
               </div>
             </div>
+
             <div>
-              <Label className="text-xs text-[#55565A]">خیابان و کوچه</Label>
+              <Label
+                htmlFor="onsite-address-street"
+                className="text-sm text-[#55565A]"
+              >
+                خیابان و کوچه
+              </Label>
               <Input
+                id="onsite-address-street"
                 value={form.Street}
                 onChange={(e) => setForm({ ...form, Street: e.target.value })}
-                className="rounded-xl mt-1"
-                placeholder="از نقشه انتخاب کنید یا دستی وارد کنید"
+                className={ADDRESS_INPUT_CLASS}
+                placeholder="نام خیابان، کوچه و جزئیات مسیر"
+                autoComplete="street-address"
               />
             </div>
+
             <div>
-              <Label className="text-xs text-[#55565A]">پلاک</Label>
+              <Label
+                htmlFor="onsite-address-plaque"
+                className="text-sm text-[#55565A]"
+              >
+                پلاک
+              </Label>
               <Input
+                id="onsite-address-plaque"
                 value={form.Plaque}
                 onChange={(e) => setForm({ ...form, Plaque: e.target.value })}
-                className="rounded-xl mt-1"
-                placeholder="12"
+                className={ADDRESS_INPUT_CLASS}
+                placeholder="مثلاً ۱۲"
+                inputMode="numeric"
               />
             </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setAddressFormOpen(false);
+                setMapOpen(true);
+              }}
+              className="h-12 w-full rounded-2xl border-[#416CEA]/30 bg-white text-[#416CEA]"
+            >
+              <MapsLocation01Icon size={20} />
+              انتخاب یا اصلاح موقعیت روی نقشه
+            </Button>
+          </div>
+
+          <div className="shrink-0 border-t border-[#E8ECF4] bg-white px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 shadow-[0_-6px_24px_rgba(16,24,40,0.06)] sm:px-6">
             <Button
               type="button"
               disabled={saving || !form.Street.trim()}
               onClick={createAddress}
-              className="w-full rounded-2xl bg-[#416CEA] text-white py-6"
+              className="h-12 w-full rounded-2xl bg-[#416CEA] text-sm font-medium text-white"
             >
-              {saving ? "در حال ثبت..." : "ثبت آدرس"}
+              {saving ? "در حال ثبت آدرس..." : "ثبت و تأیید آدرس"}
             </Button>
           </div>
-        </>
-      )}
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={mapOpen} onOpenChange={setMapOpen}>
         <OnSiteMap
