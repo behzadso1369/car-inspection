@@ -1,311 +1,358 @@
-"use client"
+"use client";
+
 import {
   calculateCarPrice,
   type BodyStatus,
   type ChassisStatus,
-} from "@/lib/car-price/pricing"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { Search, CarFront, Palette, ShieldCheck, BadgeDollarSign, RotateCcw, ArrowRight } from "lucide-react"
+} from "@/lib/car-price/pricing";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Search,
+  CarFront,
+  Palette,
+  ShieldCheck,
+  BadgeDollarSign,
+  RotateCcw,
+  ArrowRight,
+  Gauge,
+} from "lucide-react";
 
-import cars from "@/data/car.json"
+import cars from "@/data/car.json";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar"
-import CarPricingSeoContent from "@/components/car-price/CarPricingSeoContent"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar";
+import CarPricingSeoContent from "@/components/car-price/CarPricingSeoContent";
 
-type Step = "search_car" | "year" | "mileage" | "color" | "chassis" | "result"
+type Step = "search_car" | "year" | "mileage" | "color" | "chassis" | "result";
 
 type CarItem = {
-  id: string | number
-  carName: string
-  carPrice: string | number
-   lastYear:string;
-   source:string
-}
+  id: string | number;
+  carName: string;
+  carPrice: string | number;
+  lastYear: string;
+  source: string;
+};
 
 type NormalizedCar = {
-  id: string
-  name: string
-  price: number
-  lastYear:string
-  source:string
-}
+  id: string;
+  name: string;
+  price: number;
+  lastYear: string;
+  source: string;
+};
 
-const COLOR_OPTIONS: { label: BodyStatus; desc?: string }[] = [
+const COLOR_OPTIONS: { label: BodyStatus }[] = [
   { label: "بی‌رنگ" },
   { label: "خط و خش جزئی" },
   { label: "صافکاری بدون رنگ" },
   { label: "رنگ یک ناحیه" },
   { label: "رنگ دو ناحیه" },
   { label: "رنگ چند ناحیه" },
-]
+];
 
-const CHASSIS_OPTIONS: { label: ChassisStatus; desc?: string }[] = [
+const CHASSIS_OPTIONS: { label: ChassisStatus }[] = [
   { label: "سالم" },
   { label: "ضربه خورده" },
   { label: "آسیب شدید" },
-]
+];
 
-const INPUT_CLASS =
-  "car-price-input h-12 rounded-2xl border-[#E8ECF4] bg-white focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
 const INPUT_CLASS_LG =
-  "car-price-input h-14 rounded-2xl border-[#E8ECF4] bg-white text-base focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
-
+  "car-price-input h-12 rounded-2xl border-[#E8ECF4] bg-white text-base focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20 md:h-14";
 const BACK_BTN_CLASS =
-  "rounded-2xl border-[#3456bb]/25 text-[#3456bb] hover:bg-[#eef2fd]"
+  "rounded-2xl border-[#3456bb]/25 text-[#3456bb] hover:bg-[#eef2fd]";
 
 function normalizePrice(value: string | number) {
-  if (typeof value === "number") return value
-  return Number(String(value).replaceAll(",", "").trim())
+  if (typeof value === "number") return value;
+  return Number(String(value).replaceAll(",", "").trim());
 }
 
 function formatPrice(value: number) {
-  return new Intl.NumberFormat("fa-IR").format(value)
+  return new Intl.NumberFormat("fa-IR").format(value);
 }
 
-function getPriceRange(price: number) {
-  const step = 100_000_000
-  const min = Math.floor(price / step) * step
-  const max = min + step
-  return { min, max }
-}
 function toEnglishDigits(value: string) {
-  const fa = "۰۱۲۳۴۵۶۷۸۹"
-  const ar = "٠١٢٣٤٥٦٧٨٩"
-
+  const fa = "۰۱۲۳۴۵۶۷۸۹";
+  const ar = "٠١٢٣٤٥٦٧٨٩";
   return value
     .replace(/[۰-۹]/g, (d) => String(fa.indexOf(d)))
-    .replace(/[٠-٩]/g, (d) => String(ar.indexOf(d)))
+    .replace(/[٠-٩]/g, (d) => String(ar.indexOf(d)));
 }
 
 function formatMileageInput(value: string) {
-  const digits = toEnglishDigits(value).replace(/\D/g, "")
-  return digits ? Number(digits).toLocaleString("en-US") : ""
+  const digits = toEnglishDigits(value).replace(/\D/g, "");
+  return digits ? Number(digits).toLocaleString("en-US") : "";
 }
 
-
-
-
+function displayBasePrice(car: NormalizedCar) {
+  return car.source === "hamrah" ? car.price + 400000000 : car.price;
+}
 
 export default function CarPricePage() {
-  
   const carList: NormalizedCar[] = useMemo(() => {
     return (cars?.cars as CarItem[]).map((car) => ({
       id: String(car.id),
       name: car.carName,
       price: normalizePrice(car.carPrice),
       lastYear: car.lastYear,
-      source:car.source
-    }))
-  }, [])
+      source: car.source,
+    }));
+  }, []);
 
-const [year, setYear] = useState("")
-const [mileage, setMileage] = useState("")
-
-const [step, setStep] = useState<Step>("search_car")
-const [query, setQuery] = useState("")
-const [selectedCar, setSelectedCar] = useState<NormalizedCar | null>(null)
-const [selectedColor, setSelectedColor] = useState<(typeof COLOR_OPTIONS)[number] | null>(null)
-const [selectedChassis, setSelectedChassis] = useState<(typeof CHASSIS_OPTIONS)[number] | null>(null)
-
-const stepContentRef = useRef<HTMLDivElement | null>(null)
-
+  const [year, setYear] = useState("");
+  const [mileage, setMileage] = useState("");
+  const [step, setStep] = useState<Step>("search_car");
+  const [query, setQuery] = useState("");
+  const [selectedCar, setSelectedCar] = useState<NormalizedCar | null>(null);
+  const [selectedColor, setSelectedColor] = useState<(typeof COLOR_OPTIONS)[number] | null>(null);
+  const [selectedChassis, setSelectedChassis] = useState<(typeof CHASSIS_OPTIONS)[number] | null>(null);
 
   const filteredCars = useMemo(() => {
-    const q = query.trim()
-    if (!q) return []
-    return carList.filter((car) => car.name.includes(q)).slice(0, 20)
-  }, [query, carList])
+    const q = query.trim();
+    if (!q) return [];
+    return carList.filter((car) => car.name.includes(q)).slice(0, 20);
+  }, [query, carList]);
 
-const priceResult = useMemo(() => {
-  const yearNumber = Number(toEnglishDigits(year))
-  const mileageNumber = Number(toEnglishDigits(mileage).replaceAll(",", ""))
+  const priceResult = useMemo(() => {
+    const yearNumber = Number(toEnglishDigits(year));
+    const mileageNumber = Number(toEnglishDigits(mileage).replaceAll(",", ""));
 
-  if (
-    !selectedCar ||
-    !selectedColor ||
-    !selectedChassis ||
-    !yearNumber ||
-    mileage.trim() === "" ||
-    Number.isNaN(mileageNumber)
-  ) {
-    return null
-  }
+    if (
+      !selectedCar ||
+      !selectedColor ||
+      !selectedChassis ||
+      !yearNumber ||
+      mileage.trim() === "" ||
+      Number.isNaN(mileageNumber)
+    ) {
+      return null;
+    }
 
-  return calculateCarPrice({
-    basePrice: selectedCar?.source == "hamrah" ? selectedCar?.price + 400000000 : selectedCar.price,
-    lastYear:Number(selectedCar?.lastYear),
-    year: yearNumber,
-    km: mileageNumber,
-    body:
-      typeof selectedColor === "string"
-        ? selectedColor
-        : selectedColor.label,
-    chassis:
-      typeof selectedChassis === "string"
-        ? selectedChassis
-        : selectedChassis.label,
-  })
-}, [selectedCar, selectedColor, selectedChassis, year, mileage])
+    return calculateCarPrice({
+      basePrice: displayBasePrice(selectedCar),
+      lastYear: Number(selectedCar?.lastYear),
+      year: yearNumber,
+      km: mileageNumber,
+      body: selectedColor.label,
+      chassis: selectedChassis.label,
+    });
+  }, [selectedCar, selectedColor, selectedChassis, year, mileage]);
 
-const finalPrice = priceResult?.finalPrice ?? 0
+  const finalPrice = priceResult?.finalPrice ?? 0;
+  const priceRange = priceResult?.range ?? null;
 
+  const progressMap: Record<Step, number> = {
+    search_car: 16,
+    year: 32,
+    mileage: 48,
+    color: 64,
+    chassis: 82,
+    result: 100,
+  };
+  const progressValue = progressMap[step];
+  const stepIndex =
+    ["search_car", "year", "mileage", "color", "chassis", "result"].indexOf(step) + 1;
 
-  const priceRange = priceResult?.range ?? null
-
-const progressMap: Record<Step, number> = {
-  search_car: 16,
-  year: 32,
-  mileage: 48,
-  color: 64,
-  chassis: 82,
-  result: 100,
-}
-
-const progressValue = progressMap[step]
-
- const stepItems = [
-  {
-    key: "search_car",
-    title: "خودرو",
-    desc: "انتخاب مدل",
-    icon: CarFront,
-    active: step === "search_car",
-    done: !!selectedCar,
-  },
-  {
-    key: "year",
-    title: "سال",
-    desc: "سال ساخت",
-    icon: BadgeDollarSign,
-    active: step === "year",
-    done: !!year,
-  },
-  {
-    key: "mileage",
-    title: "کارکرد",
-    desc: "میزان پیمایش",
-    icon: Search,
-    active: step === "mileage",
-    done: !!mileage,
-  },
-  {
-    key: "color",
-    title: "رنگ",
-    desc: "وضعیت رنگ",
-    icon: Palette,
-    active: step === "color",
-    done: !!selectedColor,
-  },
-  {
-    key: "chassis",
-    title: "شاسی",
-    desc: "وضعیت اتاق",
-    icon: ShieldCheck,
-    active: step === "chassis",
-    done: !!selectedChassis,
-  },
-  {
-    key: "result",
-    title: "نتیجه",
-    desc: "قیمت نهایی",
-    icon: BadgeDollarSign,
-    active: step === "result",
-    done: step === "result",
-  },
-] as const
-
-useEffect(() => {
-  if (step !== "search_car") {
-    setTimeout(() => {
-      stepContentRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      })
-    }, 100)
-  }
-}, [step, selectedCar])
+  const stepItems = [
+    { key: "search_car", title: "خودرو", desc: "انتخاب مدل", icon: CarFront, active: step === "search_car", done: !!selectedCar },
+    { key: "year", title: "سال", desc: "سال ساخت", icon: BadgeDollarSign, active: step === "year", done: !!year },
+    { key: "mileage", title: "کارکرد", desc: "میزان پیمایش", icon: Gauge, active: step === "mileage", done: !!mileage },
+    { key: "color", title: "رنگ", desc: "وضعیت رنگ", icon: Palette, active: step === "color", done: !!selectedColor },
+    { key: "chassis", title: "شاسی", desc: "وضعیت اتاق", icon: ShieldCheck, active: step === "chassis", done: !!selectedChassis },
+    { key: "result", title: "نتیجه", desc: "قیمت نهایی", icon: BadgeDollarSign, active: step === "result", done: step === "result" },
+  ] as const;
 
   function handleSelectCar(car: NormalizedCar) {
-  setSelectedCar(car)
-  setYear("")
-  setMileage("")
-  setSelectedColor(null)
-  setSelectedChassis(null)
-  setQuery(car.name)
-  setStep("year")
-}
-function handleYearSubmit() {
-  const yearNumber = Number(toEnglishDigits(year))
-
-  if (!yearNumber || yearNumber < 1380 || yearNumber > Number(selectedCar?.lastYear) + 1) {
-    return
+    setSelectedCar(car);
+    setYear("");
+    setMileage("");
+    setSelectedColor(null);
+    setSelectedChassis(null);
+    setQuery(car.name);
+    setStep("year");
   }
 
-  setStep("mileage")
-}
+  function handleYearSubmit() {
+    const yearNumber = Number(toEnglishDigits(year));
+    if (!yearNumber || yearNumber < 1380 || yearNumber > Number(selectedCar?.lastYear) + 1) {
+      return;
+    }
+    setStep("mileage");
+  }
 
-
-function handleMileageSubmit() {
-  const mileageNumber = Number(toEnglishDigits(mileage).replaceAll(",", ""))
-  if (mileageNumber < 0) return
-  setStep("color")
-}
+  function handleMileageSubmit() {
+    const mileageNumber = Number(toEnglishDigits(mileage).replaceAll(",", ""));
+    if (mileageNumber < 0 || mileage.trim() === "") return;
+    setStep("color");
+  }
 
   function handleSelectColor(item: (typeof COLOR_OPTIONS)[number]) {
-    setSelectedColor(item)
-    setSelectedChassis(null)
-    setStep("chassis")
+    setSelectedColor(item);
+    setSelectedChassis(null);
+    setStep("chassis");
   }
 
   function handleSelectChassis(item: (typeof CHASSIS_OPTIONS)[number]) {
-    setSelectedChassis(item)
-    setStep("result")
+    setSelectedChassis(item);
+    setStep("result");
   }
 
   function handleBack() {
     switch (step) {
       case "year":
-        setYear("")
-        setStep("search_car")
-        break
+        setYear("");
+        setStep("search_car");
+        break;
       case "mileage":
-        setMileage("")
-        setSelectedColor(null)
-        setSelectedChassis(null)
-        setStep("year")
-        break
+        setMileage("");
+        setSelectedColor(null);
+        setSelectedChassis(null);
+        setStep("year");
+        break;
       case "color":
-        setSelectedColor(null)
-        setSelectedChassis(null)
-        setStep("mileage")
-        break
+        setSelectedColor(null);
+        setSelectedChassis(null);
+        setStep("mileage");
+        break;
       case "chassis":
-        setSelectedChassis(null)
-        setStep("color")
-        break
+        setSelectedChassis(null);
+        setStep("color");
+        break;
       case "result":
-        setSelectedChassis(null)
-        setStep("chassis")
-        break
+        setSelectedChassis(null);
+        setStep("chassis");
+        break;
     }
   }
 
   function resetAll() {
-  setStep("search_car")
-  setQuery("")
-  setSelectedCar(null)
-  setYear("")
-  setMileage("")
-  setSelectedColor(null)
-  setSelectedChassis(null)
-}
+    setStep("search_car");
+    setQuery("");
+    setSelectedCar(null);
+    setYear("");
+    setMileage("");
+    setSelectedColor(null);
+    setSelectedChassis(null);
+  }
+
+  const mobileBarRef = useRef<HTMLDivElement | null>(null);
+  const [mobileBarHeight, setMobileBarHeight] = useState(140);
+
+  useEffect(() => {
+    const el = mobileBarRef.current;
+    if (!el) return;
+
+    const update = () => setMobileBarHeight(el.offsetHeight);
+    update();
+
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [step]);
+
+  const inputControls = (
+    <>
+      {step === "search_car" && (
+        <div>
+          <div className="mb-1.5 flex items-center justify-between gap-2 lg:mb-2 lg:gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-extrabold text-[#101117]">جستجوی خودرو</p>
+              <p className="mt-0.5 text-[11px] text-[#6B6C70]">نام خودرو را وارد کنید</p>
+            </div>
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl car-price-icon-box">
+              <Search className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="relative">
+            <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#999A9C]" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="مثلاً دنا پلاس، پژو ۲۰۷، تارا..."
+              className={`${INPUT_CLASS_LG} pr-10 text-right`}
+              autoComplete="off"
+            />
+          </div>
+        </div>
+      )}
+
+      {step === "year" && (
+        <div className="space-y-2.5">
+          <div>
+            <p className="text-sm font-extrabold text-[#101117]">سال ساخت</p>
+            <p className="mt-0.5 truncate text-[11px] text-[#6B6C70]">{selectedCar?.name}</p>
+          </div>
+          <Input
+            value={year}
+            onChange={(e) => setYear(toEnglishDigits(e.target.value))}
+            placeholder="مثلاً 1401"
+            className={INPUT_CLASS_LG}
+            inputMode="numeric"
+          />
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleBack} className={`h-11 flex-1 ${BACK_BTN_CLASS}`}>
+              <ArrowRight className="ml-2 h-4 w-4" />
+              بازگشت
+            </Button>
+            <Button onClick={handleYearSubmit} className="car-price-btn h-11 flex-1 rounded-2xl border-0">
+              ادامه
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {step === "mileage" && (
+        <div className="space-y-2.5">
+          <div>
+            <p className="text-sm font-extrabold text-[#101117]">کارکرد خودرو</p>
+            <p className="mt-0.5 text-[11px] text-[#6B6C70]">میزان کارکرد به کیلومتر</p>
+          </div>
+          <Input
+            value={mileage}
+            onChange={(e) => setMileage(formatMileageInput(e.target.value))}
+            placeholder="مثلاً 85,000"
+            className={INPUT_CLASS_LG}
+            inputMode="numeric"
+          />
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleBack} className={`h-11 flex-1 ${BACK_BTN_CLASS}`}>
+              <ArrowRight className="ml-2 h-4 w-4" />
+              بازگشت
+            </Button>
+            <Button onClick={handleMileageSubmit} className="car-price-btn h-11 flex-1 rounded-2xl border-0">
+              ادامه
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {step === "color" && (
+        <div>
+          <p className="text-sm font-extrabold text-[#101117]">وضعیت رنگ</p>
+          <p className="mt-0.5 truncate text-[11px] text-[#6B6C70]">{selectedCar?.name}</p>
+        </div>
+      )}
+
+      {step === "chassis" && (
+        <div>
+          <p className="text-sm font-extrabold text-[#101117]">وضعیت شاسی و اتاق</p>
+          <p className="mt-0.5 text-[11px] text-[#6B6C70]">رنگ: {selectedColor?.label}</p>
+        </div>
+      )}
+
+      {step === "result" && (
+        <div>
+          <p className="text-sm font-extrabold text-[#101117]">نتیجه ارزیابی</p>
+          <p className="mt-0.5 text-[11px] text-[#6B6C70]">قیمت حدودی بر اساس اطلاعات واردشده</p>
+        </div>
+      )}
+    </>
+  );
 
   return (
-    <main className="modern-gradient relative min-h-screen overflow-hidden font-IranSans pb-28 lg:pb-8">
+    <main className="modern-gradient relative min-h-screen font-IranSans pb-24 lg:pb-8" dir="rtl">
       <div
         aria-hidden
         className="pointer-events-none absolute -top-24 left-1/4 h-72 w-72 rounded-full bg-[#3563E9]/10 blur-3xl"
@@ -314,676 +361,353 @@ function handleMileageSubmit() {
         aria-hidden
         className="pointer-events-none absolute top-1/3 -right-16 h-64 w-64 rounded-full bg-[#416CEA]/8 blur-3xl"
       />
-      <div className="relative mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-8">
-        <div className="car-price-progress-track mx-auto mb-5 h-1.5 max-w-3xl md:mb-7">
+
+      {/* موبایل: نوار ثابت ورودی — زیر بنر و هدر سایت */}
+      <div
+        ref={mobileBarRef}
+        className="fixed inset-x-0 top-[5.5rem] z-40 border-b border-[#E8ECF4] bg-white/95 px-3 py-2.5 shadow-[0_8px_24px_rgba(16,17,23,0.06)] backdrop-blur-md lg:hidden"
+      >
+        <div className="car-price-progress-track mb-2 h-1">
           <div
             className="car-price-progress-fill h-full"
             style={{ width: `${progressValue}%` }}
           />
         </div>
-        {/* ===== موبایل ===== */}
-        <div className="lg:hidden">
-          <div className="mx-auto flex max-w-md flex-col gap-4">
-            {/* هدر کوچک موبایل */}
-            <section className="pt-1">
-              <Badge className="car-price-badge">
-                کارشناسی هوشمند خودرو
-              </Badge>
+        <div className="mb-2 flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h1 className="text-[13px] font-black leading-5 text-gradient">
+              محاسبه قیمت خودرو کارکرده و قیمت‌گذاری آنلاین
+            </h1>
+            <p className="mt-0.5 text-[10px] leading-4 text-[#6B6C70]">
+              اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
+            </p>
+          </div>
+          <span className="shrink-0 rounded-full bg-[#EEF2FD] px-2 py-1 text-[10px] font-bold text-[#3456bb]">
+            {stepIndex}/۶
+          </span>
+        </div>
+        {inputControls}
+      </div>
+      <div className="lg:hidden" style={{ height: mobileBarHeight }} aria-hidden />
 
-              <h1 className="mt-3 text-2xl font-black leading-9 text-gradient">
-                محاسبه قیمت خودرو کارکرده و قیمت‌گذاری آنلاین
-              </h1>
+      <div className="relative mx-auto max-w-7xl px-3 pt-3 md:px-6 md:pt-6">
+        {/* دسکتاپ: هدر کامل */}
+        <header className="mb-6 hidden lg:block">
+          <div className="car-price-progress-track mb-5 h-1.5 max-w-3xl">
+            <div
+              className="car-price-progress-fill h-full"
+              style={{ width: `${progressValue}%` }}
+            />
+          </div>
+          <Badge className="car-price-badge text-xs">کارشناسی هوشمند خودرو</Badge>
+          <h1 className="mt-3 text-3xl font-black leading-[2.75rem] text-gradient">
+            محاسبه قیمت خودرو کارکرده و قیمت‌گذاری آنلاین
+          </h1>
+          <p className="mt-2 text-sm leading-7 text-[#6B6C70]">
+            اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
+          </p>
+        </header>
 
-              <p className="mt-2 text-sm leading-7 text-[#6B6C70]">
-                اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
-              </p>
-            </section>
-
-            {/* جستجو در نگاه اول */}
-            <Card className="glass-card rounded-3xl border-[#3456bb]/10">
+        <div className="grid gap-4 lg:grid-cols-12 lg:gap-6">
+          {/* دسکتاپ: سایدبار مراحل */}
+          <aside className="hidden lg:col-span-4 lg:block">
+            <Card className="glass-card sticky top-28 rounded-[2rem] border-[#3456bb]/10">
               <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-base font-extrabold text-[#101117]">
-                      جستجوی خودرو
-                    </CardTitle>
-                    <CardDescription className="mt-1 text-xs">
-                      نام خودرو را وارد کنید
-                    </CardDescription>
-                  </div>
-
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl car-price-icon-box">
-                    <Search className="h-5 w-5" />
-                  </div>
-                </div>
+                <Badge className="mb-2 w-fit car-price-badge">قیمت‌گذاری هوشمند</Badge>
+                <CardTitle className="text-2xl font-black leading-10 text-gradient">
+                  مراحل ارزیابی خودرو
+                </CardTitle>
+                <CardDescription className="mt-1 text-sm leading-7">
+                  مدل، سال، کارکرد، رنگ و شاسی را وارد کنید و بازه قیمت را ببینید.
+                </CardDescription>
               </CardHeader>
-
               <CardContent className="space-y-3">
-                <div className="relative">
-                  <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#999A9C]" />
-                  <Input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="مثلاً دنا پلاس توربو"
-                    className={`${INPUT_CLASS} pr-10 text-right`}
-                  />
-                </div>
-
-                <div className={query.trim() ? "max-h-72 space-y-2 overflow-y-auto" : "space-y-2"}>
-                  {!query.trim() ? (
-                    <CarPricingSeoContent variant="intro" />
-                  ) : (
-                    <>
-                  {filteredCars.map((car) => (
-                    <button
-                      key={car.id}
-                      onClick={() => handleSelectCar(car)}
-                      className="car-price-interactive flex w-full items-center justify-between rounded-2xl px-4 py-3 text-right"
+                {stepItems.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.key}
+                      className={[
+                        "flex items-center gap-3 rounded-2xl border p-3.5 transition",
+                        item.active
+                          ? "car-price-step-active"
+                          : item.done
+                            ? "car-price-step-done"
+                            : "car-price-step-idle",
+                      ].join(" ")}
                     >
-                      <div className="flex min-w-0 flex-col text-right">
-                        <span className="truncate text-sm font-bold text-[#101117]">{car.name}</span>
-                        <span className="mt-1 text-xs text-[#6B6C70]">
-                          قیمت پایه: {formatPrice(car.source == "hamrah" ? car.price + 400000000 : car.price)} تومان
-                        </span>
-                      </div>
-                      <CarFront className="h-4 w-4 shrink-0 car-price-accent" />
-                    </button>
-                  ))}
-
-                  {!filteredCars.length && query.trim() && (
-                    <div className="rounded-2xl border border-dashed border-[#E8ECF4] bg-white/70 px-4 py-6 text-center text-sm text-[#6B6C70]">
-                      خودرویی با این عبارت پیدا نشد.
-                    </div>
-                  )}
-                    </>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* مراحل در موبایل، فشرده و قابل دیدن */}
-            <Card className="glass-card rounded-3xl border-[#3456bb]/10">
-              <CardContent className="p-3">
-                <div className="mb-3 flex items-center justify-between">
-                  <h3 className="text-sm font-extrabold text-[#101117]">مراحل ارزیابی</h3>
-                  <span className="text-xs font-medium car-price-accent">
-                    {Math.ceil(progressValue / 20)} از ۶ مرحله
-                  </span>
-                </div>
-
-               
-
-                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                  {stepItems.map((item, index) => {
-                    const Icon = item.icon
-                    return (
                       <div
-                        key={item.key}
                         className={[
-                          "min-w-[96px] rounded-2xl border p-3 transition",
-                          item.active
-                            ? "car-price-step-active"
-                            : item.done
-                              ? "car-price-step-done"
-                              : "car-price-step-idle",
+                          "flex h-10 w-10 items-center justify-center rounded-2xl",
+                          item.active || item.done
+                            ? "bg-[#3456bb] text-white"
+                            : "bg-[#F0F2F4] text-[#999A9C]",
                         ].join(" ")}
                       >
-                        <div
-                          className={[
-                            "mb-2 flex h-8 w-8 items-center justify-center rounded-full text-xs font-black",
-                            item.active
-                              ? "bg-[#3456bb] text-white shadow-md shadow-[#3456bb]/25"
-                              : item.done
-                                ? "bg-[#416CEA] text-white"
-                                : "bg-[#F0F2F4] text-[#999A9C]",
-                          ].join(" ")}
-                        >
-                          {index + 1}
-                        </div>
-                        <div className="mb-1">
-                          <Icon className="h-4 w-4 text-[#6B6C70]" />
-                        </div>
-                        <div className="text-xs font-extrabold text-[#101117]">{item.title}</div>
-                        <div className="mt-1 text-[11px] text-[#6B6C70]">{item.desc}</div>
+                        <Icon className="h-4 w-4" />
                       </div>
-                    )
-                  })}
-                </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-black text-[#101117]">
+                          {index + 1}. {item.title}
+                        </div>
+                        <div className="mt-0.5 text-xs text-[#6B6C70]">{item.desc}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {(selectedCar || selectedColor || selectedChassis) && (
+                  <div className="rounded-3xl car-price-summary-box p-4">
+                    <h3 className="mb-3 text-sm font-black text-[#101117]">خلاصه انتخاب‌ها</h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between gap-3">
+                        <span className="text-[#6B6C70]">خودرو</span>
+                        <span className="font-bold text-[#101117]">{selectedCar?.name || "-"}</span>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <span className="text-[#6B6C70]">سال ساخت</span>
+                        <span className="font-bold text-[#101117]">{year || "-"}</span>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <span className="text-[#6B6C70]">کارکرد</span>
+                        <span className="font-bold text-[#101117]">
+                          {mileage
+                            ? `${formatPrice(Number(toEnglishDigits(mileage).replaceAll(",", "")))} کیلومتر`
+                            : "-"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <span className="text-[#6B6C70]">رنگ</span>
+                        <span className="font-bold text-[#101117]">{selectedColor?.label || "-"}</span>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <span className="text-[#6B6C70]">شاسی</span>
+                        <span className="font-bold text-[#101117]">{selectedChassis?.label || "-"}</span>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={resetAll}
+                      variant="outline"
+                      className="mt-4 w-full rounded-2xl border-[#3456bb]/25 text-[#3456bb] hover:bg-[#eef2fd]"
+                    >
+                      <RotateCcw className="ml-2 h-4 w-4" />
+                      شروع دوباره
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
+          </aside>
 
-            {/* محتوای مرحله فعلی در موبایل */}
-           {step !== "search_car" && (
-  <div ref={stepContentRef}>
-    <Card className="glass-card rounded-3xl border-[#3456bb]/10">
-      <CardContent className="p-4">
-        {step === "year" && (
-  <div>
-    <div className="mb-3">
-      <h3 className="text-base font-extrabold text-[#101117]">سال ساخت</h3>
-      <p className="mt-1 text-xs text-[#6B6C70]">
-        خودرو انتخاب‌شده: {selectedCar?.name}
-      </p>
-    </div>
-
-    <div className="space-y-3">
-      <Input
-        value={year}
-        onChange={(e) => setYear(toEnglishDigits(e.target.value))}
-        placeholder="مثلاً 1401"
-        className={INPUT_CLASS}
-        inputMode="numeric"
-      />
-      <div className="flex gap-3">
-        <Button variant="outline" onClick={handleBack} className={`h-11 flex-1 ${BACK_BTN_CLASS}`}>
-          <ArrowRight className="ml-2 h-4 w-4" />
-          بازگشت
-        </Button>
-        <Button onClick={handleYearSubmit} className="car-price-btn h-11 flex-1 rounded-2xl border-0">
-          ادامه
-        </Button>
-      </div>
-    </div>
-  </div>
-)}
-
-{step === "mileage" && (
-  <div>
-    <div className="mb-3">
-      <h3 className="text-base font-extrabold text-[#101117]">کارکرد خودرو</h3>
-      <p className="mt-1 text-xs text-[#6B6C70]">
-        میزان کارکرد را به کیلومتر وارد کنید
-      </p>
-    </div>
-
-    <div className="space-y-3">
-      <Input
-        value={mileage}
-        onChange={(e) => setMileage(formatMileageInput(e.target.value))}
-        placeholder="مثلاً 85000"
-        className={INPUT_CLASS}
-        inputMode="numeric"
-      />
-      <div className="flex gap-3">
-        <Button variant="outline" onClick={handleBack} className={`h-11 flex-1 ${BACK_BTN_CLASS}`}>
-          <ArrowRight className="ml-2 h-4 w-4" />
-          بازگشت
-        </Button>
-        <Button onClick={handleMileageSubmit} className="car-price-btn h-11 flex-1 rounded-2xl border-0">
-          ادامه
-        </Button>
-      </div>
-    </div>
-  </div>
-)}
-
-        {step === "color" && (
-          <div>
-            <div className="mb-3">
-              <h3 className="text-base font-extrabold text-[#101117]">وضعیت رنگ</h3>
-              <p className="mt-1 text-xs text-[#6B6C70]">
-                خودرو انتخاب‌شده: {selectedCar?.name}
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              {COLOR_OPTIONS.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => handleSelectColor(item)}
-                  className="car-price-interactive w-full rounded-2xl px-4 py-3 text-right text-sm font-bold text-[#101117]"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-            <Button variant="outline" onClick={handleBack} className={`mt-3 h-11 w-full ${BACK_BTN_CLASS}`}>
-              <ArrowRight className="ml-2 h-4 w-4" />
-              بازگشت
-            </Button>
-          </div>
-        )}
-
-        {step === "chassis" && (
-          <div>
-            <div className="mb-3">
-              <h3 className="text-base font-extrabold text-[#101117]">وضعیت شاسی و اتاق</h3>
-              <p className="mt-1 text-xs text-[#6B6C70]">
-                رنگ انتخاب‌شده: {selectedColor?.label}
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              {CHASSIS_OPTIONS.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => handleSelectChassis(item)}
-                  className="car-price-interactive w-full rounded-2xl px-4 py-3 text-right text-sm font-bold text-[#101117]"
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-            <Button variant="outline" onClick={handleBack} className={`mt-3 h-11 w-full ${BACK_BTN_CLASS}`}>
-              <ArrowRight className="ml-2 h-4 w-4" />
-              بازگشت
-            </Button>
-          </div>
-        )}
-
-        {step === "result" && selectedCar && selectedColor && selectedChassis && priceRange && (
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-black text-[#101117]">نتیجه ارزیابی</h3>
-              <p className="mt-1 text-sm text-[#6B6C70]">
-                قیمت حدودی بر اساس اطلاعات واردشده
-              </p>
-            </div>
-
-            <div className="rounded-3xl car-price-result-card p-5 text-white">
-              <div className="text-sm text-white/80">بازه قیمت تقریبی</div>
-              <div className="mt-3 text-xl font-black leading-10">
-                {formatPrice(priceRange.min)} تا {formatPrice(priceRange.max)} تومان
+          {/* پنل اصلی */}
+          <div className="lg:col-span-8">
+            <Card className="glass-card rounded-3xl border-[#3456bb]/10 md:rounded-[2rem]">
+              {/* دسکتاپ: ورودی چسبان داخل کارت */}
+              <div className="sticky top-28 z-20 hidden border-b border-[#E8ECF4]/80 bg-white/95 px-6 py-4 backdrop-blur-md lg:block">
+                {inputControls}
               </div>
-            </div>
 
-            <div className="space-y-2 rounded-2xl car-price-summary-box p-4">
-              <div className="flex items-center justify-between gap-3 text-sm">
-                <span className="text-[#6B6C70]">خودرو</span>
-                <span className="font-bold text-[#101117]">{selectedCar.name}</span>
-              </div>
-              <div className="flex items-center justify-between gap-3 text-sm">
-                <span className="text-[#6B6C70]">وضعیت رنگ</span>
-                <span className="font-bold text-[#101117]">{selectedColor.label}</span>
-              </div>
-              <div className="flex items-center justify-between gap-3 text-sm">
-                <span className="text-[#6B6C70]">وضعیت شاسی</span>
-                <span className="font-bold text-[#101117]">{selectedChassis.label}</span>
-              </div>
-              <div className="flex items-center justify-between gap-3 border-t border-[#E8ECF4] pt-2 text-sm">
-                <span className="text-[#6B6C70]">قیمت محاسبه‌شده</span>
-                <span className="font-black car-price-accent">
-                  {formatPrice(finalPrice)} تومان
-                </span>
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={handleBack} className={`h-11 flex-1 ${BACK_BTN_CLASS}`}>
-                <ArrowRight className="ml-2 h-4 w-4" />
-                بازگشت
-              </Button>
-              <Button onClick={resetAll} className="car-price-btn h-11 flex-1 rounded-2xl border-0">
-                <RotateCcw className="ml-2 h-4 w-4" />
-                شروع دوباره
-              </Button>
-            </div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  </div>
-)}
-
-          </div>
-        </div>
-
-        {/* ===== دسکتاپ - دست‌نخورده و کامل ===== */}
-        <div className="hidden lg:block">
-          <div className="grid min-h-[calc(100vh-4rem)] grid-cols-12 gap-6">
-            <div className="col-span-4">
-              <Card className="glass-card sticky top-6 rounded-[2rem] border-[#3456bb]/10">
-                <CardHeader>
-                  <Badge className="mb-3 w-fit car-price-badge">
-                    کارشناسی هوشمند خودرو
-                  </Badge>
-
-                  <CardTitle className="text-3xl font-black leading-[3rem] text-gradient">
-                    قیمت‌گذاری سریع و هوشمند خودرو
-                  </CardTitle>
-
-                  <CardDescription className="mt-2 text-sm leading-7">
-                    با انتخاب خودرو، وضعیت رنگ و شاسی، قیمت حدودی خودرو را با بازه ۱۰۰ میلیونی مشاهده کنید.
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                 
-
-                  <div className="space-y-3">
-                    {stepItems.map((item, index) => {
-                      const Icon = item.icon
-                      return (
-                        <div
-                          key={item.key}
-                          className={[
-                            "flex items-center gap-3 rounded-2xl border p-4 transition",
-                            item.active
-                              ? "car-price-step-active"
-                              : item.done
-                                ? "car-price-step-done"
-                                : "car-price-step-idle",
-                          ].join(" ")}
-                        >
-                          <div
-                            className={[
-                              "flex h-11 w-11 items-center justify-center rounded-2xl",
-                              item.active
-                                ? "bg-[#3456bb] text-white shadow-md shadow-[#3456bb]/25"
-                                : item.done
-                                  ? "bg-[#416CEA] text-white"
-                                  : "bg-[#F0F2F4] text-[#999A9C]",
-                            ].join(" ")}
-                          >
-                            <Icon className="h-5 w-5" />
-                          </div>
-
-                          <div className="flex-1">
-                            <div className="text-sm font-black text-[#101117]">
-                              {index + 1}. {item.title}
-                            </div>
-                            <div className="mt-1 text-xs text-[#6B6C70]">{item.desc}</div>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-
-                  {(selectedCar || selectedColor || selectedChassis) && (
-                    <div className="rounded-3xl car-price-summary-box p-4">
-                      <h3 className="mb-3 text-sm font-black text-[#101117]">خلاصه انتخاب‌ها</h3>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-[#6B6C70]">خودرو</span>
-                          <span className="font-bold text-[#101117]">{selectedCar?.name || "-"}</span>
-                        </div>
-                        <div className="flex items-center justify-between gap-3 text-sm">
-  <span className="text-[#6B6C70]">سال ساخت</span>
-  <span className="font-bold text-[#101117]">{year}</span>
-</div>
-
-<div className="flex items-center justify-between gap-3 text-sm">
-  <span className="text-[#6B6C70]">کارکرد</span>
-  <span className="font-bold text-[#101117]">{formatPrice(Number(toEnglishDigits(mileage)))} کیلومتر</span>
-</div>
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-[#6B6C70]">رنگ</span>
-                          <span className="font-bold text-[#101117]">{selectedColor?.label || "-"}</span>
-                        </div>
-                        <div className="flex items-center justify-between gap-3">
-                          <span className="text-[#6B6C70]">شاسی</span>
-                          <span className="font-bold text-[#101117]">{selectedChassis?.label || "-"}</span>
-                        </div>
-                      </div>
-
-                      <Button onClick={resetAll} variant="outline" className="mt-4 w-full rounded-2xl border-[#3456bb]/25 text-[#3456bb] hover:bg-[#eef2fd]">
-                        <RotateCcw className="ml-2 h-4 w-4" />
-                        شروع دوباره
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="col-span-8">
-              <Card className="glass-card rounded-[2rem] border-[#3456bb]/10">
-                <CardContent className="p-6">
-                  {step === "search_car" && (
-                    <div>
-                      <div className="mb-6">
-                        <h2 className="text-2xl font-black text-[#101117]">جستجوی خودرو</h2>
-                        <p className="mt-2 text-sm text-[#6B6C70]">
-                          از لیست خودروها جستجو و مدل موردنظر را انتخاب کنید.
-                        </p>
-                      </div>
-
-                      <div className="relative mb-5">
-                        <Search className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#999A9C]" />
-                        <Input
-                          value={query}
-                          onChange={(e) => setQuery(e.target.value)}
-                          placeholder="مثلاً پژو 207، دنا پلاس، تارا..."
-                          className={`${INPUT_CLASS_LG} pr-12`}
-                        />
-                      </div>
-
-                      {!query.trim() ? (
+              <CardContent className="space-y-3 p-3 md:space-y-4 md:p-6">
+                {step === "search_car" && (
+                  <>
+                    {!query.trim() ? (
+                      <div className="rounded-2xl md:rounded-3xl">
                         <CarPricingSeoContent variant="intro" />
-                      ) : (
-                      <div className="grid grid-cols-2 gap-3 xl:grid-cols-3">
+                      </div>
+                    ) : (
+                      <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3 md:gap-3">
                         {filteredCars.map((car) => (
                           <button
                             key={car.id}
                             onClick={() => handleSelectCar(car)}
-                            className="car-price-interactive rounded-3xl p-4 text-right"
+                            className="car-price-interactive flex w-full items-center justify-between rounded-2xl px-3.5 py-3 text-right md:flex-col md:items-start md:rounded-3xl md:p-4"
                           >
-                            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl car-price-icon-box">
-                              <CarFront className="h-5 w-5" />
+                            <div className="mb-0 flex min-w-0 flex-col text-right md:mb-3">
+                              <div className="mb-2 hidden h-11 w-11 items-center justify-center rounded-2xl car-price-icon-box md:flex">
+                                <CarFront className="h-5 w-5" />
+                              </div>
+                              <span className="truncate text-sm font-bold text-[#101117]">
+                                {car.name}
+                              </span>
+                              <span className="mt-1 text-[11px] text-[#6B6C70] md:text-xs">
+                                قیمت پایه: {formatPrice(displayBasePrice(car))} تومان
+                              </span>
                             </div>
-                            <div className="text-sm font-black text-[#101117]">{car.name}</div>
-                            <div className="mt-2 text-xs text-[#6B6C70]">
-                              قیمت پایه: {formatPrice(car.source == "hamrah" ? car.price + 400000000 : car.price)} تومان
-                            </div>
+                            <CarFront className="h-4 w-4 shrink-0 car-price-accent md:hidden" />
                           </button>
                         ))}
                       </div>
-                      )}
+                    )}
 
-                      {!filteredCars.length && query.trim() && (
-                        <div className="rounded-3xl border border-dashed border-[#E8ECF4] bg-white/70 px-4 py-10 text-center text-[#6B6C70]">
-                          خودرویی با این عبارت پیدا نشد.
-                        </div>
-                      )}
+                    {!filteredCars.length && query.trim() && (
+                      <div className="rounded-2xl border border-dashed border-[#E8ECF4] bg-white/70 px-4 py-8 text-center text-sm text-[#6B6C70]">
+                        خودرویی با این عبارت پیدا نشد.
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {step === "year" && (
+                  <p className="rounded-2xl bg-[#F8FAFF] px-4 py-3 text-xs leading-6 text-[#55565A] md:text-sm md:leading-7">
+                    سال ساخت را بین ۱۳۸۰ تا {selectedCar?.lastYear} وارد کنید، سپس ادامه دهید.
+                  </p>
+                )}
+
+                {step === "mileage" && (
+                  <p className="rounded-2xl bg-[#F8FAFF] px-4 py-3 text-xs leading-6 text-[#55565A] md:text-sm md:leading-7">
+                    کارکرد واقعی خودرو را وارد کنید تا محاسبه قیمت دقیق‌تر شود.
+                  </p>
+                )}
+
+                {step === "color" && (
+                  <div>
+                    <div className="grid gap-2 sm:grid-cols-2 md:gap-3">
+                      {COLOR_OPTIONS.map((item) => (
+                        <button
+                          key={item.label}
+                          onClick={() => handleSelectColor(item)}
+                          className="car-price-interactive rounded-2xl px-4 py-3.5 text-right text-sm font-bold text-[#101117] md:rounded-3xl md:p-5"
+                        >
+                          <div className="mb-2 hidden h-11 w-11 items-center justify-center rounded-2xl car-price-icon-box md:flex">
+                            <Palette className="h-5 w-5" />
+                          </div>
+                          {item.label}
+                        </button>
+                      ))}
                     </div>
-                  )}
-{step === "year" && (
-  <div>
-    <div className="mb-6">
-      <h2 className="text-2xl font-black text-[#101117]">سال ساخت خودرو</h2>
-      <p className="mt-2 text-sm text-[#6B6C70]">
-        خودرو انتخاب‌شده: <span className="font-bold text-[#101117]">{selectedCar?.name}</span>
-      </p>
-    </div>
+                    <Button
+                      variant="outline"
+                      onClick={handleBack}
+                      className={`mt-3 h-11 w-full ${BACK_BTN_CLASS}`}
+                    >
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                      بازگشت
+                    </Button>
+                  </div>
+                )}
 
-    <div className="max-w-md space-y-4">
-      <Input
-        value={year}
-        onChange={(e) => setYear(toEnglishDigits(e.target.value))}
-        placeholder="مثلاً 1401"
-        className={INPUT_CLASS_LG}
-        inputMode="numeric"
-      />
-      <div className="flex gap-3">
-        <Button variant="outline" onClick={handleBack} className={BACK_BTN_CLASS + " rounded-2xl px-6"}>
-          <ArrowRight className="ml-2 h-4 w-4" />
-          بازگشت
-        </Button>
-        <Button onClick={handleYearSubmit} className="car-price-btn rounded-2xl border-0 px-6">
-          ادامه به مرحله کارکرد
-        </Button>
-      </div>
-    </div>
-  </div>
-)}
-
-{step === "mileage" && (
-  <div>
-    <div className="mb-6">
-      <h2 className="text-2xl font-black text-[#101117]">کارکرد خودرو</h2>
-      <p className="mt-2 text-sm text-[#6B6C70]">
-        سال انتخاب‌شده: <span className="font-bold text-[#101117]">{year}</span>
-      </p>
-    </div>
-
-    <div className="max-w-md space-y-4">
-      <Input
-        value={mileage}
-        onChange={(e) => setMileage(formatMileageInput(e.target.value))}
-        placeholder="مثلاً 85000"
-        className={INPUT_CLASS_LG}
-        inputMode="numeric"
-      />
-      <div className="flex gap-3">
-        <Button variant="outline" onClick={handleBack} className={BACK_BTN_CLASS + " rounded-2xl px-6"}>
-          <ArrowRight className="ml-2 h-4 w-4" />
-          بازگشت
-        </Button>
-        <Button onClick={handleMileageSubmit} className="car-price-btn rounded-2xl border-0 px-6">
-          ادامه به مرحله رنگ
-        </Button>
-      </div>
-    </div>
-  </div>
-)}
-
-                  {step === "color" && (
-                    <div>
-                      <div className="mb-6">
-                        <h2 className="text-2xl font-black text-[#101117]">انتخاب وضعیت رنگ</h2>
-                        <p className="mt-2 text-sm text-[#6B6C70]">
-                          خودرو انتخاب‌شده: <span className="font-bold text-[#101117]">{selectedCar?.name}</span>
-                        </p>
-                      </div>
-
-                      <div className="grid gap-3 md:grid-cols-2">
-                        {COLOR_OPTIONS.map((item) => (
-                          <button
-                            key={item.label}
-                            onClick={() => handleSelectColor(item)}
-                            className="car-price-interactive rounded-3xl p-5 text-right"
-                          >
-                            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl car-price-icon-box">
-                              <Palette className="h-5 w-5" />
-                            </div>
-                            <div className="text-sm font-black text-[#101117]">{item.label}</div>
-                          </button>
-                        ))}
-                      </div>
-                      <Button variant="outline" onClick={handleBack} className={`mt-4 ${BACK_BTN_CLASS} rounded-2xl px-6`}>
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                        بازگشت
-                      </Button>
+                {step === "chassis" && (
+                  <div>
+                    <div className="grid gap-2 sm:grid-cols-2 md:gap-3">
+                      {CHASSIS_OPTIONS.map((item) => (
+                        <button
+                          key={item.label}
+                          onClick={() => handleSelectChassis(item)}
+                          className="car-price-interactive rounded-2xl px-4 py-3.5 text-right text-sm font-bold text-[#101117] md:rounded-3xl md:p-5"
+                        >
+                          <div className="mb-2 hidden h-11 w-11 items-center justify-center rounded-2xl car-price-icon-box md:flex">
+                            <ShieldCheck className="h-5 w-5" />
+                          </div>
+                          {item.label}
+                        </button>
+                      ))}
                     </div>
-                  )}
+                    <Button
+                      variant="outline"
+                      onClick={handleBack}
+                      className={`mt-3 h-11 w-full ${BACK_BTN_CLASS}`}
+                    >
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                      بازگشت
+                    </Button>
+                  </div>
+                )}
 
-                  {step === "chassis" && (
-                    <div>
-                      <div className="mb-6">
-                        <h2 className="text-2xl font-black text-[#101117]">انتخاب وضعیت شاسی و اتاق</h2>
-                        <p className="mt-2 text-sm text-[#6B6C70]">
-                          رنگ انتخاب‌شده: <span className="font-bold text-[#101117]">{selectedColor?.label}</span>
-                        </p>
-                      </div>
-
-                      <div className="grid gap-3 md:grid-cols-2">
-                        {CHASSIS_OPTIONS.map((item) => (
-                          <button
-                            key={item.label}
-                            onClick={() => handleSelectChassis(item)}
-                            className="car-price-interactive rounded-3xl p-5 text-right"
-                          >
-                            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl car-price-icon-box">
-                              <ShieldCheck className="h-5 w-5" />
-                            </div>
-                            <div className="text-sm font-black text-[#101117]">{item.label}</div>
-                          </button>
-                        ))}
-                      </div>
-                      <Button variant="outline" onClick={handleBack} className={`mt-4 ${BACK_BTN_CLASS} rounded-2xl px-6`}>
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                        بازگشت
-                      </Button>
-                    </div>
-                  )}
-
-                  {step === "result" && selectedCar && selectedColor && selectedChassis && priceRange && (
-                    <div>
-                      <div className="mb-6">
-                        <h2 className="text-2xl font-black text-[#101117]">نتیجه ارزیابی</h2>
-                        <p className="mt-2 text-sm text-[#6B6C70]">
-                          قیمت حدودی خودرو بر اساس مدل، وضعیت رنگ و شاسی
-                        </p>
-                      </div>
-
-                      <div className="rounded-[2rem] car-price-result-card p-8 text-white">
-                        <div className="text-sm text-white/80">بازه قیمت تقریبی</div>
-                        <div className="mt-4 text-3xl font-black leading-[3.5rem]">
+                {step === "result" &&
+                  selectedCar &&
+                  selectedColor &&
+                  selectedChassis &&
+                  priceRange && (
+                    <div className="space-y-4">
+                      <div className="rounded-2xl car-price-result-card p-5 text-white md:rounded-[2rem] md:p-8">
+                        <div className="text-xs text-white/80 md:text-sm">بازه قیمت تقریبی</div>
+                        <div className="mt-2 text-lg font-black leading-9 md:mt-4 md:text-3xl md:leading-[3.5rem]">
                           {formatPrice(priceRange.min)} تا {formatPrice(priceRange.max)} تومان
                         </div>
                       </div>
 
-                      <div className="mt-5 grid gap-4 md:grid-cols-2">
-                        <div className="rounded-3xl car-price-summary-box p-5">
-                          <div className="mb-3 text-sm font-black text-[#101117]">جزئیات انتخاب</div>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex items-center justify-between gap-3">
-                              <span className="text-[#6B6C70]">خودرو</span>
-                              <span className="font-bold text-[#101117]">{selectedCar.name}</span>
-                            </div>
-                            <div className="flex items-center justify-between gap-3 text-sm">
-  <span className="text-[#6B6C70]">سال ساخت</span>
-  <span className="font-bold text-[#101117]">{year}</span>
-</div>
-
-<div className="flex items-center justify-between gap-3 text-sm">
-  <span className="text-[#6B6C70]">کارکرد</span>
-  <span className="font-bold text-[#101117]">{formatPrice(Number(toEnglishDigits(mileage)))} کیلومتر</span>
-</div>
-                            <div className="flex items-center justify-between gap-3">
-                              <span className="text-[#6B6C70]">رنگ</span>
-                              <span className="font-bold text-[#101117]">{selectedColor.label}</span>
-                            </div>
-                            <div className="flex items-center justify-between gap-3">
-                              <span className="text-[#6B6C70]">شاسی</span>
-                              <span className="font-bold text-[#101117]">{selectedChassis.label}</span>
-                            </div>
+                      <div className="grid gap-3 md:grid-cols-2">
+                        <div className="space-y-2 rounded-2xl car-price-summary-box p-4 md:rounded-3xl md:p-5">
+                          <div className="mb-1 text-sm font-black text-[#101117]">جزئیات انتخاب</div>
+                          <div className="flex justify-between gap-3 text-sm">
+                            <span className="text-[#6B6C70]">خودرو</span>
+                            <span className="font-bold text-[#101117]">{selectedCar.name}</span>
+                          </div>
+                          <div className="flex justify-between gap-3 text-sm">
+                            <span className="text-[#6B6C70]">سال ساخت</span>
+                            <span className="font-bold text-[#101117]">{year}</span>
+                          </div>
+                          <div className="flex justify-between gap-3 text-sm">
+                            <span className="text-[#6B6C70]">کارکرد</span>
+                            <span className="font-bold text-[#101117]">
+                              {formatPrice(Number(toEnglishDigits(mileage).replaceAll(",", "")))} کیلومتر
+                            </span>
+                          </div>
+                          <div className="flex justify-between gap-3 text-sm">
+                            <span className="text-[#6B6C70]">رنگ</span>
+                            <span className="font-bold text-[#101117]">{selectedColor.label}</span>
+                          </div>
+                          <div className="flex justify-between gap-3 text-sm">
+                            <span className="text-[#6B6C70]">شاسی</span>
+                            <span className="font-bold text-[#101117]">{selectedChassis.label}</span>
                           </div>
                         </div>
 
-                        <div className="rounded-3xl car-price-summary-box p-5">
-                          <div className="mb-3 text-sm font-black text-[#101117]">خروجی محاسبه</div>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex items-center justify-between gap-3">
-                              <span className="text-[#6B6C70]">قیمت پایه</span>
-                              <span className="font-bold text-[#101117]">{formatPrice(selectedCar.source == "hamrah" ? selectedCar.price + 400000000 : selectedCar.price)} تومان</span>
-                            </div>
-                            <div className="flex items-center justify-between gap-3">
-                              <span className="text-[#6B6C70]">قیمت محاسبه‌شده</span>
-                              <span className="font-bold car-price-accent">{formatPrice(finalPrice)} تومان</span>
-                            </div>
-                            <div className="flex items-center justify-between gap-3">
-                              <span className="text-[#6B6C70]">بازه نهایی</span>
-                              <span className="font-black car-price-accent-light">
-                                {formatPrice(priceRange.min)} تا {formatPrice(priceRange.max)}
-                              </span>
-                            </div>
+                        <div className="space-y-2 rounded-2xl car-price-summary-box p-4 md:rounded-3xl md:p-5">
+                          <div className="mb-1 text-sm font-black text-[#101117]">خروجی محاسبه</div>
+                          <div className="flex justify-between gap-3 text-sm">
+                            <span className="text-[#6B6C70]">قیمت پایه</span>
+                            <span className="font-bold text-[#101117]">
+                              {formatPrice(displayBasePrice(selectedCar))} تومان
+                            </span>
+                          </div>
+                          <div className="flex justify-between gap-3 text-sm">
+                            <span className="text-[#6B6C70]">قیمت محاسبه‌شده</span>
+                            <span className="font-bold car-price-accent">
+                              {formatPrice(finalPrice)} تومان
+                            </span>
+                          </div>
+                          <div className="flex justify-between gap-3 text-sm">
+                            <span className="text-[#6B6C70]">بازه نهایی</span>
+                            <span className="font-black car-price-accent-light">
+                              {formatPrice(priceRange.min)} تا {formatPrice(priceRange.max)}
+                            </span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="mt-6 flex gap-3">
-                        <Button variant="outline" onClick={handleBack} className={`${BACK_BTN_CLASS} rounded-2xl px-6`}>
+                      <div className="flex gap-2 md:gap-3">
+                        <Button
+                          variant="outline"
+                          onClick={handleBack}
+                          className={`h-11 flex-1 ${BACK_BTN_CLASS}`}
+                        >
                           <ArrowRight className="ml-2 h-4 w-4" />
                           بازگشت
                         </Button>
-                        <Button onClick={resetAll} className="car-price-btn rounded-2xl border-0 px-6">
+                        <Button
+                          onClick={resetAll}
+                          className="car-price-btn h-11 flex-1 rounded-2xl border-0"
+                        >
                           <RotateCcw className="ml-2 h-4 w-4" />
                           شروع دوباره
                         </Button>
                       </div>
                     </div>
                   )}
-                </CardContent>
-              </Card>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
-        <CarPricingSeoContent variant="details" />
+
+        <div className="mt-4 md:mt-6">
+          <CarPricingSeoContent variant="details" />
+        </div>
       </div>
+
       <div className="block lg:hidden">
         <NavigationBar />
       </div>
     </main>
-  )
+  );
 }

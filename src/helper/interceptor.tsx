@@ -72,9 +72,9 @@ instance.interceptors.response.use(
   async (error) => {
     let message = "";
     const originalRequest = error.config;
-    
-    if(error.response.data.statusMessage) {
-    message  = error.response.data.statusMessage;
+
+    if (error.response?.data?.statusMessage) {
+      message = error.response.data.statusMessage;
     }
     
     
@@ -95,10 +95,18 @@ instance.interceptors.response.use(
           originalRequest.headers["Authorization"] = "Bearer " + newToken;
           return instance(originalRequest);
         } catch (err) {
-         
-          localStorage.clear();
+          const redirectUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+          const isAuthPage = ["/login", "/verify-otp", "/register"].some(
+            (path) => window.location.pathname.startsWith(path)
+          );
+          const loginUrl = isAuthPage
+            ? "/login"
+            : `/login?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+
+          // اطلاعات جریان کارشناسی را نگه می‌داریم تا کاربر بعد از ورود ادامه دهد.
+          localStorage.removeItem("token");
           toast("Error", { description: "نشست شما منقضی شده است. لطفاً دوباره وارد شوید." });
-          window.location.href = "/login";
+          window.location.href = loginUrl;
           return Promise.reject(err);
         }
     }

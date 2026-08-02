@@ -10,6 +10,43 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import type { FaqItem } from "@/lib/faq-data";
+import type { ReactNode } from "react";
+
+const INSPECTION_HREF = "/car-inspection-flow/select-car-group";
+
+/** Longer phrases first so nested matches stay intact */
+const INSPECTION_LINK_PHRASES = [
+  "رزرو کارشناسی ماشین",
+  "شروع کارشناسی",
+] as const;
+
+function linkifyInspectionPhrases(text: string): ReactNode[] {
+  const pattern = new RegExp(
+    `(${INSPECTION_LINK_PHRASES.map((p) =>
+      p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    ).join("|")})`,
+    "g"
+  );
+
+  return text.split(pattern).map((part, index) => {
+    if (
+      INSPECTION_LINK_PHRASES.includes(
+        part as (typeof INSPECTION_LINK_PHRASES)[number]
+      )
+    ) {
+      return (
+        <Link
+          key={`${part}-${index}`}
+          href={INSPECTION_HREF}
+          className="font-semibold text-[#3456bb] hover:underline"
+        >
+          {part}
+        </Link>
+      );
+    }
+    return <span key={`text-${index}`}>{part}</span>;
+  });
+}
 
 type FaqPreviewSectionProps = {
   title?: string;
@@ -76,7 +113,7 @@ export function FaqPreviewSection({
                 </span>
               </AccordionTrigger>
               <AccordionContent className="border-t border-[#EEF2FD] pb-4 text-right text-sm leading-8 text-[#55565A] md:text-base">
-                {item.Answer}
+                {linkifyInspectionPhrases(item.Answer)}
               </AccordionContent>
             </AccordionItem>
           ))}

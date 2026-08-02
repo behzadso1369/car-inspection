@@ -1,48 +1,90 @@
-'use client'
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { ProductCard } from "./ProductCard";
-import Autoplay from "embla-carousel-autoplay"
-import { useEffect, useState } from "react";
+import { ArrowLeft01Icon } from "hugeicons-react";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function Services({data}:any) {
+const SERVICES = [
+  {
+    title: "کارشناسی خودرو",
+    description:
+      "پیش از خرید یا فروش، وضعیت خودرو را به طور کامل بررسی کنید و با شناخت دقیق‌تری وارد معامله شوید.",
+    href: "/car-inspection-flow/select-car-group",
+    cta: "رزرو کارشناسی خودرو",
+    image: "/images/home/service-inspection.webp",
+    imageAlt: "کارشناسی خودرو؛ بررسی رنگ و بدنه با دستگاه ضخامت‌سنج رنگ",
+  },
+  {
+    title: "قیمت‌گذاری خودرو",
+    description:
+      "ارزش تقریبی خودرو را بر اساس مشخصات، شرایط بازار و وضعیت آن بررسی کنید.",
+    href: "/car-price",
+    cta: "تخمین قیمت خودرو",
+    image: "/images/home/service-pricing.webp",
+    imageAlt: "قیمت‌گذاری خودرو؛ تخمین ارزش خودرو بر اساس مشخصات و بازار",
+  },
+] as const;
 
-  
-    const [api, setApi] = useState<CarouselApi>()
-    const [current, setCurrent] = useState(0)
-    const [count, setCount] = useState(0)
-    useEffect(() => {
-      if (!api) {
-        return
-      }
-      setCount(api.scrollSnapList().length)
-      setCurrent(api.selectedScrollSnap() + 1)
-      api.on("select", () => {
-        setCurrent(api.selectedScrollSnap() + 1)
-      })
-    }, [api])
+export default function Services() {
+  return (
+    <section
+      dir="rtl"
+      className="bg-white px-4 py-12 font-IranSans lg:px-36"
+      aria-labelledby="home-services-heading"
+    >
+      <h2
+        id="home-services-heading"
+        className="mb-7 text-center text-lg font-bold text-[#101117] lg:text-2xl"
+      >
+        خدمات کارشناسی کارماچک
+      </h2>
 
-    return (
-        <section className="bg-white  px-4 py-12 lg:px-36">
-            <h3 className="mb-7 text-center font-IranSans text-lg">خدمات کارشناسی کارماچک</h3>
-            <Carousel  setApi={setApi}  className="w-full max-w-full" opts={{
-                direction: "rtl",
-                align:"start",
-                loop:true
-            }}  >
-        <CarouselContent className="-ml-2 md:-ml-4">
-          {data?.map((item:any, index:number) => (
-            <CarouselItem key={index} className="pl-2 md:pl-4 basis-4/5 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/4" >
-              
-                  <ProductCard Id={item.Id} ImagePath={item.ImagePath} Title={item.Title} Description={item.Description} />
-              
-           
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-    
-      </Carousel>
+      <div className="mx-auto grid max-w-4xl gap-5 md:grid-cols-2">
+        {SERVICES.map((service) => (
+          <article
+            key={service.title}
+            className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-[#DCDCDC] bg-white"
+          >
+            <div className="relative h-52 overflow-hidden">
+              <Image
+                src={service.image}
+                alt={service.imageAlt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 400px"
+                priority={false}
+              />
+            </div>
 
-        </section>
+            <div className="absolute left-6 top-52 z-30 flex h-16 w-14 -translate-y-1/2 justify-center rounded-full bg-white py-1">
+              <Link
+                href={service.href}
+                prefetch={false}
+                aria-label={service.cta}
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-[#416CEA] text-white"
+              >
+                <ArrowLeft01Icon color="white" size={24} />
+              </Link>
+            </div>
 
-    )
+            <div className="mt-10 flex flex-1 flex-col justify-between px-4 pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-[#101117]">
+                  {service.title}
+                </h3>
+                <p className="mt-2 text-sm leading-7 text-[#55565A]">
+                  {service.description}
+                </p>
+              </div>
+              <Link
+                href={service.href}
+                prefetch={false}
+                className="mt-4 block w-full rounded-3xl bg-[#416CEA] px-4 py-2.5 text-center text-white"
+              >
+                {service.cta}
+              </Link>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
 }

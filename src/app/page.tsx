@@ -1,6 +1,7 @@
 import { Slider } from "./components/mobile/Home/Slider";
 import Introduction from "./components/mobile/Home/Introduction";
 import Services from "./components/mobile/Home/Services";
+import HomeFeatures from "./components/mobile/Home/HomeFeatures";
 import QualityBox from "./components/mobile/Home/QualityBox";
 import Statistics from "./components/mobile/Home/Statistics";
 import BlogShort from "./components/mobile/Home/BlogShort";
@@ -9,7 +10,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { serverApiHelper } from "@/helper/server-fetcher";
 import { LOCAL_AREAS } from "@/lib/local-areas";
-import { getFaqPreviewItems } from "@/lib/faq-data";
+import { getFaqsByCategoryName } from "@/lib/faq-data";
 import { FaqPreviewSection } from "./components/FaqPreviewSection";
 
 // ISR - Incremental Static Regeneration (revalidate هر 10 دقیقه)
@@ -79,25 +80,30 @@ export default async function Home() {
   console.log('⏰ Time:', new Date().toISOString());
 
   const data = await getMasterPageData();
-  const faqPreviewItems = await getFaqPreviewItems(5, 600);
+  const faqPreviewItems = await getFaqsByCategoryName("کارماچک", 600);
   return (
    <div className="bg-white">
       <Slider data={data?.Sliders}/>
       <Introduction data={data?.WhyWe}/>
-      <Services data={data?.CarInspectionServices}/>
+      <HomeFeatures />
+      <Services />
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
-      <Statistics data={data?.StatisticsData}/>
+      <Statistics />
       <BlogShort data={data?.BlogPosts}/>
 
-      {/* بخش سئوی محلی — مناطق تحت پوشش شرق تهران */}
+      {/* بخش سئوی محلی: مناطق تحت پوشش شرق تهران */}
       <section className="font-IranSans max-w-6xl mx-auto px-4 py-10" dir="rtl">
         <h2 className="text-lg lg:text-2xl font-bold text-[#1E2A38] text-center">
           کارشناسی خودرو در شرق تهران
         </h2>
         <p className="mt-3 text-center text-[#6B6C70] leading-8 max-w-3xl mx-auto text-sm lg:text-base">
-          کارماچک خدمات <strong>کارشناسی خودرو</strong> و <strong>کارشناسی ماشین</strong> را
-          به‌صورت در محل در سراسر تهران و به‌ویژه شرق تهران — تهرانپارس، نارمک، فرجام و
-          میدان رسالت — با ۹۰٪ دقت و گزارش فوری ارائه می‌دهد.
+          کارماچک خدمات <strong>کارشناسی خودرو در محل</strong> و{" "}
+          <strong>کارشناسی ماشین</strong> را در سراسر تهران، به‌ویژه مناطق{" "}
+          <strong>شرق تهران</strong>، ارائه می‌دهد. در{" "}
+          <strong>تهرانپارس</strong>، <strong>نارمک</strong>، <strong>فرجام</strong> و{" "}
+          <strong>میدان رسالت</strong> می‌توانید خودرو را از نظر فنی، رنگ و بدنه بررسی
+          کنید و گزارشی کامل و شفاف از وضعیت خودرو، ایرادهای احتمالی و اثر آن‌ها بر
+          هزینه تعمیر و ارزش معامله دریافت کنید.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {LOCAL_AREAS.map((a) => (

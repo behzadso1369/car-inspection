@@ -46,11 +46,13 @@ export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
     return null;
   }
 
+  const isCarPrice = pathname === "/car-price";
+
   return (
     <>
       <Banner data={data?.MasterSiteData?.NavbarPhoneNumber} />
       <div className="block lg:hidden">
-        <CallAction data={data} />
+        <CallAction data={data} fixed={isCarPrice} />
       </div>
       <div className="hidden lg:block px-20 mb-6 bg-transparent sticky top-11 z-10">
         <Header data={data} />

@@ -121,12 +121,13 @@ export default function OnSiteAddressMapModal({
   const pickLocation = useCallback(
     (lat: number, lng: number) => {
       setPosition({ lat, lng });
+      setLocationError(null);
       resolveAddress(lat, lng);
     },
     [resolveAddress]
   );
 
-  const requestUserLocation = () => {
+  const requestUserLocation = useCallback(() => {
     if (!navigator.geolocation) {
       setLocationError("unsupported");
       return;
@@ -135,35 +136,89 @@ export default function OnSiteAddressMapModal({
       setLocationError("insecure");
       return;
     }
+
     setIsLocating(true);
     setLocationError(null);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        pickLocation(pos.coords.latitude, pos.coords.longitude);
-        setIsLocating(false);
-      },
-      (err) => {
-        setIsLocating(false);
-        setLocationError(err.code === err.PERMISSION_DENIED ? "denied" : "failed");
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-    );
-  };
+
+    const onSuccess = (pos: GeolocationPosition) => {
+      pickLocation(pos.coords.latitude, pos.coords.longitude);
+      setIsLocating(false);
+    };
+
+    const onError = (err: GeolocationPositionError) => {
+      setIsLocating(false);
+      if (err.code === err.PERMISSION_DENIED) {
+        setLocationError("denied");
+        return;
+      }
+      if (err.code === err.TIMEOUT) {
+        setLocationError("timeout");
+        return;
+      }
+      setLocationError("failed");
+    };
+
+    // اول با دقت پایین‌تر (سریع‌تر و پایدارتر روی موبایل)، بعد در صورت نیاز با دقت بالا
+    navigator.geolocation.getCurrentPosition(onSuccess, (err) => {
+      if (err.code === err.PERMISSION_DENIED) {
+        onError(err);
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 0,
+      });
+    }, {
+      enableHighAccuracy: false,
+      timeout: 10000,
+      maximumAge: 60000,
+    });
+  }, [pickLocation]);
 
   useEffect(() => {
     if (!open || !mounted) return;
+
+    setPosition({ lat: initialLat, lng: initialLng });
+    setLocationError(null);
     resolveAddress(initialLat, initialLng);
-    requestUserLocation();
-  }, [open, mounted, initialLat, initialLng, resolveAddress]);
+
+    // درخواست خودکار فقط اگر قبلاً اجازه داده شده باشد.
+    // درخواست بدون gesture کاربر در موبایل/پروداکشن اغلب PERMISSION_DENIED می‌شود.
+    let cancelled = false;
+    const maybeAutoLocate = async () => {
+      try {
+        const permissions = navigator.permissions;
+        if (!permissions?.query) return;
+        const result = await permissions.query({
+          name: "geolocation" as PermissionName,
+        });
+        if (!cancelled && result.state === "granted") {
+          requestUserLocation();
+        }
+      } catch {
+        // Permissions API در بعضی مرورگرها پشتیبانی نمی‌شود؛ دستی بماند.
+      }
+    };
+    void maybeAutoLocate();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open, mounted, initialLat, initialLng, resolveAddress, requestUserLocation]);
 
   const locationMessage =
     locationError === "denied"
-      ? "دسترسی به موقعیت رد شد. روی نقشه نقطه مورد نظر را انتخاب کنید."
+      ? "دسترسی موقعیت برای این سایت مسدود است. از تنظیمات مرورگر اجازه دهید، یا روی نقشه نقطه را انتخاب کنید."
       : locationError === "insecure"
         ? "برای موقعیت‌یابی، سایت باید با HTTPS باز شود."
-        : locationError
-          ? "دریافت موقعیت با خطا مواجه شد."
-          : null;
+        : locationError === "timeout"
+          ? "دریافت موقعیت طول کشید. دوباره تلاش کنید یا روی نقشه انتخاب کنید."
+          : locationError === "unsupported"
+            ? "مرورگر شما از موقعیت‌یابی پشتیبانی نمی‌کند. روی نقشه نقطه را انتخاب کنید."
+            : locationError
+              ? "دریافت موقعیت با خطا مواجه شد. روی نقشه نقطه مورد نظر را انتخاب کنید."
+              : null;
 
   return (
     <DialogContent
@@ -206,16 +261,28 @@ export default function OnSiteAddressMapModal({
         )}
 
         {locationMessage && !isLocating && (
-          <div className="absolute top-4 left-1/2 z-[1000] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border bg-white px-4 py-3 text-center text-sm text-[#55565A] shadow-lg">
-            {locationMessage}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={requestUserLocation}
-              className="mt-2 h-9 w-full rounded-full border-[#416CEA]/30 text-[#416CEA]"
-            >
-              تلاش مجدد
-            </Button>
+          <div className="absolute top-4 left-1/2 z-[1000] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border bg-white px-4 py-3 text-center text-sm text-[#55565A] shadow-lg pointer-events-auto">
+            <p>{locationMessage}</p>
+            <div className="mt-2 flex gap-2">
+              {locationError !== "denied" && locationError !== "unsupported" && locationError !== "insecure" && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={requestUserLocation}
+                  className="h-9 flex-1 rounded-full border-[#416CEA]/30 text-[#416CEA]"
+                >
+                  تلاش مجدد
+                </Button>
+              )}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setLocationError(null)}
+                className="h-9 flex-1 rounded-full border-[#DFDFDF] text-[#55565A]"
+              >
+                بستن
+              </Button>
+            </div>
           </div>
         )}
 

@@ -5,6 +5,7 @@ import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import { DiscountTag01Icon } from "hugeicons-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
@@ -12,7 +13,8 @@ import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
 export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const router = useRouter();
-   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   useEffect(() => {
     router.prefetch('./payment-success');
@@ -49,7 +51,7 @@ export default function ClientWrapper() {
   }, []);
 
   return (
-    <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-24">
+    <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-[calc(10rem+env(safe-area-inset-bottom))] lg:pb-8">
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -132,18 +134,36 @@ export default function ClientWrapper() {
         </div>
       </div>
 
-      <div className="px-4 w-full lg:my-4 bg-white lg:static lg:mt-8 fixed flex justify-between bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
-        <Button disabled={loading} onClick={moveToPaymentSucceed} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
-           
-            {
-            loading ? "لطفا منتظر بمانید..." : "تایید و پرداخت"
-          }
-           
+      <div className="fixed bottom-0 left-0 right-0 z-30 w-full space-y-3 bg-white px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0px_4px_32px_0px_#CBD5E0] lg:static lg:my-4 lg:mt-8 lg:pb-4">
+        <label className="flex cursor-pointer items-start gap-2.5 text-sm leading-6 text-[#55565A]">
+          <input
+            type="checkbox"
+            checked={acceptedTerms}
+            onChange={(e) => setAcceptedTerms(e.target.checked)}
+            className="mt-1 size-4 shrink-0 accent-[#416CEA]"
+          />
+          <span>
+            <Link
+              href="/regulations"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-[#416CEA] underline-offset-2 hover:underline"
+              onClick={(e) => e.stopPropagation()}
+            >
+              قوانین و مقررات کارماچک
+            </Link>
+            {" "}را می‌پذیرم.
+          </span>
+        </label>
+
+        <Button
+          disabled={loading || !acceptedTerms}
+          onClick={moveToPaymentSucceed}
+          type="submit"
+          className="w-full rounded-3xl bg-[#416CEA] py-6 text-white disabled:opacity-50"
+        >
+          {loading ? "لطفا منتظر بمانید..." : "تایید و پرداخت"}
         </Button>
-        <DiscountPriceDisplay
-          fullPrice={orderDetail?.totalPrice ?? 0}
-          discountedPrice={orderDetail?.finalPrice ?? orderDetail?.totalPrice ?? 0}
-        />
       </div>
     </div>
   );

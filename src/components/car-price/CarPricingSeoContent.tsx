@@ -157,14 +157,14 @@ export default function CarPricingSeoContent({
   };
 
   return (
-    <article className="mt-5 rounded-[2rem] border border-[#E8ECF4] bg-white p-5 shadow-sm md:p-8 lg:p-10">
+    <article className="mt-0 rounded-2xl border border-[#E8ECF4] bg-white p-4 shadow-sm md:mt-5 md:rounded-[2rem] md:p-8 lg:p-10">
       {variant === "details" && (
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       )}
 
       {variant === "intro" ? (
         <>
-          <h2 className="text-2xl font-black leading-10 text-[#101117] md:text-3xl">
+          <h2 className="text-base font-black leading-7 text-[#101117] md:text-2xl md:leading-10 lg:text-3xl">
             محاسبه قیمت خودرو؛ ماشین شما چقدر می‌ارزد؟
           </h2>
           <p className={paragraphClass}>

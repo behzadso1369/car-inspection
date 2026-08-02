@@ -71,7 +71,7 @@ export default function ExpertStatusTracker({
         </p>
       )}
       {!isStopped && (
-        <div className="flex items-center justify-between gap-1 overflow-x-auto pb-1 mt-4">
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
           {EXPERT_STATUS_STEPS.map((step, idx) => {
             const stepIdx = STATUS_ORDER.indexOf(step.key);
             const isDone = currentIdx >= stepIdx;
@@ -79,10 +79,16 @@ export default function ExpertStatusTracker({
             return (
               <div
                 key={step.key}
-                className="flex flex-col items-center min-w-[52px]"
+                className={`flex min-h-[76px] flex-col items-center justify-center rounded-xl border px-2 py-2 ${
+                  isCurrent
+                    ? "border-[#416CEA] bg-[#EEF2FD] shadow-sm"
+                    : isDone
+                      ? "border-[#416CEA]/25 bg-white"
+                      : "border-[#E8ECF4] bg-[#FAFBFD]"
+                }`}
               >
                 <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                  className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ${
                     isDone
                       ? "bg-[#416CEA] text-white"
                       : "bg-[#E8ECF4] text-[#9DB0C9]"
@@ -90,7 +96,7 @@ export default function ExpertStatusTracker({
                 >
                   {idx + 1}
                 </div>
-                <span className="text-[10px] text-[#55565A] mt-1 text-center leading-tight">
+                <span className="mt-2 text-center text-[11px] leading-5 text-[#55565A]">
                   {step.label}
                 </span>
               </div>
