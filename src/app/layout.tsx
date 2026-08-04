@@ -6,6 +6,7 @@ import ConditionalFooter from "./components/ConditionalFooter";
 import { serverApiHelper } from "@/helper/server-fetcher";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { ChunkLoadErrorHandler } from "@/components/ChunkLoadErrorHandler";
 import { generateOrganizationSchema, generateLocalBusinessSchema, generateWebSiteSchema } from "@/lib/seo";
 
 const GTM_ID = "GTM-5D46VDMH";
@@ -144,6 +145,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         {/* End Google Tag Manager (noscript) */}
         <GoogleAnalytics />
+        <ChunkLoadErrorHandler />
         <JsonLd data={[generateOrganizationSchema(), generateLocalBusinessSchema(), generateWebSiteSchema()]} />
         <ConditionalHeader data={initialData} />
         {children}

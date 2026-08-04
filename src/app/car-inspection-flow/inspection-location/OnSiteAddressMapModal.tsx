@@ -4,26 +4,35 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import {
   MapContainer,
   TileLayer,
-  Marker,
   useMap,
   useMapEvents,
 } from "react-leaflet";
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { toast } from "sonner";
 import { DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Cancel01Icon, Location01Icon } from "hugeicons-react";
 import { reverseGeocode, type GeocodedAddress } from "@/helper/reverse-geocode";
 
-delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-});
+/** میدان رسالت — مرکز پیش‌فرض و نقطه بازگشت هنگام خروج از محدوده سرویس */
+const RESALAT_SQUARE = { lat: 35.752854, lng: 51.508942 };
+
+/** محدوده تقریبی شهر تهران */
+const TEHRAN_BOUNDS = {
+  minLat: 35.56, // south
+  maxLat: 35.82, // north
+  minLng: 51.09, // west
+  maxLng: 51.61, // east
+};
+
+function isInsideTehran(lat: number, lng: number): boolean {
+  return (
+    lat >= TEHRAN_BOUNDS.minLat &&
+    lat <= TEHRAN_BOUNDS.maxLat &&
+    lng >= TEHRAN_BOUNDS.minLng &&
+    lng <= TEHRAN_BOUNDS.maxLng
+  );
+}
 
 function MapResizeOnMount() {
   const map = useMap();
@@ -34,18 +43,32 @@ function MapResizeOnMount() {
   return null;
 }
 
-function FlyToPosition({ lat, lng }: { lat: number; lng: number }) {
+/** پرواز برنامه‌ای به موقعیت (مثلاً موقعیت فعلی کاربر) — نه بعد از درگ کاربر */
+function FlyToTarget({
+  target,
+}: {
+  target: { lat: number; lng: number; key: number } | null;
+}) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo([lat, lng], Math.max(map.getZoom(), 15), { duration: 0.6 });
-  }, [lat, lng, map]);
+    if (!target) return;
+    map.flyTo([target.lat, target.lng], Math.max(map.getZoom(), 15), {
+      duration: 0.6,
+    });
+  }, [target, map]);
   return null;
 }
 
-function MapClickHandler({ onPick }: { onPick: (lat: number, lng: number) => void }) {
+/** با هر جابه‌جایی نقشه، مرکز ویوپورت به‌عنوان نقطه انتخاب ثبت می‌شود */
+function MapCenterTracker({
+  onCenterChange,
+}: {
+  onCenterChange: (lat: number, lng: number) => void;
+}) {
   useMapEvents({
-    click(e) {
-      onPick(e.latlng.lat, e.latlng.lng);
+    moveend(e) {
+      const center = e.target.getCenter();
+      onCenterChange(center.lat, center.lng);
     },
   });
   return null;
@@ -70,12 +93,20 @@ export default function OnSiteAddressMapModal({
 }: OnSiteAddressMapModalProps) {
   const [mounted, setMounted] = useState(false);
   const [position, setPosition] = useState({ lat: initialLat, lng: initialLng });
+  const [flyTarget, setFlyTarget] = useState<{
+    lat: number;
+    lng: number;
+    key: number;
+  } | null>(null);
   const [preview, setPreview] = useState<GeocodedAddress | null>(null);
   const [resolving, setResolving] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const geocodeRequestRef = useRef(0);
   const isBackPressedRef = useRef(false);
+  const lastGeocodedRef = useRef({ lat: initialLat, lng: initialLng });
+  const redirectingOutOfServiceRef = useRef(false);
+  const lastOutOfServiceToastAtRef = useRef(0);
 
   useEffect(() => setMounted(true), []);
 
@@ -95,8 +126,27 @@ export default function OnSiteAddressMapModal({
     };
   }, [open, onClose]);
 
+  const showOutOfServiceToast = useCallback(() => {
+    const now = Date.now();
+    if (now - lastOutOfServiceToastAtRef.current < 2500) return;
+    lastOutOfServiceToastAtRef.current = now;
+    toast.error("محدوده مورد نظر خارج از سرویس دهی است", {
+      duration: 5000,
+      style: {
+        fontSize: "17px",
+        fontWeight: 700,
+        padding: "18px 22px",
+        minWidth: "min(92vw, 420px)",
+        lineHeight: 1.6,
+        textAlign: "center",
+      },
+      className: "font-IranSans",
+    });
+  }, []);
+
   const resolveAddress = useCallback(async (lat: number, lng: number) => {
     const requestId = ++geocodeRequestRef.current;
+    lastGeocodedRef.current = { lat, lng };
     setResolving(true);
     try {
       const result = await reverseGeocode(lat, lng);
@@ -118,13 +168,59 @@ export default function OnSiteAddressMapModal({
     }
   }, []);
 
-  const pickLocation = useCallback(
+  const flyToLocation = useCallback(
     (lat: number, lng: number) => {
+      if (!isInsideTehran(lat, lng)) {
+        showOutOfServiceToast();
+        redirectingOutOfServiceRef.current = true;
+        setPosition(RESALAT_SQUARE);
+        setLocationError(null);
+        setFlyTarget({ ...RESALAT_SQUARE, key: Date.now() });
+        resolveAddress(RESALAT_SQUARE.lat, RESALAT_SQUARE.lng);
+        window.setTimeout(() => {
+          redirectingOutOfServiceRef.current = false;
+        }, 900);
+        return;
+      }
+
       setPosition({ lat, lng });
       setLocationError(null);
+      setFlyTarget({ lat, lng, key: Date.now() });
       resolveAddress(lat, lng);
     },
-    [resolveAddress]
+    [resolveAddress, showOutOfServiceToast]
+  );
+
+  const syncCenter = useCallback(
+    (lat: number, lng: number) => {
+      if (redirectingOutOfServiceRef.current) return;
+
+      if (!isInsideTehran(lat, lng)) {
+        showOutOfServiceToast();
+        redirectingOutOfServiceRef.current = true;
+        setPosition(RESALAT_SQUARE);
+        setLocationError(null);
+        setFlyTarget({ ...RESALAT_SQUARE, key: Date.now() });
+        resolveAddress(RESALAT_SQUARE.lat, RESALAT_SQUARE.lng);
+        window.setTimeout(() => {
+          redirectingOutOfServiceRef.current = false;
+        }, 900);
+        return;
+      }
+
+      setPosition({ lat, lng });
+      setLocationError(null);
+      const prev = lastGeocodedRef.current;
+      // جلوگیری از درخواست تکراری وقتی مرکز تقریباً ثابت مانده
+      if (
+        Math.abs(prev.lat - lat) < 0.00001 &&
+        Math.abs(prev.lng - lng) < 0.00001
+      ) {
+        return;
+      }
+      resolveAddress(lat, lng);
+    },
+    [resolveAddress, showOutOfServiceToast]
   );
 
   const requestUserLocation = useCallback(() => {
@@ -141,7 +237,7 @@ export default function OnSiteAddressMapModal({
     setLocationError(null);
 
     const onSuccess = (pos: GeolocationPosition) => {
-      pickLocation(pos.coords.latitude, pos.coords.longitude);
+      flyToLocation(pos.coords.latitude, pos.coords.longitude);
       setIsLocating(false);
     };
 
@@ -174,14 +270,22 @@ export default function OnSiteAddressMapModal({
       timeout: 10000,
       maximumAge: 60000,
     });
-  }, [pickLocation]);
+  }, [flyToLocation]);
 
   useEffect(() => {
     if (!open || !mounted) return;
 
-    setPosition({ lat: initialLat, lng: initialLng });
+    const startLat = isInsideTehran(initialLat, initialLng)
+      ? initialLat
+      : RESALAT_SQUARE.lat;
+    const startLng = isInsideTehran(initialLat, initialLng)
+      ? initialLng
+      : RESALAT_SQUARE.lng;
+
+    setPosition({ lat: startLat, lng: startLng });
+    setFlyTarget({ lat: startLat, lng: startLng, key: Date.now() });
     setLocationError(null);
-    resolveAddress(initialLat, initialLng);
+    resolveAddress(startLat, startLng);
 
     // درخواست خودکار فقط اگر قبلاً اجازه داده شده باشد.
     // درخواست بدون gesture کاربر در موبایل/پروداکشن اغلب PERMISSION_DENIED می‌شود.
@@ -209,15 +313,15 @@ export default function OnSiteAddressMapModal({
 
   const locationMessage =
     locationError === "denied"
-      ? "دسترسی موقعیت برای این سایت مسدود است. از تنظیمات مرورگر اجازه دهید، یا روی نقشه نقطه را انتخاب کنید."
+      ? "دسترسی موقعیت برای این سایت مسدود است. از تنظیمات مرورگر اجازه دهید، یا نقشه را جابه‌جا کنید."
       : locationError === "insecure"
         ? "برای موقعیت‌یابی، سایت باید با HTTPS باز شود."
         : locationError === "timeout"
-          ? "دریافت موقعیت طول کشید. دوباره تلاش کنید یا روی نقشه انتخاب کنید."
+          ? "دریافت موقعیت طول کشید. دوباره تلاش کنید یا نقشه را جابه‌جا کنید."
           : locationError === "unsupported"
-            ? "مرورگر شما از موقعیت‌یابی پشتیبانی نمی‌کند. روی نقشه نقطه را انتخاب کنید."
+            ? "مرورگر شما از موقعیت‌یابی پشتیبانی نمی‌کند. نقشه را جابه‌جا کنید تا نقطه در مرکز قرار گیرد."
             : locationError
-              ? "دریافت موقعیت با خطا مواجه شد. روی نقشه نقطه مورد نظر را انتخاب کنید."
+              ? "دریافت موقعیت با خطا مواجه شد. نقشه را جابه‌جا کنید تا نقطه در مرکز قرار گیرد."
               : null;
 
   return (
@@ -247,7 +351,7 @@ export default function OnSiteAddressMapModal({
             <p className="mt-1 text-sm font-semibold text-[#101117]">
               {locationTypeDescription
                 ? `محدوده: ${locationTypeDescription}`
-                : "روی نقشه کلیک کنید تا آدرس پر شود"}
+                : "نقشه را جابه‌جا کنید تا نقطه در مرکز قرار گیرد"}
             </p>
           </div>
         </div>
@@ -287,21 +391,43 @@ export default function OnSiteAddressMapModal({
         )}
 
         {mounted ? (
-          <MapContainer
-            center={[position.lat, position.lng]}
-            zoom={15}
-            className="h-full w-full min-h-[50vh]"
-            style={{ height: "100%", width: "100%", minHeight: "50vh", zIndex: 0 }}
-          >
-            <MapResizeOnMount />
-            <FlyToPosition lat={position.lat} lng={position.lng} />
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[position.lat, position.lng]} />
-            <MapClickHandler onPick={pickLocation} />
-          </MapContainer>
+          <>
+            <MapContainer
+              center={[position.lat, position.lng]}
+              zoom={15}
+              className="h-full w-full min-h-[50vh]"
+              style={{ height: "100%", width: "100%", minHeight: "50vh", zIndex: 0 }}
+            >
+              <MapResizeOnMount />
+              <FlyToTarget target={flyTarget} />
+              <MapCenterTracker onCenterChange={syncCenter} />
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+            </MapContainer>
+            {/* پین ثابت در مرکز نقشه — با درگ نقشه، نقطه انتخاب همان مرکز است */}
+            <div
+              className="pointer-events-none absolute inset-0 z-[500] flex items-center justify-center"
+              aria-hidden
+            >
+              <div className="-translate-y-1/2 drop-shadow-lg">
+                <svg
+                  width="36"
+                  height="48"
+                  viewBox="0 0 36 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 0C8.06 0 0 8.06 0 18c0 13.5 18 30 18 30s18-16.5 18-30C36 8.06 27.94 0 18 0z"
+                    fill="#416CEA"
+                  />
+                  <circle cx="18" cy="18" r="7" fill="white" />
+                </svg>
+              </div>
+            </div>
+          </>
         ) : (
           <div className="flex h-full min-h-[50vh] items-center justify-center">
             <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#416CEA]" />
@@ -333,7 +459,14 @@ export default function OnSiteAddressMapModal({
           <Button
             type="button"
             disabled={!preview || resolving}
-            onClick={() => preview && onConfirm(preview)}
+            onClick={() =>
+              preview &&
+              onConfirm({
+                ...preview,
+                lat: position.lat,
+                lng: position.lng,
+              })
+            }
             className="h-12 flex-1 rounded-3xl bg-[#416CEA] text-white"
           >
             تایید این آدرس

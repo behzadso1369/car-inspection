@@ -5,45 +5,53 @@ import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import { DiscountTag01Icon } from "hugeicons-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
+import { RegulationsTermsViewer } from "./RegulationsTermsViewer";
 
 export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [regulationsOpen, setRegulationsOpen] = useState(false);
 
   useEffect(() => {
-    router.prefetch('./payment-success');
+    router.prefetch("./payment-success");
   }, [router]);
 
   const getUserOrderDetails = () => {
-    instance.get(ApiHelper.get("GetUserOrderDetails") + "?OrderId=" + localStorage.getItem("OrderId")).then((res: any) => {
-      setOrderDetail(res);
-    });
+    instance
+      .get(
+        ApiHelper.get("GetUserOrderDetails") +
+          "?OrderId=" +
+          localStorage.getItem("OrderId")
+      )
+      .then((res: any) => {
+        setOrderDetail(res);
+      });
   };
 
   const moveToPaymentSucceed = () => {
     setLoading(true);
     const params: any = {
-      "isBack": false,
-      "orderId": Number(localStorage.getItem("OrderId"))
+      isBack: false,
+      orderId: Number(localStorage.getItem("OrderId")),
     };
-    instance.post(ApiHelper.get("MovePrivateOrder"), params).then((res: any) => {
-      setLoading(false);
-      if (res) {
-        if(res?.isEndFlow) {
-        
-           router.push(res?.paymentUrl);
-      }
-      }
-    }).catch((err:any) => {
-      console.log(err);
-      setLoading(false);
-    });
+    instance
+      .post(ApiHelper.get("MovePrivateOrder"), params)
+      .then((res: any) => {
+        setLoading(false);
+        if (res) {
+          if (res?.isEndFlow) {
+            router.push(res?.paymentUrl);
+          }
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -56,13 +64,21 @@ export default function ClientWrapper() {
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
             <div className="aspect-[2] relative w-16 h-8 ml-4">
-              <Image src="/final-step.png" alt="final-step.png" fill className="object-fill"  />
+              <Image
+                src="/final-step.png"
+                alt="final-step.png"
+                fill
+                className="object-fill"
+              />
             </div>
             <div>
               <h3 className="text-base text-black my-2 font-medium">
                 مشاهده و تایید نهایی
               </h3>
-              <h4 className="text-[#55565A] font-light text-sm"> بعدی: پرداخت</h4>
+              <h4 className="text-[#55565A] font-light text-sm">
+                {" "}
+                بعدی: پرداخت
+              </h4>
             </div>
           </div>
         </div>
@@ -89,11 +105,16 @@ export default function ClientWrapper() {
         <h1>خلاصه سفارش</h1>
         <div className="flex my-4 justify-between items-center">
           <span className="text-[#6B6C70] text-sm">مبلغ کل:</span>
-          <DiscountPriceDisplay
-            fullPrice={orderDetail?.totalPrice ?? 0}
-            discountedPrice={orderDetail?.finalPrice ?? orderDetail?.totalPrice ?? 0}
-            variant="summary"
-          />
+          <div className="flex items-baseline gap-1">
+            <span className="text-base font-black text-[#101117]">
+              {(
+                orderDetail?.finalPrice ??
+                orderDetail?.totalPrice ??
+                0
+              ).toLocaleString("fa-IR")}
+            </span>
+            <span className="text-xs font-medium text-[#55565A]">تومان</span>
+          </div>
         </div>
 
         {(orderDetail?.discount ?? 0) > 0 ? (
@@ -103,18 +124,24 @@ export default function ClientWrapper() {
                 <DiscountTag01Icon size={22} />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-semibold text-[#101117]">تخفیف شما</span>
-                <span className="text-xs font-light text-[#55565A]">مبلغ کسر شده از سفارش</span>
+                <span className="text-sm font-semibold text-[#101117]">
+                  تخفیف شما
+                </span>
+                <span className="text-xs font-light text-[#55565A]">
+                  مبلغ کسر شده از سفارش
+                </span>
               </div>
             </div>
-            <span className="whitespace-nowrap text-base font-extrabold text-[#16A34A]">
+            <span className="whitespace-nowrap text-[13px] font-extrabold text-[#16A34A]">
               {orderDetail?.discount?.toLocaleString()}− تومان
             </span>
           </div>
         ) : (
           <div className="flex justify-between">
             <span className="text-[#6B6C70] text-sm">تخفیف:</span>
-            <span>{orderDetail?.discount?.toLocaleString()} تومان</span>
+            <span className="text-[13px]">
+              {orderDetail?.discount?.toLocaleString()} تومان
+            </span>
           </div>
         )}
 
@@ -127,7 +154,9 @@ export default function ClientWrapper() {
           <span>{orderDetail?.carInspectionLocationType}</span>
         </div>
         <div className="mt-4 flex items-center justify-between rounded-2xl border border-[#416CEA]/25 bg-[#416CEA]/6 px-4 py-3.5">
-          <span className="text-sm font-medium text-[#101117]">قابل پرداخت:</span>
+          <span className="text-sm font-medium text-[#101117]">
+            قابل پرداخت:
+          </span>
           <span className="text-base font-extrabold text-[#416CEA]">
             {orderDetail?.finalPrice?.toLocaleString()} تومان
           </span>
@@ -135,24 +164,26 @@ export default function ClientWrapper() {
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 z-30 w-full space-y-3 bg-white px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0px_4px_32px_0px_#CBD5E0] lg:static lg:my-4 lg:mt-8 lg:pb-4">
-        <label className="flex cursor-pointer items-start gap-2.5 text-sm leading-6 text-[#55565A]">
+        <label className="flex cursor-pointer items-start gap-3 text-sm leading-7 text-[#55565A]">
           <input
             type="checkbox"
             checked={acceptedTerms}
             onChange={(e) => setAcceptedTerms(e.target.checked)}
-            className="mt-1 size-4 shrink-0 accent-[#416CEA]"
+            className="mt-0.5 size-6 shrink-0 rounded-[6px] border border-[#C5C9D3] accent-[#416CEA] lg:size-5"
           />
           <span>
-            <Link
-              href="/regulations"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
               className="font-medium text-[#416CEA] underline-offset-2 hover:underline"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setRegulationsOpen(true);
+              }}
             >
               قوانین و مقررات کارماچک
-            </Link>
-            {" "}را می‌پذیرم.
+            </button>{" "}
+            را می‌پذیرم.
           </span>
         </label>
 
@@ -165,7 +196,11 @@ export default function ClientWrapper() {
           {loading ? "لطفا منتظر بمانید..." : "تایید و پرداخت"}
         </Button>
       </div>
+
+      <RegulationsTermsViewer
+        open={regulationsOpen}
+        onOpenChange={setRegulationsOpen}
+      />
     </div>
   );
 }
-

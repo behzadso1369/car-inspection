@@ -45,12 +45,17 @@ export default function ProfileLayout({
       localStorage.getItem("token") || localStorage.getItem("userId")
     );
 
-    if (
-      isLoggedIn &&
-      pathname.startsWith("/car-inspection-flow/inspection-location")
-    ) {
-      router.replace("/car-inspection-flow/inspection-method");
-      return;
+    // Logged-in users skip insert-information; keep history from landing there.
+    if (isLoggedIn) {
+      if (pathname.startsWith("/car-inspection-flow/inspection-location")) {
+        router.replace("/car-inspection-flow/inspection-method");
+        return;
+      }
+
+      if (pathname.startsWith("/car-inspection-flow/inspection-method")) {
+        router.replace("/car-inspection-flow/select-car-group");
+        return;
+      }
     }
 
     router.back();

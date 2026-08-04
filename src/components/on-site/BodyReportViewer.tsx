@@ -1,11 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { useMemo, useState } from "react";
 import type { BodyReport, BodyReportZone } from "@/types/on-site";
 import {
   BODY_ZONE_STATUS_COLORS,
   BODY_ZONE_STATUS_LABELS,
 } from "@/types/on-site";
+import CarBodyDiagram from "./CarBodyDiagram";
+import { isDefectStatus } from "./car-body-zones";
 
 const API_ASSET = "https://api.carmacheck.com/";
 
@@ -18,12 +21,26 @@ interface BodyReportViewerProps {
   report: BodyReport;
 }
 
-function ZoneBadge({ zone }: { zone: BodyReportZone }) {
+function ZoneBadge({
+  zone,
+  active,
+  onSelect,
+}: {
+  zone: BodyReportZone;
+  active?: boolean;
+  onSelect?: (zone: BodyReportZone) => void;
+}) {
   const color = BODY_ZONE_STATUS_COLORS[zone.Status] ?? "#95a5a6";
   return (
-    <div
-      className="rounded-xl border p-3 flex flex-col gap-2"
-      style={{ borderColor: `${color}44`, backgroundColor: `${color}11` }}
+    <button
+      type="button"
+      onClick={() => onSelect?.(zone)}
+      className="w-full rounded-xl border p-3 flex flex-col gap-2 text-right transition-all"
+      style={{
+        borderColor: active ? color : `${color}44`,
+        backgroundColor: active ? `${color}22` : `${color}11`,
+        boxShadow: active ? `0 0 0 2px ${color}33` : undefined,
+      }}
     >
       <div className="flex justify-between items-start">
         <span className="font-medium text-[#101117] text-sm">
@@ -47,17 +64,22 @@ function ZoneBadge({ zone }: { zone: BodyReportZone }) {
           />
         </div>
       )}
-    </div>
+    </button>
   );
 }
 
 export default function BodyReportViewer({ report }: BodyReportViewerProps) {
-  const zones = [...report.Zones].sort((a, b) => a.SortOrder - b.SortOrder);
-  const defectZones = zones.filter(
-    (z) => !["Ok", "NotChecked"].includes(z.Status),
+  const zones = useMemo(
+    () => [...report.Zones].sort((a, b) => a.SortOrder - b.SortOrder),
+    [report.Zones],
   );
+  const defectZones = zones.filter((z) => isDefectStatus(z.Status));
   const okZones = zones.filter((z) => z.Status === "Ok");
   const uncheckedZones = zones.filter((z) => z.Status === "NotChecked");
+
+  const [selectedZoneId, setSelectedZoneId] = useState<number | null>(
+    defectZones[0]?.Id ?? null,
+  );
 
   return (
     <div className="space-y-6 font-IranSans">
@@ -90,12 +112,23 @@ export default function BodyReportViewer({ report }: BodyReportViewerProps) {
         )}
       </div>
 
+      <CarBodyDiagram
+        zones={zones}
+        selectedZoneId={selectedZoneId}
+        onSelectZone={(zone) => setSelectedZoneId(zone?.Id ?? null)}
+      />
+
       {defectZones.length > 0 && (
         <div>
           <h4 className="font-medium text-[#101117] mb-3">نواحی دارای ایراد</h4>
           <div className="grid gap-3 sm:grid-cols-2">
             {defectZones.map((z) => (
-              <ZoneBadge key={z.Id} zone={z} />
+              <ZoneBadge
+                key={z.Id}
+                zone={z}
+                active={selectedZoneId === z.Id}
+                onSelect={(zone) => setSelectedZoneId(zone.Id)}
+              />
             ))}
           </div>
         </div>

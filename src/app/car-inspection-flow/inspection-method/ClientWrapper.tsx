@@ -110,7 +110,8 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         router.push("./insert-information");
         
       } else {
-        moveToInspectionLocation();
+        // moveToInspectionLocation();
+        router.push("./inspection-location");
       }
     }).catch((err: any) => {
       setLoading(false);

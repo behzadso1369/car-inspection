@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
 import { DialogClose, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { X } from 'lucide-react';
+import { ArrowRight, X } from 'lucide-react';
 import instance from '@/helper/interceptor';
 import { ApiHelper } from '@/helper/api-request';
 
@@ -61,12 +61,28 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
 
   }
 
+  const backToBrands = () => {
+    setShowGroups(false);
+    setSearchTerm("");
+    setCarGroups([]);
+  };
+
   return (
 <DialogContent showCloseButton={false} className="w-screen h-full overflow-auto  max-w-none p-0 border-none  bg-white font-IranSans">
             <DialogClose className="absolute top-4 right-4 z-10 rounded-full p-1 text-[#101117] opacity-80 transition-opacity hover:opacity-100 focus:outline-none">
               <X size={32} strokeWidth={2.25} />
               <span className="sr-only">بستن</span>
             </DialogClose>
+            {showGroup && !searchTerm && (
+              <button
+                type="button"
+                onClick={backToBrands}
+                className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 rounded-full border border-[#416CEA]/30 bg-[#416CEA]/10 px-3.5 py-2 text-xs font-semibold text-[#416CEA] shadow-sm transition-all hover:bg-[#416CEA] hover:text-white hover:shadow-md active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#416CEA]/40"
+              >
+                <ArrowRight size={16} strokeWidth={2.5} />
+                بازگشت به برند خودرو
+              </button>
+            )}
             <div className="px-4">
  <DialogHeader>
             <DialogTitle className="text-base text-[#101117] font-medium flex justify-center py-4 font-bold ">انتخاب خودرو</DialogTitle>

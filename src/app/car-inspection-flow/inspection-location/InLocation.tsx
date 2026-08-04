@@ -21,8 +21,9 @@ import instance from "@/helper/interceptor";
 import type { GeocodedAddress } from "@/helper/reverse-geocode";
 
 export const ON_SITE_ADDRESS_KEY = "OnSiteAddressDraft";
+const STATIC_ADDRESS_TITLE = "انتخابی";
 const ADDRESS_INPUT_CLASS =
-  "mt-2 h-12 rounded-2xl border-[#DFDFDF] bg-white px-4 text-right text-sm focus-visible:border-[#416CEA] focus-visible:ring-2 focus-visible:ring-[#416CEA]/15";
+  "mt-2 h-12 rounded-2xl border-[#DFDFDF] bg-white px-4 text-right text-sm text-[#101117] placeholder:text-[#C0C1C5] focus-visible:border-[#416CEA] focus-visible:ring-2 focus-visible:ring-[#416CEA]/15 selection:bg-transparent";
 
 export interface SavedOnSiteAddress {
   AddressId: number;
@@ -126,8 +127,7 @@ export default function InLocation({
     null,
   );
   const [form, setForm] = useState({
-    Title: "منزل",
-    City: "تهران",
+    City: "",
     Street: "",
     Plaque: "",
     Lat: 35.6892,
@@ -142,8 +142,7 @@ export default function InLocation({
       if (draft) setSavedAddress(draft);
       onSelectAddress(id);
       setForm({
-        Title: draft?.Title ?? "منزل",
-        City: draft?.City ?? "تهران",
+        City: draft?.City ?? "",
         Street: draft?.Street ?? "",
         Plaque: draft?.Plaque ?? "",
         Lat: draft?.Lat ?? 35.6892,
@@ -170,8 +169,8 @@ export default function InLocation({
     setSaving(true);
     instance
       .post(ApiHelper.get("CreateUserAddress"), {
-        Title: form.Title,
-        City: form.City,
+        Title: STATIC_ADDRESS_TITLE,
+        City: form.City.trim(),
         Street: form.Street,
         Plaque: form.Plaque,
         Lat: form.Lat,
@@ -189,8 +188,8 @@ export default function InLocation({
 
         const saved: SavedOnSiteAddress = {
           AddressId: addressId,
-          Title: form.Title,
-          City: form.City,
+          Title: STATIC_ADDRESS_TITLE,
+          City: form.City.trim(),
           Street: form.Street,
           Plaque: form.Plaque,
           Lat: form.Lat,
@@ -276,39 +275,21 @@ export default function InLocation({
           </div>
 
           <div className="flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <Label
-                  htmlFor="onsite-address-title"
-                  className="text-sm text-[#55565A]"
-                >
-                  عنوان آدرس
-                </Label>
-                <Input
-                  id="onsite-address-title"
-                  value={form.Title}
-                  onChange={(e) => setForm({ ...form, Title: e.target.value })}
-                  className={ADDRESS_INPUT_CLASS}
-                  placeholder="مثلاً منزل"
-                  autoComplete="address-level4"
-                />
-              </div>
-              <div>
-                <Label
-                  htmlFor="onsite-address-city"
-                  className="text-sm text-[#55565A]"
-                >
-                  شهر
-                </Label>
-                <Input
-                  id="onsite-address-city"
-                  value={form.City}
-                  onChange={(e) => setForm({ ...form, City: e.target.value })}
-                  className={ADDRESS_INPUT_CLASS}
-                  placeholder="مثلاً تهران"
-                  autoComplete="address-level2"
-                />
-              </div>
+            <div>
+              <Label
+                htmlFor="onsite-address-city"
+                className="text-sm text-[#55565A]"
+              >
+                شهر
+              </Label>
+              <Input
+                id="onsite-address-city"
+                value={form.City}
+                onChange={(e) => setForm({ ...form, City: e.target.value })}
+                className={ADDRESS_INPUT_CLASS}
+                placeholder="شهر مثلا تهران"
+                autoComplete="address-level2"
+              />
             </div>
 
             <div>
@@ -333,14 +314,14 @@ export default function InLocation({
                 htmlFor="onsite-address-plaque"
                 className="text-sm text-[#55565A]"
               >
-                پلاک
+                پلاک (اختیاری)
               </Label>
               <Input
                 id="onsite-address-plaque"
                 value={form.Plaque}
                 onChange={(e) => setForm({ ...form, Plaque: e.target.value })}
                 className={ADDRESS_INPUT_CLASS}
-                placeholder="مثلاً ۱۲"
+                placeholder="پلاک مثلا ۱۲"
                 inputMode="numeric"
               />
             </div>

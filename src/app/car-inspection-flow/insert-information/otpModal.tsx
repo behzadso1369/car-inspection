@@ -116,7 +116,8 @@ export default function OtpMoldal({openModal,setOpnModal,remainingSeconds}:any) 
                 localStorage.removeItem("redirectUrl");
                 router.push(redirectUrl);
               } else {
-                moveToInspectionLocation();
+                // moveToInspectionLocation();
+                router.push("./inspection-location")
               }
       } else {
         setIsVerifying(false);
