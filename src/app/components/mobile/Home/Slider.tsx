@@ -57,7 +57,7 @@ import Link from "next/link";export const Slider = ({data}:any) => {
               key={item.id}
               className="relative w-full aspect-[1080/600] lg:aspect-[1920/700]  shrink-0 flex items-center justify-center bg-gray-50"
             >
-              <Link href="./car-inspection-flow/select-car-group" className="relative w-full h-full">
+              <Link href="/car-inspection" className="relative w-full h-full">
                  <Image
                 src={`https://api.carmacheck.com/${imageUrl}`}
                 alt="کارشناسی خودرو، فقط با چند کلیک"

@@ -1,6 +1,35 @@
 import type { NextConfig } from "next";
 
+const FLOW_RESERVED =
+  "inspection-method|inspection-location|insert-information|inspection-time|final-confirm|payment-succeed|payment|show-address|succeed|slider|components|lib";
+
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/car-inspection-flow/select-car-group",
+        destination: "/car-inspection",
+        permanent: true,
+      },
+      {
+        source: "/car-inspection-flow/select-car-group/slider",
+        destination: "/car-inspection/slider",
+        permanent: true,
+      },
+      {
+        source: "/car-inspection-flow/:path*",
+        destination: "/car-inspection/:path*",
+        permanent: true,
+      },
+      // اسلاگ‌های قدیمی صفحات معایب/مزایا → مسیر جدید
+      {
+        source: `/car-inspection/:slug((?!${FLOW_RESERVED})[^/]+)`,
+        destination: "/car-inspection-most-popular/:slug",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {

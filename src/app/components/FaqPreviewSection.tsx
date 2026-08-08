@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import type { FaqItem } from "@/lib/faq-data";
 import type { ReactNode } from "react";
 
-const INSPECTION_HREF = "/car-inspection-flow/select-car-group";
+const INSPECTION_HREF = "/car-inspection";
 
 /** Longer phrases first so nested matches stay intact */
 const INSPECTION_LINK_PHRASES = [

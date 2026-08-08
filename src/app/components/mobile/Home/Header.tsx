@@ -15,7 +15,7 @@ export const Header = memo(({data}:any) => {
     // Prefetch صفحات مهم در background
     useEffect(() => {
         router.prefetch("/");
-        router.prefetch("/car-inspection-flow/select-car-group");
+        router.prefetch("/car-inspection");
         router.prefetch("/services");
         router.prefetch("/contact-us");
         router.prefetch("/about-us");
@@ -27,8 +27,8 @@ export const Header = memo(({data}:any) => {
         if (href === "/") {
             return pathname === "/";
         }
-        if (href === "/car-inspection-flow/select-car-group") {
-            return pathname.startsWith("/car-inspection-flow");
+        if (href === "/car-inspection") {
+            return pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
         }
         return pathname.startsWith(href);
     };
@@ -54,8 +54,8 @@ export const Header = memo(({data}:any) => {
                     <li className={`mx-4 ${isActive("/") ? "text-[#3456bb]" : ""}`}>
                         <NavigationLink href="/" prefetch={true}>خانه</NavigationLink>
                     </li>
-                    <li className={`mx-4 ${isActive("/car-inspection-flow/select-car-group") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/car-inspection-flow/select-car-group" prefetch={true}>
+                    <li className={`mx-4 ${isActive("/car-inspection") ? "text-[#3456bb]" : ""}`}>
+                        <NavigationLink href="/car-inspection" prefetch={true}>
                             کارشناسی خودرو
                         </NavigationLink>
                     </li>

@@ -153,9 +153,21 @@ export default function BodyReportViewer({ report }: BodyReportViewerProps) {
       )}
 
       {uncheckedZones.length > 0 && (
-        <p className="rounded-xl bg-[#F5F6F8] px-3 py-2 text-xs text-[#55565A]">
-          {uncheckedZones.length} ناحیه از بدنه در این گزارش بررسی نشده است.
-        </p>
+        <div>
+          <h4 className="font-medium text-[#101117] mb-3">
+            نواحی بررسی‌نشده ({uncheckedZones.length})
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {uncheckedZones.map((z) => (
+              <span
+                key={z.Id}
+                className="text-xs bg-[#F5F6F8] text-[#55565A] px-2 py-1 rounded-full"
+              >
+                {z.NameFa}
+              </span>
+            ))}
+          </div>
+        </div>
       )}
 
       <div className="flex flex-wrap gap-3 text-xs text-[#55565A]">

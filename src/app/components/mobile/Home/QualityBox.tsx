@@ -31,7 +31,7 @@ export default function QualityBox({data}:any) {
                     </li>
 
                 </ul>
-                <Link href="./car-inspection-flow/select-car-group" prefetch={false}  className="rounded-3xl py-3 px-4 inline-block text-center w-full my-4 bg-[#416CEA] text-white">رزرو کارشناسی</Link>
+                <Link href="/car-inspection" prefetch={false}  className="rounded-3xl py-3 px-4 inline-block text-center w-full my-4 bg-[#416CEA] text-white">رزرو کارشناسی</Link>
             </div>
             
         </div>

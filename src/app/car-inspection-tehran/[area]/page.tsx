@@ -58,7 +58,7 @@ export default async function LocalAreaPage({ params }: Props) {
   if (!area) notFound();
 
   const path = `/car-inspection-tehran/${slug}`;
-  const startUrl = "/car-inspection-flow/select-car-group";
+  const startUrl = "/car-inspection";
 
   const faqs = [
     {

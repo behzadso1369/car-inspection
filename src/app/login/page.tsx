@@ -61,7 +61,7 @@ function LoginContent() {
             <Label className="text-sm text-[#101117] font-light">لطفا شماره موبایل خود را وارد نمایید</Label>
             <Input onChange={(e:any) => {
                 setValue(e.target.value)
-            }} placeholder="09123456789" className="px-4  items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A]  text-xs"/>
+            }} placeholder="09123456789" className="px-4  items-center !py-4 border border-[#DFDFDF] rounded-full text-[#55565A] placeholder:text-[#C5C9D3] text-base"/>
             <span className="text-xs font-extralight text-[#55565A]">لطفا شماره را همراه با صفر وارد کنید</span>
             
                 <Button disabled={sendSMS} onClick={login} className="w-full rounded-3xl inline-block py-2 px-1 text-center text-sm  bg-[#3456bb] text-white">{!sendSMS ? "ورود" : "لطفا منتظر بمانید..."}</Button>

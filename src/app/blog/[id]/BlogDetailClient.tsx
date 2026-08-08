@@ -7,6 +7,7 @@ import { ApiHelper } from "@/helper/api-request";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import type { TocItem } from "@/lib/blog-content";
+import "../blog-article.css";
 
 interface BlogDetailClientProps {
   id: string;
@@ -93,7 +94,7 @@ export function BlogDetailClient({
 
           {processedContent && (
             <div
-              className="prose prose-lg max-w-full text-[#101117] [&_a]:text-blue-600 [&_h2]:scroll-mt-20 !leading-9"
+              className="blog-article-content prose prose-lg max-w-full text-[#101117] [&_a]:text-blue-600 [&_h2]:scroll-mt-20 !leading-9"
               dangerouslySetInnerHTML={{ __html: processedContent }}
               style={{ direction: "rtl", textAlign: "right" }}
             />

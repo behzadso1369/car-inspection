@@ -1,0 +1,88 @@
+/*
+ * استایل محتوای مقالات بلاگ (کارماچک)
+ * این کلاس‌ها از داخل HTML مقاله (که در CMS ذخیره می‌شود) می‌آیند.
+ * چون <head><style> مقاله هنگام انتشار حذف می‌شود، استایل‌ها اینجا به‌صورت
+ * سراسری تعریف شده‌اند تا همه‌ی مقالات (فعلی و آینده) استایل بگیرند.
+ * همه چیز زیر .blog-article-content اسکوپ شده تا با بقیه سایت تداخل نکند.
+ */
+
+.blog-article-content {
+  --ink: #1f2733;
+  --muted: #5b6572;
+  --line: #e6e9ee;
+  --brand: #3456bb;
+  --brandink: #08402f;
+  --warn: #b23b2e;
+  --warnbg: #fdecea;
+  --tipbg: #eef6f4;
+  --okbg: #eaf6ef;
+  color: var(--ink);
+  line-height: 2;
+  font-size: 17px;
+}
+
+.blog-article-content h2 {
+  font-size: 1.35rem;
+  margin: 1.8em 0 0.5em;
+  padding-top: 0.3em;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 80px;
+}
+.blog-article-content h3 { font-size: 1.1rem; margin: 1.2em 0 0.3em; }
+.blog-article-content p { margin: 0.7em 0; }
+.blog-article-content a { color: var(--brand); }
+.blog-article-content img { max-width: 100%; height: auto; border-radius: 10px; }
+.blog-article-content figure { margin: 1.4em 0; }
+.blog-article-content figcaption { color: var(--muted); font-size: 0.9rem; text-align: center; margin-top: 0.5em; }
+
+.blog-article-content .article-lead { font-size: 1.12rem; color: #33404f; }
+.blog-article-content .article-meta {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  color: var(--muted); font-size: 0.9rem;
+  border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 8px;
+}
+
+.blog-article-content .quick-answer { background: #f0f4f8; border-radius: 12px; padding: 16px 18px; margin: 1.4em 0; }
+.blog-article-content .quick-answer h2 { border: 0; margin: 0 0 0.3em; padding: 0; font-size: 1.15rem; }
+
+.blog-article-content .key-takeaways { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; margin: 1.2em 0; }
+.blog-article-content .key-takeaways h2 { border: 0; padding: 0; font-size: 1.15rem; margin: 0 0 0.3em; }
+
+.blog-article-content .table-of-contents { background: #fafbfc; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; margin: 1.4em 0; }
+.blog-article-content .table-of-contents ol { margin: 0.3em 0; padding-inline-start: 1.4em; }
+
+.blog-article-content aside { border-radius: 12px; padding: 12px 16px; margin: 1.2em 0; }
+.blog-article-content .tip-box { background: var(--tipbg); border: 1px solid #cfe6e0; }
+.blog-article-content .warning-box { background: var(--warnbg); border: 1px solid #f3c9c3; }
+.blog-article-content .success-box { background: var(--okbg); border: 1px solid #cfe9d8; }
+.blog-article-content aside strong { display: block; margin-bottom: 0.2em; }
+
+.blog-article-content .checklist { list-style: none; padding: 0; margin: 1em 0; }
+.blog-article-content .checklist li { position: relative; padding-inline-start: 30px; margin: 0.5em 0; }
+.blog-article-content .checklist li::before { content: "✔"; position: absolute; inset-inline-start: 0; color: var(--brand); font-weight: 700; }
+
+.blog-article-content .steps { padding-inline-start: 1.3em; }
+.blog-article-content .steps li { margin: 0.7em 0; }
+
+.blog-article-content .table-wrapper { overflow-x: auto; margin: 1.4em 0; }
+.blog-article-content table.verdict-table { width: 100%; border-collapse: collapse; min-width: 520px; }
+.blog-article-content .verdict-table th,
+.blog-article-content .verdict-table td { border: 1px solid var(--line); padding: 10px 12px; text-align: right; vertical-align: top; }
+.blog-article-content .verdict-table thead th { background: #f0f4f8; }
+
+.blog-article-content .inline-cta,
+.blog-article-content .final-cta { background: var(--brand); color: #fff; border-radius: 14px; padding: 22px; margin: 1.8em 0; text-align: center; }
+.blog-article-content .inline-cta h2,
+.blog-article-content .final-cta h2 { border: 0; color: #fff; margin: 0 0 0.3em; padding: 0; }
+.blog-article-content .inline-cta p,
+.blog-article-content .final-cta p { color: #e3e9fb; }
+.blog-article-content .cta-button { display: inline-block; background: #fff; color: var(--brand); font-weight: 700; padding: 12px 22px; border-radius: 10px; text-decoration: none; margin-top: 0.6em; }
+
+.blog-article-content .faq-section details { border: 1px solid var(--line); border-radius: 10px; padding: 6px 14px; margin: 0.6em 0; }
+.blog-article-content .faq-section summary { cursor: pointer; font-weight: 700; padding: 6px 0; }
+
+.blog-article-content .article-author { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: 0.95rem; }
+
+/* اگر مقاله header/h1/hero خودش را هم داشت (تکراری با تیتر سایت)، پنهان شود */
+.blog-article-content > .article-header .hero-image,
+.blog-article-content > .article-header > h1 { display: none; }

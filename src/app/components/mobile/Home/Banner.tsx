@@ -13,7 +13,7 @@ export default function Banner ({data}:any) {
             <Image src={"/car-approved.svg"} width="24" height="24" alt="رزرو کارشناس"/>
             <strong className="font-IranSans-UltraLight text-[#FFFBFB] text-sm mx-1 font-normal">کارشناسی خودرو در کمترین زمان</strong>
             </div>
-            <Link   className="rounded-3xl font-IranSans-UltraLight border border-white px-2" href="./car-inspection-flow/select-car-group">رزرو کارشناس</Link>
+            <Link   className="rounded-3xl font-IranSans-UltraLight border border-white px-2" href="/car-inspection">رزرو کارشناس</Link>
             {/* <Button size="sm" variant="outline"  className="rounded-3xl font-IranSans-UltraLight">
              
             </Button> */}

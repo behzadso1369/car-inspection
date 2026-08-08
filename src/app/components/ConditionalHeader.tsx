@@ -15,7 +15,7 @@ const ROUTES_WITH_HEADER = [
   "/new-service",
   "/contact-us",
   "/car-price",
-  "/car-inspection-flow/select-car-group",
+  "/car-inspection",
   "/payment/success",
   "/payment/failed",
 ];
@@ -27,19 +27,24 @@ interface ConditionalHeaderProps {
 export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
   const pathname = usePathname();
 
-  // صفحات راهنمای خودرو (car-inspection و زیرمجموعه‌ها) - به جز car-inspection-flow
-  const isCarInspection =
-    pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+  // صفحات راهنمای خودروهای پرفروش — نه مراحل فلو کارشناسی
+  const isCarInspectionMostPopular =
+    pathname === "/car-inspection-most-popular" ||
+    pathname.startsWith("/car-inspection-most-popular/");
   const isCarInspectionTehran =
     pathname === "/car-inspection-tehran" ||
     pathname.startsWith("/car-inspection-tehran/");
+  // مراحل فلو (مثل /car-inspection/inspection-method) هدر سراسری ندارند
+  const isCarInspectionFlowStep =
+    pathname.startsWith("/car-inspection/") && !isCarInspectionMostPopular;
 
   // بررسی اینکه آیا مسیر فعلی باید header را نمایش دهد
   const shouldShowHeader =
     (ROUTES_WITH_HEADER.includes(pathname) ||
-      isCarInspection ||
+      isCarInspectionMostPopular ||
       isCarInspectionTehran) &&
-    !pathname.startsWith("/Profile");
+    !pathname.startsWith("/Profile") &&
+    !isCarInspectionFlowStep;
 
   // اگه نباید header رو نشون بده، null برگردون
   if (!shouldShowHeader) {

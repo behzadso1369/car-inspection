@@ -13,7 +13,7 @@ const ROUTES_WITH_FOOTER = [
   "/new-service",
   "/contact-us",
   "/car-price",
-  "/car-inspection-flow/select-car-group",
+  "/car-inspection",
   "/payment/success",
   "/payment/failed",
   "/blog",
@@ -27,20 +27,22 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
   const pathname = usePathname();
 
   // بررسی اینکه آیا مسیر فعلی باید footer را نمایش دهد
-  // مستثنی کردن مسیرهای Profile و Blog (که layout های خاص خود را دارند)
-  // و همچنین car-inspection-flow (که layout خاص خود را دارد)
-  // صفحات راهنمای خودرو (car-inspection و زیرمجموعه‌ها) - به جز car-inspection-flow
-  const isCarInspection =
-    pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+  // صفحات راهنمای پرفروش + تهران؛ مراحل فلو کارشناسی فوتر سراسری ندارند
+  const isCarInspectionMostPopular =
+    pathname === "/car-inspection-most-popular" ||
+    pathname.startsWith("/car-inspection-most-popular/");
   const isCarInspectionTehran =
     pathname === "/car-inspection-tehran" ||
     pathname.startsWith("/car-inspection-tehran/");
+  const isCarInspectionFlowStep =
+    pathname.startsWith("/car-inspection/") && !isCarInspectionMostPopular;
 
   const shouldShowFooter =
     (ROUTES_WITH_FOOTER.includes(pathname) ||
-      isCarInspection ||
+      isCarInspectionMostPopular ||
       isCarInspectionTehran) &&
-    !pathname.startsWith("/Profile");
+    !pathname.startsWith("/Profile") &&
+    !isCarInspectionFlowStep;
 
   if (!shouldShowFooter) {
     return null;

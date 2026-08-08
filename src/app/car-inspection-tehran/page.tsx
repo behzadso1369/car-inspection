@@ -84,7 +84,7 @@ export default function CarInspectionTehranHub() {
             کارشناسی خودرو در محل، در هر نقطه از شرق تهران
           </p>
           <Link
-            href="/car-inspection-flow/select-car-group"
+            href="/car-inspection"
             className="inline-block mt-4 rounded-full bg-[#3456bb] text-white px-8 py-3 text-sm font-medium hover:bg-[#2c4aa0] transition-colors"
           >
             شروع رزرو کارشناسی

@@ -7,7 +7,7 @@ const SERVICES = [
     title: "کارشناسی خودرو",
     description:
       "پیش از خرید یا فروش، وضعیت خودرو را به طور کامل بررسی کنید و با شناخت دقیق‌تری وارد معامله شوید.",
-    href: "/car-inspection-flow/select-car-group",
+    href: "/car-inspection",
     cta: "رزرو کارشناسی خودرو",
     image: "/images/home/service-inspection.webp",
     imageAlt: "کارشناسی خودرو؛ بررسی رنگ و بدنه با دستگاه ضخامت‌سنج رنگ",
