@@ -8,6 +8,7 @@ import {
 } from "@/types/on-site";
 import {
   type CarBodyPanelKey,
+  DAMAGE_ATLAS_SIZE,
   PANEL_HOTSPOTS,
   PANEL_SPRITES,
   buildZoneByPanel,
@@ -91,33 +92,44 @@ export default function CarBodyDiagram({
           const isDefect = isDefectStatus(zone.Status);
           const isActive = activeZone?.Id === zone.Id;
           const sprite = PANEL_SPRITES[key];
+          // Nested SVG crop — avoid foreignObject; Safari/iOS does not scale
+          // HTML-in-SVG with the parent viewBox (sprites look exploded/offset).
+          const showDamage = Boolean(isDefect && sprite);
+          const atlasSrc = showDamage
+            ? damageSheetForStatus(zone.Status)
+            : null;
+          const cropX = sprite ? -sprite.bgX : 0;
+          const cropY = sprite ? -sprite.bgY : 0;
 
           return (
             <g key={key}>
-              {isDefect && sprite && (
-                <foreignObject
+              {showDamage && sprite && atlasSrc && (
+                <svg
                   x={spot.x}
                   y={spot.y}
                   width={sprite.w}
                   height={sprite.h}
-                  className="pointer-events-none overflow-visible"
+                  viewBox={`${cropX} ${cropY} ${sprite.w} ${sprite.h}`}
+                  overflow="hidden"
+                  pointerEvents="none"
+                  opacity={isActive ? 1 : 0.48}
+                  style={{
+                    filter: isActive
+                      ? "brightness(1.18) saturate(1.45) contrast(1.08)"
+                      : "brightness(0.98) saturate(0.85)",
+                    transition: "opacity 0.2s ease, filter 0.2s ease",
+                  }}
                 >
-                  <div
-                    {...{ xmlns: "http://www.w3.org/1999/xhtml" }}
-                    style={{
-                      width: sprite.w,
-                      height: sprite.h,
-                      backgroundImage: `url(${damageSheetForStatus(zone.Status)})`,
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: `${sprite.bgX}px ${sprite.bgY}px`,
-                      opacity: isActive ? 1 : 0.48,
-                      filter: isActive
-                        ? "brightness(1.18) saturate(1.45) contrast(1.08)"
-                        : "brightness(0.98) saturate(0.85)",
-                      transition: "opacity 0.2s ease, filter 0.2s ease",
-                    }}
+                  <image
+                    href={atlasSrc}
+                    xlinkHref={atlasSrc}
+                    x={0}
+                    y={0}
+                    width={DAMAGE_ATLAS_SIZE.width}
+                    height={DAMAGE_ATLAS_SIZE.height}
+                    preserveAspectRatio="none"
                   />
-                </foreignObject>
+                </svg>
               )}
 
               <rect

@@ -44,9 +44,13 @@ export const PANEL_HOTSPOTS: Record<
   right_sill: { x: 360, y: 210, w: 20, h: 90, rx: 4, label: "رکاب شاگرد" },
 };
 
+/** Intrinsic size of `/body-map/vehicle_damage_*.png` atlases */
+export const DAMAGE_ATLAS_SIZE = { width: 334, height: 270 } as const;
+
 /**
  * Sprite cuts from damage sheets (same atlas layout for paint / local_paint / changed).
- * Used to paint the real panel shape instead of a rectangular frame.
+ * `bgX` / `bgY` are CSS background-position offsets (often negative);
+ * atlas crop origin is `(-bgX, -bgY)`.
  */
 export const PANEL_SPRITES: Partial<
   Record<CarBodyPanelKey, { bgX: number; bgY: number; w: number; h: number }>

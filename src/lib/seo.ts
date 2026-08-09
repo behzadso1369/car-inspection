@@ -140,10 +140,16 @@ export function generateLocalBusinessSchema(options?: {
       'میدان رسالت',
       'پیروزی',
       'فرجام',
+      'هنگام',
+      'حکیمیه',
+      'مجیدیه',
+      'نارمک',
     ];
 
   const areaServed = options?.area
-    ? [{ '@type': 'Place', name: options.area }]
+    ? Array.from(
+        new Set([options.area, ...(options.extraAreas ?? [])]),
+      ).map((name) => ({ '@type': 'Place', name }))
     : areas.map((name) => ({ '@type': 'Place', name }));
 
   return {

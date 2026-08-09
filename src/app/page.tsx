@@ -74,12 +74,40 @@ async function getMasterPageData() {
   return await serverApiHelper.get("GetMasterPageData", 600);
 }
 
+async function getHomeBlogPosts(take = 4) {
+  const res = await serverApiHelper.post(
+    "SiteBlogSearchWithTerms",
+    { terms: "", take, skip: 0 },
+    600,
+  );
+  const items = res?.SearchItems ?? [];
+  return items.map((item: any) => {
+    const canonical = String(item?.BlogPostCanonical ?? "");
+    const slugMatch = canonical.match(/\/blog\/([^/?#]+)\/?$/);
+    const slug =
+      slugMatch?.[1] && !/^\d+$/.test(slugMatch[1])
+        ? slugMatch[1]
+        : String(item?.BlogPostId ?? item?.Id ?? "");
+
+    return {
+      Id: item?.BlogPostId ?? item?.Id,
+      Slug: slug,
+      Title: item?.Title ?? item?.BlogPostTitle ?? "",
+      ImagePath: item?.ImagePath ?? "",
+      Excerpt: item?.Excerpt ?? item?.BlogPostDescription ?? "",
+    };
+  });
+}
+
 export default async function Home() {
   
   console.log('🏠 Home page rendering - Server Side');
   console.log('⏰ Time:', new Date().toISOString());
 
-  const data = await getMasterPageData();
+  const [data, blogPosts] = await Promise.all([
+    getMasterPageData(),
+    getHomeBlogPosts(4),
+  ]);
   const faqPreviewItems = await getFaqsByCategoryName("کارماچک", 600);
   return (
    <div className="bg-white">
@@ -89,7 +117,7 @@ export default async function Home() {
       <Services />
       <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
       <Statistics />
-      <BlogShort data={data?.BlogPosts}/>
+      <BlogShort data={blogPosts}/>
 
       {/* بخش سئوی محلی: مناطق تحت پوشش شرق تهران */}
       <section className="font-IranSans max-w-6xl mx-auto px-4 py-10" dir="rtl">
