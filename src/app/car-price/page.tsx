@@ -706,7 +706,7 @@ export default function CarPricePage() {
       </div>
 
       <div className="block lg:hidden">
-        <NavigationBar />
+        <NavigationBar activePath="/car-price" />
       </div>
     </main>
   );

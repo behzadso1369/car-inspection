@@ -7,7 +7,6 @@ import Statistics from "./components/mobile/Home/Statistics";
 import BlogShort from "./components/mobile/Home/BlogShort";
 import { NavigationBar } from "./components/mobile/Home/NavigationBar";
 import { Metadata } from "next";
-import Link from "next/link";
 import { serverApiHelper } from "@/helper/server-fetcher";
 import { LOCAL_AREAS } from "@/lib/local-areas";
 import { getFaqsByCategoryName } from "@/lib/faq-data";
@@ -71,7 +70,7 @@ export const metadata: Metadata = {
 
 // Server-side data fetching با استفاده از serverApiHelper
 async function getMasterPageData() {
-  return await serverApiHelper.get("GetMasterPageData", 600);
+  return await serverApiHelper.get("GetMasterPageData", 3600);
 }
 
 async function getHomeBlogPosts(take = 4) {
@@ -100,17 +99,16 @@ async function getHomeBlogPosts(take = 4) {
 }
 
 export default async function Home() {
-  
-  console.log('🏠 Home page rendering - Server Side');
-  console.log('⏰ Time:', new Date().toISOString());
-
   const [data, blogPosts] = await Promise.all([
     getMasterPageData(),
     getHomeBlogPosts(4),
   ]);
   const faqPreviewItems = await getFaqsByCategoryName("کارماچک", 600);
   return (
-   <div className="bg-white">
+   <main className="bg-white">
+      <h1 className="sr-only">
+        کارماچک | کارشناسی خودرو در شرق تهران، تهرانپارس، نارمک و رسالت
+      </h1>
       <Slider data={data?.Sliders}/>
       <Introduction data={data?.WhyWe}/>
       <HomeFeatures />
@@ -135,13 +133,13 @@ export default async function Home() {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {LOCAL_AREAS.map((a) => (
-            <Link
+            <a
               key={a.slug}
               href={`/car-inspection-tehran/${a.slug}`}
               className="rounded-full border border-[#A6A6A6] text-[#55565A] px-4 py-1.5 text-sm hover:text-[#3456bb] hover:border-[#3456bb] transition-colors"
             >
               کارشناسی خودرو {a.name}
-            </Link>
+            </a>
           ))}
         </div>
       </section>
@@ -153,8 +151,8 @@ export default async function Home() {
       />
 
       <div className="block lg:hidden">
-         <NavigationBar/>
+         <NavigationBar activePath="/" />
       </div>
-   </div>
+   </main>
   );
 }

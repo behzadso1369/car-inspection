@@ -1,20 +1,10 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import type { FaqItem } from "@/lib/faq-data";
 import type { ReactNode } from "react";
 
 const INSPECTION_HREF = "/car-inspection";
 
-/** Longer phrases first so nested matches stay intact */
 const INSPECTION_LINK_PHRASES = [
   "رزرو کارشناسی ماشین",
   "شروع کارشناسی",
@@ -69,11 +59,9 @@ export function FaqPreviewSection({
   limit,
   expandInline = false,
 }: FaqPreviewSectionProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const validItems = items.filter((item) => item?.Question && item?.Answer);
   const visibleItems =
-    limit && !isExpanded ? validItems.slice(0, limit) : validItems;
-  const hasHiddenItems = validItems.length > visibleItems.length;
+    limit && !expandInline ? validItems.slice(0, limit) : validItems;
 
   if (!visibleItems.length) return null;
 
@@ -97,46 +85,35 @@ export function FaqPreviewSection({
           ) : null}
         </div>
 
-        <Accordion type="single" collapsible className="w-full space-y-3">
+        <div className="w-full space-y-3">
           {visibleItems.map((item, index) => (
-            <AccordionItem
+            <details
               key={String(item.Id ?? index)}
-              value={String(item.Id ?? index)}
-              className="overflow-hidden rounded-3xl border border-[#E8ECF4] bg-white px-4 shadow-[0_4px_18px_rgba(16,17,23,0.04)] transition hover:border-[#3456bb]/20 hover:shadow-[0_8px_24px_rgba(53,99,233,0.08)] data-[state=open]:border-[#3456bb]/30 data-[state=open]:bg-gradient-to-b data-[state=open]:from-white data-[state=open]:to-[#F8FAFF]"
+              className="group overflow-hidden rounded-3xl border border-[#E8ECF4] bg-white px-4 shadow-[0_4px_18px_rgba(16,17,23,0.04)] open:border-[#3456bb]/30 open:bg-gradient-to-b open:from-white open:to-[#F8FAFF]"
             >
-              <AccordionTrigger className="py-4 text-right text-sm font-bold leading-7 text-[#101117] hover:no-underline md:text-base [&[data-state=open]]:text-[#3456bb]">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 py-4 text-right text-sm font-bold leading-7 text-[#101117] marker:content-none md:text-base group-open:text-[#3456bb] [&::-webkit-details-marker]:hidden">
                 <span className="flex items-start gap-3 text-right">
                   <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#EEF2FD] text-xs font-black text-[#3456bb]">
                     {index + 1}
                   </span>
                   <span>{item.Question}</span>
                 </span>
-              </AccordionTrigger>
-              <AccordionContent className="border-t border-[#EEF2FD] pb-4 text-right text-sm leading-8 text-[#55565A] md:text-base">
+              </summary>
+              <div className="border-t border-[#EEF2FD] pb-4 text-right text-sm leading-8 text-[#55565A] md:text-base">
                 {linkifyInspectionPhrases(item.Answer)}
-              </AccordionContent>
-            </AccordionItem>
+              </div>
+            </details>
           ))}
-        </Accordion>
+        </div>
 
-        {showViewAll && (!expandInline || hasHiddenItems) ? (
+        {showViewAll && !expandInline ? (
           <div className="mt-8 flex justify-center">
-            {expandInline ? (
-              <button
-                type="button"
-                onClick={() => setIsExpanded(true)}
-                className="inline-flex items-center justify-center rounded-2xl border border-[#3456bb]/25 bg-white px-6 py-3 text-sm font-semibold text-[#3456bb] shadow-[0_4px_16px_rgba(53,99,233,0.08)] transition hover:border-[#3456bb]/40 hover:bg-[#EEF2FD]"
-              >
-                مشاهده همه
-              </button>
-            ) : (
-              <Link
-                href={viewAllHref}
-                className="inline-flex items-center justify-center rounded-2xl border border-[#3456bb]/25 bg-white px-6 py-3 text-sm font-semibold text-[#3456bb] shadow-[0_4px_16px_rgba(53,99,233,0.08)] transition hover:border-[#3456bb]/40 hover:bg-[#EEF2FD]"
-              >
-                مشاهده همه
-              </Link>
-            )}
+            <Link
+              href={viewAllHref}
+              className="inline-flex items-center justify-center rounded-2xl border border-[#3456bb]/25 bg-white px-6 py-3 text-sm font-semibold text-[#3456bb] shadow-[0_4px_16px_rgba(53,99,233,0.08)] transition hover:border-[#3456bb]/40 hover:bg-[#EEF2FD]"
+            >
+              مشاهده همه
+            </Link>
           </div>
         ) : null}
       </div>

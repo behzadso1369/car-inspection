@@ -1,9 +1,8 @@
 "use client";
 
-import Script from "next/script";
 import { Suspense, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { GA_MEASUREMENT_ID, pageview } from "@/lib/gtag";
+import { GA_MEASUREMENT_ID } from "@/lib/gtag";
 
 function RouteChangeTracker() {
   const pathname = usePathname();
@@ -12,33 +11,27 @@ function RouteChangeTracker() {
   useEffect(() => {
     const query = searchParams.toString();
     const url = query ? `${pathname}?${query}` : pathname;
-    pageview(url);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "page_view",
+      page_path: url,
+    });
   }, [pathname, searchParams]);
 
   return null;
 }
 
+/**
+ * SPA pageviews via dataLayer only.
+ * GTM (lazyOnload in root layout) loads gtag / Clarity after the page is interactive,
+ * so we do not inject a second copy of gtag.js on the critical path.
+ */
 export function GoogleAnalytics() {
   if (!GA_MEASUREMENT_ID) return null;
 
   return (
-    <>
-      <Script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GA_MEASUREMENT_ID}');
-        `}
-      </Script>
-      <Suspense fallback={null}>
-        <RouteChangeTracker />
-      </Suspense>
-    </>
+    <Suspense fallback={null}>
+      <RouteChangeTracker />
+    </Suspense>
   );
 }

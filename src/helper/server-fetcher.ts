@@ -4,6 +4,7 @@
  * از همون BASE_URL که در interceptor استفاده میشه
  */
 
+import { cache } from "react";
 import { ApiHelper } from './api-request';
 
 // استفاده از همون BASE_URL که در interceptor هست
@@ -78,15 +79,18 @@ export async function serverFetch<T = any>(
 /**
  * Helper functions برای استفاده راحت‌تر
  */
+const cachedGet = cache(async (endpoint: string, revalidate?: number) => {
+  return serverFetch(endpoint, {
+    method: "GET",
+    next: revalidate ? { revalidate } : undefined,
+  });
+});
 export const serverApi = {
   get: async <T = any>(
     endpoint: string,
     revalidate?: number
   ): Promise<T | null> => {
-    return serverFetch<T>(endpoint, {
-      method: 'GET',
-      next: revalidate ? { revalidate } : undefined,
-    });
+    return cachedGet(endpoint, revalidate) as Promise<T | null>;
   },
 
   post: async <T = any>(

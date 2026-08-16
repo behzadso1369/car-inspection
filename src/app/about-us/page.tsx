@@ -223,7 +223,7 @@ export default async function AboutUsPage() {
 
       {/* Mobile Navigation Bar */}
       <div className="block lg:hidden">
-        <NavigationBar />
+        <NavigationBar activePath="/about-us" />
       </div>
     </div>
   );

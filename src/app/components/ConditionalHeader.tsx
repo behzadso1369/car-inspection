@@ -55,7 +55,7 @@ export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
 
   return (
     <>
-      <Banner data={data?.MasterSiteData?.NavbarPhoneNumber} />
+      <Banner />
       <div className="block lg:hidden">
         <CallAction data={data} fixed={isCarPrice} />
       </div>

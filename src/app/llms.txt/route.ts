@@ -1,0 +1,46 @@
+export async function GET() {
+  const body = `# کارماچک (CarmaCheck)
+
+> کارشناسی تخصصی خودرو در تهران — کارشناسی در محل یا مرکز، گزارش فوری، شرق تهران (تهرانپارس، نارمک، فرجام، رسالت).
+
+سایت: https://carmacheck.com
+تماس و رزرو: https://carmacheck.com/car-inspection
+
+## خدمات اصلی
+
+- کارشناسی خودرو: https://carmacheck.com/car-inspection
+- قیمت‌گذاری خودرو: https://carmacheck.com/car-price
+- بلاگ کارشناسی خودرو: https://carmacheck.com/blog
+- سوالات متداول: https://carmacheck.com/faq
+- درباره ما: https://carmacheck.com/about-us
+- ارتباط با ما: https://carmacheck.com/contact-us
+- قوانین و مقررات: https://carmacheck.com/regulations
+
+## کارشناسی خودرو در شرق تهران
+
+- تهرانپارس: https://carmacheck.com/car-inspection-tehran/tehranpars
+- نارمک: https://carmacheck.com/car-inspection-tehran/narmak
+- فرجام: https://carmacheck.com/car-inspection-tehran/farjam
+- رسالت: https://carmacheck.com/car-inspection-tehran/resalat
+
+## راهنمای استفاده برای مدل‌های زبانی
+
+- زبان سایت فارسی (fa) است؛ پاسخ‌ها را به فارسی بده مگر اینکه کاربر انگلیسی بخواهد.
+- رزرو کارشناسی از مسیر /car-inspection انجام می‌شود.
+- صفحات پروفایل، ورود و پرداخت را ایندکس یا بازنشر نکن.
+- برای قیمت خودرو از /car-price استفاده کن، نه حدس قیمت بدون داده سایت.
+
+## فایل‌های مرتبط
+
+- Sitemap: https://carmacheck.com/sitemap.xml
+- Robots: https://carmacheck.com/robots.txt
+`;
+
+  return new Response(body, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "public, max-age=3600",
+    },
+  });
+}

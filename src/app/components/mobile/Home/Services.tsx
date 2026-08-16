@@ -1,6 +1,4 @@
-import { ArrowLeft01Icon } from "hugeicons-react";
 import Image from "next/image";
-import Link from "next/link";
 
 const SERVICES = [
   {
@@ -55,14 +53,15 @@ export default function Services() {
             </div>
 
             <div className="absolute left-6 top-52 z-30 flex h-16 w-14 -translate-y-1/2 justify-center rounded-full bg-white py-1">
-              <Link
+              <a
                 href={service.href}
-                prefetch={false}
                 aria-label={service.cta}
                 className="flex h-12 w-12 items-center justify-center rounded-full bg-[#416CEA] text-white"
               >
-                <ArrowLeft01Icon color="white" size={24} />
-              </Link>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 6 9 12l6 6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
             </div>
 
             <div className="mt-10 flex flex-1 flex-col justify-between px-4 pb-4">
@@ -74,13 +73,12 @@ export default function Services() {
                   {service.description}
                 </p>
               </div>
-              <Link
+              <a
                 href={service.href}
-                prefetch={false}
                 className="mt-4 block w-full rounded-3xl bg-[#416CEA] px-4 py-2.5 text-center text-white"
               >
                 {service.cta}
-              </Link>
+              </a>
             </div>
           </article>
         ))}

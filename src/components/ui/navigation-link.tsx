@@ -11,6 +11,7 @@ interface NavigationLinkProps {
   className?: string;
   prefetch?: boolean;
   onClick?: () => void;
+  "aria-label"?: string;
 }
 
 /**
@@ -23,6 +24,7 @@ export default function NavigationLink({
   className = '',
   prefetch = true,
   onClick,
+  "aria-label": ariaLabel,
 }: NavigationLinkProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -45,6 +47,7 @@ export default function NavigationLink({
       href={href}
       onClick={handleClick}
       prefetch={prefetch}
+      aria-label={ariaLabel}
       className={`${className} ${isPending ? 'opacity-70 pointer-events-none' : ''}`}
     >
       {children}

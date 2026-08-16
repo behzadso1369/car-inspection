@@ -1,20 +1,22 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Toaster } from "sonner";
-import ConditionalHeader from "./components/ConditionalHeader";
-import ConditionalFooter from "./components/ConditionalFooter";
+import Banner from "./components/mobile/Home/Banner";
+import CallAction from "./components/mobile/Home/CallAction";
+import { Footer } from "./components/mobile/Home/Footer";
+import { Header } from "./components/mobile/Home/Header";
+import { SiteChrome } from "./components/SiteChrome";
 import { serverApiHelper } from "@/helper/server-fetcher";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { DeferredGtm } from "@/components/analytics/DeferredGtm";
+import { DeferredToaster } from "@/components/analytics/DeferredToaster";
 import { ChunkLoadErrorHandler } from "@/components/ChunkLoadErrorHandler";
 import { generateOrganizationSchema, generateLocalBusinessSchema, generateWebSiteSchema } from "@/lib/seo";
+import { iranSans, iranSansUltraLight } from "./fonts";
 
 const GTM_ID = "GTM-5D46VDMH";
 
-// صفحات جداگانه خودشان revalidate/ISR تعیین می‌کنند؛ روت را داینامیک اجباری نمی‌کنیم
 export const revalidate = 3600;
 
-const API_BASE_URL = 'https://api.carmacheck.com';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com";
 
 async function fetchMasterData() {
@@ -41,7 +43,6 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: siteDescription,
     
-    // Robots
     robots: {
       index: true,
       follow: true,
@@ -54,16 +55,11 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
     
-    // Icons
     icons: {
       icon: '/favicon.ico',
       shortcut: '/favicon.ico',
     },
 
-    // Manifest از app/manifest.ts سرو می‌شود (/manifest.webmanifest)
-    // فیلد دستی حذف شد تا لینک تکراری/۴۰۴ ایجاد نشود
-
-    // Open Graph
     openGraph: {
       type: 'website',
       locale: 'fa_IR',
@@ -71,17 +67,14 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: `${siteName} - کارشناسی خودرو`,
       title: `${siteName} | کارشناسی تخصصی خودرو با کارشناسان مجرب`,
       description: siteDescription,
-      // تصویر OG به‌صورت داینامیک از app/opengraph-image.tsx تولید می‌شود
     },
     
-    // Twitter
     twitter: {
       card: 'summary_large_image',
       site: '@carmacheck',
       creator: '@carmacheck',
     },
     
-    // Other metadata
     authors: [{ name: 'کارماچک - CarmaCheck' }],
     creator: 'کارماچک',
     publisher: 'کارماچک',
@@ -89,7 +82,6 @@ export async function generateMetadata(): Promise<Metadata> {
       telephone: false,
     },
     
-    // Additional meta tags
     other: {
       'msapplication-TileColor': '#3456bb',
     },
@@ -108,7 +100,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch data در server-side برای ConditionalHeader
   let initialData = null;
   
   try {
@@ -119,38 +110,49 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="fa" dir="rtl">
+    <html
+      lang="fa"
+      dir="rtl"
+      className={`${iranSans.variable} ${iranSansUltraLight.variable} ${iranSans.className}`}
+      suppressHydrationWarning
+    >
       <head>
-        {/* Google Tag Manager */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
-          }}
-        />
-        {/* End Google Tag Manager */}
+        <link rel="preconnect" href="https://api.carmacheck.com" />
+        <link rel="dns-prefetch" href="https://api.carmacheck.com" />
       </head>
-      <body className={` antialiased`}>
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
-        {/* End Google Tag Manager (noscript) */}
-        <GoogleAnalytics />
+      <body className="antialiased" suppressHydrationWarning>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:right-2 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-[#3456bb]"
+        >
+          پرش به محتوای اصلی
+        </a>
+        {process.env.NODE_ENV === "production" ? (
+          <>
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+                height="0"
+                width="0"
+                style={{ display: "none", visibility: "hidden" }}
+                title="Google Tag Manager"
+              />
+            </noscript>
+            <DeferredGtm id={GTM_ID} />
+          </>
+        ) : null}
         <ChunkLoadErrorHandler />
         <JsonLd data={[generateOrganizationSchema(), generateLocalBusinessSchema(), generateWebSiteSchema()]} />
-        <ConditionalHeader data={initialData} />
-        {children}
-        <ConditionalFooter data={initialData} />
-        <Toaster richColors position="top-center" />
+        <SiteChrome
+          header={<Header data={initialData} />}
+          banner={<Banner />}
+          mobileBar={<CallAction data={initialData} />}
+          mobileBarFixed={<CallAction data={initialData} fixed />}
+          footer={<Footer data={initialData} />}
+        >
+          <div id="main-content">{children}</div>
+        </SiteChrome>
+        <DeferredToaster />
       </body>
     </html>
   );

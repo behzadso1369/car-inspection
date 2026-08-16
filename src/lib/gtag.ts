@@ -13,14 +13,22 @@ declare global {
 }
 
 export function pageview(url: string) {
-  if (!GA_MEASUREMENT_ID || typeof window.gtag !== "function") return;
-  window.gtag("config", GA_MEASUREMENT_ID, { page_path: url });
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: "page_view", page_path: url });
+  if (GA_MEASUREMENT_ID && typeof window.gtag === "function") {
+    window.gtag("config", GA_MEASUREMENT_ID, { page_path: url });
+  }
 }
 
 export function gtagEvent(
   action: string,
   params?: Record<string, unknown>
 ) {
-  if (!GA_MEASUREMENT_ID || typeof window.gtag !== "function") return;
-  window.gtag("event", action, params);
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: action, ...(params ?? {}) });
+  if (GA_MEASUREMENT_ID && typeof window.gtag === "function") {
+    window.gtag("event", action, params);
+  }
 }

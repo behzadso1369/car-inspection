@@ -1,6 +1,6 @@
 import { Clock01Icon, Location01Icon, SmartPhone01Icon } from "hugeicons-react"
-import Image from "next/image"
 import Link from "next/link"
+import { EnamadBadge } from "@/components/seo/EnamadBadge"
 
 function toTelHref(phone: string) {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
@@ -59,7 +59,7 @@ export const Footer = (data: any) => {
           </div>
           <div className="my-8 mx-18">
             <div className="flex justify-between">
-                               <a referrerPolicy="origin" target='_blank' href='https://trustseal.enamad.ir/?id=682294&Code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD'><img referrerPolicy="origin" src='https://trustseal.enamad.ir/logo.aspx?id=682294&Code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD' alt='' style={{cursor: "pointer"}} /></a>
+                               <EnamadBadge />
             </div>
           </div>
           <div className="h-8 bg-white"></div>
@@ -93,7 +93,7 @@ export const Footer = (data: any) => {
           </div>
           <div className="my-8 mr-96">
             <div className="flex justify-between">
-                <a referrerPolicy="origin" target='_blank' href='https://trustseal.enamad.ir/?id=682294&Code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD'><img referrerPolicy="origin" src='https://trustseal.enamad.ir/logo.aspx?id=682294&Code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD' alt='' style={{cursor: "pointer"}} /></a>
+                <EnamadBadge />
             </div>
           </div>
           <div className="h-8 bg-white"></div>

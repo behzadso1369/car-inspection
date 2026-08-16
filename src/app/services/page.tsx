@@ -276,7 +276,7 @@ export default async function Services() {
       {/* Spacing */}
       <div className="h-8" />
        <div className="lg:hidden">
-                  <NavigationBar/>
+                  <NavigationBar activePath="/services" />
           </div>
     </div>
   )

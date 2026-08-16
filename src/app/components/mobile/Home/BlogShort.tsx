@@ -1,8 +1,4 @@
-'use client'
-
-import { ArrowLeft01Icon } from "hugeicons-react"
 import { BlogCard } from "./BlogCard"
-import Link from "next/link"
 
 type BlogShortItem = {
   Id?: number | string
@@ -18,10 +14,12 @@ export default function BlogShort({ data }: { data?: BlogShortItem[] }) {
   return (
     <section className="bg-white py-16 px-4 font-IranSans">
       <div className="flex w-full justify-between">
-        <span>خواندنی ها</span>
+        <h2 className="text-lg font-bold text-[#101117]">خواندنی ها</h2>
         <p className="text-[#1434CB] flex items-center">
-          <Link href="/blog" prefetch={false}>نمایش بلاگ</Link>
-          <ArrowLeft01Icon className="mb-1 mx-1" color="#1434CB" size={20} />
+          <a href="/blog">نمایش بلاگ</a>
+          <svg className="mb-1 mx-1" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 6 9 12l6 6" stroke="#1434CB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </p>
       </div>
       <div className="my-4 grid grid-cols-4 gap-4">

@@ -4,46 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 
-@font-face {
-  font-family: IRANSans;
-  font-style: normal;
-  font-weight: normal;
-  src: url("../../public/assets/fonts/iran-sans/eot/IRANSansWeb\(FaNum\).eot");
-  src: local(IRANSans),
-       url("../../public/assets/fonts/iran-sans/eot/IRANSansWeb\(FaNum\).eot")
-      format("embedded-opentype"),
-    /* IE6-8 */
-      url("../../public/assets/fonts/iran-sans/woff/IRANSansWeb\(FaNum\).woff")
-      format("woff2"),
-    /* FF39+,Chrome36+, Opera24+*/
-      url("../../public/assets/fonts/iran-sans/woff/IRANSansWeb\(FaNum\).woff")
-      format("woff"),
-    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
-      url("../../public/assets/fonts/iran-sans/ttf/IRANSansWeb\(FaNum\).ttf")
-      format("truetype");
-  font-display: swap;
-  unicode-range: U+?????;
-}
-@font-face {
-  font-family: IRANSansUltraLight;
-  font-style: normal;
-  font-weight: normal;
-  src: url("../../public/assets/fonts/iran-sans/eot/IRANSansWeb(FaNum)_UltraLight.eot");
-  src: local(IRANSans),
-       url("../../public/assets/fonts/iran-sans/eot/IRANSansWeb(FaNum)_UltraLight.eot")
-      format("embedded-opentype"),
-    /* IE6-8 */
-      url("../../public/assets/fonts/iran-sans/woff/IRANSansWeb(FaNum)_UltraLight.woff")
-      format("woff2"),
-    /* FF39+,Chrome36+, Opera24+*/
-      url("../../public/assets/fonts/iran-sans/woff/IRANSansWeb(FaNum)_UltraLight.woff")
-      format("woff"),
-    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
-      url("../../public/assets/fonts/iran-sans/ttf/IRANSansWeb(FaNum)_UltraLight.ttf")
-      format("truetype");
-  font-display: swap;
-  unicode-range: U+?????;
-}
+/* Fonts are loaded via next/font in src/app/fonts.ts (woff2 only). */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -85,8 +46,8 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 @theme {
-  --font-IranSans: "IRANSans"; 
-  --font-IranSans-UltraLight: "IRANSansUltraLight";
+  --font-IranSans: var(--font-iran-sans), IRANSans, Tahoma, sans-serif;
+  --font-IranSans-UltraLight: var(--font-iran-sans-ultralight), IRANSansUltraLight, Tahoma, sans-serif;
   --primary: #3563E9;
   --secondary: #FFFFFF;
   --main-background: #ebeff3;
@@ -102,8 +63,8 @@
   background-image: url("/banner-bg-pattern.svg")
 }
 .bg-quality {
-  background-image: url("/service-background.png");
-  background-size: cover
+  background-image: url("/service-background.webp");
+  background-size: cover;
 }
 
 

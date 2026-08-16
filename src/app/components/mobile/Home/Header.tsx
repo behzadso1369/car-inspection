@@ -1,99 +1,92 @@
-"use client";
-import { Call02Icon, UserCircle02Icon } from "hugeicons-react"
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { memo, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import NavigationLink from "@/components/ui/navigation-link"
+import { BrandLogo } from "@/components/seo/BrandLogo";
 
-export const Header = memo(({data}:any) => {
-    const pathname = usePathname();
-    const router = useRouter();
-    
-    
-    // Prefetch صفحات مهم در background
-    useEffect(() => {
-        router.prefetch("/");
-        router.prefetch("/car-inspection");
-        router.prefetch("/services");
-        router.prefetch("/contact-us");
-        router.prefetch("/about-us");
-        router.prefetch("/car-price");
-        router.prefetch("/Profile");
-    }, [router]);
-    
-    const isActive = (href: string) => {
-        if (href === "/") {
-            return pathname === "/";
-        }
-        if (href === "/car-inspection") {
-            return pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
-        }
-        return pathname.startsWith(href);
-    };
-    
-    return (
-        <header className="w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 !bg-white rounded-b-3xl font-IranSans">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                    <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
-                        <Image 
-                            alt="کارماچک" 
-                            width={140} 
-                            height={57} 
-                            src={"https://api.carmacheck.com/" + data?.ImagePath}
-                            priority
-                            loading="eager"
-                        />
-                    </Link>
-                
-                </div>
+type HeaderProps = {
+  data?: any;
+  activePath?: string;
+};
 
-                <ul className="flex text-base">
-                    <li className={`mx-4 ${isActive("/") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/" prefetch={true}>خانه</NavigationLink>
-                    </li>
-                    <li className={`mx-4 ${isActive("/car-inspection") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/car-inspection" prefetch={true}>
-                            کارشناسی خودرو
-                        </NavigationLink>
-                    </li>
-                    <li className={`mx-4 ${isActive("/car-price") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/car-price" prefetch={true}>
-                            قیمت گذاری خودرو
-                        </NavigationLink>
-                    </li>
-                    {/* <li className={`mx-4 ${isActive("/services") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/services" prefetch={true}>خدمات کارماچک</NavigationLink>
-                    </li> */}
-                     <li className={`mx-4 ${isActive("/blog") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/blog" prefetch={true}>بلاگ</NavigationLink>
-                    </li>
-                    <li className={`mx-4 ${isActive("/contact-us") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/contact-us" prefetch={true}>ارتباط با ما</NavigationLink>
-                    </li>
-                   
-                    <li className={`mx-4 ${isActive("/about-us") ? "text-[#3456bb]" : ""}`}>
-                        <NavigationLink href="/about-us" prefetch={true}>درباره ما</NavigationLink>
-                    </li>
-                </ul>
-                
-                <span className="text-[#101117] flex items-center font-IranSans">
-                    <a 
-                        className="rounded-3xl font-IranSans-UltraLight border border-white px-2" 
-                        href={`tel:${data?.NavbarPhoneNumber}`}
-                    >
-                        {data?.NavbarPhoneNumber}
-                    </a>
-                    <Call02Icon size={16}/>
-                    <NavigationLink href="/Profile" prefetch={true} className="mx-2">
-                        <UserCircle02Icon size={24}/>
-                    </NavigationLink>
-                </span>
-            </div>
-        </header>
-    )
-});
+function isActivePath(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  if (href === "/car-inspection") {
+    return pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+  }
+  return pathname.startsWith(href);
+}
 
-Header.displayName = 'Header';
+function PhoneIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M7.5 3.5h3L12 8l-2 1.5a12 12 0 0 0 4.5 4.5L16 12l4.5 1.5v3c0 1-1 2.5-6 2.5C8 19 5 12 5 7.5c0-5 1.5-4 2.5-4Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function UserIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="8" r="3.25" stroke="currentColor" strokeWidth="1.6" />
+      <path
+        d="M5.5 19.2c.8-3.2 3.3-5.2 6.5-5.2s5.7 2 6.5 5.2"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function Header({ data, activePath = "" }: HeaderProps) {
+  const itemClass = (href: string) =>
+    `mx-4 ${isActivePath(activePath, href) ? "text-[#3456bb]" : ""}`;
+
+  return (
+    <header className="w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 !bg-white rounded-b-3xl font-IranSans">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <a href="/" aria-label="صفحه اصلی کارماچک">
+            <BrandLogo path={data?.ImagePath} width={140} height={57} />
+          </a>
+        </div>
+
+        <ul className="flex text-base">
+          <li className={itemClass("/")}>
+            <a href="/">خانه</a>
+          </li>
+          <li className={itemClass("/car-inspection")}>
+            <a href="/car-inspection">کارشناسی خودرو</a>
+          </li>
+          <li className={itemClass("/car-price")}>
+            <a href="/car-price">قیمت گذاری خودرو</a>
+          </li>
+          <li className={itemClass("/blog")}>
+            <a href="/blog">بلاگ</a>
+          </li>
+          <li className={itemClass("/contact-us")}>
+            <a href="/contact-us">ارتباط با ما</a>
+          </li>
+          <li className={itemClass("/about-us")}>
+            <a href="/about-us">درباره ما</a>
+          </li>
+        </ul>
+
+        <span className="text-[#101117] flex items-center font-IranSans">
+          <a
+            className="rounded-3xl font-IranSans border border-white px-2"
+            href={`tel:${data?.NavbarPhoneNumber}`}
+          >
+            {data?.NavbarPhoneNumber}
+          </a>
+          <PhoneIcon />
+          <a href="/Profile" className="mx-2" aria-label="حساب کاربری">
+            <UserIcon />
+          </a>
+        </span>
+      </div>
+    </header>
+  );
+}

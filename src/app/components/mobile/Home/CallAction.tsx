@@ -1,8 +1,17 @@
-"use client";
+import { BrandLogo } from "@/components/seo/BrandLogo";
 
-import { Call02Icon } from "hugeicons-react";
-import Image from "next/image";
-import Link from "next/link";
+function PhoneIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M7.5 3.5h3L12 8l-2 1.5a12 12 0 0 0 4.5 4.5L16 12l4.5 1.5v3c0 1-1 2.5-6 2.5C8 19 5 12 5 7.5c0-5 1.5-4 2.5-4Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 type CallActionProps = {
   data?: any;
@@ -20,24 +29,19 @@ export default function CallAction({ data, fixed = false }: CallActionProps) {
       {fixed ? <div className="h-11" aria-hidden /> : null}
       <section className={sectionClass}>
         <div className="flex items-center">
-          <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
-            <Image
-              alt="کارماچک"
-              width={130}
-              height={30}
-              src={"https://api.carmacheck.com/" + data?.ImagePath}
-            />
-          </Link>
+          <a href="/" aria-label="صفحه اصلی کارماچک">
+            <BrandLogo path={data?.ImagePath} width={130} height={30} />
+          </a>
         </div>
 
         <span className="text-[#101117] flex items-center font-IranSans">
           <a
-            className="rounded-3xl font-IranSans-UltraLight border border-white px-2"
+            className="rounded-3xl font-IranSans border border-white px-2"
             href={`tel:${data?.NavbarPhoneNumber}`}
           >
             {data?.NavbarPhoneNumber}
           </a>
-          <Call02Icon size={16} />
+          <PhoneIcon />
         </span>
       </section>
     </>

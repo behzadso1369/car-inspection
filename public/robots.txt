@@ -37,6 +37,7 @@ Disallow: /admin/
 # 🗺️ Sitemap
 Sitemap: https://carmacheck.com/sitemap.xml
 
+
 # 🚀 Crawl-delay برای محافظت از سرور
 Crawl-delay: 1
 

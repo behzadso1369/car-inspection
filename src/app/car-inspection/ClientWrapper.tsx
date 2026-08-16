@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FaqPreviewSection } from "@/app/components/FaqPreviewSection";
 import { Footer } from "@/app/components/mobile/Home/Footer";
-import { Header } from "@/app/components/mobile/Home/Header";
 import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
@@ -325,7 +324,7 @@ export default function ClientWrapper({
       )}
 
       <div className="lg:hidden">
-        <NavigationBar />
+        <NavigationBar activePath="/car-inspection" />
       </div>
       {/* <Footer /> */}
     </div>

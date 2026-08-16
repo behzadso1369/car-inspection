@@ -276,7 +276,7 @@ export function FaqClient({ initialCategories, initialQuestionsByCategory }: Faq
       </div>
 
       <div className="lg:hidden">
-        <NavigationBar />
+        <NavigationBar activePath="/faq" />
       </div>
     </div>
   );
