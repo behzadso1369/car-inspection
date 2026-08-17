@@ -183,27 +183,50 @@ export default function LocalAreaLanding({ area }: Props) {
                   ))}
                   {section.bullets && section.bullets.length > 0 && (
                     <ul className="mt-4 space-y-2.5 pr-1">
-                      {section.bullets.map((b) => (
+                      {section.bullets.map((b, i) => (
                         <li
                           key={b}
                           className="flex gap-2.5 text-sm leading-8 text-[#55565A] sm:text-[15px]"
                         >
-                          <span
-                            aria-hidden
-                            className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[#3456bb]"
-                          />
+                          {section.ordered ? (
+                            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#EEF2FD] text-xs font-black text-[#3456bb]">
+                              {i + 1}
+                            </span>
+                          ) : (
+                            <span
+                              aria-hidden
+                              className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[#3456bb]"
+                            />
+                          )}
                           <span>{b}</span>
                         </li>
                       ))}
                     </ul>
                   )}
+                  {section.afterParagraphs?.map((p) => (
+                    <p
+                      key={p.slice(0, 40)}
+                      className="mt-3 text-sm leading-8 text-[#55565A] sm:text-[15px] sm:leading-9"
+                    >
+                      {p}
+                    </p>
+                  ))}
                   {section.subsections?.map((sub) => (
                     <div
                       key={sub.title}
                       className="mt-5 rounded-2xl border border-[#EEF1F8] bg-[#F8FAFE] p-4 sm:p-5"
                     >
                       <h3 className="text-base font-bold text-[#101117]">
-                        {sub.title}
+                        {sub.href ? (
+                          <Link
+                            href={sub.href}
+                            className="text-[#3456bb] transition-colors hover:underline"
+                          >
+                            {sub.title}
+                          </Link>
+                        ) : (
+                          sub.title
+                        )}
                       </h3>
                       {sub.paragraphs?.map((p) => (
                         <p
@@ -231,6 +254,19 @@ export default function LocalAreaLanding({ area }: Props) {
                       )}
                     </div>
                   ))}
+                  {section.links && section.links.length > 0 && (
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {section.links.map((link) => (
+                        <Link
+                          key={`${link.href}-${link.label}`}
+                          href={link.href}
+                          className="inline-flex items-center rounded-full border border-[#D5DCEB] bg-[#F8FAFE] px-4 py-2 text-[13px] font-medium text-[#3456bb] transition-colors hover:border-[#3456bb] hover:bg-[#EEF2FD]"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </section>
               ))}
 
@@ -383,7 +419,9 @@ export default function LocalAreaLanding({ area }: Props) {
                   id="nearby-heading"
                   className="text-xl font-black text-[#101117]"
                 >
-                  مناطق دیگر شرق تهران
+                  {area.slug === "shargh-tehran"
+                    ? "محله‌های تحت پوشش شرق تهران"
+                    : "مناطق دیگر شرق تهران"}
                 </h2>
                 <p className="mt-1 text-sm text-[#6B6C70]">
                   لینک‌های مرتبط برای سئوی محلی و پیدا کردن محله‌ی نزدیک‌تر
@@ -425,11 +463,12 @@ export default function LocalAreaLanding({ area }: Props) {
               className="pointer-events-none absolute -bottom-12 -right-8 h-44 w-44 rounded-full bg-[#3456bb]/35 blur-3xl"
             />
             <h2 className="relative text-xl font-black text-white sm:text-2xl">
-              همین حالا کارشناسی خودرو در {name} را رزرو کنید
+              {content.closingTitle ??
+                `همین حالا کارشناسی خودرو در ${name} را رزرو کنید`}
             </h2>
-            <p className="relative mx-auto mt-3 max-w-lg text-sm leading-8 text-white/75">
-              مشخصات خودرو را وارد کنید، محل را مشخص کنید و کارشناس کارماچک در{" "}
-              {name} حاضر می‌شود.
+            <p className="relative mx-auto mt-3 max-w-2xl text-sm leading-8 text-white/75">
+              {content.closingText ??
+                `مشخصات خودرو را وارد کنید، محل را مشخص کنید و کارشناس کارماچک در ${name} حاضر می‌شود.`}
             </p>
             <div className="relative mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link

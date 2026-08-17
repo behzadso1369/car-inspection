@@ -1,3 +1,5 @@
+import type { FaqItem } from "@/lib/faq-data";
+
 const priceFactors = [
   ["برند، مدل و تیپ", "نقطه شروع قیمت‌گذاری و سقف یا کف بازه"],
   ["سال ساخت", "استهلاک عمومی و رده سنی خودرو"],
@@ -91,6 +93,12 @@ const faqs = [
       "در صورتی که مدل و تیپ موردنظر در فهرست ابزار وجود داشته باشد، محاسبه قیمت خودروهای داخلی، مونتاژی و وارداتی امکان‌پذیر است.",
   },
 ];
+
+export const carPriceFaqItems: FaqItem[] = faqs.map((faq, index) => ({
+  Id: index + 1,
+  Question: faq.question,
+  Answer: faq.answer,
+}));
 
 const headingClass =
   "mt-10 text-xl font-black leading-9 text-[#101117] md:text-2xl";
@@ -398,27 +406,6 @@ export default function CarPricingSeoContent({
             headers={["معیار", "تخمین آنلاین", "کارشناسی و قیمت‌گذاری حضوری"]}
             rows={comparisonRows}
           />
-
-          <section aria-labelledby="car-price-faq">
-            <h2 id="car-price-faq" className={headingClass}>
-              پرسش‌های متداول محاسبه قیمت خودرو
-            </h2>
-            <div className="mt-5 space-y-5">
-              {faqs.map((faq) => (
-                <div
-                  key={faq.question}
-                  className="rounded-2xl border border-[#E8ECF4] bg-[#FBFCFF] p-4 md:p-5"
-                >
-                  <h3 className="text-base font-extrabold leading-8 text-[#101117] md:text-lg">
-                    {faq.question}
-                  </h3>
-                  <p className="mt-2 text-sm leading-8 text-[#55565A] md:text-base">
-                    {faq.answer}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
         </>
       )}
     </article>

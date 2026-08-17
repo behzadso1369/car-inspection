@@ -24,7 +24,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar";
-import CarPricingSeoContent from "@/components/car-price/CarPricingSeoContent";
+import { FaqPreviewSection } from "@/app/components/FaqPreviewSection";
+import CarPricingSeoContent, {
+  carPriceFaqItems,
+} from "@/components/car-price/CarPricingSeoContent";
 
 type Step = "search_car" | "year" | "mileage" | "color" | "chassis" | "result";
 
@@ -352,16 +355,7 @@ export default function CarPricePage() {
   );
 
   return (
-    <main className="modern-gradient relative min-h-screen font-IranSans pb-24 lg:pb-8" dir="rtl">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 left-1/4 h-72 w-72 rounded-full bg-[#3563E9]/10 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-1/3 -right-16 h-64 w-64 rounded-full bg-[#416CEA]/8 blur-3xl"
-      />
-
+    <main className="relative min-h-screen bg-[#F3F5F8] font-IranSans pb-24 lg:pb-8" dir="rtl">
       {/* موبایل: نوار ثابت ورودی — زیر بنر و هدر سایت */}
       <div
         ref={mobileBarRef}
@@ -704,6 +698,15 @@ export default function CarPricePage() {
           <CarPricingSeoContent variant="details" />
         </div>
       </div>
+
+      <FaqPreviewSection
+        title="سوالات متداول قیمت‌گذاری خودرو"
+        subtitle="پاسخ سوالات رایج درباره محاسبه قیمت خودرو کارکرده"
+        items={carPriceFaqItems}
+        expandInline
+        showViewAll={false}
+        className="lg:max-w-4xl lg:mx-auto lg:my-8"
+      />
 
       <div className="block lg:hidden">
         <NavigationBar activePath="/car-price" />
