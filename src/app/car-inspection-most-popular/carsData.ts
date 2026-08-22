@@ -29,6 +29,11 @@ export interface CarInfo {
   inspectionPoints: string[];
   /** کلمات کلیدی برای متادیتای SEO */
   keywords: string[];
+  /**
+   * عبارت جستجوی گروه خودرو در بک‌اند برای دکمه‌ی «شروع کارشناسی همین خودرو».
+   * اگر تنظیم نشود، دکمه به فرم کارشناسی لینک می‌دهد و کاربر خودرو را دستی انتخاب می‌کند.
+   */
+  inspectionSearchTerm?: string;
 }
 
 export const CARS: CarInfo[] = [
@@ -66,6 +71,7 @@ export const CARS: CarInfo[] = [
       "مزایای پژو 207",
       "قیمت کارشناسی پژو 207",
     ],
+    inspectionSearchTerm: "پژو 207",
   },
   {
     slug: "peugeot-pars",
@@ -168,6 +174,7 @@ export const CARS: CarInfo[] = [
       "کارشناسی دنا توربو",
       "قیمت کارشناسی دنا",
     ],
+    inspectionSearchTerm: "دنا پلاس",
   },
   {
     slug: "tara",
@@ -1120,6 +1127,7 @@ export const CARS: CarInfo[] = [
       "کارشناسی بهمن فیدلیتی",
       "قیمت کارشناسی فیدلیتی",
     ],
+    inspectionSearchTerm: "فیدلیتی",
   },
   {
     slug: "respect",
@@ -1494,6 +1502,7 @@ export const CARS: CarInfo[] = [
       "کارشناسی چری آریزو 6",
       "قیمت کارشناسی آریزو 6 پرو",
     ],
+    inspectionSearchTerm: "آریزو 6 پرو",
   },
   {
     slug: "tiggo-7-pro",
