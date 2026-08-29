@@ -1,6 +1,7 @@
 import { Clock01Icon, Location01Icon, SmartPhone01Icon } from "hugeicons-react"
 import Link from "next/link"
 import { EnamadBadge } from "@/components/seo/EnamadBadge"
+import { SocialLinks } from "@/components/SocialLinks"
 
 function toTelHref(phone: string) {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
@@ -45,6 +46,10 @@ export const Footer = (data: any) => {
             <span className="text-base mx-2">{data?.data?.WorkingHours}</span>
           </div>
           <FooterPhoneNumbers phoneNumbers={data?.data?.PhoneNumbers} />
+          <div className="mt-6">
+            <p className="text-[#101117] font-medium mb-3">شبکه‌های اجتماعی</p>
+            <SocialLinks />
+          </div>
           <div className="mt-8 flex justify-between flex-wrap">
             <Link href="./faq" prefetch={false}>سوالات متداول</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
@@ -76,6 +81,10 @@ export const Footer = (data: any) => {
             <span className="text-base mx-2">{data?.data?.WorkingHours}</span>
           </div>
           <FooterPhoneNumbers phoneNumbers={data?.data?.PhoneNumbers} />
+          <div className="mt-4">
+            <h3 className="my-4 w-full text-[#101117] font-bold text-xl">شبکه‌های اجتماعی</h3>
+            <SocialLinks />
+          </div>
           </div>
        
           <div className="mx-16 flex flex-col">

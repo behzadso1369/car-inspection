@@ -1,6 +1,7 @@
-import { BubbleChatIcon, CallRinging04Icon, Clock01Icon, Location01Icon, SmartPhone01Icon } from "hugeicons-react";
+import { BubbleChatIcon, CallRinging04Icon, Clock01Icon, Location01Icon, Mail01Icon, SmartPhone01Icon } from "hugeicons-react";
 import { Metadata } from "next";
 import { serverApiHelper } from "@/helper/server-fetcher";
+import { SocialLinks } from "@/components/SocialLinks";
 
 // ISR - same as footer: contact info from GetMasterPageData
 export const revalidate = 3600; // 1 hour
@@ -49,23 +50,34 @@ export default async function ContactUs() {
   const address = master?.Address ?? "میدان رسالت,خیابان هنگام,نبش خیابان دوازدهم,پلاک497(نمایندگی زارعی)";
   const workingHours = master?.WorkingHours ?? "شنبه تا چهارشنبه از ساعت 15-17";
   const phoneNumbers = master?.PhoneNumbers ?? "02191001740 - 09981982905";
+  const email = "support@carmacheck.com";
 
   return (
     <div className="px-4 bg-white font-IranSans lg:flex  lg:py-16  lg:max-w-7xl lg:container lg:mx-auto  ">
       <div className="lg:order-1 lg:mx-16">
         <h2 className="text-[#101117] text-sm">راه های ارتباطی</h2>
-        <div className="flex justify-between mt-4 mb-8">
-          <div className="py-4 px-12 lg:px-20 lg:py-8 lg:mx-4 rounded-2xl bg-[#f1f3f7] flex flex-col items-center">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mt-4 mb-8">
+          <div className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center">
             <CallRinging04Icon className="my-2" size={24} color="#1434CB"/>
             <span className="text-[#101117] lg:text-xl my-2">تماس با ما</span>
-            <span className="text-[#27292D] my-2">{phoneNumbers}</span>
+            <span className="text-[#27292D] my-2 text-sm lg:text-base">{phoneNumbers}</span>
           </div>
-          <div className="py-4 px-12 lg:px-20  lg:py-8 lg:mx-4   rounded-2xl  bg-[#f1f3f7] flex flex-col items-center">
+          <div className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center">
             <BubbleChatIcon className="my-2" size={24} color="#1434CB"/>
             <span className="text-[#101117] my-2 lg:text-xl">گفتگوی آنلاین</span>
-            <span className="text-[#27292D] font-IranSans my-2">{workingHours}</span>
+            <span className="text-[#27292D] font-IranSans my-2 text-sm lg:text-base">{workingHours}</span>
           </div>
+          <a
+            href={`mailto:${email}`}
+            className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center col-span-2 lg:col-span-1 hover:bg-[#e8ebf4] transition-colors"
+          >
+            <Mail01Icon className="my-2" size={24} color="#1434CB"/>
+            <span className="text-[#101117] my-2 lg:text-xl">ایمیل پشتیبانی</span>
+            <span className="text-[#27292D] my-2 text-sm lg:text-base" dir="ltr">{email}</span>
+          </a>
         </div>
+        <h2 className="text-[#101117] text-sm">شبکه‌های اجتماعی</h2>
+        <SocialLinks variant="cards" className="mt-4 mb-8" />
       </div>
       <div className="lg:order-0">
         <h1 className="text-[#101117] lg:text-3xl">اطلاعات کارماچک</h1>
@@ -82,6 +94,16 @@ export default async function ContactUs() {
           <div className="flex my-3">
             <SmartPhone01Icon size={24}/>
             <span className="text-base mx-2">{phoneNumbers}</span>
+          </div>
+          <div className="flex my-3 items-center">
+            <Mail01Icon size={24}/>
+            <a
+              href={`mailto:${email}`}
+              className="text-base mx-2 hover:text-[#3456bb] transition-colors"
+              dir="ltr"
+            >
+              {email}
+            </a>
           </div>
         </div>
       </div>

@@ -40,7 +40,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 /* ---------- دکمه مشاهده همه ---------- */
-function SeeAll({ href = "/blog" }: { href?: string }) {
+function SeeAll({ href = "/blog/blog-category" }: { href?: string }) {
   return (
     <div className="flex justify-center my-8">
       <Link

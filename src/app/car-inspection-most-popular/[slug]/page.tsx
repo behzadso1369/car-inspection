@@ -11,10 +11,12 @@ import {
 } from "hugeicons-react";
 import { BASE_URL, COMMON_KEYWORDS } from "@/lib/seo";
 import { CARS, getCarBySlug } from "../carsData";
+import CarShowcaseHero from "./CarShowcaseHero";
 import InspectCtaButton from "./InspectCtaButton";
 
-// SSG - صفحات ثابت برای خودروها، عالی برای SEO و سرعت لود
-export const dynamicParams = false;
+// اسلاگ‌های داخل CARS در بیلد استاتیک می‌شوند؛ اسلاگ نامعتبر در خود صفحه notFound می‌شود.
+// false در dev + webpack همهٔ [slug]ها را 404 می‌کرد.
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return CARS.map((car) => ({ slug: car.slug }));
@@ -110,76 +112,98 @@ export default async function CarInspectionPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="px-4 py-4 max-w-5xl mx-auto">
-        <Breadcrumb
-          items={[
-            { label: "خانه", href: "/" },
-            { label: "کارشناسی خودروها", href: "/car-inspection-most-popular" },
-            { label: `کارشناسی ${car.name}` },
-          ]}
-          className="mb-4"
-        />
+      {car.glbUrl ? (
+        <>
+          <div className="px-4 pt-4 lg:px-24">
+            <Breadcrumb
+              items={[
+                { label: "خانه", href: "/" },
+                { label: "کارشناسی خودروها", href: "/car-inspection-most-popular" },
+                { label: `کارشناسی ${car.name}` },
+              ]}
+              className="mb-0"
+            />
+          </div>
+          <CarShowcaseHero
+            name={car.name}
+            brand={car.brand}
+            intro={car.intro}
+            glbUrl={car.glbUrl}
+            searchTerm={car.inspectionSearchTerm}
+          />
+        </>
+      ) : (
+        <>
+          <div className="px-4 py-4 max-w-5xl mx-auto">
+            <Breadcrumb
+              items={[
+                { label: "خانه", href: "/" },
+                { label: "کارشناسی خودروها", href: "/car-inspection-most-popular" },
+                { label: `کارشناسی ${car.name}` },
+              ]}
+              className="mb-4"
+            />
 
-        {/* کارت اصلی: عکس خودرو + دکمه‌ی شروع کارشناسی همین خودرو */}
-        <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] rounded-3xl p-4 md:p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-            <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-[#F4F5F7]">
-              <Image
-                src={car.image}
-                alt={`عکس ${car.name}`}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-contain"
-                priority
-              />
-            </div>
-            <div>
-              <span className="text-sm text-[#416CEA] font-medium">{car.brand}</span>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#101117] mt-1 mb-3">
-                کارشناسی {car.name}
-              </h1>
-              <p className="text-[#55565A] leading-8 text-sm md:text-base mb-5">
-                {car.intro}
-              </p>
-              <InspectCtaButton
-                carName={car.name}
-                searchTerm={car.inspectionSearchTerm}
-              />
-              <p className="text-center text-xs text-[#8A8B90] mt-3">
-                رزرو آنلاین کارشناسی {car.name} در محل، با هزینه شفاف
-              </p>
+            <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] rounded-3xl p-4 md:p-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-[#F4F5F7]">
+                  <Image
+                    src={car.image}
+                    alt={`عکس ${car.name}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+                <div>
+                  <span className="text-sm text-[#416CEA] font-medium">{car.brand}</span>
+                  <h1 className="text-2xl md:text-3xl font-bold text-[#101117] mt-1 mb-3">
+                    کارشناسی {car.name}
+                  </h1>
+                  <p className="text-[#55565A] leading-8 text-sm md:text-base mb-5">
+                    {car.intro}
+                  </p>
+                  <InspectCtaButton
+                    carName={car.name}
+                    searchTerm={car.inspectionSearchTerm}
+                  />
+                  <p className="text-center text-xs text-[#8A8B90] mt-3">
+                    رزرو آنلاین کارشناسی {car.name} در محل، با هزینه شفاف
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* هیرو آبی: چه چیزهایی بررسی می‌شود */}
-      <div className="w-full bg-[#416CEA] py-8 lg:py-10">
-        <div className="max-w-5xl mx-auto px-4 text-white">
-          <h2 className="text-lg md:text-xl font-medium mb-2">
-            کارشناسی {car.name} در محل با کارماچک
-          </h2>
-          <p className="text-sm md:text-base leading-8 mb-5 max-w-2xl">
-            کارشناس ما به آدرس شما در تهران و شرق تهران اعزام می‌شود و بدون نیاز به
-            جابه‌جایی {car.name}، موارد زیر را بررسی می‌کند:
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {[
-              "فنی و موتور",
-              "رنگ و بدنه",
-              "شاسی",
-              "دیاگ",
-              "آپشن‌ها",
-              "گزارش کامل",
-            ].map((item) => (
-              <p key={item} className="flex items-center gap-1">
-                <Tick01Icon size={22} className="flex-shrink-0" />
-                <span>{item}</span>
+          <div className="w-full bg-[#416CEA] py-8 lg:py-10">
+            <div className="max-w-5xl mx-auto px-4 text-white">
+              <h2 className="text-lg md:text-xl font-medium mb-2">
+                کارشناسی {car.name} در محل با کارماچک
+              </h2>
+              <p className="text-sm md:text-base leading-8 mb-5 max-w-2xl">
+                کارشناس ما به آدرس شما در تهران و شرق تهران اعزام می‌شود و بدون نیاز به
+                جابه‌جایی {car.name}، موارد زیر را بررسی می‌کند:
               </p>
-            ))}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {[
+                  "فنی و موتور",
+                  "رنگ و بدنه",
+                  "شاسی",
+                  "دیاگ",
+                  "آپشن‌ها",
+                  "گزارش کامل",
+                ].map((item) => (
+                  <p key={item} className="flex items-center gap-1">
+                    <Tick01Icon size={22} className="flex-shrink-0" />
+                    <span>{item}</span>
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
 
       <div className="px-4 py-8 max-w-5xl mx-auto">
         {/* مزایا و معایب */}

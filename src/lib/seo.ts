@@ -1,3 +1,5 @@
+import { SOCIAL_LINKS } from "@/lib/social";
+
 /**
  * SEO Utilities & Configurations for Car Inspection Website
  * استانداردهای SEO:
@@ -99,9 +101,7 @@ export function generateOrganizationSchema() {
       contactType: 'customer service',
       availableLanguage: 'Persian',
     },
-    sameAs: [
-      // اضافه کردن لینک‌های شبکه‌های اجتماعی
-    ],
+    sameAs: SOCIAL_LINKS.map((item) => item.href),
   };
 }
 
@@ -212,6 +212,7 @@ export function generateArticleSchema(config: {
   dateModified?: string;
   author?: string;
   image?: string;
+  timeRequiredMinutes?: number;
 }) {
   return {
     '@context': 'https://schema.org',
@@ -221,6 +222,9 @@ export function generateArticleSchema(config: {
     image: config.image || `${BASE_URL}/opengraph-image`,
     datePublished: config.datePublished,
     dateModified: config.dateModified || config.datePublished,
+    ...(config.timeRequiredMinutes
+      ? { timeRequired: `PT${config.timeRequiredMinutes}M` }
+      : {}),
     author: {
       '@type': 'Person',
       name: config.author || 'تیم کارماچک',

@@ -5,7 +5,13 @@ import { serverFetch, serverApiHelper } from "@/helper/server-fetcher";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo";
 import { processBlogContent } from "@/lib/blog-content";
+import { getReadingTime } from "@/lib/reading-time";
 import { BlogDetailClient } from "./BlogDetailClient";
+import {
+  normalizeRelatedPosts,
+  relatedPostSlug,
+  type RelatedPost,
+} from "../components/RelatedPosts";
 
 const BLOG_REVALIDATE = 3600;
 const API_BASE_URL = "https://api.carmacheck.com";
@@ -44,7 +50,61 @@ async function getPost(param: string) {
     next: { revalidate: BLOG_REVALIDATE },
   });
   const post = data?.PostDetails?.[0] ?? null;
+  console.log(post);
   return post ? { ...post, __resolvedId: id } : null;
+}
+
+function excludeCurrentPost(posts: RelatedPost[], postId: string) {
+  return posts.filter(
+    (item) => String(item.BlogPostId ?? item.Id ?? "") !== String(postId)
+  );
+}
+
+async function fetchRelatedFromApi(postId: string, take: number) {
+  const endpoint = `${ApiHelper.get("GetRelatedPosts")}?PostId=${postId}&Take=${take}`;
+  const data = await serverFetch(endpoint, {
+    next: { revalidate: BLOG_REVALIDATE },
+  });
+  return excludeCurrentPost(normalizeRelatedPosts(data), postId);
+}
+
+async function getRelatedPosts(
+  postId: string,
+  categoryId?: number
+): Promise<RelatedPost[]> {
+  // بعضی پست‌ها با Take=5 در API JSON ناقص می‌دهند؛ اگر خالی بود با Take=1 تکرار می‌کنیم.
+  let fromApi = await fetchRelatedFromApi(postId, 5);
+  if (fromApi.length === 0) {
+    fromApi = await fetchRelatedFromApi(postId, 1);
+  }
+
+  const seen = new Set<string>([String(postId)]);
+  for (const item of fromApi) {
+    seen.add(String(item.BlogPostId ?? item.Id ?? ""));
+    seen.add(relatedPostSlug(item));
+  }
+
+  if (fromApi.length >= 5) return fromApi.slice(0, 5);
+
+  const list = await serverApiHelper.post<{ SearchItems?: RelatedPost[] }>(
+    "SiteBlogSearchWithTerms",
+    { terms: "", take: 20, skip: 0 },
+    BLOG_REVALIDATE
+  );
+  const others = (list?.SearchItems ?? []).filter((item: any) => {
+    const id = String(item.BlogPostId ?? item.Id ?? "");
+    const slug = relatedPostSlug(item);
+    return !seen.has(id) && !seen.has(slug);
+  });
+  const sameCategory = others.filter((item: any) => {
+    if (categoryId == null) return true;
+    return item.BlogCategotyId === categoryId || item.CategoryId === categoryId;
+  });
+  const fill = (sameCategory.length > 0 ? sameCategory : others).slice(
+    0,
+    5 - fromApi.length
+  );
+  return [...fromApi, ...fill].slice(0, 5);
 }
 
 type Props = { params: Promise<{ id: string }> };
@@ -106,13 +166,17 @@ export default async function BlogDetailPage({ params }: Props) {
   }
 
   // پردازش محتوا در سمت سرور تا در HTML اولیه (SSR) حاضر و قابل خزش باشد
-  const { processed, toc } = processBlogContent(blogData.Content ?? "");
+  const [{ processed, toc }, relatedPosts] = await Promise.all([
+    Promise.resolve(processBlogContent(blogData.Content ?? "")),
+    getRelatedPosts(blogData.__resolvedId, blogData.CategoryId),
+  ]);
 
   const title = blogData.BlogPostTitle ?? blogData.Title ?? "";
   const description = blogData.BlogPostDescription ?? blogData.Excerpt ?? "";
   const image = blogData.ImagePath
     ? `${API_BASE_URL}/${blogData.ImagePath}`
     : undefined;
+  const readingTime = getReadingTime(blogData.Content ?? "");
 
   const articleSchema = generateArticleSchema({
     title,
@@ -123,6 +187,7 @@ export default async function BlogDetailPage({ params }: Props) {
     dateModified:
       blogData.ModifiedDate ?? blogData.CreatedDate ?? blogData.CreatedOn,
     image,
+    timeRequiredMinutes: readingTime,
   });
 
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -131,14 +196,37 @@ export default async function BlogDetailPage({ params }: Props) {
     { name: title, path: `/blog/${slug}` },
   ]);
 
+  const relatedListSchema =
+    relatedPosts.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "مقالات مرتبط",
+          itemListElement: relatedPosts.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            url: `${SITE_URL}/blog/${relatedPostSlug(item)}`,
+            name: item.Title ?? item.BlogPostTitle ?? "",
+          })),
+        }
+      : null;
+
   return (
     <>
-      <JsonLd data={[articleSchema, breadcrumbSchema]} />
+      <JsonLd
+        data={[
+          articleSchema,
+          breadcrumbSchema,
+          ...(relatedListSchema ? [relatedListSchema] : []),
+        ]}
+      />
       <BlogDetailClient
         id={blogData.__resolvedId}
         blogData={blogData}
         processedContent={processed}
         tocItems={toc}
+        relatedPosts={relatedPosts}
+        readingTime={readingTime}
       />
     </>
   );

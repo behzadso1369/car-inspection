@@ -30,6 +30,7 @@ GetFAQWithCategoryId: "Site/GetFAQWithCategoryId",
 GetRegulationsData: "Site/GetRegulationsData",
 GetUserOirderDetailReport:"User/GetUserOrderDetailsReport",
 GetBlogDetail:"SiteBlog/SearchPostWithId",
+GetRelatedPosts: "SiteBlog/GetRelatedPosts",
 Payment: "Payment/Order",
 PaymentRequest: "Payment/Request",
 

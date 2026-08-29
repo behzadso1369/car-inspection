@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>فرمول قیمت‌گذاری خودرو کارکرده — کارماچک</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a2332;
+      --panel-2: #243044;
+      --text: #e8eef7;
+      --muted: #9db0c9;
+      --accent: #3d9cf0;
+      --accent2: #2ecc71;
+      --warn: #f0b429;
+      --danger: #ff6b6b;
+      --border: #314158;
+      --radius: 14px;
+      --font: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: radial-gradient(1200px 600px at 80% -10%, #1b3a5f 0%, var(--bg) 55%);
+      color: var(--text);
+      line-height: 1.9;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 90px; }
+    header {
+      background: linear-gradient(135deg, #1e4d7b, #16324f);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px 26px;
+      margin-bottom: 22px;
+    }
+    .kicker {
+      display: inline-block;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: #9fd0ff;
+      background: #3d9cf022;
+      border: 1px solid #3d9cf055;
+      border-radius: 999px;
+      padding: 3px 12px;
+      margin-bottom: 10px;
+    }
+    header h1 { margin: 0 0 8px; font-size: 1.7rem; font-weight: 900; }
+    header p { margin: 0; color: var(--muted); }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+    h2 { margin: 0 0 12px; font-size: 1.18rem; color: var(--accent); }
+    h3 { margin: 18px 0 8px; font-size: 1rem; color: #c9dcff; }
+    p { margin: 8px 0; }
+    ul, ol { margin: 8px 0; padding-right: 22px; }
+    li { margin-bottom: 6px; }
+    code, .mono {
+      background: #0b1220;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: .88rem;
+      direction: ltr;
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .formula {
+      background: #0b1220;
+      border: 1px solid #3d9cf044;
+      border-right: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin: 14px 0;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .92rem;
+      line-height: 1.8;
+      direction: ltr;
+      text-align: left;
+      white-space: pre;
+      color: #d6e8ff;
+    }
+    .formula.fa {
+      direction: rtl;
+      text-align: right;
+      white-space: pre-wrap;
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .92rem;
+      margin: 12px 0;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 9px 12px;
+      text-align: right;
+    }
+    th { background: var(--panel-2); color: var(--accent); }
+    tr:nth-child(even) td { background: #1d2838; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 4px;
+    }
+    .chip {
+      background: #0b1220;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    .chip b { color: var(--text); }
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin: 12px 0 4px;
+    }
+    .flow .step {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: .85rem;
+      font-weight: 700;
+    }
+    .flow .arrow { color: var(--muted); }
+    .note {
+      background: #f0b42918;
+      border: 1px solid #f0b42944;
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #ffe3a3;
+      font-size: .92rem;
+    }
+    .ok {
+      background: #2ecc7118;
+      border: 1px solid #2ecc7144;
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #b8f5d0;
+      font-size: .92rem;
+    }
+    .example {
+      background: #0b1220;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 10px;
+    }
+    .example h3 { margin-top: 0; }
+    .result {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: linear-gradient(135deg, #1e4d7b, #16324f);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+    .result .label { color: var(--muted); font-size: .8rem; }
+    .result .value { font-weight: 900; font-size: 1.05rem; }
+    .files td:first-child { direction: ltr; text-align: left; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .82rem; }
+    footer {
+      color: var(--muted);
+      font-size: .82rem;
+      text-align: center;
+      margin-top: 8px;
+    }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+      header h1 { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="kicker">کارماچک · /car-price</div>
+      <h1>فرمول قیمت‌گذاری خودرو کارکرده</h1>
+      <p>
+        الگوریتم دقیق صفحه محاسبه قیمت آنلاین. منبع کد:
+        <code>src/lib/car-price/pricing.ts</code>
+      </p>
+    </header>
+
+    <section>
+      <h2>ایده کلی</h2>
+      <p>قیمت نهایی حاصل ضرب قیمت پایه در چهار ضریب مستقل است. هیچ ضریبی قیمت را بالا نمی‌برد؛ فقط ثابت می‌ماند یا کم می‌کند.</p>
+      <div class="formula fa">قیمت نهایی = قیمت پایه × ضریب سال × ضریب کارکرد × ضریب رنگ × ضریب شاسی</div>
+      <p>عدد به‌دست‌آمده به نزدیک‌ترین بازه <b>۱۰۰ میلیون تومانی</b> گرد می‌شود و همان بازه به کاربر نمایش داده می‌شود.</p>
+      <div class="flow">
+        <div class="step">جستجوی خودرو</div>
+        <span class="arrow">←</span>
+        <div class="step">اصلاح قیمت پایه</div>
+        <span class="arrow">←</span>
+        <div class="step">سال</div>
+        <span class="arrow">←</span>
+        <div class="step">کارکرد</div>
+        <span class="arrow">←</span>
+        <div class="step">رنگ</div>
+        <span class="arrow">←</span>
+        <div class="step">شاسی</div>
+        <span class="arrow">←</span>
+        <div class="step">بازه قیمت</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>ورودی‌ها</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ورودی</th>
+            <th>توضیح</th>
+            <th>منبع</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>basePrice</code></td><td>قیمت پایه مدل (تومان)</td><td>دیتای خودرو + اصلاح همراه مکانیک</td></tr>
+          <tr><td><code>lastYear</code></td><td>آخرین سال مدل مرجع</td><td>فیلد <code>lastYear</code></td></tr>
+          <tr><td><code>year</code></td><td>سال ساخت خودرو کاربر</td><td>ورودی کاربر (۱۳۸۰ تا lastYear+1)</td></tr>
+          <tr><td><code>km</code></td><td>کارکرد به کیلومتر</td><td>ورودی کاربر</td></tr>
+          <tr><td><code>body</code></td><td>وضعیت رنگ / بدنه</td><td>۶ حالت جدول رنگ</td></tr>
+          <tr><td><code>chassis</code></td><td>وضعیت شاسی و اتاق</td><td>۳ حالت جدول شاسی</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>مرحله ۱ — قیمت پایه</h2>
+      <p>قیمت خام از دیتای خودرو خوانده می‌شود. اگر منبع قیمت همراه مکانیک باشد، ۴۰۰ میلیون تومان به آن اضافه می‌شود:</p>
+      <div class="formula">if (source === "hamrah")
+  basePrice = carPrice + 400_000_000
+else
+  basePrice = carPrice</div>
+      <div class="note">این اصلاح فقط برای خودروهای منبع <b>hamrah</b> است و قبل از ورود به فرمول اصلی اعمال می‌شود. محل کد: <code>displayBasePrice</code> در <code>page.tsx</code>.</div>
+    </section>
+
+    <section>
+      <h2>مرحله ۲ — ضریب سال</h2>
+      <p>سن خودرو نسبت به آخرین سال مدل در دیتا محاسبه می‌شود. هر سال ۲٪ کم می‌کند، با سقف ۵۰٪.</p>
+      <div class="formula">age        = max(0, lastYear - year)
+yearDrop   = min(age * 0.02, 0.50)
+yearFactor = 1 - yearDrop</div>
+      <div class="chip-row">
+        <span class="chip">هر سال: <b>۲٪−</b></span>
+        <span class="chip">سقف کاهش: <b>۵۰٪</b></span>
+        <span class="chip">حداقل ضریب: <b>۰٫۵۰</b></span>
+      </div>
+      <table>
+        <thead><tr><th>سن (سال)</th><th>کاهش</th><th>ضریب سال</th></tr></thead>
+        <tbody>
+          <tr><td>۰</td><td>۰٪</td><td>۱٫۰۰</td></tr>
+          <tr><td>۱</td><td>۲٪</td><td>۰٫۹۸</td></tr>
+          <tr><td>۲</td><td>۴٪</td><td>۰٫۹۶</td></tr>
+          <tr><td>۵</td><td>۱۰٪</td><td>۰٫۹۰</td></tr>
+          <tr><td>۱۰</td><td>۲۰٪</td><td>۰٫۸۰</td></tr>
+          <tr><td>۲۵ و بیشتر</td><td>۵۰٪ (سقف)</td><td>۰٫۵۰</td></tr>
+        </tbody>
+      </table>
+      <p>اگر سال واردشده از <code>lastYear</code> جدیدتر باشد، سن صفر است و ضریب سال روی ۱ می‌ماند.</p>
+    </section>
+
+    <section>
+      <h2>مرحله ۳ — ضریب کارکرد</h2>
+      <p>هر ۱۰ هزار کیلومتر ۳٪ کم می‌کند. از حدود ۱۰۰ هزار کیلومتر به بعد سقف ۳۰٪ فعال می‌شود.</p>
+      <div class="formula">kmDrop   = min((km / 10_000) * 0.03, 0.30)
+kmFactor = 1 - kmDrop</div>
+      <div class="chip-row">
+        <span class="chip">هر ۱۰ هزار کیلومتر: <b>۳٪−</b></span>
+        <span class="chip">سقف کاهش: <b>۳۰٪</b></span>
+        <span class="chip">حداقل ضریب: <b>۰٫۷۰</b></span>
+      </div>
+      <table>
+        <thead><tr><th>کارکرد</th><th>کاهش</th><th>ضریب کارکرد</th></tr></thead>
+        <tbody>
+          <tr><td>۰</td><td>۰٪</td><td>۱٫۰۰</td></tr>
+          <tr><td>۱۰٬۰۰۰</td><td>۳٪</td><td>۰٫۹۷</td></tr>
+          <tr><td>۵۰٬۰۰۰</td><td>۱۵٪</td><td>۰٫۸۵</td></tr>
+          <tr><td>۸۰٬۰۰۰</td><td>۲۴٪</td><td>۰٫۷۶</td></tr>
+          <tr><td>۱۰۰٬۰۰۰</td><td>۳۰٪ (سقف)</td><td>۰٫۷۰</td></tr>
+          <tr><td>۲۰۰٬۰۰۰</td><td>۳۰٪ (سقف)</td><td>۰٫۷۰</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>مرحله ۴ و ۵ — رنگ و شاسی</h2>
+      <div class="grid">
+        <div>
+          <h3>ضریب رنگ / بدنه</h3>
+          <table>
+            <thead><tr><th>وضعیت</th><th>ضریب</th></tr></thead>
+            <tbody>
+              <tr><td>بی‌رنگ</td><td>۱٫۰۰</td></tr>
+              <tr><td>خط و خش جزئی</td><td>۰٫۹۸</td></tr>
+              <tr><td>صافکاری بدون رنگ</td><td>۰٫۹۴</td></tr>
+              <tr><td>رنگ یک ناحیه</td><td>۰٫۹۲</td></tr>
+              <tr><td>رنگ دو ناحیه</td><td>۰٫۸۸</td></tr>
+              <tr><td>رنگ چند ناحیه</td><td>۰٫۸۲</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>ضریب شاسی</h3>
+          <table>
+            <thead><tr><th>وضعیت</th><th>ضریب</th></tr></thead>
+            <tbody>
+              <tr><td>سالم</td><td>۱٫۰۰</td></tr>
+              <tr><td>ضربه خورده</td><td>۰٫۷۷</td></tr>
+              <tr><td>آسیب شدید</td><td>۰٫۶۵</td></tr>
+            </tbody>
+          </table>
+          <div class="note">شاسی سنگین‌ترین ضریب است. آسیب شدید به‌تنهایی ۳۵٪ قیمت را کم می‌کند.</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>مرحله ۶ — قیمت نهایی و بازه</h2>
+      <div class="formula">finalPrice = round(basePrice * yearFactor * kmFactor * bodyFactor * chassisFactor)
+
+unit = 100_000_000
+min  = floor(finalPrice / unit) * unit
+max  = min + unit</div>
+      <p>کاربر در صفحه نتیجه بازه را می‌بیند، نه عدد دقیق. مثلاً اگر قیمت محاسبه‌شده ۸۱۶ میلیون باشد، بازه نمایشی <b>۸۰۰ تا ۹۰۰ میلیون تومان</b> است.</p>
+    </section>
+
+    <section>
+      <h2>فرمول یک‌خطی</h2>
+      <div class="formula">age          = max(0, lastYear - year)
+yearFactor   = 1 - min(age * 0.02, 0.50)
+kmFactor     = 1 - min((km / 10000) * 0.03, 0.30)
+bodyFactor   = BODY_FACTORS[body]
+chassisFactor= CHASSIS_FACTORS[chassis]
+
+finalPrice   = round(basePrice * yearFactor * kmFactor * bodyFactor * chassisFactor)
+range.min    = floor(finalPrice / 1e8) * 1e8
+range.max    = range.min + 1e8</div>
+    </section>
+
+    <section>
+      <h2>مثال عددی ۱ — خودروی تمیز</h2>
+      <div class="example">
+        <table>
+          <tbody>
+            <tr><td>قیمت پایه (بعد از اصلاح همراه)</td><td>۱٬۰۰۰٬۰۰۰٬۰۰۰ تومان</td></tr>
+            <tr><td>آخرین سال مدل</td><td>۱۴۰۳</td></tr>
+            <tr><td>سال ساخت</td><td>۱۴۰۱</td></tr>
+            <tr><td>کارکرد</td><td>۵۰٬۰۰۰ کیلومتر</td></tr>
+            <tr><td>رنگ</td><td>بی‌رنگ ← ۱٫۰۰</td></tr>
+            <tr><td>شاسی</td><td>سالم ← ۱٫۰۰</td></tr>
+          </tbody>
+        </table>
+        <div class="formula">age        = 1403 - 1401 = 2
+yearFactor = 1 - (2 × 0.02) = 0.96
+kmFactor   = 1 - (5 × 0.03) = 0.85
+
+finalPrice = 1_000_000_000 × 0.96 × 0.85 × 1 × 1
+           = 816_000_000</div>
+        <div class="result">
+          <div>
+            <div class="label">قیمت محاسبه‌شده</div>
+            <div class="value">۸۱۶٬۰۰۰٬۰۰۰ تومان</div>
+          </div>
+          <div>
+            <div class="label">بازه نمایشی</div>
+            <div class="value">۸۰۰ تا ۹۰۰ میلیون تومان</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>مثال عددی ۲ — بدنه و شاسی آسیب‌دیده</h2>
+      <div class="example">
+        <table>
+          <tbody>
+            <tr><td>قیمت پایه</td><td>۸۰۰٬۰۰۰٬۰۰۰ تومان</td></tr>
+            <tr><td>آخرین سال مدل</td><td>۱۴۰۳</td></tr>
+            <tr><td>سال ساخت</td><td>۱۳۹۸</td></tr>
+            <tr><td>کارکرد</td><td>۱۵۰٬۰۰۰ کیلومتر</td></tr>
+            <tr><td>رنگ</td><td>رنگ دو ناحیه ← ۰٫۸۸</td></tr>
+            <tr><td>شاسی</td><td>ضربه خورده ← ۰٫۷۷</td></tr>
+          </tbody>
+        </table>
+        <div class="formula">age        = 5
+yearFactor = 1 - 0.10 = 0.90
+kmDrop     = min(15 × 0.03, 0.30) = 0.30   ← سقف فعال شد
+kmFactor   = 0.70
+
+finalPrice = 800_000_000 × 0.90 × 0.70 × 0.88 × 0.77
+           = 341_510_400</div>
+        <div class="result">
+          <div>
+            <div class="label">قیمت محاسبه‌شده</div>
+            <div class="value">۳۴۱٬۵۱۰٬۴۰۰ تومان</div>
+          </div>
+          <div>
+            <div class="label">بازه نمایشی</div>
+            <div class="value">۳۰۰ تا ۴۰۰ میلیون تومان</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>سقف‌ها و بدترین حالت</h2>
+      <table>
+        <thead><tr><th>مورد</th><th>مقدار</th></tr></thead>
+        <tbody>
+          <tr><td>حداکثر کاهش سال</td><td>۵۰٪</td></tr>
+          <tr><td>حداکثر کاهش کارکرد</td><td>۳۰٪</td></tr>
+          <tr><td>حداقل ضریب رنگ</td><td>۰٫۸۲ (رنگ چند ناحیه)</td></tr>
+          <tr><td>حداقل ضریب شاسی</td><td>۰٫۶۵ (آسیب شدید)</td></tr>
+          <tr><td>سال ساخت مجاز در UI</td><td>۱۳۸۰ تا lastYear + 1</td></tr>
+          <tr><td>کارکرد</td><td>نمی‌تواند منفی باشد</td></tr>
+        </tbody>
+      </table>
+      <div class="ok">بدترین ترکیب ضرایب: <code>0.50 × 0.70 × 0.82 × 0.65 ≈ 0.186</code> — یعنی حدود ۱۸٫۶٪ قیمت پایه باقی می‌ماند.</div>
+    </section>
+
+    <section>
+      <h2>فایل‌های مرتبط</h2>
+      <table class="files">
+        <thead><tr><th>فایل</th><th>نقش</th></tr></thead>
+        <tbody>
+          <tr><td>src/lib/car-price/pricing.ts</td><td>فرمول، جداول ضریب، بازه قیمت</td></tr>
+          <tr><td>src/app/car-price/page.tsx</td><td>ویزارد UI و اصلاح ۴۰۰ میلیونی همراه مکانیک</td></tr>
+          <tr><td>src/data/car.json</td><td>قیمت پایه و lastYear هر مدل</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>مستند فنی کارماچک · منطبق با کد فعلی calculateCarPrice</footer>
+  </div>
+</body>
+</html>

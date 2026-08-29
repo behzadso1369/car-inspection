@@ -2,11 +2,16 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Clock } from "lucide-react";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import type { TocItem } from "@/lib/blog-content";
+import {
+  RelatedPosts,
+  type RelatedPost,
+} from "../components/RelatedPosts";
 import "../blog-article.css";
 
 interface BlogDetailClientProps {
@@ -14,6 +19,8 @@ interface BlogDetailClientProps {
   blogData: any;
   processedContent: string;
   tocItems: TocItem[];
+  relatedPosts?: RelatedPost[];
+  readingTime: number;
 }
 
 export function BlogDetailClient({
@@ -21,6 +28,8 @@ export function BlogDetailClient({
   blogData,
   processedContent,
   tocItems,
+  relatedPosts = [],
+  readingTime,
 }: BlogDetailClientProps) {
   const [categoryName, setCategoryName] = useState<string>("");
   const [categoryId, setCategoryId] = useState<number>(0);
@@ -58,7 +67,8 @@ export function BlogDetailClient({
     }
   }, [processedContent]);
 
-  const { Title, ImagePath, Excerpt, CreatedDate } = blogData;
+  const { Title, ImagePath, Excerpt, CreatedDate, CreatedOn } = blogData;
+  const publishedAt = CreatedDate || CreatedOn;
 
   return (
     <div className="px-4 font-IranSans py-4 max-w-6xl mx-auto">
@@ -75,6 +85,18 @@ export function BlogDetailClient({
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         <div className="flex-1">
           <h1 className="text-xl md:text-2xl font-bold text-[#101117] my-6">{Title}</h1>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-[#55565A] mb-6">
+            {publishedAt && (
+              <span>
+                تاریخ انتشار: {new Date(publishedAt).toLocaleDateString("fa-IR")}
+              </span>
+            )}
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="w-4 h-4" aria-hidden />
+              {readingTime.toLocaleString("fa-IR")} دقیقه مطالعه
+            </span>
+          </div>
 
           {ImagePath && (
             <div className="relative w-full h-64 md:h-96 mb-6 rounded-lg overflow-hidden">
@@ -108,13 +130,23 @@ export function BlogDetailClient({
         )}
       </div>
 
-      {CreatedDate && (
+      {(publishedAt || readingTime) && (
         <div className="mt-8 pt-6 border-t border-[#DFDFDF]">
-          <p className="text-sm text-[#55565A]">
-            تاریخ انتشار: {new Date(CreatedDate).toLocaleDateString("fa-IR")}
+          <p className="text-sm text-[#55565A] flex flex-wrap items-center gap-x-4 gap-y-1">
+            {publishedAt && (
+              <span>
+                تاریخ انتشار: {new Date(publishedAt).toLocaleDateString("fa-IR")}
+              </span>
+            )}
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="w-4 h-4" aria-hidden />
+              {readingTime.toLocaleString("fa-IR")} دقیقه مطالعه
+            </span>
           </p>
         </div>
       )}
+
+      <RelatedPosts posts={relatedPosts} />
     </div>
   );
 }
