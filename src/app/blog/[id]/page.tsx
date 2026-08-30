@@ -1,7 +1,8 @@
+import { cache } from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ApiHelper } from "@/helper/api-request";
-import { serverFetch, serverApiHelper } from "@/helper/server-fetcher";
+import { serverFetch } from "@/helper/server-fetcher";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo";
 import { processBlogContent } from "@/lib/blog-content";
@@ -13,7 +14,10 @@ import {
   type RelatedPost,
 } from "../components/RelatedPosts";
 
-const BLOG_REVALIDATE = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const NO_STORE = { cache: "no-store" as RequestCache };
 const API_BASE_URL = "https://api.carmacheck.com";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com";
 
@@ -26,10 +30,13 @@ async function resolvePostId(param: string): Promise<string | null> {
   const decoded = decodeURIComponent(param);
   if (/^\d+$/.test(decoded)) return decoded;
 
-  const data = await serverApiHelper.post<{ SearchItems?: any[] }>(
-    "SiteBlogSearchWithTerms",
-    { terms: "", take: 1000, skip: 0 },
-    BLOG_REVALIDATE
+  const data = await serverFetch<{ SearchItems?: any[] }>(
+    ApiHelper.get("SiteBlogSearchWithTerms"),
+    {
+      method: "POST",
+      body: { terms: "", take: 1000, skip: 0 },
+      ...NO_STORE,
+    }
   );
   const items = data?.SearchItems ?? [];
 
@@ -42,17 +49,15 @@ async function resolvePostId(param: string): Promise<string | null> {
   return found?.BlogPostId != null ? String(found.BlogPostId) : null;
 }
 
-async function getPost(param: string) {
+const getPost = cache(async (param: string) => {
   const id = await resolvePostId(param);
   if (!id) return null;
   const endpoint = `${ApiHelper.get("GetBlogDetail")}?id=${id}`;
-  const data = await serverFetch<{ PostDetails?: any[] }>(endpoint, {
-    next: { revalidate: BLOG_REVALIDATE },
-  });
+  const data = await serverFetch<{ PostDetails?: any[] }>(endpoint, NO_STORE);
   const post = data?.PostDetails?.[0] ?? null;
-  console.log(post);
+
   return post ? { ...post, __resolvedId: id } : null;
-}
+});
 
 function excludeCurrentPost(posts: RelatedPost[], postId: string) {
   return posts.filter(
@@ -62,9 +67,7 @@ function excludeCurrentPost(posts: RelatedPost[], postId: string) {
 
 async function fetchRelatedFromApi(postId: string, take: number) {
   const endpoint = `${ApiHelper.get("GetRelatedPosts")}?PostId=${postId}&Take=${take}`;
-  const data = await serverFetch(endpoint, {
-    next: { revalidate: BLOG_REVALIDATE },
-  });
+  const data = await serverFetch(endpoint, NO_STORE);
   return excludeCurrentPost(normalizeRelatedPosts(data), postId);
 }
 
@@ -86,10 +89,13 @@ async function getRelatedPosts(
 
   if (fromApi.length >= 5) return fromApi.slice(0, 5);
 
-  const list = await serverApiHelper.post<{ SearchItems?: RelatedPost[] }>(
-    "SiteBlogSearchWithTerms",
-    { terms: "", take: 20, skip: 0 },
-    BLOG_REVALIDATE
+  const list = await serverFetch<{ SearchItems?: RelatedPost[] }>(
+    ApiHelper.get("SiteBlogSearchWithTerms"),
+    {
+      method: "POST",
+      body: { terms: "", take: 20, skip: 0 },
+      ...NO_STORE,
+    }
   );
   const others = (list?.SearchItems ?? []).filter((item: any) => {
     const id = String(item.BlogPostId ?? item.Id ?? "");
@@ -112,7 +118,6 @@ type Props = { params: Promise<{ id: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id: slug } = await params;
   const post = await getPost(slug);
-
   if (!post) {
     return { title: "مقاله یافت نشد" };
   }

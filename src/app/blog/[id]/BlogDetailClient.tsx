@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Clock } from "lucide-react";
+import { Clock, Eye } from "lucide-react";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
@@ -69,6 +69,8 @@ export function BlogDetailClient({
 
   const { Title, ImagePath, Excerpt, CreatedDate, CreatedOn } = blogData;
   const publishedAt = CreatedDate || CreatedOn;
+  const views = Number(blogData.viewCount ?? blogData.ViewCount);
+  const hasViews = Number.isFinite(views);
 
   return (
     <div className="px-4 font-IranSans py-4 max-w-6xl mx-auto">
@@ -96,6 +98,12 @@ export function BlogDetailClient({
               <Clock className="w-4 h-4" aria-hidden />
               {readingTime.toLocaleString("fa-IR")} دقیقه مطالعه
             </span>
+            {hasViews && (
+              <span className="inline-flex items-center gap-1.5">
+                <Eye className="w-4 h-4" aria-hidden />
+                {views.toLocaleString("fa-IR")} بازدید
+              </span>
+            )}
           </div>
 
           {ImagePath && (
@@ -130,7 +138,7 @@ export function BlogDetailClient({
         )}
       </div>
 
-      {(publishedAt || readingTime) && (
+      {(publishedAt || readingTime || hasViews) && (
         <div className="mt-8 pt-6 border-t border-[#DFDFDF]">
           <p className="text-sm text-[#55565A] flex flex-wrap items-center gap-x-4 gap-y-1">
             {publishedAt && (
@@ -142,6 +150,12 @@ export function BlogDetailClient({
               <Clock className="w-4 h-4" aria-hidden />
               {readingTime.toLocaleString("fa-IR")} دقیقه مطالعه
             </span>
+            {hasViews && (
+              <span className="inline-flex items-center gap-1.5">
+                <Eye className="w-4 h-4" aria-hidden />
+                {views.toLocaleString("fa-IR")} بازدید
+              </span>
+            )}
           </p>
         </div>
       )}

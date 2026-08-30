@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/seo/BrandLogo";
 
 type HeaderProps = {
@@ -40,9 +43,20 @@ function UserIcon() {
   );
 }
 
-export function Header({ data, activePath = "" }: HeaderProps) {
-  const itemClass = (href: string) =>
-    `mx-4 ${isActivePath(activePath, href) ? "text-[#3456bb]" : ""}`;
+export function Header({ data, activePath }: HeaderProps) {
+  const pathname = usePathname();
+  const currentPath = activePath || pathname || "";
+  const linkClass = (href: string) =>
+    `mx-4 [-webkit-tap-highlight-color:transparent] ${
+      isActivePath(currentPath, href)
+        ? "text-[#3456bb] visited:text-[#3456bb] active:text-[#3456bb] focus:text-[#3456bb]"
+        : "text-inherit visited:text-inherit active:text-inherit"
+    }`;
+
+  const linkStyle = (href: string) => {
+    const color = isActivePath(currentPath, href) ? "#3456bb" : "inherit";
+    return { color, WebkitTextFillColor: color } as const;
+  };
 
   return (
     <header className="w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 !bg-white rounded-b-3xl font-IranSans">
@@ -53,24 +67,32 @@ export function Header({ data, activePath = "" }: HeaderProps) {
           </a>
         </div>
 
-        <ul className="flex text-base">
-          <li className={itemClass("/")}>
-            <a href="/">خانه</a>
+        <ul className="site-top-nav flex text-base">
+          <li>
+            <a href="/" className={linkClass("/")} style={linkStyle("/")}>خانه</a>
           </li>
-          <li className={itemClass("/car-inspection")}>
-            <a href="/car-inspection">کارشناسی خودرو</a>
+          <li>
+            <a href="/car-inspection" className={linkClass("/car-inspection")} style={linkStyle("/car-inspection")}>
+              کارشناسی خودرو
+            </a>
           </li>
-          <li className={itemClass("/car-price")}>
-            <a href="/car-price">قیمت گذاری خودرو</a>
+          <li>
+            <a href="/car-price" className={linkClass("/car-price")} style={linkStyle("/car-price")}>
+              قیمت گذاری خودرو
+            </a>
           </li>
-          <li className={itemClass("/blog")}>
-            <a href="/blog">بلاگ</a>
+          <li>
+            <a href="/blog" className={linkClass("/blog")} style={linkStyle("/blog")}>بلاگ</a>
           </li>
-          <li className={itemClass("/contact-us")}>
-            <a href="/contact-us">ارتباط با ما</a>
+          <li>
+            <a href="/contact-us" className={linkClass("/contact-us")} style={linkStyle("/contact-us")}>
+              ارتباط با ما
+            </a>
           </li>
-          <li className={itemClass("/about-us")}>
-            <a href="/about-us">درباره ما</a>
+          <li>
+            <a href="/about-us" className={linkClass("/about-us")} style={linkStyle("/about-us")}>
+              درباره ما
+            </a>
           </li>
         </ul>
 

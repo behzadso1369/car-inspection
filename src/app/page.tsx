@@ -73,7 +73,7 @@ async function getMasterPageData() {
   return await serverApiHelper.get("GetMasterPageData", 3600);
 }
 
-async function getHomeBlogPosts(take = 4) {
+async function getHomeBlogPosts(take = 6) {
   const res = await serverApiHelper.post(
     "SiteBlogSearchWithTerms",
     { terms: "", take, skip: 0 },
@@ -101,14 +101,11 @@ async function getHomeBlogPosts(take = 4) {
 export default async function Home() {
   const [data, blogPosts] = await Promise.all([
     getMasterPageData(),
-    getHomeBlogPosts(4),
+    getHomeBlogPosts(6),
   ]);
   const faqPreviewItems = await getFaqsByCategoryName("کارماچک", 600);
   return (
    <main className="bg-white">
-      <h1 className="sr-only">
-        کارماچک | کارشناسی خودرو در شرق تهران، تهرانپارس، نارمک و رسالت
-      </h1>
       <Slider data={data?.Sliders}/>
       <Introduction data={data?.WhyWe}/>
       <HomeFeatures />

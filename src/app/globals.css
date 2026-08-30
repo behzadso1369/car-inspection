@@ -78,6 +78,25 @@
     padding: 0;
     @apply bg-background text-foreground;
   }
+
+  /*
+   * iOS Safari keeps the default purple :visited / -webkit-text-fill-color
+   * on <a> even when a parent (li/nav) has a brand color. Force fill to
+   * follow `color` so active nav items stay #3456bb, not purple.
+   */
+  .site-bottom-nav a:link,
+  .site-bottom-nav a:visited,
+  .site-bottom-nav a:hover,
+  .site-bottom-nav a:active,
+  .site-bottom-nav a:focus,
+  .site-top-nav a:link,
+  .site-top-nav a:visited,
+  .site-top-nav a:hover,
+  .site-top-nav a:active,
+  .site-top-nav a:focus {
+    -webkit-text-fill-color: currentColor;
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 /* iOS Safari zooms focused fields when font-size < 16px */

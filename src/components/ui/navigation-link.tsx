@@ -1,9 +1,8 @@
 "use client";
 
-import { useTransition } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { ReactNode } from 'react';
+import { useTransition, type CSSProperties, type MouseEvent, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface NavigationLinkProps {
   href: string;
@@ -11,6 +10,7 @@ interface NavigationLinkProps {
   className?: string;
   prefetch?: boolean;
   onClick?: () => void;
+  style?: CSSProperties;
   "aria-label"?: string;
 }
 
@@ -21,22 +21,22 @@ interface NavigationLinkProps {
 export default function NavigationLink({
   href,
   children,
-  className = '',
+  className = "",
   prefetch = true,
   onClick,
+  style,
   "aria-label": ariaLabel,
 }: NavigationLinkProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    
+
     if (onClick) {
       onClick();
     }
 
-    // استفاده از startTransition برای navigation بدون blocking
     startTransition(() => {
       router.push(href);
     });
@@ -48,10 +48,10 @@ export default function NavigationLink({
       onClick={handleClick}
       prefetch={prefetch}
       aria-label={ariaLabel}
-      className={`${className} ${isPending ? 'opacity-70 pointer-events-none' : ''}`}
+      style={style}
+      className={`${className} ${isPending ? "opacity-70 pointer-events-none" : ""}`}
     >
       {children}
     </Link>
   );
 }
-

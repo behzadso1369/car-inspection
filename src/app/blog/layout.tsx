@@ -3,11 +3,13 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import BlogFooter from "./components/BlogFooter";
 import instance from "@/helper/interceptor";
-import { ApiHelper } from "@/helper/api-request";
-import { serverApiHelper } from "@/helper/server-fetcher";
+import { serverFetch } from "@/helper/server-fetcher";
 import { BlogHeader } from "./components/BlogHeader";
 import Banner from "../components/mobile/Home/Banner";
 import { BlogMobileHeader } from "./components/BlogMobileHeader";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function BlogLayout({
     children,
@@ -17,7 +19,9 @@ export default async function BlogLayout({
         let initialData = null;
          
          try {
-           const data = await serverApiHelper.get("GetMasterPageData", 3600);
+           const data = await serverFetch("Site/GetMasterPageData", {
+             cache: "no-store",
+           });
            initialData = data?.MasterSiteData;
          } catch (error) {
            console.error("Error fetching master data in layout:", error);

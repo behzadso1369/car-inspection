@@ -60,7 +60,7 @@ export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
         <CallAction data={data} fixed={isCarPrice} />
       </div>
       <div className="hidden lg:block px-20 mb-6 bg-transparent sticky top-11 z-10">
-        <Header data={data} />
+        <Header data={data} activePath={pathname} />
       </div>
     </>
   );

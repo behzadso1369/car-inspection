@@ -9,7 +9,9 @@ export default function Introduction({data}:any) {
 
     return (
         <section className="bg-secondary-background px-4 py-8 font-IranSans bg-[#F0F2F4] lg:py-24">
-            <h2 className="text-lg text-black text-center lg:text-3xl my-2 font-extrabold">چرا کارماچک؟</h2>
+            <h1 className="text-lg text-black text-center lg:text-3xl my-2 font-extrabold leading-8 lg:leading-12">
+              کارماچک | کارشناسی خودرو در شرق تهران، تهرانپارس، نارمک و رسالت
+            </h1>
             <div className="flex flex-wrap justify-between lg:hidden">
                 <div className="w-1/3">
                     <h3 className="text-[#101117] text-sm text-center py-4 font-medium">{item.T1Title}</h3>

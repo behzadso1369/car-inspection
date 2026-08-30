@@ -58,21 +58,30 @@ export const BlogHeader = memo(({ data }: any) => {
           />
         </Link>
 
-        <ul className="flex flex-wrap items-center justify-center text-base">
-          {NAV_ITEMS.map(({ href, label }) => (
-            <li
-              key={href}
-              className={`mx-3 xl:mx-4 ${isActive(href) ? "text-[#3456bb]" : "text-[#101117]"}`}
-            >
-              <NavigationLink
-                href={href}
-                prefetch={true}
-                className="transition-colors hover:text-[#3456bb]"
-              >
-                {label}
-              </NavigationLink>
-            </li>
-          ))}
+        <ul className="site-top-nav flex flex-wrap items-center justify-center text-base">
+          {NAV_ITEMS.map(({ href, label }) => {
+            const active = isActive(href);
+            return (
+              <li key={href} className="mx-3 xl:mx-4">
+                <NavigationLink
+                  href={href}
+                  prefetch={true}
+                  className={`transition-colors hover:text-[#3456bb] ${
+                    active
+                      ? "text-[#3456bb] visited:text-[#3456bb] active:text-[#3456bb]"
+                      : "text-[#101117] visited:text-[#101117] active:text-[#101117]"
+                  }`}
+                  style={
+                    active
+                      ? { color: "#3456bb", WebkitTextFillColor: "#3456bb" }
+                      : { color: "#101117", WebkitTextFillColor: "#101117" }
+                  }
+                >
+                  {label}
+                </NavigationLink>
+              </li>
+            );
+          })}
         </ul>
 
         <span className="flex shrink-0 items-center gap-1 text-[#101117]">

@@ -1,11 +1,6 @@
 const ACTIVE = "#3456bb";
 const INACTIVE = "#6B6C70";
 
-const activeFilter =
-  "brightness(0) saturate(100%) invert(28%) sepia(70%) saturate(1600%) hue-rotate(208deg) brightness(92%) contrast(90%)";
-const inactiveFilter =
-  "brightness(0) saturate(100%) invert(42%) sepia(0%) saturate(0%)";
-
 type NavigationBarProps = {
   activePath?: string;
 };
@@ -19,12 +14,12 @@ function isActivePath(pathname: string, href: string) {
   return pathname.startsWith(href);
 }
 
-function HomeIcon({ color }: { color: string }) {
+function HomeIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"
-        stroke={color}
+        stroke="currentColor"
         strokeWidth="1.6"
         strokeLinejoin="round"
       />
@@ -32,62 +27,104 @@ function HomeIcon({ color }: { color: string }) {
   );
 }
 
-function MoneyIcon({ color }: { color: string }) {
+function CarInspectionIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="6" width="18" height="12" rx="2" stroke={color} strokeWidth="1.6" />
-      <circle cx="12" cy="12" r="2.25" stroke={color} strokeWidth="1.6" />
+    <svg width="22" height="22" viewBox="0 0 25 24" fill="none" aria-hidden="true">
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M14.5724 15.9734H16.995C17.2275 15.9734 17.4158 15.7851 17.4158 15.5526C17.4158 15.3201 17.2275 15.1318 16.995 15.1318H14.5724C14.3389 15.1318 14.1516 15.3201 14.1516 15.5526C14.1516 15.7851 14.3389 15.9734 14.5724 15.9734Z"
+      />
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M14.1138 4.19345C12.0509 2.12953 8.69957 2.12953 6.63541 4.19345C4.57148 6.25738 4.57148 9.60876 6.63541 11.6718C8.69933 13.7358 12.0507 13.7358 14.1138 11.6718C16.1777 9.60897 16.1777 6.25762 14.1138 4.19345ZM13.5184 4.78884C15.2541 6.52455 15.2541 9.34159 13.5184 11.0764C11.7827 12.8121 8.96674 12.8121 7.23085 11.0764C5.4962 9.34175 5.4962 6.52473 7.23085 4.78884C8.96656 3.05419 11.7825 3.05419 13.5184 4.78884Z"
+      />
+      <path
+        fill="currentColor"
+        stroke="currentColor"
+        strokeWidth="0.25"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M4.42852 11.3225L1.24758 14.5035C0.541721 15.2083 0.541721 16.3528 1.24758 17.0586H1.24863C1.95449 17.7655 3.099 17.7655 3.80486 17.0586L6.9858 13.8785C7.19514 13.9984 7.40868 14.1057 7.62643 14.2014C7.40447 14.6127 7.28456 15.0767 7.28456 15.5521V18.526C7.28456 19.6316 8.06719 20.5552 9.10967 20.7719V21.3999C9.10967 22.1951 9.75451 22.839 10.5498 22.839H12.5506C13.3448 22.839 13.9897 22.1952 13.9897 21.3999V20.8203H17.5767V21.3999C17.5767 22.1951 18.2215 22.839 19.0168 22.839H21.0176C21.8129 22.839 22.4578 22.1952 22.4578 21.3999V20.7719C23.4992 20.5552 24.2818 19.6316 24.2818 18.526V15.5521C24.2818 14.7989 23.982 14.0752 23.4487 13.5408C23.0563 13.1495 22.5619 12.8833 22.0275 12.7708L20.3917 7.89191C20.2245 7.39222 19.7553 7.05455 19.2272 7.05455H17.1602C16.974 5.60498 16.3249 4.20592 15.2141 3.09399C12.5432 0.423097 8.20612 0.423097 5.53604 3.09399C3.30803 5.322 2.93898 8.71033 4.42852 11.3225ZM21.6162 20.8206V21.4003C21.6162 21.7295 21.3479 21.9978 21.0176 21.9978H19.0168C18.6865 21.9978 18.4182 21.7295 18.4182 21.4003V20.8206H21.6162ZM13.1481 20.8206V21.4003C13.1481 21.7295 12.8809 21.9978 12.5506 21.9978H10.5498C10.2184 21.9978 9.95123 21.7295 9.95123 21.4003V20.8206H13.1481ZM14.2853 13.5496C12.5527 14.7572 10.3867 15.0728 8.42913 14.4943C8.3071 14.6899 8.21979 14.9055 8.17245 15.1317H10.6929C10.8739 15.1317 11.0348 15.2485 11.0927 15.42L11.9006 17.8426C11.9426 17.972 11.9216 18.1119 11.8416 18.2224C11.7628 18.3318 11.6365 18.397 11.5008 18.397H8.12626V18.5264C8.12626 19.328 8.77742 19.9791 9.57898 19.9791H21.9877C22.7903 19.9791 23.4404 19.3279 23.4404 18.5264V18.397H20.0174C19.8827 18.397 19.7554 18.3318 19.6765 18.2224C19.5966 18.1119 19.5756 17.972 19.6176 17.8426L20.4255 15.42C20.4834 15.2485 20.6443 15.1317 20.8253 15.1317H23.3962C23.3152 14.7572 23.129 14.4122 22.8534 14.1366C22.4789 13.7611 21.9698 13.5496 21.4386 13.5496H14.2853ZM8.12617 15.9733V17.5554H10.9169L10.3899 15.9733H8.12617ZM23.4403 15.9733H21.1282L20.6011 17.5554H23.4403L23.4403 15.9733ZM4.90079 12.0402L1.84291 15.0981C1.46528 15.4757 1.46528 16.0869 1.84291 16.4635L1.84397 16.4645C2.2216 16.8422 2.8328 16.8422 3.21044 16.4645L6.2675 13.4067C6.01293 13.2163 5.76887 13.0038 5.53641 12.7713C5.30393 12.5399 5.09226 12.2958 4.90079 12.0402ZM14.6187 3.68981C16.9613 6.03144 16.9613 9.83411 14.6187 12.177C12.276 14.5186 8.47329 14.5186 6.13148 12.177C3.78881 9.83432 3.78881 6.03163 6.13148 3.68981C8.4731 1.34714 12.2758 1.34714 14.6187 3.68981ZM17.2159 7.89651C17.2264 9.63222 16.5795 11.3721 15.2761 12.7081H16.3817L18.6781 9.64587C18.818 9.45967 19.081 9.42286 19.2672 9.56171C19.4534 9.70162 19.4913 9.96461 19.3514 10.1508L17.4337 12.7081H21.1198L19.5945 8.15937C19.5419 8.00263 19.3946 7.89639 19.2273 7.89639L17.2159 7.89651Z"
+      />
     </svg>
   );
 }
 
-function BookIcon({ color }: { color: string }) {
+function MoneyIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="2.25" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
+function BookIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M5 5.5A2.5 2.5 0 0 1 7.5 3H20v16H7.5A2.5 2.5 0 0 0 5 21.5V5.5Z"
-        stroke={color}
+        stroke="currentColor"
         strokeWidth="1.6"
         strokeLinejoin="round"
       />
-      <path d="M5 19.5A2.5 2.5 0 0 1 7.5 17H20" stroke={color} strokeWidth="1.6" />
+      <path d="M5 19.5A2.5 2.5 0 0 1 7.5 17H20" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
+function ProfileIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12.16 10.87C12.06 10.86 11.94 10.86 11.83 10.87C9.45 10.79 7.56 8.84 7.56 6.44C7.56 3.99 9.54 2 12 2C14.45 2 16.44 3.99 16.44 6.44C16.43 8.84 14.54 10.79 12.16 10.87Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7.16 14.56C4.74 16.18 4.74 18.82 7.16 20.43C9.91 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.92 12.73 7.16 14.56Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 export function NavigationBar({ activePath = "" }: NavigationBarProps) {
   const linkClass = (href: string) =>
-    `flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 ${
+    `flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 [-webkit-tap-highlight-color:transparent] ${
       isActivePath(activePath, href)
-        ? "text-[#3456bb] visited:text-[#3456bb]"
-        : "text-[#6B6C70] visited:text-[#6B6C70]"
+        ? "text-[#3456bb] visited:text-[#3456bb] active:text-[#3456bb] focus:text-[#3456bb]"
+        : "text-[#6B6C70] visited:text-[#6B6C70] active:text-[#6B6C70] focus:text-[#6B6C70]"
     }`;
 
-  const iconColor = (href: string) =>
-    isActivePath(activePath, href) ? ACTIVE : INACTIVE;
+  const linkStyle = (href: string) => {
+    const color = isActivePath(activePath, href) ? ACTIVE : INACTIVE;
+    return { color, WebkitTextFillColor: color } as const;
+  };
 
   return (
-    <nav className="fixed font-IranSans z-40 w-[calc(100%-1.5rem)] max-w-md left-1/2 transform -translate-x-1/2 bottom-6 h-[4.25rem] px-2 bg-[#f6f6f6] rounded-2xl shadow-[0px_4px_8px_0px_#00000014] flex justify-between items-center">
-      <a href="/" className={linkClass("/")}>
-        <HomeIcon color={iconColor("/")} />
+    <nav className="site-bottom-nav fixed font-IranSans z-40 w-[calc(100%-1.5rem)] max-w-md left-1/2 transform -translate-x-1/2 bottom-6 h-[4.25rem] px-2 bg-[#f6f6f6] rounded-2xl shadow-[0px_4px_8px_0px_#00000014] flex justify-between items-center">
+      <a href="/" className={linkClass("/")} style={linkStyle("/")}>
+        <HomeIcon />
         <span className="text-[11px] leading-tight text-center">خانه</span>
       </a>
 
-      <a href="/car-inspection" className={linkClass("/car-inspection")}>
-        <div
-          style={{
-            filter: isActivePath(activePath, "/car-inspection")
-              ? activeFilter
-              : inactiveFilter,
-          }}
-        >
-          <img src="/car-inspection.svg" alt="" width={22} height={22} />
-        </div>
+      <a href="/car-inspection" className={linkClass("/car-inspection")} style={linkStyle("/car-inspection")}>
+        <CarInspectionIcon />
         <span className="text-[11px] leading-tight text-center">کارشناسی</span>
       </a>
 
-      <a href="/car-price" className={linkClass("/car-price")}>
-        <MoneyIcon color={iconColor("/car-price")} />
+      <a href="/car-price" className={linkClass("/car-price")} style={linkStyle("/car-price")}>
+        <MoneyIcon />
         <span className="text-[11px] leading-tight text-center">
           قیمت‌گذاری
           <br />
@@ -95,19 +132,13 @@ export function NavigationBar({ activePath = "" }: NavigationBarProps) {
         </span>
       </a>
 
-      <a href="/blog" className={linkClass("/blog")}>
-        <BookIcon color={iconColor("/blog")} />
+      <a href="/blog" className={linkClass("/blog")} style={linkStyle("/blog")}>
+        <BookIcon />
         <span className="text-[11px] leading-tight text-center">بلاگ</span>
       </a>
 
-      <a href="/Profile" className={linkClass("/Profile")}>
-        <div
-          style={{
-            filter: isActivePath(activePath, "/Profile") ? activeFilter : inactiveFilter,
-          }}
-        >
-          <img src="/profile.svg" alt="" width={22} height={22} />
-        </div>
+      <a href="/Profile" className={linkClass("/Profile")} style={linkStyle("/Profile")}>
+        <ProfileIcon />
         <span className="text-[11px] leading-tight text-center">پروفایل</span>
       </a>
     </nav>

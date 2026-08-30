@@ -127,9 +127,14 @@ export const BlogMobileHeader = memo(({ data }: any) => {
                         className={cn(
                           "flex items-center gap-3 rounded-2xl px-3.5 py-3 text-sm transition-colors",
                           active
-                            ? "bg-[#3456bb]/10 font-medium text-[#3456bb]"
-                            : "text-[#101117] hover:bg-[#F4F6FB]"
+                            ? "bg-[#3456bb]/10 font-medium text-[#3456bb] visited:text-[#3456bb] active:text-[#3456bb]"
+                            : "text-[#101117] visited:text-[#101117] hover:bg-[#F4F6FB]"
                         )}
+                        style={
+                          active
+                            ? { color: "#3456bb", WebkitTextFillColor: "#3456bb" }
+                            : { color: "#101117", WebkitTextFillColor: "#101117" }
+                        }
                       >
                         <span
                           className={cn(
