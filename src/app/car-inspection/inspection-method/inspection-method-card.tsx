@@ -97,7 +97,7 @@ export default function InspectionMethodCard({
 
   return (
     <div className="relative mt-5 overflow-visible">
-      <DiscountRibbon />
+      {/* <DiscountRibbon /> */}
       {isFirst && <RecommendedBadge />}
 
       <div

@@ -59,7 +59,7 @@ export function Header({ data, activePath }: HeaderProps) {
   };
 
   return (
-    <header className="w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 !bg-white rounded-b-3xl font-IranSans">
+    <header className="relative z-50 w-full shadow-[0px_4px_32px_0px_#CBD5E099] px-8 py-4 !bg-white rounded-b-3xl font-IranSans">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <a href="/" aria-label="صفحه اصلی کارماچک">

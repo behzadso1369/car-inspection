@@ -59,9 +59,12 @@ export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
       <div className="block lg:hidden">
         <CallAction data={data} fixed={isCarPrice} />
       </div>
-      <div className="hidden lg:block px-20 mb-6 bg-transparent sticky top-11 z-10">
-        <Header data={data} activePath={pathname} />
+      <div className="hidden lg:block sticky top-11 z-50 bg-white">
+        <div className="px-20">
+          <Header data={data} activePath={pathname} />
+        </div>
       </div>
+      <div className="hidden lg:block mb-6" aria-hidden />
     </>
   );
 }

@@ -1,4 +1,5 @@
 "use client"
+import { WalletIcon } from "@/components/WalletIcon";
 import { ArrowLeft01Icon, Edit01Icon, Logout03Icon } from "hugeicons-react";
 import Image from "next/image";
 import Requests from "../components/Requests";
@@ -82,12 +83,19 @@ export default function Profile() {
         </div>
         <div className="grid grid-cols-3 gap-4 lg:my-12">
  <Requests data={orders}/>
-        <div className="col-span-3 lg:col-span-1 lg:order-0 rounded-2xl lg:border lg:border-[#D9D9D9] lg:max-h-[243px]">           
+        <div className="col-span-3 lg:col-span-1 lg:order-0 rounded-2xl lg:border lg:border-[#D9D9D9] lg:max-h-[320px]">           
         <h3 className="text-[#101117] font-normal my-6 px-4">تنظیمات حساب</h3>   
         <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
             <div className="text-[#101117] flex">
             <Image alt="کارشناسی خودرو" src="/car-inspection-icon.svg" width={24} height={24}/>
             <Link href={"/Profile/requests"} className="mx-2 text-base" prefetch={false}>تمامی درخواست ها  </Link>
+            </div>
+        <ArrowLeft01Icon/>
+        </h6>
+        <h6 className="flex px-4 justify-between my-6 pb-4 border-b border-[#DFDFDF]">
+            <div className="text-[#101117] flex items-center">
+            <WalletIcon size={24} />
+            <Link href={"/wallet"} className="mx-2 text-base" prefetch={false}>کیف‌پول من</Link>
             </div>
         <ArrowLeft01Icon/>
         </h6>

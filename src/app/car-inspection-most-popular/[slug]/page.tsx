@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import {
   CheckmarkCircle02Icon,
   CancelCircleIcon,
-  SearchAreaIcon,
   Tick01Icon,
 } from "hugeicons-react";
 import { BASE_URL, COMMON_KEYWORDS } from "@/lib/seo";
 import { CARS, getCarBySlug } from "../carsData";
 import CarShowcaseHero from "./CarShowcaseHero";
 import InspectCtaButton from "./InspectCtaButton";
+import AparatVideoEmbed from "./AparatVideoEmbed";
+import CarArticle from "./CarArticle";
 
 // اسلاگ‌های داخل CARS در بیلد استاتیک می‌شوند؛ اسلاگ نامعتبر در خود صفحه notFound می‌شود.
 // false در dev + webpack همهٔ [slug]ها را 404 می‌کرد.
@@ -34,13 +34,18 @@ export async function generateMetadata({
     return { title: "خودرو یافت نشد | کارماچک" };
   }
 
-  const title = `کارشناسی ${car.name} | معایب و مزایا | کارماچک`;
-  const description = `معایب و مزایای ${car.name} + نکات مهم کارشناسی این خودرو. ${car.tagline}. رزرو کارشناسی تخصصی ${car.name} در محل با کارشناسان مجرب کارماچک.`;
+  const title = car.seoTitle || `کارشناسی ${car.name} | معایب و مزایا | کارماچک`;
+  const description =
+    car.seoDescription ||
+    `معایب و مزایای ${car.name} + نکات مهم کارشناسی این خودرو. ${car.tagline}. رزرو کارشناسی تخصصی ${car.name} در محل با کارشناسان مجرب کارماچک.`;
   const url = `${BASE_URL}/car-inspection-most-popular/${car.slug}`;
-  const image = `${BASE_URL}${car.image}`;
+  const ogPath = car.ogImage || car.contentImage || car.image;
+  const image = `${BASE_URL}${ogPath}`;
+  const imageAlt = car.contentImageAlt || `کارشناسی ${car.name}`;
+  const titleAlreadyHasBrand = /کارماچک\s*$/.test(title);
 
   return {
-    title,
+    title: titleAlreadyHasBrand ? { absolute: title } : title,
     description,
     keywords: [...car.keywords, ...COMMON_KEYWORDS],
     alternates: { canonical: url },
@@ -51,7 +56,7 @@ export async function generateMetadata({
       siteName: "کارماچک",
       locale: "fa_IR",
       type: "article",
-      images: [{ url: image, width: 1200, height: 630, alt: `کارشناسی ${car.name}` }],
+      images: [{ url: image, width: 1200, height: 676, alt: imageAlt }],
     },
     twitter: {
       card: "summary_large_image",
@@ -75,33 +80,60 @@ export default async function CarInspectionPage({
   }
 
   const url = `${BASE_URL}/car-inspection-most-popular/${car.slug}`;
+  const graph: Record<string, unknown>[] = [
+    {
+      "@type": "Article",
+        headline: car.seoTitle || `کارشناسی ${car.name} | معایب و مزایا`,
+        description: car.seoDescription || car.intro,
+      image: `${BASE_URL}${car.ogImage || car.contentImage || car.image}`,
+      author: { "@type": "Organization", name: "کارماچک" },
+      publisher: {
+        "@type": "Organization",
+        name: "کارماچک",
+        logo: { "@type": "ImageObject", url: `${BASE_URL}/assets/images/logo.svg` },
+      },
+      mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "خانه", item: BASE_URL },
+        { "@type": "ListItem", position: 2, name: "کارشناسی خودروها", item: `${BASE_URL}/car-inspection-most-popular` },
+        { "@type": "ListItem", position: 3, name: `کارشناسی ${car.name}`, item: url },
+      ],
+    },
+  ];
 
-  // JSON-LD: مقاله + مسیر راهنما (Breadcrumb) برای نتایج بهتر گوگل
+  if (car.aparatVideoHash && car.aparatVideoTitle && car.aparatThumbnailUrl) {
+    graph.push({
+      "@type": "VideoObject",
+      name: car.aparatVideoTitle,
+      description: `ویدیوی نکات کارشناسی ${car.name} پیش از خرید، از کارماچک.`,
+      thumbnailUrl: car.aparatThumbnailUrl,
+      embedUrl: `https://www.aparat.com/video/video/embed/videohash/${car.aparatVideoHash}/vt/frame`,
+      contentUrl: `https://www.aparat.com/v/${car.aparatVideoHash}`,
+      publisher: {
+        "@type": "Organization",
+        name: "کارماچک",
+        url: BASE_URL,
+      },
+    });
+  }
+
+  if (car.faqs?.length) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: car.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    });
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Article",
-        headline: `کارشناسی ${car.name} | معایب و مزایا`,
-        description: car.intro,
-        image: `${BASE_URL}${car.image}`,
-        author: { "@type": "Organization", name: "کارماچک" },
-        publisher: {
-          "@type": "Organization",
-          name: "کارماچک",
-          logo: { "@type": "ImageObject", url: `${BASE_URL}/assets/images/logo.svg` },
-        },
-        mainEntityOfPage: { "@type": "WebPage", "@id": url },
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "خانه", item: BASE_URL },
-          { "@type": "ListItem", position: 2, name: "کارشناسی خودروها", item: `${BASE_URL}/car-inspection-most-popular` },
-          { "@type": "ListItem", position: 3, name: `کارشناسی ${car.name}`, item: url },
-        ],
-      },
-    ],
+    "@graph": graph,
   };
 
   return (
@@ -112,9 +144,9 @@ export default async function CarInspectionPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {car.glbUrl ? (
+      {car.glbUrl || car.heroPng ? (
         <>
-          <div className="px-4 pt-4 lg:px-24">
+          <div className="px-4 py-4 lg:px-24 lg:pt-3 lg:pb-2">
             <Breadcrumb
               items={[
                 { label: "خانه", href: "/" },
@@ -129,8 +161,26 @@ export default async function CarInspectionPage({
             brand={car.brand}
             intro={car.intro}
             glbUrl={car.glbUrl}
+            imageUrl={car.heroPng ? car.image : undefined}
+            imageAlt={
+              car.slug === "peugeot-206"
+                ? "پژو ۲۰۶ اسپرت خاکستری مات، نمای سه رخ جلو"
+                : car.slug === "jac-s5"
+                  ? "جک S5 خاکستری، نمای سه رخ جلو"
+                  : `عکس ${car.name}، نمای سه رخ جلو`
+            }
             searchTerm={car.inspectionSearchTerm}
-          />
+            carGroupId={car.inspectionCarGroupId}
+            carGroupName={car.inspectionCarGroupName}
+          >
+            {car.aparatVideoHash && car.aparatVideoTitle && car.aparatThumbnailUrl ? (
+              <AparatVideoEmbed
+                hash={car.aparatVideoHash}
+                title={car.aparatVideoTitle}
+                thumbnailUrl={car.aparatThumbnailUrl}
+              />
+            ) : null}
+          </CarShowcaseHero>
         </>
       ) : (
         <>
@@ -167,6 +217,8 @@ export default async function CarInspectionPage({
                   <InspectCtaButton
                     carName={car.name}
                     searchTerm={car.inspectionSearchTerm}
+                    carGroupId={car.inspectionCarGroupId}
+                    carGroupName={car.inspectionCarGroupName}
                   />
                   <p className="text-center text-xs text-[#8A8B90] mt-3">
                     رزرو آنلاین کارشناسی {car.name} در محل، با هزینه شفاف
@@ -205,56 +257,51 @@ export default async function CarInspectionPage({
         </>
       )}
 
-      <div className="px-4 py-8 max-w-5xl mx-auto">
-        {/* مزایا و معایب */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <section className="rounded-2xl border border-[#E4F5EC] bg-[#F3FBF7] p-5">
-            <h2 className="flex items-center gap-2 text-lg font-bold text-[#15803D] mb-4">
-              <CheckmarkCircle02Icon className="w-6 h-6" />
-              مزایای {car.name}
-            </h2>
-            <ul className="space-y-3">
-              {car.pros.map((item) => (
-                <li key={item} className="flex items-start gap-2 text-[#101117] text-sm leading-7">
-                  <CheckmarkCircle02Icon className="w-5 h-5 text-[#22C55E] flex-shrink-0 mt-0.5" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
+      <div className="py-4 lg:py-8">
+        {!car.articleSections?.length ? (
+          <div className="px-4 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
+            <section className="rounded-2xl border border-[#E4F5EC] bg-[#F3FBF7] p-5">
+              <h2 className="flex items-center gap-2 text-lg font-bold text-[#15803D] mb-4">
+                <CheckmarkCircle02Icon className="w-6 h-6" />
+                مزایای {car.name}
+              </h2>
+              <ul className="space-y-3">
+                {car.pros.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-[#101117] text-sm leading-7">
+                    <CheckmarkCircle02Icon className="w-5 h-5 text-[#22C55E] flex-shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
 
-          <section className="rounded-2xl border border-[#FBE4E4] bg-[#FDF3F3] p-5">
-            <h2 className="flex items-center gap-2 text-lg font-bold text-[#B91C1C] mb-4">
-              <CancelCircleIcon className="w-6 h-6" />
-              معایب {car.name}
-            </h2>
-            <ul className="space-y-3">
-              {car.cons.map((item) => (
-                <li key={item} className="flex items-start gap-2 text-[#101117] text-sm leading-7">
-                  <CancelCircleIcon className="w-5 h-5 text-[#EF4444] flex-shrink-0 mt-0.5" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
+            <section className="rounded-2xl border border-[#FBE4E4] bg-[#FDF3F3] p-5">
+              <h2 className="flex items-center gap-2 text-lg font-bold text-[#B91C1C] mb-4">
+                <CancelCircleIcon className="w-6 h-6" />
+                معایب {car.name}
+              </h2>
+              <ul className="space-y-3">
+                {car.cons.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-[#101117] text-sm leading-7">
+                    <CancelCircleIcon className="w-5 h-5 text-[#EF4444] flex-shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </div>
+        ) : null}
 
-        {/* نکات کارشناسی */}
-        <section className="rounded-2xl border border-[#E7EBF7] bg-[#F5F7FD] p-5 mt-6">
-          <h2 className="flex items-center gap-2 text-lg font-bold text-[#416CEA] mb-4">
-            <SearchAreaIcon className="w-6 h-6" />
-            نکات مهم در کارشناسی {car.name}
-          </h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {car.inspectionPoints.map((item) => (
-              <li key={item} className="flex items-start gap-2 text-[#101117] text-sm leading-7">
-                <span className="w-2 h-2 rounded-full bg-[#416CEA] flex-shrink-0 mt-2.5" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <CarArticle
+          intro={car.articleIntro}
+          sections={car.articleSections}
+          faqs={car.faqs}
+          faqTitle={car.faqTitle}
+          sideImage={car.contentImage}
+          sideImageAlt={car.contentImageAlt}
+        />
 
+        <div className="px-4 max-w-5xl mx-auto">
         {/* CTA پایین صفحه */}
         <div className="rounded-3xl bg-gradient-to-l from-[#3456bb] to-[#416CEA] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-8">
           <div className="text-white">
@@ -267,27 +314,12 @@ export default async function CarInspectionPage({
             <InspectCtaButton
               carName={car.name}
               searchTerm={car.inspectionSearchTerm}
+              carGroupId={car.inspectionCarGroupId}
+              carGroupName={car.inspectionCarGroupName}
               className="!bg-white !text-[#416CEA] hover:!bg-white/90"
             />
           </div>
         </div>
-
-        {/* لینک به سایر خودروها */}
-        <div className="mt-10">
-          <h2 className="text-lg font-bold text-[#101117] mb-4">کارشناسی سایر خودروها</h2>
-          <div className="flex flex-wrap gap-2">
-            {CARS.filter((c) => c.slug !== car.slug)
-              .slice(0, 12)
-              .map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/car-inspection-most-popular/${c.slug}`}
-                  className="rounded-full border border-[#DFDFDF] px-4 py-1.5 text-sm text-[#55565A] hover:border-[#416CEA] hover:text-[#416CEA] transition-colors"
-                >
-                  {c.name}
-                </Link>
-              ))}
-          </div>
         </div>
       </div>
     </div>

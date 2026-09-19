@@ -1,10 +1,17 @@
 export function normalizeText(text: string) {
   if (!text) return "";
 
-  let value = String(text).trim().toLowerCase();
+  let value = String(text).trim().toLocaleLowerCase("en-US");
 
-  value = value.replace(/ي/g, "ی").replace(/ك/g, "ک");
-  value = value.replace(/\u200c/g, " ");
+  value = value
+    .replace(/ي/g, "ی")
+    .replace(/ى/g, "ی")
+    .replace(/ك/g, "ک")
+    .replace(/[أإآٱ]/g, "ا")
+    .replace(/ة/g, "ه")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ی")
+    .replace(/[\u200c\u200f\u200e\u202a-\u202e]/g, " ");
 
   const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
   const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
@@ -15,9 +22,22 @@ export function normalizeText(text: string) {
     value = value.replaceAll(arabicDigits[i], englishDigits[i]);
   }
 
-  value = value.replace(/\s+/g, " ");
+  // پژو207 / 207پژو → پژو 207
+  value = value.replace(/([\u0600-\u06FF])(\d)/g, "$1 $2");
+  value = value.replace(/(\d)([\u0600-\u06FF])/g, "$1 $2");
+
+  value = value.replace(/[-–—_]/g, " ");
+  value = value.replace(/\s+/g, " ").trim();
 
   return value;
+}
+
+export function textMatchesQuery(haystack: string, query: string) {
+  const normalizedQuery = normalizeText(query);
+  if (!normalizedQuery) return false;
+
+  const normalizedHaystack = normalizeText(haystack);
+  return normalizedQuery.split(" ").every((token) => normalizedHaystack.includes(token));
 }
 
 export function formatToman(price: number) {

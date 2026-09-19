@@ -33,6 +33,15 @@ GetBlogDetail:"SiteBlog/SearchPostWithId",
 GetRelatedPosts: "SiteBlog/GetRelatedPosts",
 Payment: "Payment/Order",
 PaymentRequest: "Payment/Request",
+PaymentVerify: "Payment/Verify",
+
+WalletBalance: "Wallet/Balance",
+WalletTransactions: "Wallet/Transactions",
+WalletChargePlans: "Wallet/ChargePlans",
+WalletGiftPreview: "Wallet/GiftPreview",
+WalletCharge: "Wallet/Charge",
+WalletCheckoutPreview: "Wallet/CheckoutPreview",
+WalletApplyToOrder: "Wallet/ApplyToOrder",
 
 // User — on-site: ثبت آدرس (مطابق مستند فلو — فقط Create)
 CreateUserAddress: "User/CreateUserAddress",

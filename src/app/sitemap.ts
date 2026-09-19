@@ -1,5 +1,4 @@
 import { MetadataRoute } from 'next';
-import { CARS } from '@/app/car-inspection-most-popular/carsData';
 import { LOCAL_AREAS } from '@/lib/local-areas';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://carmacheck.com';
@@ -17,12 +16,11 @@ const PAGE_LASTMOD: Record<string, string> = {
   '/faq': '2026-07-31',
   '/regulations': '2026-08-05',
   '/car-inspection': '2026-08-08',
-  '/car-inspection-most-popular': '2026-08-08',
-  '/car-inspection-tehran': '2026-08-10',
+  '/car-inspection-tehran': '2026-09-18',
   '/car-price': '2026-08-02',
 };
 
-const CARS_LASTMOD = '2026-08-08';
+const CARS_LASTMOD = '2026-09-11';
 const LOCAL_LASTMOD = '2026-08-10';
 
 function parseDate(value: unknown): Date | undefined {
@@ -71,22 +69,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     urlEntry('/regulations', parseDate(PAGE_LASTMOD['/regulations']), 'monthly', 0.5),
     urlEntry('/car-inspection', parseDate(PAGE_LASTMOD['/car-inspection']), 'weekly', 0.9),
     urlEntry('/car-price', parseDate(PAGE_LASTMOD['/car-price']), 'weekly', 0.9),
-    urlEntry(
-      '/car-inspection-most-popular',
-      parseDate(PAGE_LASTMOD['/car-inspection-most-popular']),
-      'weekly',
-      0.8,
-    ),
   ];
 
-  const carInspectionRoutes: MetadataRoute.Sitemap = CARS.map((car) =>
+  const carInspectionRoutes: MetadataRoute.Sitemap = [
     urlEntry(
-      `/car-inspection-most-popular/${car.slug}`,
+      '/car-inspection-most-popular/peugeot-206',
       parseDate(CARS_LASTMOD),
       'monthly',
       0.8,
     ),
-  );
+    urlEntry(
+      '/car-inspection-most-popular/jac-s5',
+      parseDate(CARS_LASTMOD),
+      'monthly',
+      0.8,
+    ),
+  ];
 
   const localRoutes: MetadataRoute.Sitemap = [
     urlEntry(

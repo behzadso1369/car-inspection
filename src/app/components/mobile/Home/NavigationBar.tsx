@@ -11,6 +11,9 @@ function isActivePath(pathname: string, href: string) {
     return pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
   }
   if (href === "/car-price") return pathname.startsWith("/car-price");
+  if (href === "/Profile") {
+    return pathname.startsWith("/Profile") || pathname.startsWith("/wallet");
+  }
   return pathname.startsWith(href);
 }
 

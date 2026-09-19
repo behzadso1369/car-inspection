@@ -21,8 +21,8 @@ type CallActionProps = {
 
 export default function CallAction({ data, fixed = false }: CallActionProps) {
   const sectionClass = fixed
-    ? "fixed inset-x-0 top-11 z-30 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]"
-    : "sticky top-11 z-20 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]";
+    ? "fixed inset-x-0 top-11 z-50 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]"
+    : "sticky top-11 z-50 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]";
 
   return (
     <>

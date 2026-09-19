@@ -110,7 +110,7 @@ export default async function Home() {
       <Introduction data={data?.WhyWe}/>
       <HomeFeatures />
       <Services />
-      <QualityBox data={data?.SecretOfOurServiceQualities?.[0]}/>
+      <QualityBox />
       <Statistics />
       <BlogShort data={blogPosts}/>
 

@@ -16,12 +16,15 @@ export async function GET() {
 - ارتباط با ما: https://carmacheck.com/contact-us
 - قوانین و مقررات: https://carmacheck.com/regulations
 
-## کارشناسی خودرو در شرق تهران
+## کارشناسی خودرو در تهران
 
+- هاب تهران و شرق تهران: https://carmacheck.com/car-inspection-tehran
+- شرق تهران: https://carmacheck.com/car-inspection-tehran/shargh-tehran
 - تهرانپارس: https://carmacheck.com/car-inspection-tehran/tehranpars
 - نارمک: https://carmacheck.com/car-inspection-tehran/narmak
 - فرجام: https://carmacheck.com/car-inspection-tehran/farjam
-- رسالت: https://carmacheck.com/car-inspection-tehran/resalat
+- میدان رسالت: https://carmacheck.com/car-inspection-tehran/meydan-resalat
+- هنگام: https://carmacheck.com/car-inspection-tehran/hengam
 
 ## راهنمای استفاده برای مدل‌های زبانی
 

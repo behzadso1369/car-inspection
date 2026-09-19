@@ -5,13 +5,11 @@ import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import { Payment02Icon } from "hugeicons-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
 
 export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
-  const router = useRouter();
   const [discountCode, setDiscountCode] = useState<any>("");
 
   const moveToPaymentSucceed = () => {
@@ -27,16 +25,21 @@ export default function ClientWrapper() {
   const moveToGateway = () => {
       const params: any = {
       "isBack": false,
-      "orderId": Number(localStorage.getItem("OrderId"))
+      "orderId": Number(localStorage.getItem("OrderId")),
+      "useWallet": localStorage.getItem("useWallet") === "true",
     };
     instance.post(ApiHelper.get("MovePrivateOrder"), params).then((res: any) => {
-      
-      if(res?.isEndFlow) {
-        
-           router.push(res?.paymentUrl);
+      if (res?.paidFullyByWallet) {
+        window.location.assign(`/payment/success?orderId=${res.orderId}`);
+        return;
       }
-         
-   
+      if (res?.isEndFlow && res?.requiresPayment && res?.paymentUrl) {
+        window.location.assign(res.paymentUrl);
+        return;
+      }
+      if (res?.isEndFlow && res?.paymentUrl) {
+        window.location.assign(res.paymentUrl);
+      }
     });
 
   };

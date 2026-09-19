@@ -18,9 +18,9 @@ export function getInspectionPrices(data: {
 export function formatDiscountBadge(discountAmount: number) {
   if (discountAmount >= 1_000_000 && discountAmount % 1_000_000 === 0) {
     const millions = discountAmount / 1_000_000;
-    return `${millions.toLocaleString("fa-IR")} میلیون هدیه`;
+    return `${millions.toLocaleString("fa-IR")} میلیون تخفیف`;
   }
-  return `${discountAmount.toLocaleString("fa-IR")} هدیه`;
+  return `${discountAmount.toLocaleString("fa-IR")} تخفیف`;
 }
 
 export function persistInspectionPrices(

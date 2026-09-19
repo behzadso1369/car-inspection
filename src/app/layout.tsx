@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { DeferredGtm } from "@/components/analytics/DeferredGtm";
 import { DeferredToaster } from "@/components/analytics/DeferredToaster";
 import { ChunkLoadErrorHandler } from "@/components/ChunkLoadErrorHandler";
+import { DirectEntryPromoPopup } from "@/components/DirectEntryPromoPopup";
 import { generateOrganizationSchema, generateLocalBusinessSchema, generateWebSiteSchema } from "@/lib/seo";
 import { iranSans, iranSansUltraLight } from "./fonts";
 
@@ -150,8 +151,11 @@ export default async function RootLayout({
           mobileBarFixed={<CallAction data={initialData} fixed />}
           footer={<Footer data={initialData} />}
         >
-          <div id="main-content">{children}</div>
+          <div id="main-content" className="relative z-0">
+            {children}
+          </div>
         </SiteChrome>
+        <DirectEntryPromoPopup />
         <DeferredToaster />
       </body>
     </html>

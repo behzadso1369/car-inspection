@@ -26,9 +26,13 @@ function isPublicChromePath(pathname: string, routes: Set<string>) {
   const isTehran =
     pathname === "/car-inspection-tehran" ||
     pathname.startsWith("/car-inspection-tehran/");
+  const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
   const isFlowStep = pathname.startsWith("/car-inspection/") && !isMostPopular;
   return (
-    (routes.has(pathname) || isMostPopular || isTehran) &&
+    (routes.has(pathname) ||
+      isMostPopular ||
+      isTehran ||
+      (isBlog && routes.has("/blog"))) &&
     !pathname.startsWith("/Profile") &&
     !isFlowStep
   );
@@ -62,9 +66,10 @@ export function SiteChrome({
         <>
           {banner}
           <div className="lg:hidden">{isCarPrice ? mobileBarFixed : mobileBar}</div>
-          <div className="hidden lg:block px-20 mb-6 bg-transparent sticky top-11 z-10">
-            {header}
+          <div className="hidden lg:block sticky top-11 z-50 bg-white">
+            <div className="px-20">{header}</div>
           </div>
+          <div className="hidden lg:block mb-6" aria-hidden />
         </>
       ) : null}
       {children}

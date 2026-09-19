@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
+import { WalletIcon } from "@/components/WalletIcon";
+import { formatToman, walletApi } from "@/lib/wallet";
 import { CheckmarkCircle01Icon } from "hugeicons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,6 +18,7 @@ export default function ClientWrapper() {
   const [discountCode, setDiscountCode] = useState<any>("");
   const [paymentStatus, setPaymentStatus] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
   const getPaymentStatus = () => {
     const orderId = searchParams.get("orderId");
@@ -33,6 +36,10 @@ export default function ClientWrapper() {
       console.error("Error fetching payment status:", error);
       setLoading(false);
     });
+
+    walletApi.getBalance().then((res) => {
+      if (res?.balance != null) setWalletBalance(res.balance);
+    }).catch(() => undefined);
   };
 
   const moveToGateway = () => {
@@ -85,12 +92,22 @@ export default function ClientWrapper() {
             <div className="text-[#6B6C70] text-base lg:text-xl">تاریخ  پرداخت:</div>
             <div className="text-base lg:text-xl my-4 font-bold">{moment(paymentStatus?.paidAt).locale("fa").format("YYYY/MM/DD ساعت HH:mm:ss") || "-"}</div>
           </div>
+          {walletBalance != null ? (
+            <div className="my-4">
+              <div className="text-[#6B6C70] text-base lg:text-xl">موجودی کیف‌پول:</div>
+              <div className="text-base lg:text-xl my-4 font-bold">{formatToman(walletBalance)}</div>
+            </div>
+          ) : null}
         </div>
       )}
 
-      <div className="px-4 w-full lg:my-4   flex justify-center  bg-white  py-5">
+      <div className="px-4 w-full lg:my-4   flex justify-center  bg-white  py-5 gap-3 flex-col">
         <Button onClick={moveToGateway} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
            پروفایل 
+        </Button>
+        <Button onClick={() => router.push("/wallet")} type="button" className="bg-white text-[#416CEA] border border-[#416CEA] rounded-3xl py-6 px-12 w-full inline-flex items-center justify-center gap-2">
+           <WalletIcon size={20} />
+           کیف‌پول
         </Button>
       </div>
     </div>

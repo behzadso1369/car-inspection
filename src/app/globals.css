@@ -62,6 +62,101 @@
 .banner-bg-pattern {
   background-image: url("/banner-bg-pattern.svg")
 }
+
+@keyframes banner-cta-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 213, 79, 0.55);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 213, 79, 0);
+    transform: scale(1.03);
+  }
+}
+
+@keyframes banner-cta-shimmer {
+  0% { background-position: 120% 0; }
+  100% { background-position: -120% 0; }
+}
+
+.banner-cta {
+  background-image: linear-gradient(
+    110deg,
+    #ffd54f 0%,
+    #ffd54f 38%,
+    #fff4c2 50%,
+    #ffd54f 62%,
+    #ffd54f 100%
+  );
+  background-size: 220% 100%;
+  animation: banner-cta-pulse 1.8s ease-in-out infinite, banner-cta-shimmer 2.4s linear infinite;
+}
+
+button.banner-cta {
+  background-color: #ffd54f !important;
+  background-image: linear-gradient(
+    110deg,
+    #ffd54f 0%,
+    #ffd54f 38%,
+    #fff4c2 50%,
+    #ffd54f 62%,
+    #ffd54f 100%
+  ) !important;
+  background-size: 220% 100% !important;
+  color: #1a237e !important;
+}
+
+button.banner-cta:hover {
+  background-color: #ffc107 !important;
+  color: #1a237e !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner-cta {
+    animation: none;
+  }
+}
+
+@keyframes promo-popup-pulse {
+  0%, 100% {
+    box-shadow: 0 6px 16px rgba(52, 86, 187, 0.16);
+  }
+  50% {
+    box-shadow: 0 8px 20px rgba(52, 86, 187, 0.24);
+  }
+}
+
+@keyframes promo-popup-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.promo-popup-shine {
+  background-image: linear-gradient(
+    110deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 72%
+  );
+  background-size: 220% 100%;
+  animation: banner-cta-shimmer 3.6s linear infinite;
+}
+
+.promo-popup-cta {
+  animation: promo-popup-pulse 2.6s ease-in-out infinite;
+}
+
+.promo-popup-offer {
+  animation: promo-popup-float 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-popup-shine,
+  .promo-popup-cta,
+  .promo-popup-offer {
+    animation: none;
+  }
+}
 .bg-quality {
   background-image: url("/service-background.webp");
   background-size: cover;
@@ -264,6 +359,102 @@
   );
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes wallet-gift-blink {
+  0%,
+  100% {
+    transform: scale(1) rotate(-8deg);
+    filter: drop-shadow(0 0 0 rgba(34, 197, 94, 0));
+  }
+  35% {
+    transform: scale(1.18) rotate(10deg);
+    filter: drop-shadow(0 0 10px rgba(74, 222, 128, 0.9));
+  }
+  55% {
+    transform: scale(0.94) rotate(-6deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(6deg);
+    filter: drop-shadow(0 0 7px rgba(22, 163, 74, 0.7));
+  }
+}
+
+@keyframes wallet-gift-sparkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.55) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25) rotate(18deg);
+  }
+}
+
+@keyframes wallet-gift-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 6px 18px rgba(22, 163, 74, 0.18),
+      0 0 0 1px rgba(134, 239, 172, 0.55);
+  }
+  50% {
+    box-shadow:
+      0 8px 22px rgba(21, 128, 61, 0.32),
+      0 0 0 2px rgba(74, 222, 128, 0.7);
+  }
+}
+
+@keyframes wallet-gift-shimmer {
+  0% {
+    background-position: 140% 0;
+  }
+  100% {
+    background-position: -140% 0;
+  }
+}
+
+.wallet-gift-box {
+  animation: wallet-gift-glow 1.6s ease-in-out infinite;
+}
+
+.wallet-gift-icon {
+  animation: wallet-gift-blink 1.15s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes wallet-gift-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wallet-gift-spinner > span:last-child {
+  animation: wallet-gift-spinner 0.7s linear infinite;
+}
+
+.wallet-gift-sparkle {
+  animation: wallet-gift-sparkle 1s ease-in-out infinite;
+}
+
+.wallet-gift-sparkle-delay {
+  animation-delay: 0.35s;
+}
+
+.wallet-gift-shimmer {
+  background-size: 220% 100%;
+  animation: wallet-gift-shimmer 2.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wallet-gift-box,
+  .wallet-gift-icon,
+  .wallet-gift-sparkle,
+  .wallet-gift-shimmer,
+  .wallet-gift-spinner > span:last-child {
+    animation: none;
+  }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

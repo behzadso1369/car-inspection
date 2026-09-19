@@ -2,7 +2,7 @@
 
 import { Tick01Icon } from "hugeicons-react";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import InspectCtaButton from "./InspectCtaButton";
 import { LIGHT_PRESETS } from "./CarShowcase3D";
 
@@ -24,8 +24,13 @@ interface CarShowcaseHeroProps {
   name: string;
   brand: string;
   intro: string;
-  glbUrl: string;
+  glbUrl?: string;
+  imageUrl?: string;
+  imageAlt?: string;
   searchTerm?: string;
+  carGroupId?: number;
+  carGroupName?: string;
+  children?: ReactNode;
 }
 
 function useIsDesktop() {
@@ -41,17 +46,110 @@ function useIsDesktop() {
   return isDesktop;
 }
 
+function InspectionBox({
+  name,
+  brand,
+  intro,
+  searchTerm,
+  carGroupId,
+  carGroupName,
+  compact,
+}: {
+  name: string;
+  brand: string;
+  intro: string;
+  searchTerm?: string;
+  carGroupId?: number;
+  carGroupName?: string;
+  compact?: boolean;
+}) {
+  return (
+    <div
+      className={`bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] rounded-3xl ${
+        compact ? "px-3 py-3 my-2 lg:px-4 lg:py-4 lg:my-3" : "px-4 py-6 my-6"
+      }`}
+    >
+      <span className="text-sm text-[#416CEA] font-medium">{brand}</span>
+      <h1
+        className={`text-black font-medium ${
+          compact ? "text-base my-1 lg:text-xl lg:my-2" : "text-lg my-2 lg:text-2xl"
+        }`}
+      >
+        کارشناسی {name}
+      </h1>
+      <p
+        className={`text-[#55565A] font-light ${
+          compact
+            ? "text-xs leading-6 lg:text-sm lg:leading-7"
+            : "text-sm leading-7 lg:text-base"
+        }`}
+      >
+        {intro}
+      </p>
+      <div className={compact ? "mt-2 lg:mt-3" : "mt-4"}>
+        <InspectCtaButton
+          carName={name}
+          searchTerm={searchTerm}
+          carGroupId={carGroupId}
+          carGroupName={carGroupName}
+          className={compact ? "!h-10 text-sm lg:!h-11" : ""}
+        />
+      </div>
+      <p className="text-center text-xs text-[#8A8B90] mt-2 lg:mt-3">
+        رزرو آنلاین کارشناسی {name} در محل، با هزینه شفاف
+      </p>
+    </div>
+  );
+}
+
+function BlueChecklist({ name, compact }: { name: string; compact?: boolean }) {
+  return (
+    <>
+      <div
+        className={`px-4 lg:px-24 text-white w-full lg:w-1/2 ${
+          compact ? "mt-2 lg:mt-4" : "mt-8 lg:mt-14"
+        }`}
+      >
+        <h2 className="text-lg font-medium">کارشناسی {name} در محل با کارماچک</h2>
+        <p className={`leading-8 ${compact ? "text-sm lg:text-base" : "text-base"}`}>
+          کارشناس ما به آدرس شما در تهران و شرق تهران اعزام می‌شود و بدون نیاز به
+          جابه‌جایی {name}، موارد زیر را بررسی می‌کند:
+        </p>
+      </div>
+      <div className="grid grid-cols-3 gap-3 w-full lg:w-1/2 px-4 lg:px-24 text-white">
+        {CHECK_ITEMS.map((item) => (
+          <p key={item} className="flex">
+            <Tick01Icon size={24} className="flex-shrink-0" />
+            <span>{item}</span>
+          </p>
+        ))}
+        <p className="flex col-span-3">
+          <Tick01Icon size={24} className="flex-shrink-0" />
+          <span>رزرو آنلاین با هزینه شفاف</span>
+        </p>
+      </div>
+    </>
+  );
+}
+
 export default function CarShowcaseHero({
   name,
   brand,
   intro,
   glbUrl,
+  imageUrl,
+  imageAlt,
   searchTerm,
+  carGroupId,
+  carGroupName,
+  children,
 }: CarShowcaseHeroProps) {
   const isDesktop = useIsDesktop();
   const [lightPreset, setLightPreset] = useState(2);
+  const usePng = Boolean(imageUrl);
 
   useEffect(() => {
+    if (usePng) return;
     const html = document.documentElement;
     const body = document.body;
     const prevHtml = html.style.overflowX;
@@ -62,7 +160,32 @@ export default function CarShowcaseHero({
       html.style.overflowX = prevHtml;
       body.style.overflowX = prevBody;
     };
-  }, []);
+  }, [usePng]);
+
+  if (usePng) {
+    return (
+      <>
+        <div className="px-4 lg:px-24 relative z-0">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-8">
+            <div className="order-1 w-full lg:order-2 lg:flex-1 min-w-0">
+              {children}
+            </div>
+            <div className="order-2 w-full lg:order-1 lg:w-[40%] lg:max-w-[480px] shrink-0">
+              <InspectionBox
+                name={name}
+                brand={brand}
+                intro={intro}
+                searchTerm={searchTerm}
+                carGroupId={carGroupId}
+                carGroupName={carGroupName}
+                compact
+              />
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   const car = (
     <div
@@ -74,7 +197,7 @@ export default function CarShowcaseHero({
         transformOrigin: "center center",
       }}
     >
-      <CarShowcase3D url={glbUrl} lightPreset={lightPreset} />
+      {glbUrl ? <CarShowcase3D url={glbUrl} lightPreset={lightPreset} /> : null}
     </div>
   );
 
@@ -101,25 +224,20 @@ export default function CarShowcaseHero({
       </div>
       {!isDesktop && <div className="px-4 pt-2">{car}</div>}
 
-      <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10 relative z-20">
-        <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">
-          <span className="text-sm text-[#416CEA] font-medium">{brand}</span>
-          <h1 className="text-black text-lg my-2 font-medium lg:text-2xl">
-            کارشناسی {name}
-          </h1>
-          <p className="text-[#55565A] font-light text-sm leading-7 lg:text-base">
-            {intro}
-          </p>
-          <div className="mt-4">
-            <InspectCtaButton carName={name} searchTerm={searchTerm} />
-          </div>
-          <p className="text-center text-xs text-[#8A8B90] mt-3">
-            رزرو آنلاین کارشناسی {name} در محل، با هزینه شفاف
-          </p>
-        </div>
+      <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10 relative z-0">
+        <InspectionBox
+          name={name}
+          brand={brand}
+          intro={intro}
+          searchTerm={searchTerm}
+          carGroupId={carGroupId}
+          carGroupName={carGroupName}
+        />
       </div>
 
-      <div className="w-full bg-[#416CEA] relative mt-8 lg:mt-0 py-6 lg:py-8 overflow-visible">
+      {children}
+
+      <div className="w-full bg-[#416CEA] relative z-0 mt-8 lg:mt-0 py-6 lg:py-8 overflow-visible">
         {isDesktop && (
           <div
             className="absolute pointer-events-none"
@@ -128,27 +246,7 @@ export default function CarShowcaseHero({
             {car}
           </div>
         )}
-        <div className="mt-8 lg:mt-14 px-4 lg:px-24 text-white w-full lg:w-1/2">
-          <h2 className="text-lg font-medium">
-            کارشناسی {name} در محل با کارماچک
-          </h2>
-          <p className="text-base leading-8">
-            کارشناس ما به آدرس شما در تهران و شرق تهران اعزام می‌شود و بدون نیاز
-            به جابه‌جایی {name}، موارد زیر را بررسی می‌کند:
-          </p>
-        </div>
-        <div className="grid grid-cols-3 gap-3 w-full lg:w-1/2 px-4 lg:px-24 text-white">
-          {CHECK_ITEMS.map((item) => (
-            <p key={item} className="flex">
-              <Tick01Icon size={24} className="flex-shrink-0" />
-              <span>{item}</span>
-            </p>
-          ))}
-          <p className="flex col-span-3">
-            <Tick01Icon size={24} className="flex-shrink-0" />
-            <span>رزرو آنلاین با هزینه شفاف</span>
-          </p>
-        </div>
+        <BlueChecklist name={name} />
       </div>
     </>
   );

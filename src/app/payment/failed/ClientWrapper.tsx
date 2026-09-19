@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
+import { formatToman, walletApi } from "@/lib/wallet";
 import { CancelCircleIcon } from "hugeicons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,6 +15,7 @@ export default function ClientWrapper() {
   const [discountCode, setDiscountCode] = useState<any>("");
   const [paymentStatus, setPaymentStatus] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
   const getPaymentStatus = () => {
     const orderId = searchParams.get("orderId");
@@ -31,6 +33,10 @@ export default function ClientWrapper() {
       console.error("Error fetching payment status:", error);
       setLoading(false);
     });
+
+    walletApi.getBalance().then((res) => {
+      if (res?.balance != null) setWalletBalance(res.balance);
+    }).catch(() => undefined);
   };
 
   const moveToGateway = () => {
@@ -79,6 +85,13 @@ export default function ClientWrapper() {
               <div className="text-base lg:text-2xl font-bold my-4">{paymentStatus?.amount?.toLocaleString()} تومان</div>
             </div>
           )}
+          {walletBalance != null ? (
+            <div className="px-4 text-center my-4">
+              <div className="text-[#6B6C70] text-base lg:text-xl">موجودی کیف‌پول:</div>
+              <div className="text-base lg:text-xl my-4 font-bold">{formatToman(walletBalance)}</div>
+              <p className="text-xs text-[#55565A]">اگر از کیف‌پول کسر شده بود، مبلغ برگشت داده شده است.</p>
+            </div>
+          ) : null}
         </div>
       )}
 

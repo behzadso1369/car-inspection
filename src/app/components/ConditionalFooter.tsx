@@ -34,13 +34,15 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
   const isCarInspectionTehran =
     pathname === "/car-inspection-tehran" ||
     pathname.startsWith("/car-inspection-tehran/");
+  const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
   const isCarInspectionFlowStep =
     pathname.startsWith("/car-inspection/") && !isCarInspectionMostPopular;
 
   const shouldShowFooter =
     (ROUTES_WITH_FOOTER.includes(pathname) ||
       isCarInspectionMostPopular ||
-      isCarInspectionTehran) &&
+      isCarInspectionTehran ||
+      isBlog) &&
     !pathname.startsWith("/Profile") &&
     !isCarInspectionFlowStep;
 

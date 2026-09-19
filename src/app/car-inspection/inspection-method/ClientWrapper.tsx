@@ -10,6 +10,7 @@ import { RadioGroup } from "@/components/ui/radio-group";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
+// import { WalletGiftBanner } from "../components/WalletGiftBanner";
 import { getInspectionPrices, persistInspectionPrices } from "../lib/pricing";
 import InspectionMethodCard from "./inspection-method-card";
 
@@ -75,6 +76,9 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
     if (!selectedItem) return;
     const { fullPrice, discountedPrice } = getInspectionPrices(selectedItem);
     persistInspectionPrices(fullPrice, discountedPrice, selectedItem.InspectionTypeName ?? "");
+    if (selectedItem.InspectionTypeId) {
+      localStorage.setItem("CarInspectionTypeId", String(selectedItem.InspectionTypeId));
+    }
   }, [selected, carInspectionType]);
   const moveToInspectionLocation = () => {
     setLoading(true);
@@ -85,6 +89,8 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       "carInspectionId": carInspectionType.filter((item: any) => item.Id == selected)[0].Id,
     }).then((res: any) => {
       if (res) {
+        const typeId = carInspectionType.filter((item: any) => item.Id == selected)[0].InspectionTypeId;
+        localStorage.setItem("CarInspectionTypeId", String(typeId));
         setLoading(false);
         router.push("./inspection-location");
       }
@@ -104,6 +110,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
     }).then((res: any) => {
       setLoading(false);
       const selectedItem = carInspectionType.filter((item: any) => item.Id == selected)[0];
+      localStorage.setItem("CarInspectionTypeId", String(selectedItem.InspectionTypeId));
       const { fullPrice, discountedPrice } = getInspectionPrices(selectedItem);
       persistInspectionPrices(fullPrice, discountedPrice, selectedItem?.InspectionTypeName ?? "");
       if (!localStorage.getItem("userId")) {
@@ -118,6 +125,12 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       console.log(err);
     });
   };
+
+  // const selectedInspection = carInspectionType.find(
+  //   (item: any) => String(item.Id) === selected
+  // );
+  // const carGroupId =
+  //   typeof window !== "undefined" ? Number(localStorage.getItem("CarGroupId") || 0) : 0;
 
   return (
     <div className="bg-white font-IranSans lg:px-4 lg:py-4 ">
@@ -138,6 +151,12 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
       </div>
 
       <div className="px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))] lg:pb-8">
+        {/* <div className="mb-4">
+          <WalletGiftBanner
+            carGroupId={carGroupId || null}
+            carInspectionTypeId={selectedInspection?.InspectionTypeId ?? null}
+          />
+        </div> */}
         <RadioGroup value={selected} onValueChange={setSelected}>
           {carInspectionType?.map((item: any, index: number) => (
             <InspectionMethodCard

@@ -5,6 +5,7 @@ import {
   type BodyStatus,
   type ChassisStatus,
 } from "@/lib/car-price/pricing";
+import { normalizeText } from "@/lib/car-price/text";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Search,
@@ -28,6 +29,7 @@ import { FaqPreviewSection } from "@/app/components/FaqPreviewSection";
 import CarPricingSeoContent, {
   carPriceFaqItems,
 } from "@/components/car-price/CarPricingSeoContent";
+import CarPriceInspectPromo from "@/components/car-price/CarPriceInspectPromo";
 
 type Step = "search_car" | "year" | "mileage" | "color" | "chassis" | "result";
 
@@ -45,6 +47,7 @@ type NormalizedCar = {
   price: number;
   lastYear: string;
   source: string;
+  searchKey: string;
 };
 
 const COLOR_OPTIONS: { label: BodyStatus }[] = [
@@ -101,6 +104,7 @@ export default function CarPricePage() {
       price: normalizePrice(car.carPrice),
       lastYear: car.lastYear,
       source: car.source,
+      searchKey: normalizeText(car.carName),
     }));
   }, []);
 
@@ -113,9 +117,12 @@ export default function CarPricePage() {
   const [selectedChassis, setSelectedChassis] = useState<(typeof CHASSIS_OPTIONS)[number] | null>(null);
 
   const filteredCars = useMemo(() => {
-    const q = query.trim();
+    const q = normalizeText(query);
     if (!q) return [];
-    return carList.filter((car) => car.name.includes(q)).slice(0, 20);
+    const tokens = q.split(" ");
+    return carList
+      .filter((car) => tokens.every((token) => car.searchKey.includes(token)))
+      .slice(0, 20);
   }, [query, carList]);
 
   const priceResult = useMemo(() => {
@@ -612,13 +619,15 @@ export default function CarPricePage() {
                   selectedColor &&
                   selectedChassis &&
                   priceRange && (
-                    <div className="space-y-4">
+                    <div className="space-y-4 pb-8 lg:pb-0">
                       <div className="rounded-2xl car-price-result-card p-5 text-white md:rounded-[2rem] md:p-8">
                         <div className="text-xs text-white/80 md:text-sm">بازه قیمت تقریبی</div>
                         <div className="mt-2 text-lg font-black leading-9 md:mt-4 md:text-3xl md:leading-[3.5rem]">
                           {formatPrice(priceRange.min)} تا {formatPrice(priceRange.max)} تومان
                         </div>
                       </div>
+
+                      <CarPriceInspectPromo carName={selectedCar.name} />
 
                       <div className="grid gap-3 md:grid-cols-2">
                         <div className="space-y-2 rounded-2xl car-price-summary-box p-4 md:rounded-3xl md:p-5">

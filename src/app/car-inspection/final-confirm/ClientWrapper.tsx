@@ -3,11 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
+import { handleOrderMoveResult, readCheckoutContext } from "@/lib/wallet";
+import type { CheckoutPreview, OrderMoveResult } from "@/types/wallet";
 import { DiscountTag01Icon } from "hugeicons-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RegulationsTermsViewer } from "./RegulationsTermsViewer";
+import { WalletCheckoutBlock } from "./WalletCheckoutBlock";
 
 export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
@@ -15,9 +18,16 @@ export default function ClientWrapper() {
   const [loading, setLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [regulationsOpen, setRegulationsOpen] = useState(false);
+  const [walletPreview, setWalletPreview] = useState<CheckoutPreview | null>(null);
+  const [checkoutContext, setCheckoutContext] = useState({
+    orderId: 0,
+    carGroupId: 0,
+    carInspectionTypeId: null as number | null,
+  });
 
   useEffect(() => {
-    router.prefetch("./payment-success");
+    router.prefetch("/payment/success");
+    setCheckoutContext(readCheckoutContext());
   }, [router]);
 
   const getUserOrderDetails = () => {
@@ -37,18 +47,20 @@ export default function ClientWrapper() {
     const params: any = {
       isBack: false,
       orderId: Number(localStorage.getItem("OrderId")),
+      useWallet: Boolean(walletPreview?.useWallet),
     };
     const movePrivate = () =>
-      instance.post(ApiHelper.get("MovePrivateOrder"), params);
+      instance.post(ApiHelper.get("MovePrivateOrder"), params) as Promise<OrderMoveResult>;
 
-    // بک‌اند برای رسیدن به درگاه پرداخت دو بار Move/Private می‌خواهد
+    // بک‌اند برای رسیدن به درگاه ممکن است دو بار Move/Private بخواهد
     movePrivate()
-      .then(() => movePrivate())
-      .then((res: any) => {
-        setLoading(false);
-        if (res?.isEndFlow && res?.paymentUrl) {
-          router.push(res.paymentUrl);
-        }
+      .then((first) => {
+        if (handleOrderMoveResult(first)) return;
+        return movePrivate().then((second) => {
+          if (!handleOrderMoveResult(second)) {
+            setLoading(false);
+          }
+        });
       })
       .catch((err: any) => {
         console.log(err);
@@ -61,7 +73,7 @@ export default function ClientWrapper() {
   }, []);
 
   return (
-    <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-[calc(10rem+env(safe-area-inset-bottom))] lg:pb-8">
+    <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-[calc(16rem+env(safe-area-inset-bottom))] lg:pb-8">
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -156,9 +168,20 @@ export default function ClientWrapper() {
             قابل پرداخت:
           </span>
           <span className="text-base font-extrabold text-[#416CEA]">
-            {orderDetail?.finalPrice?.toLocaleString()} تومان
+            {(
+              walletPreview?.useWallet
+                ? walletPreview.gatewayAmount
+                : orderDetail?.finalPrice
+            )?.toLocaleString()}{" "}
+            تومان
           </span>
         </div>
+
+        <WalletCheckoutBlock
+          orderId={checkoutContext.orderId}
+          preview={walletPreview}
+          onPreviewChange={setWalletPreview}
+        />
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 z-30 w-full space-y-3 bg-white px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0px_4px_32px_0px_#CBD5E0] lg:static lg:my-4 lg:mt-8 lg:pb-4">
@@ -191,7 +214,11 @@ export default function ClientWrapper() {
           type="submit"
           className="w-full rounded-3xl bg-[#416CEA] py-6 text-white disabled:opacity-50"
         >
-          {loading ? "لطفا منتظر بمانید..." : "تایید و پرداخت"}
+          {loading
+            ? "لطفا منتظر بمانید..."
+            : walletPreview?.canPayFullyByWallet
+              ? "پرداخت با کیف‌پول"
+              : "تایید و پرداخت"}
         </Button>
       </div>
 

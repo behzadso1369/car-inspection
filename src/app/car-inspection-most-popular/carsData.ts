@@ -8,6 +8,29 @@
  * عکس‌ها: مسیر /cars/{slug}.jpg — فعلاً placeholder است و باید با عکس واقعی جایگزین شود.
  */
 
+import peugeot206Page from "./content/peugeot-206.json";
+import jacS5Page from "./content/jac-s5.json";
+
+export interface CarFaq {
+  question: string;
+  answer: string;
+}
+
+export interface CarArticleSubsection {
+  title: string;
+  paragraphs: string[];
+}
+
+export interface CarArticleSection {
+  id: string;
+  title: string;
+  paragraphs?: string[];
+  paragraphsAfter?: string[];
+  subsections?: CarArticleSubsection[];
+  table?: { headers: string[]; rows: string[][] };
+  cta?: { label: string; href: string };
+}
+
 export interface CarInfo {
   /** اسلاگ URL، مثل peugeot-207 → /car-inspection-most-popular/peugeot-207 */
   slug: string;
@@ -21,8 +44,29 @@ export interface CarInfo {
   image: string;
   /** مسیر مدل سه‌بعدی GLB — اگر باشد به‌جای عکس در ویترین صفحه نمایش داده می‌شود */
   glbUrl?: string;
+  /** اگر true باشد، ویترین صفحه مثل صفحه کارشناسی با عکس PNG است نه مدل سه‌بعدی */
+  heroPng?: boolean;
+  /** شناسه ویدیوی آپارات برای نمایش زیر ویترین */
+  aparatVideoHash?: string;
+  /** عنوان ویدیوی آپارات */
+  aparatVideoTitle?: string;
+  /** تصویر پیش‌نمایش ویدیوی آپارات */
+  aparatThumbnailUrl?: string;
   /** پاراگراف معرفی برای بالای صفحه */
   intro: string;
+  /** عنوان سئو اختصاصی صفحه */
+  seoTitle?: string;
+  /** توضیحات متا اختصاصی صفحه */
+  seoDescription?: string;
+  /** عکس کنار محتوای پایین صفحه */
+  contentImage?: string;
+  contentImageAlt?: string;
+  /** عکس Open Graph / شبکه‌های اجتماعی؛ اگر نباشد از contentImage یا image استفاده می‌شود */
+  ogImage?: string;
+  articleIntro?: string[];
+  articleSections?: CarArticleSection[];
+  faqs?: CarFaq[];
+  faqTitle?: string;
   /** مزایای خودرو */
   pros: string[];
   /** معایب خودرو */
@@ -36,6 +80,9 @@ export interface CarInfo {
    * اگر تنظیم نشود، دکمه به فرم کارشناسی لینک می‌دهد و کاربر خودرو را دستی انتخاب می‌کند.
    */
   inspectionSearchTerm?: string;
+  /** شناسه گروه خودرو در بک‌اند؛ اگر باشد، جستجو نادیده گرفته می‌شود */
+  inspectionCarGroupId?: number;
+  inspectionCarGroupName?: string;
 }
 
 export const CARS: CarInfo[] = [
@@ -322,9 +369,22 @@ export const CARS: CarInfo[] = [
     brand: "ایران‌خودرو",
     tagline: "هاچ‌بک محبوب و چابک با فرمان‌پذیری عالی",
     image: "/cars/peugeot-206.jpg",
-    glbUrl: "/206-2.glb",
-    intro:
-      "پژو ۲۰۶ یکی از ماندگارترین و محبوب‌ترین هاچ‌بک‌های بازار ایران است که به دلیل فرمان‌پذیری عالی، طراحی زیبا و چابکی در شهر همچنان طرفداران زیادی دارد. به دلیل عمر بالای بسیاری از این خودروها، کارشناسی دقیق موتور و بدنه بسیار مهم است.",
+    heroPng: true,
+    inspectionSearchTerm: "پژو 206",
+    aparatVideoHash: "aug75qq",
+    aparatVideoTitle: "نکات کارشناسی خودرو ۲۰۶ قبل از خرید",
+    aparatThumbnailUrl:
+      "https://static.cdn.asset.aparat.cloud/avt/73124300-3598-l__2087.jpg",
+    seoTitle: peugeot206Page.seoTitle,
+    seoDescription: peugeot206Page.seoDescription,
+    ogImage: peugeot206Page.ogImage,
+    contentImage: peugeot206Page.contentImage,
+    contentImageAlt: peugeot206Page.contentImageAlt,
+    articleIntro: peugeot206Page.articleIntro,
+    articleSections: peugeot206Page.sections as CarArticleSection[],
+    faqs: peugeot206Page.faqs,
+    faqTitle: peugeot206Page.faqTitle,
+    intro: peugeot206Page.articleIntro[0],
     pros: [
       "فرمان‌پذیری و هندلینگ عالی",
       "طراحی زیبا و ماندگار",
@@ -346,8 +406,11 @@ export const CARS: CarInfo[] = [
     keywords: [
       "کارشناسی 206",
       "کارشناسی پژو 206",
+      "کارشناسی پژو ۲۰۶",
       "معایب پژو 206",
       "مزایای پژو 206",
+      "کارشناسی 206 تیپ 2",
+      "کارشناسی 206 تیپ 5",
       "قیمت کارشناسی پژو 206",
     ],
   },
@@ -1719,8 +1782,24 @@ export const CARS: CarInfo[] = [
     brand: "کرمان‌موتور",
     tagline: "کراس‌اوور جادار با موتور توربو و امکانات کامل",
     image: "/cars/jac-s5.jpg",
-    intro:
-      "جک S5 کراس‌اوور جادار با موتور توربو و امکانات کامل است که فضای داخلی خوبی ارائه می‌دهد. سلامت گیربکس، توربو و سیستم برق از مهم‌ترین نکات کارشناسی است.",
+    heroPng: true,
+    inspectionSearchTerm: "S5",
+    inspectionCarGroupId: 228,
+    inspectionCarGroupName: "S5",
+    aparatVideoHash: "bcedda7",
+    aparatVideoTitle: "کارشناسی جک S5، قبل از خرید جک S5 این نکات بدنه و رنگ را حتماً چک کنید",
+    aparatThumbnailUrl:
+      "https://static.cdn.asset.aparat.cloud/avt/73176039-9959-l__8758.jpg",
+    seoTitle: jacS5Page.seoTitle,
+    seoDescription: jacS5Page.seoDescription,
+    ogImage: jacS5Page.ogImage,
+    contentImage: jacS5Page.contentImage,
+    contentImageAlt: jacS5Page.contentImageAlt,
+    articleIntro: jacS5Page.articleIntro,
+    articleSections: jacS5Page.sections as CarArticleSection[],
+    faqs: jacS5Page.faqs,
+    faqTitle: jacS5Page.faqTitle,
+    intro: jacS5Page.articleIntro[0],
     pros: [
       "فضای داخلی و صندوق جادار",
       "موتور توربو با قدرت مناسب",

@@ -1,6 +1,22 @@
 import Image from "next/image";
 import { apiAssetUrl } from "@/lib/media";
 
+function OnSiteInspectionCta() {
+  return (
+    <div className="mt-8 flex w-full flex-col items-center">
+      <a
+        href="/car-inspection"
+        className="inline-flex w-full max-w-xl items-center justify-center rounded-3xl bg-[#416CEA] px-6 py-4 text-lg font-bold text-white shadow-[0_10px_24px_rgba(65,108,234,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-[#3456bb] sm:text-xl sm:py-5"
+      >
+        کارشناسی خودرو در محل
+      </a>
+      <p className="mt-3 text-center text-sm text-[#6B6C70] sm:text-base">
+        برای سفارش کارشناسی در محل کلیک کنید
+      </p>
+    </div>
+  );
+}
+
 export default function Introduction({data}:any) {
     const item = data?.[0];
     if (!item) return null;
@@ -73,6 +89,7 @@ export default function Introduction({data}:any) {
                     <Image className="rotate-90" src={imageSrc} width={348} height={489} alt="چرا کارماچک" sizes="348px" quality={70}/>
                 </div>
             </div>
+            <OnSiteInspectionCta />
         </section>
     )
 }
