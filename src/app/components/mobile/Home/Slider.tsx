@@ -6,6 +6,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiAssetUrl } from "@/lib/media";
 
+function slideDurationMs(item: any): number {
+  const ms = Number(item?.DurationTime);
+  return Number.isFinite(ms) && ms > 0 ? ms : 3000;
+}
+
 function sliderHref(link?: string): string | null {
   const trimmed = String(link ?? "").trim();
   if (!trimmed) return null;
@@ -37,7 +42,7 @@ export const Slider = ({data}:any) => {
       })
 
       const autoplay = api.plugins()?.autoplay
-      const startMs = Math.max(Number(data?.[0]?.DurationTime) || 3000, 4000)
+      const startMs = Math.max(slideDurationMs(data?.[api.selectedScrollSnap()]), 4000)
       const timer = window.setTimeout(() => {
         autoplay?.play?.()
       }, startMs)
@@ -64,7 +69,8 @@ export const Slider = ({data}:any) => {
 
         plugins={[
             Autoplay({
-              delay: data?.[0]?.DurationTime  || 3000,
+              delay: (scrollSnaps) =>
+                scrollSnaps.map((_, index) => slideDurationMs(data?.[index])),
               playOnInit: false,
             }),
 

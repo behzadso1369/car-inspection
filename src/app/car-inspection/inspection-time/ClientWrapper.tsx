@@ -116,6 +116,7 @@ export default function ClientWrapper() {
     instance.get(ApiHelper.get("GetCarInspectionDateType"))
       .then((res: any) => {
         setCarInspectionDateType(res?.CarInspectionDateTypes);
+        debugger
         if (res?.CarInspectionDateTypes?.length > 0) {
           setSelected(String(res?.CarInspectionDateTypes?.[0]?.Id));
         }

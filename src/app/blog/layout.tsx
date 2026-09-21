@@ -28,7 +28,7 @@ export default async function BlogLayout({
          }
     return (
         <div>
-           <Banner data={[]}/>
+           <Banner data={initialData}/>
              <div className="hidden lg:block mb-2 bg-transparent sticky top-11 z-10">
              
                   <BlogHeader data={initialData} />

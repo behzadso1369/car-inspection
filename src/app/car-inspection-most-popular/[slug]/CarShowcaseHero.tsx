@@ -4,6 +4,7 @@ import { Tick01Icon } from "hugeicons-react";
 import dynamic from "next/dynamic";
 import { useEffect, useState, type ReactNode } from "react";
 import InspectCtaButton from "./InspectCtaButton";
+import PriceEstimateCtaButton from "./PriceEstimateCtaButton";
 import { LIGHT_PRESETS } from "./CarShowcase3D";
 
 const CarShowcase3D = dynamic(() => import("./CarShowcase3D"), {
@@ -86,13 +87,18 @@ function InspectionBox({
       >
         {intro}
       </p>
-      <div className={compact ? "mt-2 lg:mt-3" : "mt-4"}>
+      <div className={`flex flex-col gap-2 ${compact ? "mt-2 lg:mt-3" : "mt-4"}`}>
         <InspectCtaButton
           carName={name}
           searchTerm={searchTerm}
           carGroupId={carGroupId}
           carGroupName={carGroupName}
           className={compact ? "!h-10 text-sm lg:!h-11" : ""}
+        />
+        <PriceEstimateCtaButton
+          carName={name}
+          searchTerm={searchTerm}
+          className={compact ? "!min-h-10 text-xs lg:!min-h-11 lg:text-sm" : ""}
         />
       </div>
       <p className="text-center text-xs text-[#8A8B90] mt-2 lg:mt-3">

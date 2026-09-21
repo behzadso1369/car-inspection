@@ -1,10 +1,28 @@
-export default function Banner (_props?: { data?: unknown }) {
+type BannerData = {
+  Slogan?: string | null;
+};
+
+type BannerProps = {
+  data?: BannerData | string | null | unknown;
+};
+
+function sloganFromData(data?: BannerProps["data"]): string {
+  if (data && typeof data === "object" && !Array.isArray(data) && "Slogan" in data) {
+    const slogan = String((data as BannerData).Slogan ?? "").trim();
+    if (slogan) return slogan;
+  }
+  return "کارشناسی خودرو با 5 کلیک";
+}
+
+export default function Banner({ data }: BannerProps = {}) {
+    const slogan = sloganFromData(data);
+
     return (
         <header className="bg-primary banner-bg-pattern px-3 sm:px-4 h-11 text-white flex justify-between items-center sticky top-0 z-[60] gap-2">
             <div className="flex items-center min-w-0">
             <img src="/car-approved.svg" width={24} height={24} alt="" aria-hidden="true" className="shrink-0"/>
             <strong className="font-IranSans text-[#FFFBFB] text-[11px] sm:text-sm mx-1 font-bold whitespace-nowrap">
-              یک میلیون تخفیف کارشناسی خودرو
+              {slogan}
             </strong>
             </div>
             <a

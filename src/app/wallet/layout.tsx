@@ -54,7 +54,7 @@ export default function WalletLayout({
 
   return (
     <div className="lg:max-w-7xl lg:container lg:mx-auto">
-      <Banner data={data?.MasterSiteData?.NavbarPhoneNumber} />
+      <Banner data={data?.MasterSiteData} />
       <div className="hidden lg:block px-20 mb-6 bg-transparent sticky top-11 z-10">
         <Header data={data?.MasterSiteData} activePath="/Profile" />
       </div>

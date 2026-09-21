@@ -11,6 +11,7 @@ import { BASE_URL, COMMON_KEYWORDS } from "@/lib/seo";
 import { CARS, getCarBySlug } from "../carsData";
 import CarShowcaseHero from "./CarShowcaseHero";
 import InspectCtaButton from "./InspectCtaButton";
+import PriceEstimateCtaButton from "./PriceEstimateCtaButton";
 import AparatVideoEmbed from "./AparatVideoEmbed";
 import CarArticle from "./CarArticle";
 
@@ -214,12 +215,18 @@ export default async function CarInspectionPage({
                   <p className="text-[#55565A] leading-8 text-sm md:text-base mb-5">
                     {car.intro}
                   </p>
-                  <InspectCtaButton
-                    carName={car.name}
-                    searchTerm={car.inspectionSearchTerm}
-                    carGroupId={car.inspectionCarGroupId}
-                    carGroupName={car.inspectionCarGroupName}
-                  />
+                  <div className="flex flex-col gap-2">
+                    <InspectCtaButton
+                      carName={car.name}
+                      searchTerm={car.inspectionSearchTerm}
+                      carGroupId={car.inspectionCarGroupId}
+                      carGroupName={car.inspectionCarGroupName}
+                    />
+                    <PriceEstimateCtaButton
+                      carName={car.name}
+                      searchTerm={car.inspectionSearchTerm}
+                    />
+                  </div>
                   <p className="text-center text-xs text-[#8A8B90] mt-3">
                     رزرو آنلاین کارشناسی {car.name} در محل، با هزینه شفاف
                   </p>

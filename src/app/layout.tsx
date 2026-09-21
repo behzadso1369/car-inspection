@@ -146,7 +146,7 @@ export default async function RootLayout({
         <JsonLd data={[generateOrganizationSchema(), generateLocalBusinessSchema(), generateWebSiteSchema()]} />
         <SiteChrome
           header={<Header data={initialData} />}
-          banner={<Banner />}
+          banner={<Banner data={initialData} />}
           mobileBar={<CallAction data={initialData} />}
           mobileBarFixed={<CallAction data={initialData} fixed />}
           footer={<Footer data={initialData} />}

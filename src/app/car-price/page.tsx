@@ -6,7 +6,8 @@ import {
   type ChassisStatus,
 } from "@/lib/car-price/pricing";
 import { normalizeText } from "@/lib/car-price/text";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   Search,
   CarFront,
@@ -30,6 +31,8 @@ import CarPricingSeoContent, {
   carPriceFaqItems,
 } from "@/components/car-price/CarPricingSeoContent";
 import CarPriceInspectPromo from "@/components/car-price/CarPriceInspectPromo";
+import CarPriceBudgetAlternatives from "@/components/car-price/CarPriceBudgetAlternatives";
+import { findBudgetAlternatives } from "@/lib/car-price/budgetAlternatives";
 
 type Step = "search_car" | "year" | "mileage" | "color" | "chassis" | "result";
 
@@ -97,6 +100,18 @@ function displayBasePrice(car: NormalizedCar) {
 }
 
 export default function CarPricePage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-[#F3F5F8]" dir="rtl" />}>
+      <CarPricePageContent />
+    </Suspense>
+  );
+}
+
+function CarPricePageContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const presetFromUrl = useRef((searchParams.get("car") || "").trim());
+
   const carList: NormalizedCar[] = useMemo(() => {
     return (cars?.cars as CarItem[]).map((car) => ({
       id: String(car.id),
@@ -111,7 +126,7 @@ export default function CarPricePage() {
   const [year, setYear] = useState("");
   const [mileage, setMileage] = useState("");
   const [step, setStep] = useState<Step>("search_car");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(presetFromUrl.current);
   const [selectedCar, setSelectedCar] = useState<NormalizedCar | null>(null);
   const [selectedColor, setSelectedColor] = useState<(typeof COLOR_OPTIONS)[number] | null>(null);
   const [selectedChassis, setSelectedChassis] = useState<(typeof CHASSIS_OPTIONS)[number] | null>(null);
@@ -119,10 +134,10 @@ export default function CarPricePage() {
   const filteredCars = useMemo(() => {
     const q = normalizeText(query);
     if (!q) return [];
-    const tokens = q.split(" ");
+    const tokens = q.split(" ").filter(Boolean);
     return carList
       .filter((car) => tokens.every((token) => car.searchKey.includes(token)))
-      .slice(0, 20);
+      .slice(0, 40);
   }, [query, carList]);
 
   const priceResult = useMemo(() => {
@@ -152,6 +167,25 @@ export default function CarPricePage() {
 
   const finalPrice = priceResult?.finalPrice ?? 0;
   const priceRange = priceResult?.range ?? null;
+
+  const budgetAlternatives = useMemo(() => {
+    if (!selectedCar || !finalPrice) return [];
+
+    return findBudgetAlternatives(
+      finalPrice,
+      carList.map((car) => ({
+        id: car.id,
+        name: car.name,
+        basePrice: displayBasePrice(car),
+        lastYear: Number(car.lastYear),
+      })),
+      {
+        excludeId: selectedCar.id,
+        excludeName: selectedCar.name,
+        limit: 3,
+      },
+    );
+  }, [selectedCar, finalPrice, carList]);
 
   const progressMap: Record<Step, number> = {
     search_car: 16,
@@ -245,6 +279,10 @@ export default function CarPricePage() {
     setMileage("");
     setSelectedColor(null);
     setSelectedChassis(null);
+    if (presetFromUrl.current) {
+      presetFromUrl.current = "";
+      router.replace("/car-price");
+    }
   }
 
   const mobileBarRef = useRef<HTMLDivElement | null>(null);
@@ -269,7 +307,11 @@ export default function CarPricePage() {
           <div className="mb-1.5 flex items-center justify-between gap-2 lg:mb-2 lg:gap-3">
             <div className="min-w-0">
               <p className="text-sm font-extrabold text-[#101117]">جستجوی خودرو</p>
-              <p className="mt-0.5 text-[11px] text-[#6B6C70]">نام خودرو را وارد کنید</p>
+              <p className="mt-0.5 text-[11px] text-[#6B6C70]">
+                {query.trim() && query.trim() === presetFromUrl.current
+                  ? "تیپ مورد نظر را انتخاب کنید"
+                  : "نام خودرو را وارد کنید"}
+              </p>
             </div>
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl car-price-icon-box">
               <Search className="h-4 w-4" />
@@ -627,7 +669,14 @@ export default function CarPricePage() {
                         </div>
                       </div>
 
-                      <CarPriceInspectPromo carName={selectedCar.name} />
+                      {budgetAlternatives.length > 0 ? (
+                        <CarPriceBudgetAlternatives
+                          alternatives={budgetAlternatives}
+                          carName={selectedCar.name}
+                        />
+                      ) : (
+                        <CarPriceInspectPromo carName={selectedCar.name} />
+                      )}
 
                       <div className="grid gap-3 md:grid-cols-2">
                         <div className="space-y-2 rounded-2xl car-price-summary-box p-4 md:rounded-3xl md:p-5">
