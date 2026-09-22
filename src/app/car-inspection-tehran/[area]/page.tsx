@@ -28,6 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { content } = area;
   const path = `/car-inspection-tehran/${slug}`;
   const canonical = getCanonicalUrl(path);
+  // metaTitle omits brand; layout template adds « | کارماچک ». OG/Twitter need the full title.
+  const titleFull = `${content.metaTitle} | کارماچک`;
 
   return {
     title: content.metaTitle,
@@ -39,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: "fa_IR",
       url: canonical,
       siteName: "کارماچک - کارشناسی خودرو",
-      title: content.metaTitle,
+      title: titleFull,
       description: content.metaDescription,
       images: [
         {
@@ -52,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: content.metaTitle,
+      title: titleFull,
       description: content.metaDescription,
     },
     robots: {
@@ -146,7 +148,11 @@ export default async function LocalAreaPage({ params }: Props) {
   const { content } = area;
 
   const schema = [
-    generateWebPageSchema(content.metaTitle, content.metaDescription, path),
+    generateWebPageSchema(
+      `${content.metaTitle} | کارماچک`,
+      content.metaDescription,
+      path,
+    ),
     generateLocalBusinessSchema({
       area: area.name,
       path,

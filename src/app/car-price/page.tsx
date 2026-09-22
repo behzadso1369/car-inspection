@@ -285,6 +285,23 @@ function CarPricePageContent() {
     }
   }
 
+  /** شروع دوبارهٔ فلو قیمت‌گذاری با جستجوی ماشین پیشنهادی */
+  function startPricingForCar(name: string) {
+    const term = name.trim();
+    if (!term) return;
+
+    setStep("search_car");
+    setSelectedCar(null);
+    setYear("");
+    setMileage("");
+    setSelectedColor(null);
+    setSelectedChassis(null);
+    setQuery(term);
+    presetFromUrl.current = term;
+    router.replace(`/car-price?car=${encodeURIComponent(term)}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   const mobileBarRef = useRef<HTMLDivElement | null>(null);
   const [mobileBarHeight, setMobileBarHeight] = useState(140);
 
@@ -673,6 +690,7 @@ function CarPricePageContent() {
                         <CarPriceBudgetAlternatives
                           alternatives={budgetAlternatives}
                           carName={selectedCar.name}
+                          onStartPricing={startPricingForCar}
                         />
                       ) : (
                         <CarPriceInspectPromo carName={selectedCar.name} />

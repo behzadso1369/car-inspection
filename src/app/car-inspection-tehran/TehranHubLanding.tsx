@@ -123,11 +123,11 @@ function ActionBox({
         <>
           <span
             aria-hidden
-            className="pointer-events-none absolute -left-8 -top-10 h-28 w-28 rounded-full bg-[#4A7CE8]/30 blur-2xl"
+            className="pointer-events-none absolute left-0 top-0 h-24 w-24 -translate-x-1/3 -translate-y-1/3 rounded-full bg-[#4A7CE8]/30 blur-2xl"
           />
           <span
             aria-hidden
-            className="pointer-events-none absolute -bottom-12 -right-6 h-32 w-32 rounded-full bg-[#3456bb]/35 blur-2xl"
+            className="pointer-events-none absolute bottom-0 right-0 h-28 w-28 translate-x-1/3 translate-y-1/3 rounded-full bg-[#3456bb]/35 blur-2xl"
           />
         </>
       )}
@@ -180,7 +180,7 @@ export default function TehranHubLanding() {
   return (
     <article
       dir="rtl"
-      className="local-area-page font-IranSans text-[#101117] antialiased"
+      className="local-area-page max-w-full overflow-x-hidden font-IranSans text-[#101117] antialiased"
     >
       <header className="relative overflow-hidden border-b border-[#D8E0F0] bg-[#0B1F4A]">
         <div
@@ -196,7 +196,7 @@ export default function TehranHubLanding() {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-16 -top-20 h-72 w-72 rounded-full bg-[#4A7CE8]/20 blur-3xl"
+          className="pointer-events-none absolute right-0 top-0 h-56 w-56 translate-x-1/4 -translate-y-1/4 rounded-full bg-[#4A7CE8]/20 blur-3xl"
         />
 
         <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-6 sm:px-6 sm:pb-16 sm:pt-8">
@@ -260,7 +260,7 @@ export default function TehranHubLanding() {
       <div className="bg-[#F4F6FB]">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-start">
-            <div className="space-y-8">
+            <div className="min-w-0 space-y-8">
               <section className="rounded-[1.75rem] border border-[#E2E8F4] bg-white p-5 shadow-[0_8px_24px_rgba(16,17,23,0.04)] sm:p-7">
                 <p className="text-sm leading-8 text-[#55565A] sm:text-[15px] sm:leading-9">
                   کارشناسی خودرو در تهران یعنی پیش از آنکه پولی جابه‌جا شود، یک
@@ -614,8 +614,8 @@ export default function TehranHubLanding() {
                   روی ایمنی اثر مستقیم ندارد. ستون‌ها، سقف، سرشاسی و کلاف‌ها جوشی‌اند
                   و هر تعمیری روی آن‌ها موضوع جدی‌تری است.
                 </P>
-                <div className="mt-5 overflow-x-auto rounded-2xl border border-[#E8ECF4]">
-                  <table className="w-full min-w-[520px] border-collapse text-right text-sm">
+                <div className="mt-5 max-w-full overflow-x-auto overscroll-x-contain rounded-2xl border border-[#E8ECF4]">
+                  <table className="w-full min-w-[480px] border-collapse text-right text-sm">
                     <thead className="bg-[#F2F5FF] text-[#101117]">
                       <tr>
                         <th scope="col" className="px-4 py-3 font-extrabold">
@@ -918,14 +918,10 @@ export default function TehranHubLanding() {
             </div>
           </section>
 
-          <section className="relative mt-12 overflow-hidden rounded-[2rem] bg-[#0B1F4A] px-6 py-10 text-center sm:px-10 sm:py-12">
+          <section className="relative mt-12 overflow-hidden rounded-[2rem] bg-[#0B1F4A] px-6 py-10 text-center sm:px-10 sm:py-12 contain-paint">
             <div
               aria-hidden
-              className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-[#4A7CE8]/30 blur-3xl"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -bottom-12 -right-8 h-44 w-44 rounded-full bg-[#3456bb]/35 blur-3xl"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_60%_at_0%_0%,rgba(74,124,232,0.35),transparent_55%),radial-gradient(ellipse_45%_55%_at_100%_100%,rgba(52,86,187,0.4),transparent_55%)]"
             />
             <h2 className="relative text-xl font-black text-white sm:text-2xl">
               پیش از معامله، خودرو را در تهران بررسی کنید

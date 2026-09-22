@@ -151,7 +151,7 @@ export default async function RootLayout({
           mobileBarFixed={<CallAction data={initialData} fixed />}
           footer={<Footer data={initialData} />}
         >
-          <div id="main-content" className="relative z-0">
+          <div id="main-content" className="relative z-0 max-w-full overflow-x-hidden">
             {children}
           </div>
         </SiteChrome>

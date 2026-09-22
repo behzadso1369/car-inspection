@@ -26,7 +26,7 @@ export default function LocalAreaLanding({ area }: Props) {
   return (
     <article
       dir="rtl"
-      className="local-area-page font-IranSans text-[#101117] antialiased"
+      className="local-area-page max-w-full overflow-x-hidden font-IranSans text-[#101117] antialiased"
     >
       {/* —— Hero —— */}
       <header className="relative overflow-hidden border-b border-[#D8E0F0] bg-[#0B1F4A]">
@@ -43,11 +43,11 @@ export default function LocalAreaLanding({ area }: Props) {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -left-24 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-[#3456bb]/15 blur-3xl"
+          className="pointer-events-none absolute left-0 top-1/2 h-52 w-52 -translate-x-1/4 -translate-y-1/2 rounded-full bg-[#3456bb]/15 blur-3xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-16 -top-20 h-72 w-72 rounded-full bg-[#4A7CE8]/20 blur-3xl"
+          className="pointer-events-none absolute right-0 top-0 h-56 w-56 translate-x-1/4 -translate-y-1/4 rounded-full bg-[#4A7CE8]/20 blur-3xl"
         />
 
         <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-6 sm:px-6 sm:pb-16 sm:pt-8">
@@ -163,7 +163,7 @@ export default function LocalAreaLanding({ area }: Props) {
 
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-start">
             {/* Main article body */}
-            <div className="space-y-8">
+            <div className="min-w-0 space-y-8">
               {content.sections.map((section) => (
                 <section
                   key={section.id}
@@ -453,14 +453,10 @@ export default function LocalAreaLanding({ area }: Props) {
           </section>
 
           {/* Bottom CTA */}
-          <section className="relative mt-12 overflow-hidden rounded-[2rem] bg-[#0B1F4A] px-6 py-10 text-center sm:px-10 sm:py-12">
+          <section className="relative mt-12 overflow-hidden rounded-[2rem] bg-[#0B1F4A] px-6 py-10 text-center sm:px-10 sm:py-12 contain-paint">
             <div
               aria-hidden
-              className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-[#4A7CE8]/30 blur-3xl"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -bottom-12 -right-8 h-44 w-44 rounded-full bg-[#3456bb]/35 blur-3xl"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_60%_at_0%_0%,rgba(74,124,232,0.35),transparent_55%),radial-gradient(ellipse_45%_55%_at_100%_100%,rgba(52,86,187,0.4),transparent_55%)]"
             />
             <h2 className="relative text-xl font-black text-white sm:text-2xl">
               {content.closingTitle ??

@@ -21,7 +21,7 @@ export default function Banner({ data }: BannerProps = {}) {
         <header className="bg-primary banner-bg-pattern px-3 sm:px-4 h-11 text-white flex justify-between items-center sticky top-0 z-[60] gap-2">
             <div className="flex items-center min-w-0">
             <img src="/car-approved.svg" width={24} height={24} alt="" aria-hidden="true" className="shrink-0"/>
-            <strong className="font-IranSans text-[#FFFBFB] text-[11px] sm:text-sm mx-1 font-bold whitespace-nowrap">
+            <strong className="font-IranSans text-[#FFFBFB] text-[11px] sm:text-sm mx-1 min-w-0 truncate font-bold">
               {slogan}
             </strong>
             </div>
