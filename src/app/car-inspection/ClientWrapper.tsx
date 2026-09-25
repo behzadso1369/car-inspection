@@ -95,7 +95,7 @@ export default function ClientWrapper({
       <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10">
         <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">
           <h1 className="text-black text-lg my-2 font-medium">
-            کارشناسی خودرو
+            کارشناسی خودرو در محل
           </h1>
           <h2 className="text-[#55565A] font-light text-base">
             جهت شروع فرآیند کارشناسی اطلاعات زیر را وارد کنید.

@@ -304,8 +304,16 @@ export default async function CarInspectionPage({
           sections={car.articleSections}
           faqs={car.faqs}
           faqTitle={car.faqTitle}
+          quickAnswerTitle={car.quickAnswerTitle}
+          quickAnswer={car.quickAnswer}
           sideImage={car.contentImage}
           sideImageAlt={car.contentImageAlt}
+          inspectCar={{
+            carName: car.name,
+            searchTerm: car.inspectionSearchTerm,
+            carGroupId: car.inspectionCarGroupId,
+            carGroupName: car.inspectionCarGroupName,
+          }}
         />
 
         <div className="px-4 max-w-5xl mx-auto">

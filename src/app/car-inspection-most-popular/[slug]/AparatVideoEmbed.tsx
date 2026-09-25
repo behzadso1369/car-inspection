@@ -19,7 +19,11 @@ export default function AparatVideoEmbed({
   const embedSrc = `https://www.aparat.com/video/video/embed/videohash/${hash}/vt/frame?autoplay=true`;
 
   return (
-    <section className={`relative z-0 w-full ${className}`} aria-label={title}>
+    <section
+      id="inspection-video"
+      className={`relative z-0 w-full ${className}`}
+      aria-label={title}
+    >
       <div className="relative w-full overflow-hidden rounded-2xl lg:rounded-3xl border border-[#DCDCDC] bg-black shadow-[8px_4px_24px_0px_#EAEAEA40] aspect-video min-h-[168px] lg:min-h-[280px]">
         {playing ? (
           <iframe

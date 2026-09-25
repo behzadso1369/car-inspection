@@ -28,7 +28,7 @@ export interface CarArticleSection {
   paragraphsAfter?: string[];
   subsections?: CarArticleSubsection[];
   table?: { headers: string[]; rows: string[][] };
-  cta?: { label: string; href: string };
+  cta?: { label: string; href: string; inspect?: boolean };
 }
 
 export interface CarInfo {
@@ -52,6 +52,8 @@ export interface CarInfo {
   aparatVideoTitle?: string;
   /** تصویر پیش‌نمایش ویدیوی آپارات */
   aparatThumbnailUrl?: string;
+  /** تاریخ آپلود ویدیوی آپارات (ISO 8601) — برای فیلد اجباری uploadDate در اسکیمای VideoObject */
+  aparatUploadDate?: string;
   /** پاراگراف معرفی برای بالای صفحه */
   intro: string;
   /** عنوان سئو اختصاصی صفحه */
@@ -67,6 +69,8 @@ export interface CarInfo {
   articleSections?: CarArticleSection[];
   faqs?: CarFaq[];
   faqTitle?: string;
+  quickAnswerTitle?: string;
+  quickAnswer?: string;
   /** مزایای خودرو */
   pros: string[];
   /** معایب خودرو */
@@ -384,6 +388,8 @@ export const CARS: CarInfo[] = [
     articleSections: peugeot206Page.sections as CarArticleSection[],
     faqs: peugeot206Page.faqs,
     faqTitle: peugeot206Page.faqTitle,
+    quickAnswerTitle: peugeot206Page.quickAnswerTitle,
+    quickAnswer: peugeot206Page.quickAnswer,
     intro: peugeot206Page.articleIntro[0],
     pros: [
       "فرمان‌پذیری و هندلینگ عالی",
