@@ -119,6 +119,8 @@ export default function ClientWrapper({
                 src="/step1.png"
                 alt="مرحله اول رزرو کارشناسی خودرو"
                 fill
+                sizes="64px"
+                quality={70}
                 className="object-fill"
               />
             </div>
@@ -169,6 +171,9 @@ export default function ClientWrapper({
               alt="flow-car"
               src="/flow-car.png"
               fill
+              sizes="(max-width: 1024px) 353px, 739px"
+              quality={70}
+              loading="lazy"
               className="object-cover"
             />
           </div>

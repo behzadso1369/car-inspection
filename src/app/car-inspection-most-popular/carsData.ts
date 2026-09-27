@@ -379,6 +379,7 @@ export const CARS: CarInfo[] = [
     aparatVideoTitle: "نکات کارشناسی خودرو ۲۰۶ قبل از خرید",
     aparatThumbnailUrl:
       "https://static.cdn.asset.aparat.cloud/avt/73124300-3598-l__2087.jpg",
+    aparatUploadDate: "2026-09-06T21:56:50+03:30",
     seoTitle: peugeot206Page.seoTitle,
     seoDescription: peugeot206Page.seoDescription,
     ogImage: peugeot206Page.ogImage,
@@ -1796,6 +1797,7 @@ export const CARS: CarInfo[] = [
     aparatVideoTitle: "کارشناسی جک S5، قبل از خرید جک S5 این نکات بدنه و رنگ را حتماً چک کنید",
     aparatThumbnailUrl:
       "https://static.cdn.asset.aparat.cloud/avt/73176039-9959-l__8758.jpg",
+    aparatUploadDate: "2026-09-09T15:52:45+03:30",
     seoTitle: jacS5Page.seoTitle,
     seoDescription: jacS5Page.seoDescription,
     ogImage: jacS5Page.ogImage,

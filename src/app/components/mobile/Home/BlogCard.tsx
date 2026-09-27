@@ -16,11 +16,12 @@ export const BlogCard = ({Title,ImagePath,Excerpt,Id,Slug}:any) => {
         <figure className="border border-[#DCDCDC] rounded-3xl font-IranSans mb-4 pb-8 col-span-4 lg:col-span-1 flex flex-col h-full relative">
      <div className="relative h-52 flex-shrink-0 bg-gray-50 rounded-t-3xl overflow-hidden">
      <Image 
-        className="w-full h-full rounded-3xl object-cover" 
         src={apiAssetUrl(ImagePath)} 
         alt={Title || "بلاگ کارماچک"}  
         fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        sizes="(max-width: 768px) 85vw, 33vw"
+        loading="lazy"
+        className="w-full h-full rounded-3xl object-cover"
      />
      </div>
 

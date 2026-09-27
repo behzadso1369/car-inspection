@@ -28,7 +28,7 @@ export default function QualityBox() {
         alt=""
         fill
         className="object-cover object-center"
-        sizes="100vw"
+        sizes="(max-width: 768px) 100vw, 1080px"
         quality={70}
         loading="lazy"
       />

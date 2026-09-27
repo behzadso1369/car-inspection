@@ -42,7 +42,7 @@ export default function Introduction({data}:any) {
                     </p>
                 </div>
                 <div className="w-full flex justify-center">
-                    <Image className="rotate-90" src={imageSrc} width={171} height={240} alt="چرا کارماچک" sizes="140px" quality={60}/>
+                    <Image className="rotate-90" src={imageSrc} width={171} height={240} alt="چرا کارماچک" sizes="140px" quality={60} loading="lazy"/>
                 </div>
                 <div className="w-1/3">
                     <h3 className="text-[#101117] text-sm text-center py-4 font-medium">{item.T3Title}</h3>
@@ -86,7 +86,7 @@ export default function Introduction({data}:any) {
                 </div>
               
                 <div className="w-1/3 flex justify-center">
-                    <Image className="rotate-90" src={imageSrc} width={348} height={489} alt="چرا کارماچک" sizes="348px" quality={70}/>
+                    <Image className="rotate-90" src={imageSrc} width={348} height={489} alt="چرا کارماچک" sizes="348px" quality={70} loading="lazy"/>
                 </div>
             </div>
             <OnSiteInspectionCta />

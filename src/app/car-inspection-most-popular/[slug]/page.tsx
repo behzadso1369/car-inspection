@@ -105,12 +105,18 @@ export default async function CarInspectionPage({
     },
   ];
 
-  if (car.aparatVideoHash && car.aparatVideoTitle && car.aparatThumbnailUrl) {
+  if (
+    car.aparatVideoHash &&
+    car.aparatVideoTitle &&
+    car.aparatThumbnailUrl &&
+    car.aparatUploadDate
+  ) {
     graph.push({
       "@type": "VideoObject",
       name: car.aparatVideoTitle,
       description: `ویدیوی نکات کارشناسی ${car.name} پیش از خرید، از کارماچک.`,
       thumbnailUrl: car.aparatThumbnailUrl,
+      uploadDate: car.aparatUploadDate,
       embedUrl: `https://www.aparat.com/video/video/embed/videohash/${car.aparatVideoHash}/vt/frame`,
       contentUrl: `https://www.aparat.com/v/${car.aparatVideoHash}`,
       publisher: {

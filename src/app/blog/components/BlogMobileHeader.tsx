@@ -13,8 +13,8 @@ import {
 } from "hugeicons-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { memo, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { memo, useState } from "react";
 import NavigationLink from "@/components/ui/navigation-link";
 import {
   Sheet,
@@ -37,18 +37,7 @@ const NAV_ITEMS = [
 
 export const BlogMobileHeader = memo(({ data }: any) => {
   const pathname = usePathname();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    router.prefetch("/");
-    router.prefetch("/car-inspection");
-    router.prefetch("/car-price");
-    router.prefetch("/blog");
-    router.prefetch("/contact-us");
-    router.prefetch("/about-us");
-    router.prefetch("/Profile");
-  }, [router]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -89,7 +78,7 @@ export const BlogMobileHeader = memo(({ data }: any) => {
               <div className="flex items-center justify-between px-4 py-3">
                 <Link
                   href="/"
-                  prefetch={true}
+                  prefetch={false}
                   aria-label="صفحه اصلی کارماچک"
                   onClick={() => setOpen(false)}
                 >
@@ -98,7 +87,7 @@ export const BlogMobileHeader = memo(({ data }: any) => {
                     width={120}
                     height={48}
                     src={logoSrc}
-                    priority
+                    fetchPriority="low"
                     className="h-10 w-auto object-contain"
                   />
                 </Link>
@@ -122,7 +111,7 @@ export const BlogMobileHeader = memo(({ data }: any) => {
                     <li key={href}>
                       <NavigationLink
                         href={href}
-                        prefetch={true}
+                        prefetch={false}
                         onClick={() => setOpen(false)}
                         className={cn(
                           "flex items-center gap-3 rounded-2xl px-3.5 py-3 text-sm transition-colors",
@@ -169,7 +158,7 @@ export const BlogMobileHeader = memo(({ data }: any) => {
               )}
               <NavigationLink
                 href="/Profile"
-                prefetch={true}
+                prefetch={false}
                 onClick={() => setOpen(false)}
                 className="flex items-center justify-center gap-2 rounded-2xl bg-[#3456bb] px-4 py-3 text-sm text-white"
               >
@@ -180,20 +169,20 @@ export const BlogMobileHeader = memo(({ data }: any) => {
           </SheetContent>
         </Sheet>
 
-        <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک" className="mx-auto">
+        <Link href="/" prefetch={false} aria-label="صفحه اصلی کارماچک" className="mx-auto">
           <Image
             alt="کارماچک"
             width={130}
             height={52}
             src={logoSrc}
-            priority
+            fetchPriority="low"
             className="h-9 w-auto object-contain"
           />
         </Link>
 
         <NavigationLink
           href="/Profile"
-          prefetch={true}
+          prefetch={false}
           aria-label="حساب کاربری"
           className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F4F6FB] text-[#101117]"
         >

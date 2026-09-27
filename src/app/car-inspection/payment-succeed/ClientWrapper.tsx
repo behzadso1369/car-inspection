@@ -35,7 +35,7 @@ export default function ClientWrapper() {
         <div className="bg-white px-4 py-6 rounded-3xl mt-6">
           <div className="flex flex-wrap items-center w-full justify-center">
             <div className="aspect-[1] relative w-16 h-auto ml-4">
-              <Image src="/final-success.png" alt="step2.png" fill className="object-fill" />
+              <Image src="/final-success.png" alt="step2.png" fill sizes="64px" quality={70} className="object-fill" />
             </div>
             <h3 className="w-full text-center my-4 text-base text-[#101117] font-bold">پرداخت شما با موفقیت انجام شد</h3>
           </div>

@@ -176,7 +176,7 @@ export default function ClientWrapper() {
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex">
              <div className="aspect-[2] relative w-16 h-8 ml-4">
-                          <Image src="/step5.png" alt="step5.png" fill className="object-fill" />
+                          <Image src="/step5.png" alt="step5.png" fill sizes="64px" quality={70} className="object-fill" />
                         </div>
             <div>
               <h3 className="text-base text-black my-2 font-medium">مرحله پنجم: زمان کارشناسی</h3>

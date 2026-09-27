@@ -10,6 +10,7 @@ const ARTICLE_LINKS: { needle: string; href: string }[] = [
   { needle: "کارشناسی خودرو در تهران", href: "/car-inspection-tehran" },
   { needle: "ویدیوی کارشناسی خودرو ۲۰۶", href: "#inspection-video" },
   { needle: "ویدیوی کارشناسی خودرو 206", href: "#inspection-video" },
+  { needle: "ویدیوی کارشناسی جک S5", href: "#inspection-video" },
   { needle: "نشانه‌های شاسی ضربه‌خورده", href: "/blog" },
   { needle: "راهنمای تشخیص کیلومتر واقعی خودرو", href: "/blog" },
 ];
@@ -224,18 +225,28 @@ export default function CarArticle({
             </p>
           ) : null}
           {introLead ? (
-            <p
-              className={`text-[#3D3F45] leading-9 ${
-                sideImage ? "text-base md:text-lg" : "text-sm md:text-base leading-8"
-              }`}
-            >
-              <LinkedText text={introLead} />
-            </p>
+            <div className={sideImage ? "space-y-3" : "space-y-2"}>
+              {introLead.split("\n").map((line) => (
+                <p
+                  key={line.slice(0, 48)}
+                  className={`text-[#3D3F45] leading-9 ${
+                    sideImage ? "text-base md:text-lg" : "text-sm md:text-base leading-8"
+                  }`}
+                >
+                  <LinkedText text={line} />
+                </p>
+              ))}
+            </div>
           ) : null}
         </div>
       </div>
     </section>
   ) : null;
+
+  // باکس عکس خودرو وسط بخش‌های محتوا قرار می‌گیرد (نیمهٔ اول ← باکس ← نیمهٔ دوم)
+  const carBoxIndex = Math.ceil(otherSections.length / 2);
+  const sectionsBeforeCarBox = otherSections.slice(0, carBoxIndex);
+  const sectionsAfterCarBox = otherSections.slice(carBoxIndex);
 
   return (
     <article className="mt-4 lg:mt-10 space-y-8">
@@ -250,8 +261,6 @@ export default function CarArticle({
         </div>
       ) : null}
 
-      {carBox}
-
       {introRest.map((text) => (
         <p
           key={text.slice(0, 48)}
@@ -262,43 +271,53 @@ export default function CarArticle({
       ))}
 
       <div className="px-4 max-w-5xl mx-auto space-y-8">
-      {quickAnswer ? (
-        <section className="quick-answer rounded-2xl bg-[#F0F4F8] p-5">
-          {quickAnswerTitle ? (
-            <h2 className="text-base font-bold text-[#101117] mb-2">{quickAnswerTitle}</h2>
-          ) : null}
-          <p className="text-[#55565A] leading-8 text-sm md:text-base">
-            <LinkedText text={quickAnswer} />
-          </p>
-        </section>
-      ) : null}
+        {quickAnswer ? (
+          <section className="quick-answer rounded-2xl bg-[#F0F4F8] p-5">
+            {quickAnswerTitle ? (
+              <h2 className="text-base font-bold text-[#101117] mb-2">{quickAnswerTitle}</h2>
+            ) : null}
+            <p className="text-[#55565A] leading-8 text-sm md:text-base">
+              <LinkedText text={quickAnswer} />
+            </p>
+          </section>
+        ) : null}
 
-      {otherSections.map((section) => (
-        <section key={section.id} id={section.id} className="rounded-2xl border border-[#EDEDED] bg-white p-5">
-          <SectionBody section={section} inspectCar={inspectCar} />
-        </section>
-      ))}
+        {sectionsBeforeCarBox.map((section) => (
+          <section key={section.id} id={section.id} className="rounded-2xl border border-[#EDEDED] bg-white p-5">
+            <SectionBody section={section} inspectCar={inspectCar} />
+          </section>
+        ))}
+      </div>
 
-      {faqs?.length ? (
-        <section className="rounded-2xl border border-[#EDEDED] bg-white p-5" aria-labelledby="faq-title">
-          <h2 id="faq-title" className="text-lg font-bold text-[#101117] mb-3">
-            {faqTitle || "سؤالات متداول"}
-          </h2>
-          <div className="space-y-2">
-            {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="border border-[#E6E9EE] rounded-xl px-4 py-2"
-              >
-                <summary className="cursor-pointer font-bold text-[#101117] py-1">
-                  {faq.question}
-                </summary>
-                <p className="text-[#55565A] leading-8 text-sm pt-1 pb-2">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-      ) : null}
+      {carBox}
+
+      <div className="px-4 max-w-5xl mx-auto space-y-8">
+        {sectionsAfterCarBox.map((section) => (
+          <section key={section.id} id={section.id} className="rounded-2xl border border-[#EDEDED] bg-white p-5">
+            <SectionBody section={section} inspectCar={inspectCar} />
+          </section>
+        ))}
+
+        {faqs?.length ? (
+          <section className="rounded-2xl border border-[#EDEDED] bg-white p-5" aria-labelledby="faq-title">
+            <h2 id="faq-title" className="text-lg font-bold text-[#101117] mb-3">
+              {faqTitle || "سؤالات متداول"}
+            </h2>
+            <div className="space-y-2">
+              {faqs.map((faq) => (
+                <details
+                  key={faq.question}
+                  className="border border-[#E6E9EE] rounded-xl px-4 py-2"
+                >
+                  <summary className="cursor-pointer font-bold text-[#101117] py-1">
+                    {faq.question}
+                  </summary>
+                  <p className="text-[#55565A] leading-8 text-sm pt-1 pb-2">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
     </article>
   );

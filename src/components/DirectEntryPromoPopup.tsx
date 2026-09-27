@@ -110,8 +110,12 @@ export function DirectEntryPromoPopup() {
 
     if (isSensitivePage(path)) return;
 
-    storageSet(SHOWN_KEY, "1");
-    setOpen(true);
+    const timer = window.setTimeout(() => {
+      storageSet(SHOWN_KEY, "1");
+      setOpen(true);
+    }, 5000);
+
+    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   const close = () => setOpen(false);

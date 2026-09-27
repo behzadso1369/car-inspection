@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import { NavigationBar } from "./mobile/Home/NavigationBar";
 
 const HEADER_ROUTES = new Set([
   "/",
@@ -18,6 +19,15 @@ const HEADER_ROUTES = new Set([
 ]);
 
 const FOOTER_ROUTES = new Set([...HEADER_ROUTES, "/blog"]);
+
+function isInspectionLandingPath(pathname: string) {
+  return (
+    pathname === "/car-inspection-most-popular" ||
+    pathname.startsWith("/car-inspection-most-popular/") ||
+    pathname === "/car-inspection-tehran" ||
+    pathname.startsWith("/car-inspection-tehran/")
+  );
+}
 
 function isPublicChromePath(pathname: string, routes: Set<string>) {
   const isMostPopular =
@@ -59,6 +69,7 @@ export function SiteChrome({
   const showHeader = isPublicChromePath(pathname, HEADER_ROUTES);
   const showFooter = isPublicChromePath(pathname, FOOTER_ROUTES);
   const isCarPrice = pathname === "/car-price";
+  const showMobileBottomNav = isInspectionLandingPath(pathname);
 
   return (
     <>
@@ -74,6 +85,12 @@ export function SiteChrome({
       ) : null}
       {children}
       {showFooter ? footer : null}
+      {showMobileBottomNav ? (
+        <div className="lg:hidden">
+          <div className="h-28" aria-hidden />
+          <NavigationBar activePath="/car-inspection" />
+        </div>
+      ) : null}
     </>
   );
 }

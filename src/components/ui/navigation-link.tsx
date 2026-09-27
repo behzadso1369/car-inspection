@@ -22,13 +22,20 @@ export default function NavigationLink({
   href,
   children,
   className = "",
-  prefetch = true,
+  prefetch = false,
   onClick,
   style,
   "aria-label": ariaLabel,
 }: NavigationLinkProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  const handleMouseEnter = () => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      router.prefetch(href);
+    }
+  };
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -46,6 +53,7 @@ export default function NavigationLink({
     <Link
       href={href}
       onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
       prefetch={prefetch}
       aria-label={ariaLabel}
       style={style}

@@ -1,3 +1,8 @@
+import { Metadata } from "next";
+import { serverApiHelper } from "@/helper/server-fetcher";
+import { LOCAL_AREAS } from "@/lib/local-areas";
+import { getFaqsByCategoryName } from "@/lib/faq-data";
+import { FaqPreviewSection } from "./components/FaqPreviewSection";
 import { Slider } from "./components/mobile/Home/Slider";
 import Introduction from "./components/mobile/Home/Introduction";
 import Services from "./components/mobile/Home/Services";
@@ -6,11 +11,6 @@ import QualityBox from "./components/mobile/Home/QualityBox";
 import Statistics from "./components/mobile/Home/Statistics";
 import BlogShort from "./components/mobile/Home/BlogShort";
 import { NavigationBar } from "./components/mobile/Home/NavigationBar";
-import { Metadata } from "next";
-import { serverApiHelper } from "@/helper/server-fetcher";
-import { LOCAL_AREAS } from "@/lib/local-areas";
-import { getFaqsByCategoryName } from "@/lib/faq-data";
-import { FaqPreviewSection } from "./components/FaqPreviewSection";
 
 // ISR - Incremental Static Regeneration (revalidate هر 10 دقیقه)
 // صفحه اصلی محتوای دینامیک دارد (بلاگ‌ها، سرویس‌ها) اما نیازی به fetch در هر request نیست

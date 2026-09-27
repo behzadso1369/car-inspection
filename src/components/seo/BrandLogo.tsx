@@ -21,6 +21,7 @@ export function BrandLogo({ path, width, height, className }: BrandLogoProps) {
         height={height}
         className={className}
         decoding="async"
+        fetchPriority="low"
       />
     );
   }
@@ -32,6 +33,7 @@ export function BrandLogo({ path, width, height, className }: BrandLogoProps) {
       height={height}
       className={className}
       sizes={`${width}px`}
+      fetchPriority="low"
     />
   );
 }

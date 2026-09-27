@@ -3,8 +3,8 @@
 import { Call02Icon, UserCircle02Icon } from "hugeicons-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { memo, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { memo } from "react";
 import NavigationLink from "@/components/ui/navigation-link";
 
 const NAV_ITEMS = [
@@ -18,17 +18,6 @@ const NAV_ITEMS = [
 
 export const BlogHeader = memo(({ data }: any) => {
   const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    router.prefetch("/");
-    router.prefetch("/car-inspection");
-    router.prefetch("/car-price");
-    router.prefetch("/blog");
-    router.prefetch("/contact-us");
-    router.prefetch("/about-us");
-    router.prefetch("/Profile");
-  }, [router]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -47,13 +36,13 @@ export const BlogHeader = memo(({ data }: any) => {
   return (
     <header className="w-full bg-white px-8 py-4 font-IranSans shadow-[0px_4px_32px_0px_#CBD5E099]">
       <div className="flex items-center justify-between gap-4">
-        <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
+        <Link href="/" prefetch={false} aria-label="صفحه اصلی کارماچک">
           <Image
             alt="کارماچک"
             width={140}
             height={57}
             src={logoSrc}
-            priority
+            fetchPriority="low"
             className="h-12 w-auto object-contain"
           />
         </Link>
@@ -65,7 +54,7 @@ export const BlogHeader = memo(({ data }: any) => {
               <li key={href} className="mx-3 xl:mx-4">
                 <NavigationLink
                   href={href}
-                  prefetch={true}
+                  prefetch={false}
                   className={`transition-colors hover:text-[#3456bb] ${
                     active
                       ? "text-[#3456bb] visited:text-[#3456bb] active:text-[#3456bb]"
@@ -95,7 +84,7 @@ export const BlogHeader = memo(({ data }: any) => {
             </a>
           )}
           <Call02Icon size={16} />
-          <NavigationLink href="/Profile" prefetch={true} className="mx-2" aria-label="حساب کاربری">
+          <NavigationLink href="/Profile" prefetch={false} className="mx-2" aria-label="حساب کاربری">
             <UserCircle02Icon size={24} />
           </NavigationLink>
         </span>

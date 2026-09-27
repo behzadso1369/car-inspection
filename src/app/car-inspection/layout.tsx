@@ -130,7 +130,7 @@ export default function ProfileLayout({
             <div className="px-4 py-3 flex justify-between shadow-[0px_6px_20px_-2px_#10182814] lg:shadow-none">
               <ArrowRight onClick={handleBack} className="cursor-pointer" />
               <div className="flex items-center">
-                <Link href="/" prefetch={true} aria-label="صفحه اصلی کارماچک">
+                <Link href="/" prefetch={false} aria-label="صفحه اصلی کارماچک">
                   <Image
                     alt="کارماچک"
                     width={140}

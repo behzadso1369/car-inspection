@@ -53,13 +53,13 @@ export const Footer = (data: any) => {
           <div className="mt-8 flex justify-between flex-wrap">
             <Link href="./faq" prefetch={false}>سوالات متداول</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
-            <Link href="./contact-us">ارتباط با ما</Link>
+            <Link href="./contact-us" prefetch={false}>ارتباط با ما</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
             <Link href="about-us" prefetch={false}>درباره ما</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
             <Link href="/blog" prefetch={false}>بلاگ</Link>
             <span className="w-0.5 h-3 bg-[#D9D9D9]"></span>
-            <Link href="./regulations">قوانین و مقررات</Link>
+            <Link href="./regulations" prefetch={false}>قوانین و مقررات</Link>
 
           </div>
           <div className="my-8 mx-18">
@@ -89,11 +89,11 @@ export const Footer = (data: any) => {
        
           <div className="mx-16 flex flex-col">
                <h3 className="my-4 w-full text-[#101117] font-bold text-xl">دسترسی سریع</h3>
-              <Link href="./regulations" className="my-1">قوانین و مقررات</Link>
+              <Link href="./regulations" prefetch={false} className="my-1">قوانین و مقررات</Link>
            
              <Link href="about-us" prefetch={false} className="my-1">درباره ما</Link>
             
-             <Link href="./contact-us" className="my-1">ارتباط با ما</Link>
+             <Link href="./contact-us" prefetch={false} className="my-1">ارتباط با ما</Link>
             
                        <Link href="./faq" prefetch={false} className="my-1">سوالات متداول</Link>
 

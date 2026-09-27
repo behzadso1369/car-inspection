@@ -22,7 +22,7 @@ interface InspectCtaButtonProps {
   showChevron?: boolean;
 }
 
-function searchTermsFromCarName(carName: string, searchTerm?: string) {
+export function searchTermsFromCarName(carName: string, searchTerm?: string) {
   const raw = [searchTerm, carName]
     .map((value) => String(value || "").replace(/\s+/g, " ").trim())
     .filter(Boolean);
@@ -34,7 +34,7 @@ function searchTermsFromCarName(carName: string, searchTerm?: string) {
   return [...new Set([...raw, ...normalized, ...shortened])];
 }
 
-function pickCarGroup(groups: any[], carName: string, searchTerm?: string) {
+export function pickCarGroup(groups: any[], carName: string, searchTerm?: string) {
   if (!groups.length) return null;
 
   const queries = [searchTerm, carName]

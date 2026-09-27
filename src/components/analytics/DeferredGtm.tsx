@@ -20,21 +20,34 @@ function injectGtm(id: string) {
 }
 
 /**
- * Do not load on scroll — Lighthouse scrolls during the lab run and that
- * inflates mobile TBT/TTI. Real users still get GTM on tap/click/key,
- * or after a delay longer than a typical lab session.
+ * Load GTM after first interaction or a short delay, but never on the click
+ * itself — injecting on pointerdown would make that first tap a dead/slow INP.
+ * Scroll is intentionally omitted so Lighthouse lab scrolls do not boot GTM.
  */
 export function DeferredGtm({ id }: { id: string }) {
   useEffect(() => {
-    const load = () => injectGtm(id);
+    let idleId: number | undefined;
+    let microTimer: number | undefined;
+
+    const boot = () => {
+      const run = () => injectGtm(id);
+      if (typeof window.requestIdleCallback === "function") {
+        idleId = window.requestIdleCallback(run, { timeout: 2000 });
+      } else {
+        microTimer = window.setTimeout(run, 1);
+      }
+    };
+
     const opts: AddEventListenerOptions = { once: true, passive: true };
-    const events = ["click", "touchstart", "pointerdown", "keydown"] as const;
-    events.forEach((event) => window.addEventListener(event, load, opts));
-    const timer = window.setTimeout(load, 25000);
+    const events = ["pointerdown", "keydown"] as const;
+    events.forEach((event) => window.addEventListener(event, boot, opts));
+    const timer = window.setTimeout(boot, 4000);
 
     return () => {
-      events.forEach((event) => window.removeEventListener(event, load));
+      events.forEach((event) => window.removeEventListener(event, boot));
       window.clearTimeout(timer);
+      if (microTimer !== undefined) window.clearTimeout(microTimer);
+      if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
     };
   }, [id]);
 

@@ -78,15 +78,20 @@ function InspectionBox({
       >
         کارشناسی {name}
       </h1>
-      <p
-        className={`text-[#55565A] font-light ${
-          compact
-            ? "text-xs leading-6 lg:text-sm lg:leading-7"
-            : "text-sm leading-7 lg:text-base"
-        }`}
-      >
-        {intro}
-      </p>
+      <div className={compact ? "space-y-2" : "space-y-3"}>
+        {intro.split("\n").map((line) => (
+          <p
+            key={line.slice(0, 48)}
+            className={`text-[#55565A] font-light ${
+              compact
+                ? "text-xs leading-6 lg:text-sm lg:leading-7"
+                : "text-sm leading-7 lg:text-base"
+            }`}
+          >
+            {line}
+          </p>
+        ))}
+      </div>
       <div className={`flex flex-col gap-2 ${compact ? "mt-2 lg:mt-3" : "mt-4"}`}>
         <InspectCtaButton
           carName={name}

@@ -68,6 +68,7 @@ function FeatureCard({ item, className = "" }: { item: any; className?: string }
         alt={item?.Title ?? ""}
         fill
         sizes="(max-width:1024px) 100vw, 40vw"
+        loading="lazy"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
@@ -103,6 +104,7 @@ function ArticleRow({ item }: { item: any }) {
           alt={item?.Title ?? ""}
           fill
           sizes="110px"
+          loading="lazy"
           className="object-cover rounded-2xl"
         />
       </div>
@@ -129,6 +131,7 @@ function VerticalCard({ item, highlighted = false }: { item: any; highlighted?: 
           alt={item?.Title ?? ""}
           fill
           sizes="(max-width:1024px) 100vw, 33vw"
+          loading="lazy"
           className="object-cover"
         />
       </div>
@@ -270,8 +273,12 @@ export default function BlogClient() {
             </Carousel>
             <div className="flex justify-center gap-1.5 mt-3">
               {hero.map((_, i) => (
-                <span
+                <button
                   key={i}
+                  type="button"
+                  aria-label={`اسلاید ${i + 1}`}
+                  aria-current={i === heroIndex ? "true" : undefined}
+                  onClick={() => heroApi?.scrollTo(i)}
                   className={`h-1.5 rounded-full transition-all ${
                     i === heroIndex ? "w-4 bg-[#3456bb]" : "w-1.5 bg-[#D9D9D9]"
                   }`}
@@ -298,6 +305,7 @@ export default function BlogClient() {
                     alt={featured?.Title ?? ""}
                     fill
                     sizes="50vw"
+                    loading="lazy"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>

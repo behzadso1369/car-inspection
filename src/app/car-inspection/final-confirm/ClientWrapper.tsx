@@ -82,6 +82,8 @@ export default function ClientWrapper() {
                 src="/final-step.png"
                 alt="final-step.png"
                 fill
+                sizes="64px"
+                quality={70}
                 className="object-fill"
               />
             </div>

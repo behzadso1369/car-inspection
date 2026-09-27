@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 
 const ENAMAD_HREF =
-  "https://trustseal.enamad.ir/?id=682294&Code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD";
+  "https://trustseal.enamad.ir/?id=682294&code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD";
 const ENAMAD_SRC =
-  "https://trustseal.enamad.ir/logo.aspx?id=682294&Code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD";
+  "https://trustseal.enamad.ir/logo.aspx?id=682294&code=2SthnI2hgSdKSbpaD83fP1MtRtbLB1wD";
 
 export function EnamadBadge() {
   const [shouldLoad, setShouldLoad] = useState(false);
@@ -32,10 +32,13 @@ export function EnamadBadge() {
     };
   }, []);
 
+  const boxStyle = { width: 125, height: 125, display: "block" as const };
+
   if (!shouldLoad) {
     return (
       <div
         className="h-[125px] w-[125px]"
+        style={boxStyle}
         aria-hidden="true"
       />
     );
@@ -48,6 +51,7 @@ export function EnamadBadge() {
       rel="noopener noreferrer"
       referrerPolicy="origin"
       aria-label="نماد اعتماد الکترونیکی"
+      style={boxStyle}
     >
       {/* Enamad requires their hosted badge; load after idle so it stays off the critical path. */}
       <img
@@ -58,7 +62,7 @@ export function EnamadBadge() {
         loading="lazy"
         decoding="async"
         referrerPolicy="origin"
-        style={{ cursor: "pointer" }}
+        style={{ ...boxStyle, cursor: "pointer" }}
       />
     </a>
   );
