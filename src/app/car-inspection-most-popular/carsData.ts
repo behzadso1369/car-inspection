@@ -10,6 +10,7 @@
 
 import peugeot206Page from "./content/peugeot-206.json";
 import jacS5Page from "./content/jac-s5.json";
+import tiggo8ProMaxPage from "./content/tiggo-8-pro-max.json";
 
 export interface CarFaq {
   question: string;
@@ -1651,32 +1652,50 @@ export const CARS: CarInfo[] = [
     slug: "tiggo-8-pro-max",
     name: "چری تیگو ۸ پرو مکس",
     brand: "مدیران‌خودرو",
-    tagline: "نسخه فول‌آپشن تیگو ۸ با موتور قوی‌تر و امکانات بیشتر",
-    image: "/cars/tiggo-8-pro-max.jpg",
-    intro:
-      "تیگو ۸ پرو مکس نسخه پیشرفته و فول‌آپشن تیگو ۸ با موتور توربو قوی‌تر، امکانات لوکس بیشتر و کیفیت بالاتر است. بررسی سلامت گیربکس و سیستم‌های الکترونیکی پیشرفته اهمیت زیادی دارد.",
+    tagline: "کراس‌اوور هفت‌نفره با موتور توربو، گیربکس DCT و سیستم AWD",
+    image: "/cars/tiggo-8-promax.webp",
+    heroPng: true,
+    inspectionSearchTerm: "تیگو 8 پرو مکس",
+    aparatVideoHash: "emaqdb4",
+    aparatVideoTitle: "کارشناسی تیگو ۸ پرو مکس | کارشناسی واقعی رنگ و بدنه",
+    aparatThumbnailUrl:
+      "https://static.cdn.asset.aparat.cloud/avt/73375275-7380-l__5747.jpg",
+    aparatUploadDate: "2026-09-20T17:41:30+03:30",
+    seoTitle: tiggo8ProMaxPage.seoTitle,
+    seoDescription: tiggo8ProMaxPage.seoDescription,
+    ogImage: tiggo8ProMaxPage.ogImage,
+    contentImage: tiggo8ProMaxPage.contentImage,
+    contentImageAlt: tiggo8ProMaxPage.contentImageAlt,
+    articleIntro: tiggo8ProMaxPage.articleIntro,
+    articleSections: tiggo8ProMaxPage.sections as CarArticleSection[],
+    faqs: tiggo8ProMaxPage.faqs,
+    faqTitle: tiggo8ProMaxPage.faqTitle,
+    quickAnswerTitle: tiggo8ProMaxPage.quickAnswerTitle,
+    quickAnswer: tiggo8ProMaxPage.quickAnswer,
+    intro: tiggo8ProMaxPage.articleIntro[0],
     pros: [
-      "موتور توربو قدرتمندتر",
-      "امکانات لوکس و فناوری بسیار کامل",
-      "کیفیت ساخت و کابین بالا",
-      "فضای داخلی وسیع",
+      "موتور ۲ لیتری توربو قدرتمند",
+      "سیستم چهارچرخ محرک AWD",
+      "کابین جادار و ظرفیت هفت‌نفره",
+      "امکانات رفاهی و ایمنی کامل",
     ],
     cons: [
-      "قیمت و هزینه نگهداری بالا",
-      "مصرف سوخت بالا",
-      "قطعات گران و نسبتاً کمیاب",
-      "افت ارزش",
+      "حساسیت پیشرانه به کیفیت سوخت",
+      "مصرف واقعی نسبتاً بالا",
+      "پیچیدگی فنی و هزینه بالای تعمیرات",
+      "کیفیت رنگ و حساسیت تجهیزات الکترونیکی",
     ],
     inspectionPoints: [
-      "تست گیربکس و توربو قدرتمند",
-      "بررسی سیستم‌های کمک‌راننده پیشرفته",
-      "کنترل خنک‌کاری و نشتی‌ها",
-      "بررسی رنگ و اصالت بدنه",
+      "استارت سرد، توربو، نشتی‌ها و دیاگ موتور",
+      "تست گیربکس Wet DCT در شروع حرکت و شتاب‌گیری",
+      "بررسی سیستم AWD، جلوبندی و ترمز",
+      "کارشناسی رنگ، بدنه، شاسی و تجهیزات ADAS",
     ],
     keywords: [
       "کارشناسی تیگو 8 پرو مکس",
       "معایب تیگو 8 پرو مکس",
       "مزایای تیگو 8 پرو مکس",
+      "مشکلات تیگو 8 پرو مکس",
       "کارشناسی تیگو 8 مکس",
       "قیمت کارشناسی تیگو 8 پرو مکس",
     ],
@@ -3539,3 +3558,18 @@ export const CARS: CarInfo[] = [
 export function getCarBySlug(slug: string): CarInfo | undefined {
   return CARS.find((car) => car.slug === slug);
 }
+
+/** خودروهایی که فعلاً در صفحهٔ فهرست نمایش داده می‌شوند */
+export const FEATURED_CAR_SLUGS = [
+  "peugeot-206",
+  "jac-s5",
+  "tiggo-8-pro-max",
+] as const;
+
+export const FEATURED_CARS: CarInfo[] = FEATURED_CAR_SLUGS.map((slug) => {
+  const car = getCarBySlug(slug);
+  if (!car) {
+    throw new Error(`FEATURED_CAR_SLUGS: خودرو با اسلاگ «${slug}» پیدا نشد`);
+  }
+  return car;
+});

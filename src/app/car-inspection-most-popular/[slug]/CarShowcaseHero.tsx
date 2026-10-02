@@ -92,7 +92,7 @@ function InspectionBox({
           </p>
         ))}
       </div>
-      <div className={`flex flex-col gap-2 ${compact ? "mt-2 lg:mt-3" : "mt-4"}`}>
+      <div id="car-cta-anchor" className={`flex flex-col gap-2 ${compact ? "mt-2 lg:mt-3" : "mt-4"}`}>
         <InspectCtaButton
           carName={name}
           searchTerm={searchTerm}

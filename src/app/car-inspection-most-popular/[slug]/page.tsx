@@ -14,6 +14,7 @@ import InspectCtaButton from "./InspectCtaButton";
 import PriceEstimateCtaButton from "./PriceEstimateCtaButton";
 import AparatVideoEmbed from "./AparatVideoEmbed";
 import CarArticle from "./CarArticle";
+import StickyCarCtaBar from "./StickyCarCtaBar";
 
 // اسلاگ‌های داخل CARS در بیلد استاتیک می‌شوند؛ اسلاگ نامعتبر در خود صفحه notFound می‌شود.
 // false در dev + webpack همهٔ [slug]ها را 404 می‌کرد.
@@ -221,7 +222,7 @@ export default async function CarInspectionPage({
                   <p className="text-[#55565A] leading-8 text-sm md:text-base mb-5">
                     {car.intro}
                   </p>
-                  <div className="flex flex-col gap-2">
+                  <div id="car-cta-anchor" className="flex flex-col gap-2">
                     <InspectCtaButton
                       carName={car.name}
                       searchTerm={car.inspectionSearchTerm}
@@ -343,6 +344,13 @@ export default async function CarInspectionPage({
         </div>
         </div>
       </div>
+
+      <StickyCarCtaBar
+        carName={car.name}
+        searchTerm={car.inspectionSearchTerm}
+        carGroupId={car.inspectionCarGroupId}
+        carGroupName={car.inspectionCarGroupName}
+      />
     </div>
   );
 }

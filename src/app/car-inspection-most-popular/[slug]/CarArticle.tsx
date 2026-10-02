@@ -7,10 +7,14 @@ import InspectCtaButton from "./InspectCtaButton";
 const ARTICLE_LINKS: { needle: string; href: string }[] = [
   { needle: "محاسبه قیمت خودرو رایگان", href: "/car-price" },
   { needle: "محاسبه قیمت خودرو کارکرده", href: "/car-price" },
+  { needle: "قیمت‌گذاری خودرو", href: "/car-price" },
+  { needle: "کارشناسی خودرو در محل", href: "/car-inspection" },
   { needle: "کارشناسی خودرو در تهران", href: "/car-inspection-tehran" },
   { needle: "ویدیوی کارشناسی خودرو ۲۰۶", href: "#inspection-video" },
   { needle: "ویدیوی کارشناسی خودرو 206", href: "#inspection-video" },
   { needle: "ویدیوی کارشناسی جک S5", href: "#inspection-video" },
+  { needle: "ویدیوی کارشناسی تیگو ۸ پرو مکس", href: "#inspection-video" },
+  { needle: "ویدیوی کارشناسی تیگو 8 پرو مکس", href: "#inspection-video" },
   { needle: "نشانه‌های شاسی ضربه‌خورده", href: "/blog" },
   { needle: "راهنمای تشخیص کیلومتر واقعی خودرو", href: "/blog" },
 ];

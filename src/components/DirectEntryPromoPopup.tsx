@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { DiscountTag01Icon } from "hugeicons-react";
+import { DiscountTag01Icon, GiftIcon } from "hugeicons-react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,16 +17,17 @@ import { WalletIcon } from "@/components/WalletIcon";
 const enterList = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.12, delayChildren: 0.08 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.06 },
   },
 };
 
 const enterItem = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 18, scale: 0.97 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] as const },
+    scale: 1,
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -137,91 +138,145 @@ export function DirectEntryPromoPopup() {
       <DialogContent
         showCloseButton={false}
         aria-describedby="direct-entry-promo-desc"
-        className="w-[calc(100%-2rem)] max-w-[23.5rem] gap-0 overflow-hidden rounded-[1.75rem] border border-[#E4E9F2] bg-white p-0 font-IranSans shadow-[0_18px_40px_rgba(16,17,23,0.1)]"
+        className="promo-popup-shell w-[calc(100%-2rem)] max-w-[24rem] gap-0 overflow-hidden rounded-[1.85rem] border-0 bg-transparent p-0 font-IranSans shadow-none"
       >
         <button
           type="button"
           onClick={close}
-          className="absolute top-3 left-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 text-[#5B6475] backdrop-blur-sm transition-colors hover:bg-white hover:text-[#101117] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3456bb]/40"
+          className="absolute top-3 left-3 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#5B6475] shadow-sm backdrop-blur-sm transition-colors hover:bg-white hover:text-[#101117] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3456bb]/40"
           aria-label="بستن"
         >
           <X size={18} strokeWidth={2} />
         </button>
 
-        <div className="relative overflow-hidden bg-gradient-to-b from-[#F5F7FB] via-white to-white px-5 pb-5 pt-10 sm:px-6">
-          <div className="pointer-events-none absolute -top-20 left-1/2 h-36 w-36 -translate-x-1/2 rounded-full bg-[#3456bb]/8 blur-3xl" />
-
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={enterList}
-            className="relative text-center"
-          >
-            <motion.p
-              variants={enterItem}
-              className="text-[11px] font-bold tracking-wide text-[#3456bb]"
-            >
-              پیشنهاد ویژه کارماچک
-            </motion.p>
-            <DialogTitle className="sr-only">
-              ۱ میلیون تومان تخفیف کارشناسی و هدیه کیف پول
-            </DialogTitle>
-            <DialogDescription id="direct-entry-promo-desc" className="sr-only">
-              کارشناسی را الان رزرو کنید تا یک میلیون تومان تخفیف و هدیه کیف پول روی سفارشتان اعمال شود.
-            </DialogDescription>
-
-            <motion.div variants={enterItem} className="promo-popup-offer mt-4">
-              <div className="relative overflow-hidden rounded-2xl border border-[#DDE6FF] bg-gradient-to-b from-[#F8FAFF] to-[#EEF2FD] px-4 py-4 shadow-[0_8px_20px_rgba(52,86,187,0.08)]">
-                <div className="promo-popup-shine pointer-events-none absolute inset-0" />
-                <div className="relative flex items-center justify-center gap-2 text-[11px] font-medium text-[#5A6B8C]">
-                  <DiscountTag01Icon size={16} />
-                  تخفیف کارشناسی
-                </div>
-                <p className="relative mt-1.5 text-[1.75rem] font-extrabold leading-none tracking-tight text-[#3456bb]">
-                  ۱ میلیون تومان
-                </p>
-              </div>
-            </motion.div>
+        <div className="relative overflow-hidden rounded-[1.85rem] border border-[#C8D6FF] bg-white shadow-[0_28px_64px_rgba(28,52,120,0.28)]">
+          <div className="promo-popup-hero relative overflow-hidden px-5 pb-5 pt-9 sm:px-6">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.22)_0%,_transparent_55%)]" />
+            <div className="promo-popup-orb promo-popup-orb-a pointer-events-none absolute -top-10 -right-8 h-36 w-36 rounded-full bg-[#7B9BFF]/35 blur-2xl" />
+            <div className="promo-popup-orb promo-popup-orb-b pointer-events-none absolute -bottom-12 -left-10 h-40 w-40 rounded-full bg-[#22C55E]/25 blur-2xl" />
 
             <motion.div
-              variants={enterItem}
-              className="mt-2 flex items-center gap-3 rounded-2xl border border-[#E4E9F2] bg-[#FAFBFE] px-3.5 py-3 text-right"
+              initial="hidden"
+              animate="show"
+              variants={enterList}
+              className="relative text-center"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF2FD] text-[#3456bb]">
-                <WalletIcon size={22} />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold text-[#101117]">هدیه کیف پول</p>
-                <p className="mt-0.5 text-[12px] leading-5 text-[#55565A]">
-                  شارژ هدیه همراه با رزرو کارشناسی
-                </p>
-              </div>
-            </motion.div>
+              <motion.div
+                variants={enterItem}
+                className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-white shadow-[0_8px_24px_rgba(0,0,0,0.18)] ring-1 ring-white/25 backdrop-blur-sm"
+              >
+                <GiftIcon size={28} className="promo-popup-gift-icon" />
+              </motion.div>
 
-            <motion.p
-              variants={enterItem}
-              className="mx-auto mt-4 max-w-[18rem] text-[13px] leading-7 text-[#55565A]"
+              <motion.p
+                variants={enterItem}
+                className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-extrabold tracking-wide text-white ring-1 ring-white/20"
+              >
+                <span className="promo-popup-dot inline-block h-1.5 w-1.5 rounded-full bg-[#86EFAC]" />
+                پیشنهاد ویژه کارماچک
+              </motion.p>
+
+              <DialogTitle className="sr-only">
+                ۱ میلیون تومان تخفیف کارشناسی و هدیه کیف پول
+              </DialogTitle>
+              <DialogDescription id="direct-entry-promo-desc" className="sr-only">
+                کارشناسی را الان رزرو کنید تا یک میلیون تومان تخفیف و هدیه کیف پول
+                روی سفارشتان اعمال شود.
+              </DialogDescription>
+
+              <motion.h2
+                variants={enterItem}
+                className="mt-3 text-[1.35rem] font-black leading-9 text-white sm:text-[1.45rem]"
+              >
+                تخفیف +{" "}
+                <span className="underline decoration-[#86EFAC] decoration-2 underline-offset-4">
+                  هدیه کیف پول
+                </span>
+              </motion.h2>
+              <motion.p
+                variants={enterItem}
+                className="mx-auto mt-1.5 max-w-[19rem] text-[13px] font-medium leading-6 text-white/85"
+              >
+                با رزرو کارشناسی همین حالا، هر دو پیشنهاد روی سفارشتان اعمال می‌شود.
+              </motion.p>
+            </motion.div>
+          </div>
+
+          <div className="relative bg-gradient-to-b from-[#F7FAFF] to-white px-5 pb-5 pt-4 sm:px-6">
+            <motion.div
+              initial="hidden"
+              animate="show"
+              variants={enterList}
+              className="space-y-2.5"
             >
-              هر دو پیشنهاد فقط با رزرو همین حالا روی سفارشتان اعمال می‌شود.
-            </motion.p>
+              <motion.div variants={enterItem} className="promo-popup-offer">
+                <div className="relative overflow-hidden rounded-2xl border border-[#BFD0FF] bg-gradient-to-l from-[#EEF3FF] via-white to-[#F8FAFF] px-4 py-3.5 shadow-[0_10px_28px_rgba(52,86,187,0.12)]">
+                  <div className="promo-popup-shine pointer-events-none absolute inset-0" />
+                  <div className="relative flex items-center gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#3456bb] text-white shadow-[0_8px_18px_rgba(52,86,187,0.35)]">
+                      <DiscountTag01Icon size={22} />
+                    </div>
+                    <div className="min-w-0 flex-1 text-right">
+                      <p className="text-[11px] font-bold text-[#5A6B8C]">
+                        تخفیف کارشناسی
+                      </p>
+                      <p className="mt-0.5 text-[1.35rem] font-black leading-none tracking-tight text-[#3456bb]">
+                        ۱ میلیون تومان
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
 
-            <motion.div variants={enterItem}>
-              <Button
-                type="button"
-                onClick={goReserve}
-                className="promo-popup-cta mt-5 h-12 w-full rounded-xl bg-[#3456bb] text-base font-bold text-white hover:bg-[#2d4aa3]"
-              >
-                رزرو با تخفیف و هدیه
-              </Button>
-              <button
-                type="button"
-                onClick={close}
-                className="mt-1.5 w-full py-2 text-[13px] text-[#8A8B90] transition-colors hover:text-[#101117]"
-              >
-                بعداً
-              </button>
+              <motion.div variants={enterItem} className="promo-popup-wallet">
+                <div className="relative overflow-hidden rounded-2xl border-2 border-[#4ADE80] bg-gradient-to-l from-[#ECFDF5] via-[#D1FAE5] to-[#F0FDF4] px-4 py-3.5 shadow-[0_12px_32px_rgba(22,163,74,0.18)]">
+                  <div className="promo-popup-wallet-shine pointer-events-none absolute inset-0" />
+                  <span
+                    aria-hidden
+                    className="promo-popup-sparkle absolute top-2 left-3 text-sm text-[#16A34A]"
+                  >
+                    ✦
+                  </span>
+                  <span
+                    aria-hidden
+                    className="promo-popup-sparkle promo-popup-sparkle-delay absolute bottom-2 right-3 text-[10px] text-[#22C55E]"
+                  >
+                    ✦
+                  </span>
+                  <div className="relative flex items-center gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#16A34A] text-white shadow-[0_8px_18px_rgba(22,163,74,0.35)]">
+                      <WalletIcon size={22} />
+                    </div>
+                    <div className="min-w-0 flex-1 text-right">
+                      <p className="text-[15px] font-black leading-6 text-[#14532D]">
+                        هدیه کیف پول
+                      </p>
+                      <p className="mt-0.5 text-[12px] font-bold leading-5 text-[#166534]">
+                        شارژ هدیه همراه با رزرو کارشناسی
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div variants={enterItem}>
+                <Button
+                  type="button"
+                  onClick={goReserve}
+                  className="promo-popup-cta mt-2 h-12 w-full rounded-xl bg-gradient-to-l from-[#2A4BB0] to-[#416CEA] text-base font-extrabold text-white shadow-[0_12px_28px_rgba(52,86,187,0.35)] hover:from-[#243f96] hover:to-[#3456bb]"
+                >
+                  رزرو با تخفیف و هدیه کیف پول
+                </Button>
+                <button
+                  type="button"
+                  onClick={close}
+                  className="mt-1.5 w-full py-2 text-[13px] font-medium text-[#8A8B90] transition-colors hover:text-[#101117]"
+                >
+                  بعداً
+                </button>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
