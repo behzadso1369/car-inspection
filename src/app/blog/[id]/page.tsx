@@ -5,6 +5,11 @@ import { ApiHelper } from "@/helper/api-request";
 import { serverFetch } from "@/helper/server-fetcher";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo";
+import {
+  htmlContainsSchemaOrg,
+  normalizeJsonLdItems,
+  parseBlogSchemaFromApi,
+} from "@/lib/blog-schema";
 import { processBlogContent } from "@/lib/blog-content";
 import { getReadingTime } from "@/lib/reading-time";
 import { BlogDetailClient } from "./BlogDetailClient";
@@ -183,17 +188,34 @@ export default async function BlogDetailPage({ params }: Props) {
     : undefined;
   const readingTime = getReadingTime(blogData.Content ?? "");
 
-  const articleSchema = generateArticleSchema({
-    title,
-    description,
-    path: `/blog/${slug}`,
-    datePublished:
-      blogData.CreatedDate ?? blogData.CreatedOn ?? new Date().toISOString(),
-    dateModified:
-      blogData.ModifiedDate ?? blogData.CreatedDate ?? blogData.CreatedOn,
-    image,
-    timeRequiredMinutes: readingTime,
-  });
+  const contentHtml = blogData.Content ?? "";
+  const contentHasSchema = htmlContainsSchemaOrg(contentHtml);
+
+  let articleJsonLd: Array<Record<string, unknown>> = [];
+  if (!contentHasSchema) {
+    const apiSchema = parseBlogSchemaFromApi(blogData);
+    if (apiSchema) {
+      articleJsonLd = normalizeJsonLdItems(apiSchema);
+    } else {
+      articleJsonLd = [
+        generateArticleSchema({
+          title,
+          description,
+          path: `/blog/${slug}`,
+          datePublished:
+            blogData.CreatedDate ??
+            blogData.CreatedOn ??
+            new Date().toISOString(),
+          dateModified:
+            blogData.ModifiedDate ??
+            blogData.CreatedDate ??
+            blogData.CreatedOn,
+          image,
+          timeRequiredMinutes: readingTime,
+        }),
+      ];
+    }
+  }
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "خانه", path: "/" },
@@ -220,7 +242,7 @@ export default async function BlogDetailPage({ params }: Props) {
     <>
       <JsonLd
         data={[
-          articleSchema,
+          ...articleJsonLd,
           breadcrumbSchema,
           ...(relatedListSchema ? [relatedListSchema] : []),
         ]}

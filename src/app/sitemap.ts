@@ -84,6 +84,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       'monthly',
       0.8,
     ),
+    urlEntry(
+      '/car-inspection-most-popular/shahin',
+      parseDate(CARS_LASTMOD),
+      'monthly',
+      0.8,
+    ),
   ];
 
   const localRoutes: MetadataRoute.Sitemap = [

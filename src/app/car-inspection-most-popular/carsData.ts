@@ -11,6 +11,7 @@
 import peugeot206Page from "./content/peugeot-206.json";
 import jacS5Page from "./content/jac-s5.json";
 import tiggo8ProMaxPage from "./content/tiggo-8-pro-max.json";
+import shahinPage from "./content/shahin.json";
 
 export interface CarFaq {
   question: string;
@@ -270,33 +271,50 @@ export const CARS: CarInfo[] = [
     slug: "shahin",
     name: "شاهین",
     brand: "سایپا",
-    tagline: "سدان مدرن سایپا با مصرف بهینه و طراحی جوان‌پسند",
-    image: "/cars/shahin.jpg",
-    intro:
-      "شاهین محصول شاخص سایپا بر پایه‌ی پلتفرم SP100 است که با طراحی مدرن، مصرف سوخت بهینه و ظاهر جوان‌پسند توانسته جایگاه خوبی در بازار پیدا کند. بررسی سلامت موتور و سیستم تعلیق این خودرو پیش از خرید توصیه می‌شود.",
+    tagline: "سدان SP100 با موتور توربو M15TC یا نسخه پلاس ME16",
+    image: "/cars/shahin.png",
+    heroPng: true,
+    inspectionSearchTerm: "شاهین",
+    aparatVideoHash: "pwx7637",
+    aparatVideoTitle: "معایب شاهین | بررسی رنگ، موتور و نکات کارشناسی",
+    aparatThumbnailUrl: "/cars/shahin-aparat.jpg",
+    aparatUploadDate: "2026-10-08T16:17:58+03:30",
+    seoTitle: shahinPage.seoTitle,
+    seoDescription: shahinPage.seoDescription,
+    ogImage: shahinPage.ogImage,
+    contentImage: shahinPage.contentImage,
+    contentImageAlt: shahinPage.contentImageAlt,
+    articleIntro: shahinPage.articleIntro,
+    articleSections: shahinPage.sections as CarArticleSection[],
+    faqs: shahinPage.faqs,
+    faqTitle: shahinPage.faqTitle,
+    quickAnswerTitle: shahinPage.quickAnswerTitle,
+    quickAnswer: shahinPage.quickAnswer,
+    intro: shahinPage.articleIntro[0],
     pros: [
-      "طراحی خارجی و داخلی مدرن و جذاب",
-      "مصرف سوخت بهینه",
-      "فضای داخلی و صندوق مناسب",
-      "کیفیت ساخت بهتر نسبت به محصولات قدیمی سایپا",
+      "طراحی به‌روزتر از محصولات قدیمی سایپا",
+      "گشتاور مناسب موتور توربو در دور پایین",
+      "کابین و صندوق قابل استفاده خانوادگی",
+      "تنوع تیپ دستی، CVT و پلاس",
     ],
     cons: [
-      "شتاب و قدرت موتور متوسط",
-      "کیفیت برخی قطعات پلاستیکی کابین",
-      "احتمال صدای اضافی از تعلیق در دست‌اندازها",
-      "خدمات پس از فروش متغیر",
+      "حساسیت موتور هشت‌سوپاپ توربو به نگهداری",
+      "صدای پیشرانه توربو داخل کابین",
+      "هزینه بالقوه تعمیر گیربکس CVT",
+      "صدای جلوبندی و کیفیت برخی قطعات کابین",
     ],
     inspectionPoints: [
-      "بررسی سلامت موتور و سیستم انژکتور",
-      "کنترل صدا و سلامت سیستم تعلیق",
-      "تست سیستم برق و امکانات رفاهی",
-      "بررسی رنگ‌شدگی و تصادف بدنه",
+      "تشخیص تیپ: M15TC توربو یا ME16 پلاس",
+      "استارت سرد، نشتی توربو و دیاگ موتور",
+      "تست گیربکس دستی، CVT یا اتوماتیک پلاس",
+      "جلوبندی، کولر، رنگ، بدنه و شاسی",
     ],
     keywords: [
       "کارشناسی شاهین",
       "معایب شاهین",
       "مزایای شاهین",
       "کارشناسی شاهین سایپا",
+      "مشکلات شاهین",
       "قیمت کارشناسی شاهین",
     ],
   },
@@ -3564,6 +3582,7 @@ export const FEATURED_CAR_SLUGS = [
   "peugeot-206",
   "jac-s5",
   "tiggo-8-pro-max",
+  "shahin",
 ] as const;
 
 export const FEATURED_CARS: CarInfo[] = FEATURED_CAR_SLUGS.map((slug) => {

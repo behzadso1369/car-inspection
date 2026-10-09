@@ -116,7 +116,9 @@ export default async function CarInspectionPage({
       "@type": "VideoObject",
       name: car.aparatVideoTitle,
       description: `ویدیوی نکات کارشناسی ${car.name} پیش از خرید، از کارماچک.`,
-      thumbnailUrl: car.aparatThumbnailUrl,
+      thumbnailUrl: car.aparatThumbnailUrl.startsWith("http")
+        ? car.aparatThumbnailUrl
+        : `${BASE_URL}${car.aparatThumbnailUrl}`,
       uploadDate: car.aparatUploadDate,
       embedUrl: `https://www.aparat.com/video/video/embed/videohash/${car.aparatVideoHash}/vt/frame`,
       contentUrl: `https://www.aparat.com/v/${car.aparatVideoHash}`,
@@ -173,9 +175,11 @@ export default async function CarInspectionPage({
             imageAlt={
               car.slug === "peugeot-206"
                 ? "پژو ۲۰۶ اسپرت خاکستری مات، نمای سه رخ جلو"
-                : car.slug === "jac-s5"
+                :               car.slug === "jac-s5"
                   ? "جک S5 خاکستری، نمای سه رخ جلو"
-                  : `عکس ${car.name}، نمای سه رخ جلو`
+                  : car.slug === "shahin"
+                    ? "سایپا شاهین سفید، نمای سه رخ جلو"
+                    : `عکس ${car.name}، نمای سه رخ جلو`
             }
             searchTerm={car.inspectionSearchTerm}
             carGroupId={car.inspectionCarGroupId}
