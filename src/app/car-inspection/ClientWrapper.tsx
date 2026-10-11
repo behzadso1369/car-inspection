@@ -91,15 +91,18 @@ export default function ClientWrapper({
   };
 
   return (
-    <div className="bg-white font-IranSans">
+    <main className="bg-white font-IranSans">
       <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10">
         <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">
-          <h1 className="text-black text-lg my-2 font-medium">
-            کارشناسی خودرو در محل
+          <h1 className="text-black text-lg my-2 font-bold lg:text-xl">
+            کارشناسی خودرو در محل تهران
           </h1>
-          <h2 className="text-[#55565A] font-light text-base">
-            جهت شروع فرآیند کارشناسی اطلاعات زیر را وارد کنید.
+          <h2 className="text-black text-base my-2 font-medium">
+            ثبت درخواست کارشناسی خودرو
           </h2>
+          <p className="text-[#55565A] font-light text-sm leading-7 lg:text-base">
+            جهت شروع فرآیند کارشناسی، گروه خودرو را انتخاب کنید.
+          </p>
           {/* <h1 className="text-black text-lg my-2 font-bold leading-8 lg:text-xl">
             کارشناسی خودرو در محل
           </h1> */}
@@ -126,9 +129,9 @@ export default function ClientWrapper({
             </div>
 
             <div>
-              <h2 className="text-base text-black my-2 font-medium">
+              <p className="text-base text-black my-2 font-medium">
                 مرحله اول: مشخصات اولیه خودرو
-              </h2>
+              </p>
               <p className="text-[#55565A] font-light text-sm">
                 بعدی: انتخاب روش کارشناسی
               </p>
@@ -143,23 +146,26 @@ export default function ClientWrapper({
               moveToInspectionMethod={moveToInspectionMethod}
             />
           </Dialog>
-          <Label onClick={() => setOpenModal(true)} className="my-2">
-            نام خودرو
-          </Label>
-          <Input
-            onClick={() => setOpenModal(true)}
-            value={inputValue.name}
-            readOnly
-            placeholder="نام خودرو را انتخاب کنید"
-            className="items-center !py-4 border w-full border-[#DFDFDF] rounded-full text-[#55565A] text-base h-11"
-          />
+          <fieldset className="mt-2 border-0 p-0">
+            <legend className="sr-only">انتخاب گروه خودرو</legend>
+            <Label onClick={() => setOpenModal(true)} className="my-2">
+              نام خودرو
+            </Label>
+            <Input
+              onClick={() => setOpenModal(true)}
+              value={inputValue.name}
+              readOnly
+              placeholder="نام خودرو را انتخاب کنید"
+              className="items-center !py-4 border w-full border-[#DFDFDF] rounded-full text-[#55565A] text-base h-11"
+            />
+          </fieldset>
 
           <Button
             onClick={() => moveToInspectionMethod()}
             disabled={isPending}
             className="bg-[#416CEA] text-white w-full h-11 rounded-3xl mt-4 disabled:opacity-50"
           >
-            {isPending ? "در حال انتقال..." : "رزرو کارشناسی"}
+            {isPending ? "در حال انتقال..." : "ادامه و انتخاب روش کارشناسی"}
           </Button>
         </div>
       </div>
@@ -179,9 +185,9 @@ export default function ClientWrapper({
           </div>
         </div>
         <div className="mt-24 lg:mt-14 px-4 lg:px-24 text-white w-full lg:w-1/2">
-          <h2 className="text-lg font-medium">
+          <p className="text-lg font-medium">
             کارشناسی خودرو در محل با کارماچک
-          </h2>
+          </p>
           <p className="text-base leading-8">
             کارشناس ما به آدرس شما در تهران و شرق تهران اعزام می‌شود و بدون نیاز
             به جابه‌جایی خودرو، موارد زیر را بررسی می‌کند:
@@ -220,9 +226,9 @@ export default function ClientWrapper({
       </div>
 
       <div className="px-4 py-16 font-medium" ref={ref}>
-        <h2 className="font-bold w-full text-center">
+        <p className="font-bold w-full text-center text-lg">
           اعزام کارشناس به محل شما
-        </h2>
+        </p>
         <div className="mx-auto mt-4 grid w-full max-w-6xl gap-4 md:grid-cols-3">
           <div className="rounded-3xl border border-[#DCDCDC] px-4 py-5 shadow-[8px_4px_24px_0px_#EAEAEA40]">
             <h3 className="text-sm font-semibold text-[#101117]">
@@ -261,9 +267,9 @@ export default function ClientWrapper({
       </div>
 
       <div className="bg-[#F0F2F4] py-16 lg:pt-12 flex flex-wrap justify-center relative px-4 lg:px-96">
-        <h2 className="font-bold bg-[#F0F2F4] py-4 z-10">
+        <p className="font-bold bg-[#F0F2F4] py-4 z-10 text-center text-lg">
           فرآیند انجام کارشناسی
-        </h2>
+        </p>
         <div className="w-full my-4">
           <div className="flex flex-col w-2/5 pl-5">
             <span className="text-sm text-[#101117] lg:text-2xl">
@@ -332,6 +338,6 @@ export default function ClientWrapper({
         <NavigationBar activePath="/car-inspection" />
       </div>
       {/* <Footer /> */}
-    </div>
+    </main>
   );
 }

@@ -18,8 +18,9 @@ export const revalidate = 600; // 10 minutes
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: "کارماچک | کارشناسی خودرو شرق تهران، تهرانپارس، نارمک و رسالت",
-  description: "کارشناسی خودرو در محل، شرق تهران (تهرانپارس، نارمک، رسالت، فرجام) و سراسر تهران | ۹۰٪ دقت، بیش از ۲۵ هزار کارشناسی موفق | گزارش فوری",
+  title: "کارماچک | کارشناسی خودرو در تهران و شرق تهران",
+  description:
+    "کارشناسی خودرو در محل و مرکز شرق تهران؛ رزرو آنلاین، بررسی فنی و رنگ و بدنه و گزارش شفاف. تهرانپارس، نارمک، رسالت و سایر مناطق.",
   keywords: [
     "کارشناسی خودرو",
     "کارشناسی ماشین",
@@ -43,8 +44,9 @@ export const metadata: Metadata = {
     canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com",
   },
   openGraph: {
-    title: "کارماچک | کارشناسی تخصصی خودرو با کارشناسان مجرب",
-    description: "کارشناسی تخصصی خودرو با ۹۰٪ دقت | بیش از ۲۵ هزار کارشناسی موفق",
+    title: "کارماچک | کارشناسی خودرو در تهران و شرق تهران",
+    description:
+      "کارشناسی خودرو در محل و مرکز شرق تهران؛ رزرو آنلاین و گزارش کارشناسی.",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com",
     siteName: "کارماچک",
     locale: "fa_IR",
@@ -117,7 +119,7 @@ export default async function Home() {
       {/* بخش سئوی محلی: مناطق تحت پوشش شرق تهران */}
       <section className="font-IranSans max-w-6xl mx-auto px-4 py-10" dir="rtl">
         <h2 className="text-lg lg:text-2xl font-bold text-[#1E2A38] text-center">
-          کارشناسی خودرو در شرق تهران
+          پوشش کارشناسی در محل در تهران و شرق تهران
         </h2>
         <p className="mt-3 text-center text-[#6B6C70] leading-8 max-w-3xl mx-auto text-sm lg:text-base">
           کارماچک خدمات <strong>کارشناسی خودرو در محل</strong> و{" "}

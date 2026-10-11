@@ -296,6 +296,18 @@ export default function CarPricingSeoContent({
             </Link>{" "}
             با خیالی راحت‌تر خودروی موردنظرتان را معامله کنید.
           </p>
+
+          <h2 className={headingClass}>سوالات متداول محاسبه قیمت خودرو</h2>
+          <div className="mt-4 space-y-6">
+            {faqs.map((faq) => (
+              <section key={faq.question}>
+                <h3 className="text-base font-bold leading-8 text-[#101117] md:text-lg">
+                  {faq.question}
+                </h3>
+                <p className={paragraphClass}>{faq.answer}</p>
+              </section>
+            ))}
+          </div>
         </>
       )}
     </article>

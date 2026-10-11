@@ -13,8 +13,9 @@ export const revalidate = 3600; // 1 hour
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: "درباره کارماچک | ۲۵ سال تجربه در کارشناسی خودرو",
-  description: "کارماچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق انجام داده است. کارشناسان حرفه‌ای و مجرب.",
+  title: "درباره کارماچک | کارشناسی خودرو در تهران",
+  description:
+    "آشنایی با کارماچک، خدمات کارشناسی خودرو در محل و مرکز شرق تهران، تیم کارشناسان و روش ارائه گزارش شفاف پیش از معامله.",
   keywords: [
     "درباره کارماچک",
     "تاریخچه کارماچک",
@@ -29,8 +30,9 @@ export const metadata: Metadata = {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/about-us`,
   },
   openGraph: {
-    title: "درباره کارماچک | ۲۵ سال تجربه در کارشناسی خودرو",
-    description: "کارماچک با بیش از ۲۵ سال تجربه و ۹۰٪ دقت در کارشناسی، بیش از ۲۵ هزار کارشناسی موفق",
+    title: "درباره کارماچک | کارشناسی خودرو در تهران",
+    description:
+      "کارماچک؛ کارشناسی خودرو در محل و مرکز شرق تهران با گزارش شفاف برای خریدار و فروشنده.",
     url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/about-us`,
     siteName: "کارماچک",
     locale: "fa_IR",
@@ -39,8 +41,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "درباره کارماچک | ۲۵ سال تجربه",
-    description: "کارماچک با ۲۵ سال تجربه و ۹۰٪ دقت",
+    title: "درباره کارماچک",
+    description: "تیم و خدمات کارشناسی خودرو کارماچک در تهران",
   },
   robots: {
     index: true,
@@ -70,22 +72,30 @@ export default async function AboutUsPage() {
   const data = await getMasterPageData();
 
   return (
-    <div dir="rtl" className="bg-white font-IranSans w-full">
-      {/* About Us Section */}
+    <main dir="rtl" className="bg-white font-IranSans w-full">
       <section className="px-4 lg:px-16 py-8 lg:py-12">
         <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8 max-w-7xl mx-auto">
-          {/* Image */}
-       
-          
-          {/* Text Content */}
           <div className="w-full lg:w-1/2 flex flex-col">
-            <h2 className="text-2xl lg:text-3xl font-bold mb-6 text-right text-[#101117]">
-              درباره ما
-            </h2>
-            
+            <h1 className="text-2xl lg:text-3xl font-bold mb-6 text-right text-[#101117]">
+              درباره کارماچک
+            </h1>
             <div className="space-y-4 text-right text-gray-700 text-base lg:text-lg leading-8 mb-6">
               <p>
-                ما تیمی با تجربه و کارآمد داریم که با دقت و تعهد کار می‌کنه تا مطمئن بشیم خودروی شما همیشه در بهترین وضعیت ممکن قرار داره. در هر سرویس دوره‌ای چراغ‌ها، سیستم برق و سایر قطعاتی که ممکنه دچار استهلاک بشن رو بررسی می‌کنیم.
+                کارماچک سرویس کارشناسی خودرو در محل و مرکز شرق تهران است. هدف ما
+                این است که پیش از خرید یا فروش، وضعیت واقعی خودرو — از رنگ و بدنه
+                تا بخش‌های فنی — در قالب گزارشی روشن و قابل استفاده در معامله
+                ارائه شود.
+              </p>
+              <p>
+                برای آشنایی با خدمات و مسیر رزرو،{" "}
+                <Link href="/" className="font-semibold text-[#3456bb] hover:underline">
+                  صفحه اصلی کارماچک
+                </Link>{" "}
+                را ببینید یا مستقیماً{" "}
+                <Link href="/car-inspection" className="font-semibold text-[#3456bb] hover:underline">
+                  درخواست کارشناسی
+                </Link>{" "}
+                ثبت کنید.
               </p>
             </div>
             
@@ -117,55 +127,32 @@ export default async function AboutUsPage() {
         </div>
       </section>
 
-      {/* Experience Section */}
       <section className="bg-[#F0F2F4] py-8 lg:py-12 px-4 lg:px-16">
         <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-xl lg:text-3xl font-bold mb-4 text-[#101117]">
-            با بیش از ۲۵ سال تجربه تخصصی در خدمات خودرو
-          </h3>
-          
+          <h2 className="text-xl lg:text-3xl font-bold mb-4 text-[#101117]">
+            تمرکز ما روی کارشناسی قبل از معامله است
+          </h2>
           <p className="text-gray-600 text-base lg:text-lg leading-8 mb-8 max-w-3xl mx-auto">
-            ارزش یعنی خدمت همراه با اعتماد. اعتمادی که مشتریان به شما دارند. اعتمادی که شما به تیم، استراتژی‌ها و سیستم‌های خود دارید و اینکه همیشه مطابق انتظار نتیجه را تحویل دهید.
+            گزارش کارشناسی باید به شما کمک کند بفهمید کدام ایراد اهمیت بیشتری
+            دارد و وضعیت خودرو چه اثری بر قیمت و تصمیم خرید یا فروش می‌گذارد.
           </p>
-          
-          <Link href="/car-inspection" className="bg-[#3456bb] hover:bg-[#3563E9] text-white rounded-3xl px-6 lg:px-36 py-2 lg:py-4 text-lg mb-8">
-            ثبت درخواست
+          <Link href="/car-inspection" className="inline-block bg-[#3456bb] hover:bg-[#3563E9] text-white rounded-3xl px-6 lg:px-36 py-2 lg:py-4 text-lg mb-8">
+            ثبت درخواست کارشناسی
           </Link>
-          
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 text-right">
             <Card className="bg-white rounded-2xl p-6 lg:p-8 border border-gray-200 shadow-sm">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16  flex items-center justify-center mb-4">
-                 <Image src={"/دقت در گزارش.png"} alt="دقت در گزارش" height={62} width={56} />
-                </div>
-                <div className="text-lg lg:text-3xl  text-[#55565A] mb-2">
-                  بیش از 
-                </div>
-                <div className="text-4xl lg:text-3xl font-bold text-[#101117] mb-2">
-                   90% 
-                </div>
-                <div className="text-lg lg:text-base text-[#55565A]">
-                  دقت در گزارش کارشناسی
-                </div>
-              </div>
+              <p className="text-lg font-bold text-[#101117] mb-2">گزارش شفاف</p>
+              <p className="text-[#55565A] leading-7 text-sm lg:text-base">
+                توضیح یافته‌ها به زبان ساده تا بتوانید در مذاکره و تصمیم‌گیری
+                از آن استفاده کنید.
+              </p>
             </Card>
-            
             <Card className="bg-white rounded-2xl p-6 lg:p-8 border border-gray-200 shadow-sm">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 flex items-center justify-center mb-4">
-                 <Image src={"/کارشناسان موفق.png"} alt="کارشناسان موفق" height={62} width={56} />
-                </div>
-                <div className="text-lg lg:text-3xl  text-[#55565A] mb-2">
-                  بیش از 
-                </div>
-                  <div className="text-4xl lg:text-3xl font-bold text-[#101117] mb-2">
-                25000
-                </div>
-                <div className="text-lg lg:text-3xl  text-[#55565A] mb-2">
-                  کارشناسی موفق
-                </div>
-              </div>
+              <p className="text-lg font-bold text-[#101117] mb-2">کارشناسی در محل</p>
+              <p className="text-[#55565A] leading-7 text-sm lg:text-base">
+                اعزام کارشناس به آدرس شما در تهران و شرق تهران، بدون نیاز به
+                جابه‌جایی خودرو.
+              </p>
             </Card>
           </div>
         </div>
@@ -174,12 +161,12 @@ export default async function AboutUsPage() {
       {/* Professional Experts Section */}
       <section className="bg-white text-[#101117] py-12 lg:py-16 px-4 lg:px-16">
         <div className="max-w-6xl mx-auto">
-          <h3 className="text-2xl lg:text-3xl font-bold mb-6 text-center">
-            کارشناسان حرفه ای
-          </h3>
-          
+          <h2 className="text-2xl lg:text-3xl font-bold mb-6 text-center">
+            کارشناسان حرفه‌ای
+          </h2>
           <p className="max-w-3xl mx-auto text-center text-[#101117] text-base lg:text-lg leading-8 mb-12">
-            از مدت‌ها پیش ثابت شده که وقتی یک خواننده به چیدمان و طراحی یک صفحه نگاه می‌کند، محتوای قابل خواندن صفحه او را از تمرکز اصلی‌اش منحرف می‌کند. دلیل استفاده از متن لورم ایپسوم این است که توزیع حروف در آن تقریباً شبیه به یک متن معمولی است.
+            کارشناسی خودرو توسط کارشناسان مجرب انجام می‌شود؛ از بررسی رنگ و بدنه
+            تا بخش‌های فنی متناسب با نوع خدمت انتخابی.
           </p>
           
           <div className="w-full ">
@@ -225,6 +212,6 @@ export default async function AboutUsPage() {
       <div className="block lg:hidden">
         <NavigationBar activePath="/about-us" />
       </div>
-    </div>
+    </main>
   );
 }

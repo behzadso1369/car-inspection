@@ -31,9 +31,9 @@ export function InspectionIntroSection() {
   return (
     <section dir="rtl" className="px-4 py-10 lg:py-12">
       <div className="mx-auto max-w-4xl rounded-[2rem] border border-[#3456bb]/15 bg-gradient-to-b from-[#F8FAFF] to-white p-6 shadow-[0_8px_32px_rgba(53,99,233,0.08)] md:p-8">
-        <h2 className="text-xl font-black text-[#101117] md:text-2xl">
+        <p className="text-xl font-black text-[#101117] md:text-2xl">
           کارشناسی خودرو در محل
-        </h2>
+        </p>
         <p className="mt-4 text-sm leading-8 text-[#55565A] md:text-base">
           برای بررسی خودرو، هم می‌توانید آن را به مرکز کارشناسی در شرق تهران بیاورید
           و هم نیازی به مراجعه حضوری نیست؛ کافی است درخواست دهید تا کارشناس

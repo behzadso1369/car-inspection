@@ -159,7 +159,12 @@ function displayBasePrice(car: NormalizedCar) {
   return car.source === "hamrah" ? car.price + 400000000 : car.price;
 }
 
-export default function CarPriceForm() {
+type CarPriceFormProps = {
+  /** When true, page shell provides `<main>`, H1, and static SEO blocks. */
+  embedded?: boolean;
+};
+
+export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const presetFromUrl = useRef((searchParams.get("car") || "").trim());
@@ -473,17 +478,22 @@ export default function CarPriceForm() {
     </>
   );
 
-  return (
-    <main className="relative min-h-screen bg-[#F3F5F8] font-IranSans pb-24 lg:pb-8" dir="rtl">
-      {/* موبایل: عنوان با اسکرول می‌رود؛ ورودی زیرش می‌چسبد */}
-      <div className="px-3 pt-3 lg:hidden">
-        <h1 className="text-base font-black leading-7 text-gradient">
-          محاسبه قیمت خودرو کارکرده و قیمت‌گذاری آنلاین
-        </h1>
-        <p className="mt-1 text-xs leading-5 text-[#6B6C70]">
-          اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
-        </p>
-      </div>
+  const shellClass = embedded
+    ? "relative font-IranSans"
+    : "relative min-h-screen bg-[#F3F5F8] font-IranSans pb-24 lg:pb-8";
+
+  const content = (
+    <>
+      {!embedded && (
+        <div className="px-3 pt-3 lg:hidden">
+          <h1 className="text-base font-black leading-7 text-gradient">
+            محاسبه قیمت خودرو کارکرده و قیمت‌گذاری آنلاین
+          </h1>
+          <p className="mt-1 text-xs leading-5 text-[#6B6C70]">
+            اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
+          </p>
+        </div>
+      )}
       <div ref={mobilePin.sentinelRef} className="lg:hidden" aria-hidden />
       {mobilePin.pinned && (
         <div className="lg:hidden" style={{ height: mobilePin.frame.height }} aria-hidden />
@@ -510,21 +520,23 @@ export default function CarPriceForm() {
 
       <div className="relative mx-auto max-w-7xl px-3 pt-3 md:px-6 md:pt-6">
         {/* دسکتاپ: هدر کامل */}
-        <header className="mb-6 hidden lg:block">
-          <div className="car-price-progress-track mb-5 h-1.5 max-w-3xl">
-            <div
-              className="car-price-progress-fill h-full"
-              style={{ width: `${progressValue}%` }}
-            />
-          </div>
-          <Badge className="car-price-badge text-xs">کارشناسی هوشمند خودرو</Badge>
-          <h1 className="mt-3 text-3xl font-black leading-[2.75rem] text-gradient">
-            محاسبه قیمت خودرو کارکرده و قیمت‌گذاری آنلاین
-          </h1>
-          <p className="mt-2 text-sm leading-7 text-[#6B6C70]">
-            اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
-          </p>
-        </header>
+        {!embedded && (
+          <header className="mb-6 hidden lg:block">
+            <div className="car-price-progress-track mb-5 h-1.5 max-w-3xl">
+              <div
+                className="car-price-progress-fill h-full"
+                style={{ width: `${progressValue}%` }}
+              />
+            </div>
+            <Badge className="car-price-badge text-xs">کارشناسی هوشمند خودرو</Badge>
+            <h1 className="mt-3 text-3xl font-black leading-[2.75rem] text-gradient">
+              محاسبه قیمت خودرو کارکرده و قیمت‌گذاری آنلاین
+            </h1>
+            <p className="mt-2 text-sm leading-7 text-[#6B6C70]">
+              اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
+            </p>
+          </header>
+        )}
 
         <div className="grid gap-4 lg:grid-cols-12 lg:gap-6">
           {/* دسکتاپ: سایدبار مراحل */}
@@ -628,10 +640,16 @@ export default function CarPriceForm() {
               <CardContent className="space-y-3 p-3 md:space-y-4 md:p-6">
                 {step === "search_car" && (
                   <>
-                    {!query.trim() ? (
+                    {!query.trim() && !embedded ? (
                       <div className="rounded-2xl md:rounded-3xl">
                         <CarPricingSeoContent variant="intro" />
                       </div>
+                    ) : !query.trim() && embedded ? (
+                      <p className="rounded-2xl bg-[#F8FAFF] px-4 py-6 text-sm leading-7 text-[#55565A] md:text-base">
+                        نام خودرو را در کادر جستجو وارد کنید تا مدل را انتخاب
+                        کنید. راهنمای کامل قیمت‌گذاری در پایین همین صفحه آمده
+                        است.
+                      </p>
                     ) : (
                       <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3 md:gap-3">
                         {filteredCars.map((car) => (
@@ -828,23 +846,37 @@ export default function CarPriceForm() {
           </div>
         </div>
 
-        <div className="mt-4 md:mt-6">
-          <CarPricingSeoContent variant="details" />
-        </div>
+        {!embedded && (
+          <div className="mt-4 md:mt-6">
+            <CarPricingSeoContent variant="details" />
+          </div>
+        )}
       </div>
 
-      <FaqPreviewSection
-        title="سوالات متداول محاسبه قیمت خودرو"
-        subtitle="پاسخ سوالات رایج درباره محاسبه قیمت خودرو کارکرده"
-        items={carPriceFaqItems}
-        expandInline
-        showViewAll={false}
-        className="lg:max-w-4xl lg:mx-auto lg:my-8"
-      />
+      {!embedded && (
+        <FaqPreviewSection
+          title="سوالات متداول محاسبه قیمت خودرو"
+          subtitle="پاسخ سوالات رایج درباره محاسبه قیمت خودرو کارکرده"
+          items={carPriceFaqItems}
+          expandInline
+          showViewAll={false}
+          className="lg:max-w-4xl lg:mx-auto lg:my-8"
+        />
+      )}
 
       <div className="block lg:hidden">
         <NavigationBar activePath="/car-price" />
       </div>
+    </>
+  );
+
+  if (embedded) {
+    return <div className={shellClass}>{content}</div>;
+  }
+
+  return (
+    <main className={shellClass} dir="rtl">
+      {content}
     </main>
   );
 }

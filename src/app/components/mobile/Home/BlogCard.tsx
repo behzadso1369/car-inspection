@@ -33,7 +33,11 @@ export const BlogCard = ({Title,ImagePath,Excerpt,Id,Slug}:any) => {
      </div>
 
   <figcaption className="px-4 flex-1 flex flex-col relative mt-6">
-    <h3 className="text-[#101117] text-lg mb-2 line-clamp-2">{Title}</h3>
+    <h3 className="text-[#101117] text-lg mb-2 line-clamp-2">
+      <a href={href} className="hover:text-[#3456bb] transition-colors">
+        {Title}
+      </a>
+    </h3>
     <strong className="text-sm text-[#55565A] font-normal line-clamp-3">{Excerpt}</strong>
     
   </figcaption>

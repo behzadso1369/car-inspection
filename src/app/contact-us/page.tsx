@@ -3,14 +3,12 @@ import { Metadata } from "next";
 import { serverApiHelper } from "@/helper/server-fetcher";
 import { SocialLinks } from "@/components/SocialLinks";
 
-// ISR - same as footer: contact info from GetMasterPageData
-export const revalidate = 3600; // 1 hour
+export const revalidate = 3600;
 
 async function getMasterPageData() {
   return await serverApiHelper.get("GetMasterPageData", 3600);
 }
 
-// SEO Metadata (fallbacks; page can override with dynamic data if needed)
 export const metadata: Metadata = {
   title: "تماس با کارماچک | ۰۲۱-۹۱۰۰۱۷۴۰",
   description: "تماس با کارماچک: ۰۲۱-۹۱۰۰۱۷۴۰ | آدرس: میدان رسالت,خیابان هنگام,نبش خیابان دوازدهم,پلاک497(نمایندگی زارعی)",
@@ -53,50 +51,29 @@ export default async function ContactUs() {
   const email = "support@carmacheck.com";
 
   return (
-    <div className="px-4 bg-white font-IranSans lg:flex  lg:py-16  lg:max-w-7xl lg:container lg:mx-auto  ">
-      <div className="lg:order-1 lg:mx-16">
-        <h2 className="text-[#101117] text-sm">راه های ارتباطی</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mt-4 mb-8">
-          <div className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center">
-            <CallRinging04Icon className="my-2" size={24} color="#1434CB"/>
-            <span className="text-[#101117] lg:text-xl my-2">تماس با ما</span>
-            <span className="text-[#27292D] my-2 text-sm lg:text-base">{phoneNumbers}</span>
-          </div>
-          <div className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center">
-            <BubbleChatIcon className="my-2" size={24} color="#1434CB"/>
-            <span className="text-[#101117] my-2 lg:text-xl">گفتگوی آنلاین</span>
-            <span className="text-[#27292D] font-IranSans my-2 text-sm lg:text-base">{workingHours}</span>
-          </div>
-          <a
-            href={`mailto:${email}`}
-            className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center col-span-2 lg:col-span-1 hover:bg-[#e8ebf4] transition-colors"
-          >
-            <Mail01Icon className="my-2" size={24} color="#1434CB"/>
-            <span className="text-[#101117] my-2 lg:text-xl">ایمیل پشتیبانی</span>
-            <span className="text-[#27292D] my-2 text-sm lg:text-base" dir="ltr">{email}</span>
-          </a>
-        </div>
-        <h2 className="text-[#101117] text-sm">شبکه‌های اجتماعی</h2>
-        <SocialLinks variant="cards" className="mt-4 mb-8" />
-      </div>
-      <div className="lg:order-0">
-        <h1 className="text-[#101117] lg:text-3xl">اطلاعات کارماچک</h1>
-        <h3 className="text-[#55565A] lg:text-base my-2">ما به شما کمک می‌کنیم تا بهترین کارشناسی خودرو را با بهترین قیمت تهیه کنید.</h3>
+    <main className="px-4 bg-white font-IranSans lg:flex lg:py-16 lg:max-w-7xl lg:container lg:mx-auto">
+      <div className="w-full lg:order-0 lg:flex-1">
+        <h1 className="text-[#101117] text-2xl lg:text-3xl font-bold">تماس با کارماچک</h1>
+        <p className="text-[#55565A] lg:text-base my-2 leading-7">
+          برای رزرو کارشناسی، پیگیری سفارش یا سوالات عمومی با ما در تماس باشید.
+        </p>
+
+        <h2 className="text-[#101117] text-base font-bold mt-6 mb-3">آدرس و ساعات کاری</h2>
         <div className="my-4">
           <div className="flex my-3">
-            <Location01Icon size={24}/>
+            <Location01Icon size={24} aria-hidden />
             <span className="text-base mx-2 leading-8">{address}</span>
           </div>
           <div className="flex my-3">
-            <Clock01Icon size={24}/>
+            <Clock01Icon size={24} aria-hidden />
             <span className="text-base mx-2">{workingHours}</span>
           </div>
           <div className="flex my-3">
-            <SmartPhone01Icon size={24}/>
+            <SmartPhone01Icon size={24} aria-hidden />
             <span className="text-base mx-2">{phoneNumbers}</span>
           </div>
           <div className="flex my-3 items-center">
-            <Mail01Icon size={24}/>
+            <Mail01Icon size={24} aria-hidden />
             <a
               href={`mailto:${email}`}
               className="text-base mx-2 hover:text-[#3456bb] transition-colors"
@@ -107,6 +84,32 @@ export default async function ContactUs() {
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="lg:order-1 lg:mx-16 lg:flex-1">
+        <h2 className="text-[#101117] text-base font-bold">راه‌های ارتباطی</h2>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mt-4 mb-8">
+          <div className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center">
+            <CallRinging04Icon className="my-2" size={24} color="#1434CB" aria-hidden />
+            <span className="text-[#101117] lg:text-xl my-2">تماس با ما</span>
+            <span className="text-[#27292D] my-2 text-sm lg:text-base">{phoneNumbers}</span>
+          </div>
+          <div className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center">
+            <BubbleChatIcon className="my-2" size={24} color="#1434CB" aria-hidden />
+            <span className="text-[#101117] my-2 lg:text-xl">گفتگوی آنلاین</span>
+            <span className="text-[#27292D] font-IranSans my-2 text-sm lg:text-base">{workingHours}</span>
+          </div>
+          <a
+            href={`mailto:${email}`}
+            className="py-4 px-4 lg:px-8 lg:py-8 rounded-2xl bg-[#f1f3f7] flex flex-col items-center text-center col-span-2 lg:col-span-1 hover:bg-[#e8ebf4] transition-colors"
+          >
+            <Mail01Icon className="my-2" size={24} color="#1434CB" aria-hidden />
+            <span className="text-[#101117] my-2 lg:text-xl">ایمیل پشتیبانی</span>
+            <span className="text-[#27292D] my-2 text-sm lg:text-base" dir="ltr">{email}</span>
+          </a>
+        </div>
+        <h2 className="text-[#101117] text-base font-bold">شبکه‌های اجتماعی</h2>
+        <SocialLinks variant="cards" className="mt-4 mb-8" />
+      </div>
+    </main>
   );
 }

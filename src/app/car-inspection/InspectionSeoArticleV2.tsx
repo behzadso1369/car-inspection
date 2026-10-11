@@ -41,7 +41,7 @@ export default function InspectionSeoArticleV2() {
   return (
     <article dir="rtl" className="px-4 py-10 font-IranSans lg:py-14">
       <div className="mx-auto max-w-4xl space-y-10 md:space-y-12">
-        <Section title="کارشناسی خودرو در محل چیست؟">
+        <Section title="کارشناسی خودرو در محل چگونه انجام می‌شود؟">
           <p className={paragraphClass}>
             کارشناسی خودرو در محل سرویسی است که طی آن کارشناس متخصص کارماچک در
             زمان و آدرس انتخابی شما حاضر می‌شود و وضعیت واقعی خودرو را پیش از
@@ -68,7 +68,23 @@ export default function InspectionSeoArticleV2() {
           </p>
         </Section>
 
-        <Section title="چرا کارشناسی خودرو قبل از خرید مهم است؟">
+        <Section title="روش‌های انجام کارشناسی خودرو">
+          <Subsection title="کارشناسی در محل خودرو">
+            <p className={paragraphClass}>
+              کارشناس در زمان توافق‌شده به آدرس شما در تهران و شرق تهران می‌آید و
+              بررسی را در محل پارک خودرو انجام می‌دهد؛ مناسب وقتی نمی‌خواهید
+              خودرو را جابه‌جا کنید.
+            </p>
+          </Subsection>
+          <Subsection title="مراجعه به مرکز کارشناسی">
+            <p className={paragraphClass}>
+              در صورت تمایل می‌توانید خودرو را به مرکز کارماچک در شرق تهران
+              (میدان رسالت) بیاورید و کارشناسی را در محل مرکز انجام دهید.
+            </p>
+          </Subsection>
+        </Section>
+
+        <Section title="چرا پیش از خرید خودرو کارشناسی انجام دهیم؟">
           <p className={paragraphClass}>
             ظاهر تمیز، صدای عادی موتور یا توضیحات فروشنده برای شناخت وضعیت واقعی
             خودرو کافی نیست. بعضی ایرادهای فنی، آسیب‌های شاسی، رنگ‌شدگی قطعات،
@@ -95,24 +111,16 @@ export default function InspectionSeoArticleV2() {
           </p>
         </Section>
 
-        <Section title="در کارشناسی خودرو در محل چه مواردی بررسی می‌شود؟">
+        <Section title="در کارشناسی خودرو چه مواردی بررسی می‌شود؟">
           <p className={paragraphClass}>
             کارشناس کارماچک در محل، خودرو را در چند بخش اصلی بررسی می‌کند: بدنه و
             رنگ، فنی و مکانیکی، شاسی و ستون‌ها، دیاگ و آپشن‌ها، و تست رانندگی
             کوتاه در صورت امکان. جزئیات هر بخش در ادامه آمده و در پایان یک گزارش
             یکپارچه تحویل داده می‌شود.
           </p>
-        </Section>
 
-        <div className="space-y-8 rounded-[2rem] border border-[#E8ECF4] bg-white p-5 shadow-[0_6px_24px_rgba(16,17,23,0.05)] md:p-8">
-          <Section title="کارشناسی رنگ و بدنه خودرو در محل">
-            <p className={paragraphClass}>
-              کارشناس کارماچک خودرو را در پنج بخش اصلی بررسی می‌کند: رنگ و بدنه،
-              فنی و مکانیکی، شاسی و ستون‌ها، دیاگ و آپشن‌ها، و در صورت امکان تست
-              رانندگی. نتیجه هر بخش با درجه اهمیت ایراد و برآورد اثر آن بر هزینه
-              تعمیر، در یک گزارش یکپارچه ثبت می‌شود.
-            </p>
-            <Subsection title="کارشناسی رنگ و بدنه در محل">
+          <div className="mt-6 space-y-8 rounded-[2rem] border border-[#E8ECF4] bg-white p-5 shadow-[0_6px_24px_rgba(16,17,23,0.05)] md:p-8">
+            <Subsection title="کارشناسی رنگ و بدنه">
               <p className={paragraphClass}>
                 کارشناسی رنگ و بدنه برای شناسایی رنگ‌شدگی، بتونه‌کاری، تعویض قطعات
                 و آثار تصادف در پنل‌های بدنه انجام می‌شود. کارشناس با دستگاه
@@ -126,9 +134,8 @@ export default function InspectionSeoArticleV2() {
                 پیچ‌های بدنه.
               </p>
             </Subsection>
-          </Section>
 
-          <Section title="کارشناسی فنی خودرو">
+            <Subsection title="کارشناسی فنی خودرو">
             <p className={paragraphClass}>
               کارشناسی فنی شامل بررسی موتور، گیربکس، جلوبندی، ترمز و فرمان است.
               هدف باز کردن یا تعمیر قطعات در محل نیست؛ هدف شناسایی نشانه‌های
@@ -201,9 +208,9 @@ export default function InspectionSeoArticleV2() {
               نتیجه این بررسی به مدل خودرو و شرایط محل بستگی دارد؛ برخی ایرادها
               فقط با بازکردن قطعات یا در تعمیرگاه تخصصی قابل تشخیص‌اند.
             </p>
-          </Section>
+            </Subsection>
 
-          <Section title="بررسی شاسی و ستون‌ها">
+            <Subsection title="بررسی شاسی و ستون‌ها">
             <p className={paragraphClass}>
               شاسی و ستون‌ها اسکلت اصلی ایمنی خودرو هستند. کارشناس تغییر شکل، جوش
               یا برش غیرکارخانه‌ای، رنگ‌شدگی و آثار کشیدگی در شاسی جلو و عقب،
@@ -212,9 +219,9 @@ export default function InspectionSeoArticleV2() {
               تجهیزات ثابت قابل مشاهده نباشد، این محدودیت به‌صورت شفاف در گزارش
               ذکر می‌شود.
             </p>
-          </Section>
+            </Subsection>
 
-          <Section title="دیاگ و آپشن‌ها">
+            <Subsection title="دیاگ و آپشن‌ها">
             <p className={paragraphClass}>
               دستگاه دیاگ خطاهای ثبت‌شده در واحدهای الکترونیکی خودرو (موتور،
               گیربکس، ترمز ABS، ایربگ، سنسورها) را می‌خواند و در کنار آن، عملکرد
@@ -223,9 +230,9 @@ export default function InspectionSeoArticleV2() {
               تست می‌شود. دیاگ به‌تنهایی سلامت خودرو را تأیید نمی‌کند و جایگزین
               بررسی فنی و تست رانندگی نیست.
             </p>
-          </Section>
+            </Subsection>
 
-          <Section title="تست رانندگی">
+            <Subsection title="تست رانندگی">
             <p className={paragraphClass}>
               در صورتی که شرایط محل و اجازه مالک خودرو فراهم باشد، کارشناس یک
               تست رانندگی کوتاه انجام می‌دهد تا شتاب‌گیری، تعویض دنده، ترمزگیری،
@@ -233,8 +240,9 @@ export default function InspectionSeoArticleV2() {
               ارزیابی کند. در فضاهای بدون امکان حرکت، این بخش ممکن است محدود یا
               حذف شود و در گزارش قید می‌شود.
             </p>
-          </Section>
-        </div>
+            </Subsection>
+          </div>
+        </Section>
 
         <Section title="گزارش کارشناسی شامل چه اطلاعاتی است؟">
           <p className={paragraphClass}>
@@ -259,7 +267,7 @@ export default function InspectionSeoArticleV2() {
         </Section>
 
         <div className="space-y-7 rounded-[2rem] border border-[#3456bb]/15 bg-gradient-to-b from-[#F8FAFF] to-[#EEF2FD] p-5 md:p-8">
-          <Section title="کارشناسی خودرو شرق تهران">
+          <Section title="مناطق تحت پوشش کارشناسی در محل">
             <p className={paragraphClass}>
               شعبه یک کارماچک در میدان رسالت قرار دارد و این موقعیت، پوشش مناطق
               شرق تهران را تسهیل می‌کند.{" "}
@@ -364,7 +372,7 @@ export default function InspectionSeoArticleV2() {
           </Subsection>
         </div>
 
-        <Section title="شرایط لازم برای انجام کارشناسی در محل">
+        <Section title="شرایط و محدودیت‌های کارشناسی در محل">
           <p className={paragraphClass}>
             برای این‌که کارشناسی در محل کامل و دقیق انجام شود، رعایت چند نکته کمک
             می‌کند:
@@ -383,7 +391,7 @@ export default function InspectionSeoArticleV2() {
           </ul>
         </Section>
 
-        <Section title="آیا کارشناسی خودرو در روز بارانی انجام می‌شود؟">
+        <Section title="کارشناسی در هوای بارانی یا نور کم">
           <p className={paragraphClass}>
             کارشناسی فنی، دیاگ و شاسی معمولاً در روز بارانی هم قابل انجام است،
             اما بررسی دقیق رنگ و بدنه در پارکینگ سرپوشیده یا فضای با نور مناسب
@@ -422,7 +430,9 @@ export default function InspectionSeoArticleV2() {
         </Section>
 
         <section className="rounded-[2rem] bg-gradient-to-l from-[#3456bb] to-[#416CEA] p-6 text-white md:p-8">
-          <h2 className="text-xl font-black md:text-2xl">چرا کارماچک؟</h2>
+          <h2 className="text-xl font-black md:text-2xl">
+            چرا کارشناسی را به کارماچک بسپاریم؟
+          </h2>
           <p className="mt-4 text-sm leading-8 text-white/90 md:text-base">
             کارماچک یک سرویس کارشناسی خودرو در محل و مرکز شرق تهران است که با
             بررسی دقیق بدنه، فنی و آپشن‌ها و تبدیل نتایج به گزارش ساده و قابل

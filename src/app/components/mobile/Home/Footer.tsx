@@ -72,7 +72,7 @@ export const Footer = (data: any) => {
         <footer className="px-4 py-12 bg-[#F0F2F4] text-black font-IranSans w-full hidden lg:flex ">
           <div>
  <div className="flex flex-wrap ">
-  <h3 className="my-4 w-full text-[#101117] font-bold text-xl">اطلاعات تماس</h3>
+  <h2 className="my-4 w-full text-[#101117] font-bold text-xl">اطلاعات تماس</h2>
             <Location01Icon size={24}/>
             <span className="text-base mx-2">{data?.data?.Address}</span>
           </div>
@@ -82,13 +82,13 @@ export const Footer = (data: any) => {
           </div>
           <FooterPhoneNumbers phoneNumbers={data?.data?.PhoneNumbers} />
           <div className="mt-4">
-            <h3 className="my-4 w-full text-[#101117] font-bold text-xl">شبکه‌های اجتماعی</h3>
+            <h2 className="my-4 w-full text-[#101117] font-bold text-xl">شبکه‌های اجتماعی</h2>
             <SocialLinks />
           </div>
           </div>
        
           <div className="mx-16 flex flex-col">
-               <h3 className="my-4 w-full text-[#101117] font-bold text-xl">دسترسی سریع</h3>
+               <h2 className="my-4 w-full text-[#101117] font-bold text-xl">دسترسی سریع</h2>
               <Link href="./regulations" prefetch={false} className="my-1">قوانین و مقررات</Link>
            
              <Link href="about-us" prefetch={false} className="my-1">درباره ما</Link>
