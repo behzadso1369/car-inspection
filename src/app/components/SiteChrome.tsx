@@ -25,7 +25,8 @@ function isInspectionLandingPath(pathname: string) {
     pathname === "/car-inspection-most-popular" ||
     pathname.startsWith("/car-inspection-most-popular/") ||
     pathname === "/car-inspection-tehran" ||
-    pathname.startsWith("/car-inspection-tehran/")
+    pathname.startsWith("/car-inspection-tehran/") ||
+    pathname === "/car-inspection-dealers"
   );
 }
 
@@ -36,12 +37,14 @@ function isPublicChromePath(pathname: string, routes: Set<string>) {
   const isTehran =
     pathname === "/car-inspection-tehran" ||
     pathname.startsWith("/car-inspection-tehran/");
+  const isDealers = pathname === "/car-inspection-dealers";
   const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
   const isFlowStep = pathname.startsWith("/car-inspection/") && !isMostPopular;
   return (
     (routes.has(pathname) ||
       isMostPopular ||
       isTehran ||
+      isDealers ||
       (isBlog && routes.has("/blog"))) &&
     !pathname.startsWith("/Profile") &&
     !isFlowStep

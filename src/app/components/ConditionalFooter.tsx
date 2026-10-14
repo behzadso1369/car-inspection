@@ -34,6 +34,7 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
   const isCarInspectionTehran =
     pathname === "/car-inspection-tehran" ||
     pathname.startsWith("/car-inspection-tehran/");
+  const isCarInspectionDealers = pathname === "/car-inspection-dealers";
   const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
   const isCarInspectionFlowStep =
     pathname.startsWith("/car-inspection/") && !isCarInspectionMostPopular;
@@ -42,6 +43,7 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
     (ROUTES_WITH_FOOTER.includes(pathname) ||
       isCarInspectionMostPopular ||
       isCarInspectionTehran ||
+      isCarInspectionDealers ||
       isBlog) &&
     !pathname.startsWith("/Profile") &&
     !isCarInspectionFlowStep;

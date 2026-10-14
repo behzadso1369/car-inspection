@@ -9,6 +9,7 @@ export async function GET() {
 ## خدمات اصلی
 
 - کارشناسی خودرو: https://carmacheck.com/car-inspection
+- ثبت‌نام نمایشگاه‌دار: https://carmacheck.com/car-inspection-dealers
 - قیمت‌گذاری خودرو: https://carmacheck.com/car-price
 - بلاگ کارشناسی خودرو: https://carmacheck.com/blog
 - سوالات متداول: https://carmacheck.com/faq
