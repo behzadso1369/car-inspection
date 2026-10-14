@@ -20,7 +20,7 @@ const PAGE_LASTMOD: Record<string, string> = {
   '/car-price': '2026-08-02',
 };
 
-const CARS_LASTMOD = '2026-09-11';
+const CARS_LASTMOD = '2026-10-14';
 const LOCAL_LASTMOD = '2026-08-10';
 
 function parseDate(value: unknown): Date | undefined {
@@ -74,6 +74,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const carInspectionRoutes: MetadataRoute.Sitemap = [
     urlEntry(
       '/car-inspection-most-popular/peugeot-206',
+      parseDate(CARS_LASTMOD),
+      'monthly',
+      0.8,
+    ),
+    urlEntry(
+      '/car-inspection-most-popular/peugeot-207',
       parseDate(CARS_LASTMOD),
       'monthly',
       0.8,

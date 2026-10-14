@@ -9,6 +9,7 @@
  */
 
 import peugeot206Page from "./content/peugeot-206.json";
+import peugeot207Page from "./content/peugeot-207.json";
 import jacS5Page from "./content/jac-s5.json";
 import tiggo8ProMaxPage from "./content/tiggo-8-pro-max.json";
 import shahinPage from "./content/shahin.json";
@@ -98,35 +99,52 @@ export const CARS: CarInfo[] = [
     brand: "ایران‌خودرو",
     tagline: "هاچ‌بک پرطرفدار با ظاهر اسپرت و امکانات نسبتاً کامل",
     image: "/cars/peugeot-207.jpg",
-    intro:
-      "پژو ۲۰۷ یکی از پرفروش‌ترین خودروهای هاچ‌بک بازار ایران است که به دلیل ظاهر اسپرت، فضای داخلی مناسب و امکانات رفاهی نسبت به هم‌رده‌های خود محبوبیت زیادی دارد. با این حال پیش از خرید، بررسی دقیق موتور، گیربکس و بدنه این خودرو اهمیت زیادی دارد.",
+    heroPng: true,
+    inspectionSearchTerm: "پژو 207",
+    aparatVideoHash: "wqsxe33",
+    aparatVideoTitle: "کارشناسی 207",
+    aparatThumbnailUrl: "/cars/207-cover.webp",
+    aparatUploadDate: "2026-10-14T11:00:00+03:30",
+    seoTitle: peugeot207Page.seoTitle,
+    seoDescription: peugeot207Page.seoDescription,
+    ogImage: peugeot207Page.ogImage,
+    contentImage: peugeot207Page.contentImage,
+    contentImageAlt: peugeot207Page.contentImageAlt,
+    articleIntro: peugeot207Page.articleIntro,
+    articleSections: peugeot207Page.sections as CarArticleSection[],
+    faqs: peugeot207Page.faqs,
+    faqTitle: peugeot207Page.faqTitle,
+    quickAnswerTitle: peugeot207Page.quickAnswerTitle,
+    quickAnswer: peugeot207Page.quickAnswer,
+    intro: peugeot207Page.articleIntro[0],
     pros: [
       "طراحی ظاهری اسپرت و به‌روز",
       "فضای داخلی و صندوق مناسب برای یک هاچ‌بک",
       "امکانات رفاهی نسبتاً کامل در تیپ‌های بالا",
-      "سیستم تعلیق راحت در دست‌اندازها",
+      "تنوع تیپ از TU3 تا TU5P و اتوماتیک",
       "قطعات و سرویس در دسترس در سراسر کشور",
     ],
     cons: [
       "مصرف سوخت نسبتاً بالا نسبت به هم‌رده‌ها",
-      "کیفیت پایین برخی قطعات داخل کابین و صداگیری ضعیف",
       "احتمال ایرادات الکتریکی و مشکلات نمایشگر",
-      "هزینه‌ی نگهداری بالاتر از خودروهای ساده‌تر",
+      "هزینه تعمیر و نگهداری بالاتر در تیپ‌های پرآپشن",
+      "حساسیت بیشتر گیربکس اتوماتیک به سرویس و رفتار رانندگی",
     ],
     inspectionPoints: [
-      "بررسی نشتی روغن موتور و جعبه‌فرمان",
-      "تست سلامت گیربکس اتوماتیک (در تیپ اتوماتیک) از نظر ضربه و لغزش",
-      "کنترل عملکرد نمایشگر و سیستم برق و سنسورها",
-      "بررسی رنگ‌شدگی و تصادف در گلگیرها و درها",
+      "تطبیق تیپ واقعی: موتور TU3 / TU5P و دستی یا اتوماتیک",
+      "استارت سرد، نشتی موتور و تست گیربکس",
+      "نمایشگر، ESP، سنسور پارک و سیستم برق",
+      "رنگ، شاسی و سقف پانوراما در تیپ‌های مربوط",
     ],
     keywords: [
       "کارشناسی 207",
       "کارشناسی پژو 207",
+      "کارشناسی پژو ۲۰۷",
       "معایب پژو 207",
       "مزایای پژو 207",
+      "کارشناسی 207 اتوماتیک",
       "قیمت کارشناسی پژو 207",
     ],
-    inspectionSearchTerm: "پژو 207",
   },
   {
     slug: "peugeot-pars",
@@ -3580,6 +3598,7 @@ export function getCarBySlug(slug: string): CarInfo | undefined {
 /** خودروهایی که فعلاً در صفحهٔ فهرست نمایش داده می‌شوند */
 export const FEATURED_CAR_SLUGS = [
   "peugeot-206",
+  "peugeot-207",
   "jac-s5",
   "tiggo-8-pro-max",
   "shahin",

@@ -7,6 +7,8 @@ import InspectCtaButton from "./InspectCtaButton";
 const ARTICLE_LINKS: { needle: string; href: string }[] = [
   { needle: "محاسبه قیمت خودرو رایگان", href: "/car-price" },
   { needle: "محاسبه قیمت خودرو کارکرده", href: "/car-price" },
+  { needle: "محاسبه قیمت خودرو", href: "/car-price" },
+  { needle: "صفحه کارشناسی خودرو", href: "/car-inspection" },
   { needle: "قیمت‌گذاری خودرو", href: "/car-price" },
   { needle: "کارشناسی خودرو در محل", href: "/car-inspection" },
   { needle: "کارشناسی خودرو در تهران", href: "/car-inspection-tehran" },
