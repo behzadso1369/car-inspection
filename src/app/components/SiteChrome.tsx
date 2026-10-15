@@ -14,6 +14,7 @@ const HEADER_ROUTES = new Set([
   "/contact-us",
   "/car-price",
   "/car-inspection",
+  "/motorcycle-inspection",
   "/payment/success",
   "/payment/failed",
 ]);
@@ -38,13 +39,17 @@ function isPublicChromePath(pathname: string, routes: Set<string>) {
     pathname.startsWith("/car-inspection-tehran/");
   const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
   const isFlowStep = pathname.startsWith("/car-inspection/") && !isMostPopular;
+  const isMotorcycleFlowStep =
+    pathname.startsWith("/motorcycle-inspection/") &&
+    pathname !== "/motorcycle-inspection";
   return (
     (routes.has(pathname) ||
       isMostPopular ||
       isTehran ||
       (isBlog && routes.has("/blog"))) &&
     !pathname.startsWith("/Profile") &&
-    !isFlowStep
+    !isFlowStep &&
+    !isMotorcycleFlowStep
   );
 }
 
