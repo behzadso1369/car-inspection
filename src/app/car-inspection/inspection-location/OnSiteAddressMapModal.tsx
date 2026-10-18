@@ -82,6 +82,8 @@ export interface OnSiteAddressMapModalProps {
   initialLng: number;
   locationTypeDescription?: string;
   onConfirm: (address: GeocodedAddress) => void;
+  /** پیش‌فرض: محدود به تهران (کارشناسی در محل). برای فرم‌های دیگر می‌توان false کرد. */
+  enforceTehranBounds?: boolean;
 }
 
 export default function OnSiteAddressMapModal({
@@ -91,6 +93,7 @@ export default function OnSiteAddressMapModal({
   initialLng,
   locationTypeDescription,
   onConfirm,
+  enforceTehranBounds = true,
 }: OnSiteAddressMapModalProps) {
   const [mounted, setMounted] = useState(false);
   const [position, setPosition] = useState({ lat: initialLat, lng: initialLng });
@@ -171,7 +174,7 @@ export default function OnSiteAddressMapModal({
 
   const flyToLocation = useCallback(
     (lat: number, lng: number) => {
-      if (!isInsideTehran(lat, lng)) {
+      if (enforceTehranBounds && !isInsideTehran(lat, lng)) {
         showOutOfServiceToast();
         redirectingOutOfServiceRef.current = true;
         setPosition(RESALAT_SQUARE);
@@ -189,14 +192,14 @@ export default function OnSiteAddressMapModal({
       setFlyTarget({ lat, lng, key: Date.now() });
       resolveAddress(lat, lng);
     },
-    [resolveAddress, showOutOfServiceToast]
+    [enforceTehranBounds, resolveAddress, showOutOfServiceToast]
   );
 
   const syncCenter = useCallback(
     (lat: number, lng: number) => {
       if (redirectingOutOfServiceRef.current) return;
 
-      if (!isInsideTehran(lat, lng)) {
+      if (enforceTehranBounds && !isInsideTehran(lat, lng)) {
         showOutOfServiceToast();
         redirectingOutOfServiceRef.current = true;
         setPosition(RESALAT_SQUARE);
@@ -221,7 +224,7 @@ export default function OnSiteAddressMapModal({
       }
       resolveAddress(lat, lng);
     },
-    [resolveAddress, showOutOfServiceToast]
+    [enforceTehranBounds, resolveAddress, showOutOfServiceToast]
   );
 
   const requestUserLocation = useCallback(() => {
@@ -276,12 +279,14 @@ export default function OnSiteAddressMapModal({
   useEffect(() => {
     if (!open || !mounted) return;
 
-    const startLat = isInsideTehran(initialLat, initialLng)
-      ? initialLat
-      : RESALAT_SQUARE.lat;
-    const startLng = isInsideTehran(initialLat, initialLng)
-      ? initialLng
-      : RESALAT_SQUARE.lng;
+    const startLat =
+      !enforceTehranBounds || isInsideTehran(initialLat, initialLng)
+        ? initialLat
+        : RESALAT_SQUARE.lat;
+    const startLng =
+      !enforceTehranBounds || isInsideTehran(initialLat, initialLng)
+        ? initialLng
+        : RESALAT_SQUARE.lng;
 
     setPosition({ lat: startLat, lng: startLng });
     setFlyTarget({ lat: startLat, lng: startLng, key: Date.now() });
@@ -310,7 +315,15 @@ export default function OnSiteAddressMapModal({
     return () => {
       cancelled = true;
     };
-  }, [open, mounted, initialLat, initialLng, resolveAddress, requestUserLocation]);
+  }, [
+    open,
+    mounted,
+    initialLat,
+    initialLng,
+    enforceTehranBounds,
+    resolveAddress,
+    requestUserLocation,
+  ]);
 
   const locationMessage =
     locationError === "denied"

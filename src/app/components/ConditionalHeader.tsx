@@ -35,6 +35,7 @@ export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
   const isCarInspectionTehran =
     pathname === "/car-inspection-tehran" ||
     pathname.startsWith("/car-inspection-tehran/");
+  const isCarInspectionDealers = pathname === "/car-inspection-dealers";
   // مراحل فلو (مثل /car-inspection/inspection-method) هدر سراسری ندارند
   const isCarInspectionFlowStep =
     pathname.startsWith("/car-inspection/") && !isCarInspectionMostPopular;
@@ -46,7 +47,8 @@ export default function ConditionalHeader({ data }: ConditionalHeaderProps) {
   const shouldShowHeader =
     (ROUTES_WITH_HEADER.includes(pathname) ||
       isCarInspectionMostPopular ||
-      isCarInspectionTehran) &&
+      isCarInspectionTehran ||
+      isCarInspectionDealers) &&
     !pathname.startsWith("/Profile") &&
     !isCarInspectionFlowStep &&
     !isMotorcycleInspectionFlowStep;

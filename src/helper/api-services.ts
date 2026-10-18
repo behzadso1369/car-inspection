@@ -54,4 +54,6 @@ CreateUserAddress: "User/CreateUserAddress",
 GetOrderExpertStatus: "User/GetOrderExpertStatus",
 GetOrderBodyReport: "User/GetOrderBodyReport",
 
+DealerRegistrationSubmit: "DealerRegistration/Submit",
+
 } as { [type: string]: string };

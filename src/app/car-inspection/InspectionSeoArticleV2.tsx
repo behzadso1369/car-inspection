@@ -415,7 +415,13 @@ export default function InspectionSeoArticleV2() {
             <p>
               <strong className="text-[#101117]">نمایشگاه‌ها:</strong> کارشناسی
               می‌تواند پیش از ورود خودرو به نمایشگاه یا هنگام تحویل به مشتری،
-              به‌عنوان مستند فنی مورد استفاده قرار گیرد.
+              به‌عنوان مستند فنی مورد استفاده قرار گیرد.{" "}
+              <Link
+                href="/car-inspection-dealers"
+                className="font-semibold text-[#3456bb] underline-offset-4 hover:underline"
+              >
+                ثبت‌نام نمایشگاه‌دار در کارماچک
+              </Link>
             </p>
           </div>
         </Section>
