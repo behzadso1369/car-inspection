@@ -28,6 +28,7 @@ Disallow: /login
 Disallow: /register
 Disallow: /verify-otp
 Disallow: /new-service
+Disallow: /hero-preview
 
 # ❌ منع دسترسی به فایل‌های سیستمی
 Disallow: /api/
@@ -44,6 +45,7 @@ Crawl-delay: 1
 # 🤖 تنظیمات خاص Googlebot
 User-agent: Googlebot
 Allow: /
+Disallow: /hero-preview
 Crawl-delay: 0
 
 # 🤖 تنظیمات خاص Bingbot

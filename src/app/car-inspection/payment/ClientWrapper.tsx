@@ -6,6 +6,7 @@ import instance from "@/helper/interceptor";
 import { Payment02Icon } from "hugeicons-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
 import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
 
 export default function ClientWrapper() {
@@ -103,7 +104,7 @@ export default function ClientWrapper() {
         </div>
       </div>
 
-      <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-between bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+      <FlowStepFooter className="justify-between">
         <Button onClick={moveToGateway} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
            پرداخت
         </Button>
@@ -111,7 +112,7 @@ export default function ClientWrapper() {
           fullPrice={orderDetail?.totalPrice ?? 0}
           discountedPrice={orderDetail?.finalPrice ?? orderDetail?.totalPrice ?? 0}
         />
-      </div>
+      </FlowStepFooter>
     </div>
   );
 }

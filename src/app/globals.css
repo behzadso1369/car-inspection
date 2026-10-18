@@ -48,6 +48,7 @@
 @theme {
   --font-IranSans: var(--font-iran-sans), IRANSans, Tahoma, sans-serif;
   --font-IranSans-UltraLight: var(--font-iran-sans-ultralight), IRANSansUltraLight, Tahoma, sans-serif;
+  --font-Peyda: var(--font-peyda-extrabold), Tahoma, sans-serif;
   --primary: #3563E9;
   --secondary: #FFFFFF;
   --main-background: #ebeff3;
@@ -55,6 +56,26 @@
   --secondary-background:#F0F2F4;
 }
 
+:root {
+  --site-bottom-nav-clearance: calc(
+    4.25rem + 0.75rem + env(safe-area-inset-bottom, 0px) + 0.75rem
+  );
+  --blog-chrome-height: calc(
+    env(safe-area-inset-top, 0px) + 2.75rem + 3.625rem
+  );
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --blog-chrome-height: calc(
+      env(safe-area-inset-top, 0px) + 2.75rem + 5.25rem
+    );
+  }
+}
+
+.blog-chrome-spacer {
+  height: var(--blog-chrome-height);
+}
 
 .bg-banner {
   background-image: url("/banner.png")
@@ -533,6 +554,249 @@ button.banner-cta:hover {
   .wallet-gift-sparkle,
   .wallet-gift-shimmer,
   .wallet-gift-spinner > span:last-child {
+    animation: none;
+  }
+}
+
+.home-hero {
+  background:
+    radial-gradient(ellipse 90% 70% at 88% -10%, rgba(65, 108, 234, 0.38), transparent 58%),
+    radial-gradient(ellipse 60% 50% at 8% 92%, rgba(125, 211, 252, 0.1), transparent 52%),
+    radial-gradient(ellipse 45% 40% at 42% 40%, rgba(37, 64, 128, 0.35), transparent 70%),
+    linear-gradient(168deg, #0b1220 0%, #121d34 46%, #0d162c 100%);
+}
+
+.home-hero-cut {
+  background: linear-gradient(
+    155deg,
+    rgba(18, 32, 62, 0.92) 0%,
+    rgba(16, 28, 54, 0.35) 58%,
+    transparent 100%
+  );
+}
+
+.home-hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+}
+
+.home-hero-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(40px);
+  animation: home-hero-orb 10s ease-in-out infinite;
+}
+
+.home-hero-orb-a {
+  top: 8%;
+  left: 12%;
+  width: 180px;
+  height: 180px;
+  background: rgba(65, 108, 234, 0.22);
+}
+
+.home-hero-orb-b {
+  right: 18%;
+  bottom: 12%;
+  width: 220px;
+  height: 220px;
+  background: rgba(251, 191, 36, 0.08);
+  animation-delay: -4s;
+}
+
+@keyframes home-hero-orb {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(14px, -16px, 0) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-orb {
+    animation: none;
+  }
+}
+
+.hero-scan-beam {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(65, 108, 234, 0.12) 18%,
+    rgba(65, 108, 234, 0.55) 50%,
+    rgba(65, 108, 234, 0.12) 82%,
+    transparent 100%
+  );
+  box-shadow: 0 0 24px rgba(65, 108, 234, 0.35);
+  animation: hero-scan-beam 2.6s ease-in-out infinite;
+}
+
+@keyframes hero-scan-beam {
+  0%,
+  100% {
+    transform: translateY(-28%);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(42%);
+    opacity: 1;
+  }
+}
+
+.hero-onsite-map {
+  background-image:
+    radial-gradient(ellipse 55% 45% at 72% 28%, rgba(65, 108, 234, 0.28), transparent 62%),
+    radial-gradient(ellipse 40% 35% at 22% 68%, rgba(125, 211, 252, 0.12), transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: auto, auto, 28px 28px, 28px 28px;
+}
+
+.home-dispatch-gmap {
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.home-dispatch-model {
+  -webkit-mask-image: radial-gradient(
+    ellipse 92% 88% at 50% 58%,
+    #000 52%,
+    rgba(0, 0, 0, 0.88) 74%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 92% 88% at 50% 58%,
+    #000 52%,
+    rgba(0, 0, 0, 0.88) 74%,
+    transparent 100%
+  );
+}
+
+.home-dispatch-model-photo {
+  transform-origin: 50% 28%;
+  animation: home-dispatch-ken 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+
+.home-dispatch-grade {
+  background:
+    radial-gradient(ellipse 70% 55% at 72% 32%, rgba(65, 108, 234, 0.28), transparent 58%),
+    linear-gradient(180deg, rgba(7, 16, 30, 0.35) 0%, rgba(7, 16, 30, 0.08) 38%, rgba(7, 16, 30, 0.55) 100%),
+    linear-gradient(90deg, rgba(11, 18, 32, 0.28), transparent 42%);
+}
+
+.home-dispatch-sweep {
+  background: linear-gradient(
+    118deg,
+    transparent 36%,
+    rgba(125, 211, 252, 0.16) 48%,
+    rgba(65, 108, 234, 0.22) 52%,
+    transparent 64%
+  );
+  mix-blend-mode: screen;
+  animation: home-dispatch-sweep 5.5s ease-in-out infinite;
+}
+
+.home-dispatch-scan {
+  background: linear-gradient(
+    180deg,
+    rgba(125, 211, 252, 0.18),
+    transparent 80%
+  );
+  animation: home-dispatch-scan 4.2s ease-in-out infinite;
+}
+
+.home-dispatch-route {
+  animation: home-dispatch-dash 2.4s linear infinite;
+}
+
+.home-dispatch-radar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(125, 211, 252, 0.55);
+  transform: translate(-50%, -50%);
+  animation: home-dispatch-radar 2.8s ease-out infinite;
+}
+
+.home-dispatch-radar-hot {
+  border-color: rgba(65, 108, 234, 0.7);
+  animation-duration: 2.2s;
+}
+
+@keyframes home-dispatch-ken {
+  from {
+    transform: scale(1.06) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.16) translate3d(-2.4%, 1.6%, 0);
+  }
+}
+
+@keyframes home-dispatch-sweep {
+  0%,
+  100% {
+    transform: translate3d(-18%, 0, 0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(18%, 0, 0);
+    opacity: 0.9;
+  }
+}
+
+@keyframes home-dispatch-scan {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(160%);
+    opacity: 0.8;
+  }
+}
+
+@keyframes home-dispatch-dash {
+  to {
+    stroke-dashoffset: -56;
+  }
+}
+
+@keyframes home-dispatch-radar {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-dispatch-photo,
+  .home-dispatch-model-photo,
+  .home-dispatch-sweep,
+  .home-dispatch-scan,
+  .home-dispatch-route,
+  .home-dispatch-radar {
+    animation: none;
+  }
+}
+
+.hero-atlas-ring {
+  background: conic-gradient(from 210deg, rgba(65, 108, 234, 0.35), transparent 42%, rgba(52, 86, 187, 0.2), transparent 78%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scan-beam {
     animation: none;
   }
 }

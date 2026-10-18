@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { CalendarRemove01Icon } from "hugeicons-react";
+import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
 import { StoredInspectionPriceDisplay } from "../components/DiscountPriceDisplay";
 
 type InspectionHour = {
@@ -254,14 +255,14 @@ export default function ClientWrapper() {
         </Tabs>
       )}
 
-      <div className="px-4 w-full lg:my-4 lg:sticky lg:bg-white lg:mt-8 fixed flex justify-between bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+      <FlowStepFooter className="justify-between lg:sticky lg:bg-white">
         <Button  disabled={loading || (Number(selected) === 2 && selectedTime == "" ? true : false)} onClick={moveToFinalConfirm} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12">
           {
             loading ? "لطفا منتظر بمانید..." : "تایید و ادامه"
           }
         </Button>
         <StoredInspectionPriceDisplay />
-      </div>
+      </FlowStepFooter>
     </div>
   );
 }

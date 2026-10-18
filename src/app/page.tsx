@@ -2,8 +2,9 @@ import { Metadata } from "next";
 import { serverApiHelper } from "@/helper/server-fetcher";
 import { LOCAL_AREAS } from "@/lib/local-areas";
 import { getFaqsByCategoryName } from "@/lib/faq-data";
+import { getPopularInspectionBrands } from "@/lib/get-popular-inspection-brands";
 import { FaqPreviewSection } from "./components/FaqPreviewSection";
-import { Slider } from "./components/mobile/Home/Slider";
+import HomeHero from "./components/mobile/Home/HomeHero";
 import Introduction from "./components/mobile/Home/Introduction";
 import Services from "./components/mobile/Home/Services";
 import HomeFeatures from "./components/mobile/Home/HomeFeatures";
@@ -101,14 +102,18 @@ async function getHomeBlogPosts(take = 6) {
 }
 
 export default async function Home() {
-  const [data, blogPosts] = await Promise.all([
+  const [data, blogPosts, popularBrands] = await Promise.all([
     getMasterPageData(),
     getHomeBlogPosts(6),
+    getPopularInspectionBrands(),
   ]);
   const faqPreviewItems = await getFaqsByCategoryName("کارماچک", 600);
   return (
-   <main className="bg-white">
-      <Slider data={data?.Sliders}/>
+   <main className="bg-white max-lg:pb-[var(--site-bottom-nav-clearance)]">
+      <HomeHero
+        carBrands={popularBrands.cars}
+        motorcycleBrands={popularBrands.motorcycles}
+      />
       <Introduction data={data?.WhyWe}/>
       <HomeFeatures />
       <Services />

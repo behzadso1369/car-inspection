@@ -16,6 +16,7 @@ import {
   generateFAQSchema,
 } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { parseBrandPreset } from "@/lib/popular-brands";
 import ClientWrapper from "./ClientWrapper";
 
 const CAR_INSPECTION_PATH = "/car-inspection";
@@ -155,8 +156,13 @@ async function getInspectionFaqs() {
   return getFaqsByCategoryName("کارشناسی خودرو", 600);
 }
 
-export default async function CarInspectionFlow() {
+export default async function CarInspectionFlow({
+  searchParams,
+}: {
+  searchParams: Promise<{ brandId?: string; brand?: string }>;
+}) {
   const inspectionFaqs = await getInspectionFaqs();
+  const preset = parseBrandPreset(await searchParams);
 
   const schema: Array<Record<string, unknown>> = [
     generateWebPageSchema(),
@@ -184,7 +190,11 @@ export default async function CarInspectionFlow() {
   return (
     <>
       <JsonLd data={schema} />
-      <ClientWrapper inspectionFaqs={inspectionFaqs} />
+      <ClientWrapper
+        inspectionFaqs={inspectionFaqs}
+        initialBrandId={preset.brandId}
+        initialBrandName={preset.brandName}
+      />
     </>
   );
 }

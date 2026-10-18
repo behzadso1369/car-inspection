@@ -1,5 +1,6 @@
 "use client";
 
+import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
@@ -50,11 +51,11 @@ export default function ClientWrapper() {
 
     
 
-      <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-center bottom-0 b-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+      <FlowStepFooter className="justify-center">
         <Button onClick={moveToGateway} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
            مشاهده سفارشات
         </Button>
-      </div>
+      </FlowStepFooter>
     </div>
   );
 }

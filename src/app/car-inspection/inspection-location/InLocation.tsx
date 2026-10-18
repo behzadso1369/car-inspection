@@ -19,6 +19,7 @@ import {
 } from "@/helper/create-user-address";
 import instance from "@/helper/interceptor";
 import type { GeocodedAddress } from "@/helper/reverse-geocode";
+import { KeyboardAwareSheetFooter } from "@/components/flow/KeyboardAwareSheetFooter";
 
 export const ON_SITE_ADDRESS_KEY = "OnSiteAddressDraft";
 const STATIC_ADDRESS_TITLE = "انتخابی";
@@ -273,7 +274,7 @@ export default function InLocation({
             </p>
           </div>
 
-          <div className="flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6">
+          <div className="flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-6 max-sm:pb-[calc(5.5rem+env(safe-area-inset-bottom)+var(--keyboard-inset,0px))]">
             <div>
               <Label
                 htmlFor="onsite-address-city"
@@ -339,7 +340,7 @@ export default function InLocation({
             </Button>
           </div>
 
-          <div className="shrink-0 border-t border-[#E8ECF4] bg-white px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 shadow-[0_-6px_24px_rgba(16,24,40,0.06)] sm:px-6">
+          <KeyboardAwareSheetFooter className="border-t border-[#E8ECF4] bg-white px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 shadow-[0_-6px_24px_rgba(16,24,40,0.06)] sm:static sm:px-6">
             <Button
               type="button"
               disabled={saving || !form.Street.trim()}
@@ -348,7 +349,7 @@ export default function InLocation({
             >
               {saving ? "در حال ثبت آدرس..." : "ثبت و تأیید آدرس"}
             </Button>
-          </div>
+          </KeyboardAwareSheetFooter>
         </DialogContent>
       </Dialog>
 

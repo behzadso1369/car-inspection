@@ -4,6 +4,8 @@ type BannerData = {
 
 type BannerProps = {
   data?: BannerData | string | null | unknown;
+  /** وقتی بنر داخل هدر sticky بلاگ است، خودش sticky نباشد */
+  pin?: boolean;
 };
 
 function sloganFromData(data?: BannerProps["data"]): string {
@@ -14,12 +16,17 @@ function sloganFromData(data?: BannerProps["data"]): string {
   return "کارشناسی خودرو با 5 کلیک";
 }
 
-export default function Banner({ data }: BannerProps = {}) {
+export default function Banner({ data, pin = true }: BannerProps = {}) {
     const slogan = sloganFromData(data);
 
     return (
-        <header className="bg-primary banner-bg-pattern px-3 sm:px-4 h-11 text-white flex justify-between items-center sticky top-0 z-[60] gap-2">
-            <div className="flex items-center min-w-0">
+        <header
+          className={`banner-bg-pattern bg-primary px-3 text-white sm:px-4 ${
+            pin ? "sticky top-0 z-[60]" : "relative z-auto"
+          } pt-[env(safe-area-inset-top,0px)]`}
+        >
+            <div className="flex h-11 w-full items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center">
             <img src="/car-approved.svg" width={24} height={24} alt="" aria-hidden="true" className="shrink-0" fetchPriority="low" decoding="async"/>
             <strong className="font-IranSans text-[#FFFBFB] text-[11px] sm:text-sm mx-1 min-w-0 truncate font-bold">
               {slogan}
@@ -34,6 +41,7 @@ export default function Banner({ data }: BannerProps = {}) {
                 <path d="M7.5 2.5 4 6l3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
+            </div>
         </header>
     )
 }

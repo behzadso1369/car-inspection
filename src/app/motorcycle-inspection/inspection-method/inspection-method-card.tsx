@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
@@ -8,16 +8,21 @@ import { getInspectionPrices } from "../lib/pricing";
 
 export { FESTIVAL_DISCOUNT, getInspectionPrices } from "../lib/pricing";
 
-function FeatureCheckIcon({ isIncluded }: { isIncluded: boolean }) {
+function FeatureStatusIcon({ isIncluded }: { isIncluded: boolean }) {
   return (
     <span
-      className={`flex size-[18px] shrink-0 items-center justify-center rounded-full ring-2 ring-white ${
+      className={`flex size-[18px] shrink-0 items-center justify-center rounded-full ${
         isIncluded
-          ? "bg-gradient-to-br from-[#5B7FFF] to-[#416CEA] shadow-[0_2px_8px_rgba(65,108,234,0.35)]"
-          : "bg-[#D1D5DB]"
+          ? "bg-gradient-to-br from-[#5B7FFF] to-[#416CEA] shadow-[0_2px_8px_rgba(65,108,234,0.35)] ring-2 ring-white"
+          : "border border-[#FECACA] bg-[#FEF2F2] ring-2 ring-white"
       }`}
+      aria-hidden
     >
-      <Check className="size-2.5 text-white" strokeWidth={3.5} />
+      {isIncluded ? (
+        <Check className="size-2.5 text-white" strokeWidth={3.5} />
+      ) : (
+        <X className="size-2.5 text-[#F87171]" strokeWidth={3} />
+      )}
     </span>
   );
 }
@@ -34,10 +39,10 @@ function FeaturePill({
       className={`flex items-center justify-center gap-1.5 rounded-full border px-2.5 py-2.5 text-[11px] leading-tight ${
         isIncluded
           ? "border-[#DDE6FF] bg-gradient-to-b from-[#F8FAFF] to-[#EEF2FD] font-bold text-[#101117] shadow-[0_2px_8px_rgba(65,108,234,0.06)]"
-          : "border-[#E5E7EB] bg-[#F9FAFB] font-normal text-[#9CA3AF] opacity-60"
+          : "border-[#FECACA] bg-[#F9FAFB] font-normal text-[#9CA3AF]"
       }`}
     >
-      <FeatureCheckIcon isIncluded={isIncluded} />
+      <FeatureStatusIcon isIncluded={isIncluded} />
       <span className="text-center">{name}</span>
     </span>
   );

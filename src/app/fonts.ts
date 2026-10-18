@@ -34,3 +34,17 @@ export const iranSansUltraLight = localFont({
   preload: false,
   adjustFontFallback: "Arial",
 });
+
+export const peydaExtraBold = localFont({
+  src: [
+    {
+      path: "../fonts/peyda-extrabold.woff2",
+      weight: "800",
+      style: "normal",
+    },
+  ],
+  display: "swap",
+  variable: "--font-peyda-extrabold",
+  preload: true,
+  adjustFontFallback: "Arial",
+});

@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 import React, { useState } from "react";
 import Mapir from "mapir-react-component";
 import { DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { KeyboardAwareSheetFooter } from "@/components/flow/KeyboardAwareSheetFooter";
 import { Button } from "@/components/ui/button";
 import { Cancel01Icon, Location01Icon } from "hugeicons-react";
 
@@ -72,7 +73,7 @@ const DirectionsMap = ({LocationTypeDescription, onClose}:any) => {
 
       
       {/* Action Buttons Overlay - positioned on map */}
-      <div className="absolute bottom-0 left-0 right-0 px-4 py-4 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] z-[1000] flex justify-between gap-3">
+      <KeyboardAwareSheetFooter className="absolute bottom-0 left-0 right-0 z-[1000] flex justify-between gap-3 bg-white px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0px_4px_32px_0px_#CBD5E0] max-sm:fixed lg:absolute">
         <Button 
           onClick={handleNavigation}
           className="bg-[#416CEA] text-white rounded-3xl py-4 lg:py-6 px-6 lg:px-12 flex-1 text-sm lg:text-base" 
@@ -85,7 +86,7 @@ const DirectionsMap = ({LocationTypeDescription, onClose}:any) => {
         >
           پیامک
         </Button>
-      </div>
+      </KeyboardAwareSheetFooter>
     </div>
     </DialogContent>
   );

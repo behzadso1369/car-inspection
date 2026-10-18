@@ -12,7 +12,7 @@ import { DeferredToaster } from "@/components/analytics/DeferredToaster";
 import { ChunkLoadErrorHandler } from "@/components/ChunkLoadErrorHandler";
 import { DirectEntryPromoPopup } from "@/components/DirectEntryPromoPopup";
 import { generateOrganizationSchema, generateLocalBusinessSchema, generateWebSiteSchema } from "@/lib/seo";
-import { iranSans, iranSansUltraLight } from "./fonts";
+import { iranSans, iranSansUltraLight, peydaExtraBold } from "./fonts";
 
 const GTM_ID = "GTM-5D46VDMH";
 
@@ -94,6 +94,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: '#3456bb',
+  viewportFit: 'cover',
 };
 
 export default async function RootLayout({
@@ -114,7 +115,7 @@ export default async function RootLayout({
     <html
       lang="fa"
       dir="rtl"
-      className={`${iranSans.variable} ${iranSansUltraLight.variable} ${iranSans.className}`}
+      className={`${iranSans.variable} ${iranSansUltraLight.variable} ${peydaExtraBold.variable} ${iranSans.className}`}
       suppressHydrationWarning
     >
       <head>
@@ -151,7 +152,7 @@ export default async function RootLayout({
           mobileBarFixed={<CallAction data={initialData} fixed />}
           footer={<Footer data={initialData} />}
         >
-          <div id="main-content" className="relative z-0 max-w-full overflow-x-hidden">
+          <div id="main-content" className="relative z-0 max-w-full min-w-0">
             {children}
           </div>
         </SiteChrome>

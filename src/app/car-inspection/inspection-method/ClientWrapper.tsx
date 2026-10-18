@@ -12,6 +12,7 @@ import instance from "@/helper/interceptor";
 import { DiscountPriceDisplay } from "../components/DiscountPriceDisplay";
 // import { WalletGiftBanner } from "../components/WalletGiftBanner";
 import { getInspectionPrices, persistInspectionPrices } from "../lib/pricing";
+import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
 import InspectionMethodCard from "./inspection-method-card";
 
 interface ClientWrapperProps {
@@ -150,7 +151,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         </div>
       </div>
 
-      <div className="px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom))] lg:pb-8">
+      <div className="px-4 pb-[calc(7.5rem+env(safe-area-inset-bottom)+var(--keyboard-inset,0px))] lg:pb-8">
         {/* <div className="mb-4">
           <WalletGiftBanner
             carGroupId={carGroupId || null}
@@ -172,7 +173,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
         </RadioGroup>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-30 flex w-full justify-between bg-white px-4 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[0px_4px_32px_0px_#CBD5E0] lg:static lg:my-4 lg:mt-8 lg:pb-5">
+      <FlowStepFooter className="justify-between">
         <Button disabled={loading} className="bg-[#416CEA] text-white rounded-3xl py-6 px-12" onClick={moveToInsertInformation}>
           {
             loading ? "لطفا منتظر بمانید..." : "تایید و ادامه"
@@ -189,7 +190,7 @@ export default function ClientWrapper({ initialData }: ClientWrapperProps) {
               ?.InspectionTypeName
           }
         />
-      </div>
+      </FlowStepFooter>
     </div>
   );
 }

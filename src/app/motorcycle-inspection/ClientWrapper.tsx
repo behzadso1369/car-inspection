@@ -25,7 +25,10 @@ import OpenSheet from "./CarGroupSheet";
 const CarWayAnimation = dynamic(() => import("./CarWayAnimation"), {
   ssr: false,
   loading: () => (
-    <div className="w-[45px] h-[117px] absolute -top-16 left-1/2 -translate-x-1/2" />
+    <div
+      className="absolute left-1/2 top-0 h-[7rem] w-11 -translate-x-1/2"
+      aria-hidden
+    />
   ),
 });
 
@@ -46,13 +49,26 @@ import InspectionSeoArticle from "./InspectionSeoArticleV2";
 
 interface ClientWrapperProps {
   inspectionFaqs?: FaqItem[];
+  initialBrandId?: number;
+  initialBrandName?: string;
 }
 
 export default function ClientWrapper({
   inspectionFaqs = [],
+  initialBrandId,
+  initialBrandName,
 }: ClientWrapperProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const processRef = useRef<HTMLDivElement>(null);
+  const roadRef = useRef<HTMLDivElement>(null);
+  const [openModal, setOpenModal] = useState<boolean>(
+    Boolean(initialBrandId || initialBrandName),
+  );
+  const [presetBrandId, setPresetBrandId] = useState<number | undefined>(
+    initialBrandId,
+  );
+  const [presetBrandName, setPresetBrandName] = useState<string | undefined>(
+    initialBrandName,
+  );
 
   const router = useRouter();
   const { navigate, isPending } = useOptimizedNavigation();
@@ -73,6 +89,22 @@ export default function ClientWrapper({
       localStorage.setItem(MOTORCYCLE_GROUP_NAME_KEY, String(inputValue.name));
     }
   }, [inputValue]);
+
+  useEffect(() => {
+    if (initialBrandId || initialBrandName) {
+      setPresetBrandId(initialBrandId);
+      setPresetBrandName(initialBrandName);
+      setOpenModal(true);
+    }
+  }, [initialBrandId, initialBrandName]);
+
+  const handleSheetOpenChange = (open: boolean) => {
+    setOpenModal(open);
+    if (!open) {
+      setPresetBrandId(undefined);
+      setPresetBrandName(undefined);
+    }
+  };
 
   const moveToInspectionMethod = (
     motorcycleGroupId?: number,
@@ -98,8 +130,8 @@ export default function ClientWrapper({
     <main className="bg-white font-IranSans">
       <div className="px-4 w-full lg:w-2/5 lg:mx-24 lg:py-10">
         <div className="bg-white shadow-[8px_4px_24px_0px_#EAEAEA40] border border-[#DCDCDC] px-4 py-6 rounded-3xl my-6">
-          <h1 className="text-black text-lg my-2 font-bold lg:text-xl">
-            کارشناسی موتورسیکلت در محل تهران
+          <h1 className="text-black text-lg my-2 font-bold leading-8 lg:text-xl">
+            کارشناسی موتورسیکلت؛ مراحل، هزینه و چک‌لیست
           </h1>
           <h2 className="text-black text-base my-2 font-medium">
             ثبت درخواست کارشناسی موتور
@@ -141,13 +173,15 @@ export default function ClientWrapper({
               </p>
             </div>
           </div>
-          <Dialog open={openModal} onOpenChange={setOpenModal}>
+          <Dialog open={openModal} onOpenChange={handleSheetOpenChange}>
             <OpenSheet
               openModal={openModal}
               setOpenModal={setOpenModal}
               inputValue={inputValue}
               setInputValue={setInputValue}
               moveToInspectionMethod={moveToInspectionMethod}
+              initialBrandId={presetBrandId}
+              initialBrandName={presetBrandName}
             />
           </Dialog>
           <fieldset className="mt-2 border-0 p-0">
@@ -178,19 +212,19 @@ export default function ClientWrapper({
         <div className="pointer-events-none absolute left-1/2 lg:left-0 -top-8 lg:-top-[86%] -translate-y-[44%] lg:-translate-y-[26%] -translate-x-1/2 lg:translate-x-0 -rotate-y-180 z-20 max-lg:w-full max-lg:max-w-[430px]">
           <div className="w-[min(100vw-1rem,430px)] lg:w-[739px] relative aspect-[2.09] max-lg:aspect-[1.85] mx-auto lg:mx-0">
             <Image
-              alt="موتورسیکلت — کارشناسی در محل"
-              src="/flow-motorcycle.png"
+              alt="موتورسیکلت کاوازاکی — کارشناسی در محل"
+              src="/images/motorcycle-inspection/kawasaki-ninja-hero.webp"
               fill
               sizes="(max-width: 1024px) 430px, 739px"
               quality={90}
-              loading="lazy"
+              priority
               className="object-contain object-bottom"
             />
           </div>
         </div>
         <div className="mt-24 lg:mt-14 px-4 lg:px-24 text-white w-full lg:w-1/2">
           <p className="text-lg font-medium">
-            کارشناسی موتور در محل با کارماچک
+            کارشناسی موتورسیکلت در محل با کارماچک
           </p>
           <p className="text-base leading-8">
             کارشناس ما به آدرس شما در تهران و شرق تهران اعزام می‌شود و بدون نیاز
@@ -225,14 +259,14 @@ export default function ClientWrapper({
         </div>
       </div>
 
-      <div className="px-4 py-16 font-medium" ref={ref}>
+      <div className="px-4 py-16 font-medium">
         <p className="font-bold w-full text-center text-lg">
           اعزام کارشناس به محل شما
         </p>
         <div className="mx-auto mt-4 grid w-full max-w-6xl gap-4 md:grid-cols-3">
           <div className="rounded-3xl border border-[#DCDCDC] px-4 py-5 shadow-[8px_4px_24px_0px_#EAEAEA40]">
             <h3 className="text-sm font-semibold text-[#101117]">
-              کارشناسی موتور در محل تهران و شرق تهران
+              کارشناسی موتورسیکلت در محل تهران و شرق تهران
             </h3>
             <p className="text-sm font-light leading-7 text-[#55565A]">
               کارشناس کارماچک در زمان مقرر به آدرس شما می‌آید و گزارش کامل
@@ -266,7 +300,10 @@ export default function ClientWrapper({
         </div>
       </div>
 
-      <div className="bg-[#F0F2F4] py-16 lg:pt-12 flex flex-wrap justify-center relative px-4 lg:px-96">
+      <div
+        ref={processRef}
+        className="relative flex flex-wrap justify-center overflow-hidden bg-[#F0F2F4] px-4 py-16 lg:px-96 lg:pt-12"
+      >
         <p className="font-bold bg-[#F0F2F4] py-4 z-10 text-center text-lg">
           فرآیند انجام کارشناسی
         </p>
@@ -310,8 +347,20 @@ export default function ClientWrapper({
             </span>
           </div>
         </div>
-        <div className="absolute w-16 top-24 h-[calc(100%-96px)] bg-way bg-cover">
-          <CarWayAnimation containerRef={ref} />
+        <div
+          ref={roadRef}
+          className="pointer-events-none absolute bottom-8 left-1/2 top-24 w-16 -translate-x-1/2 overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-way bg-cover bg-center" aria-hidden />
+          <div
+            className="absolute inset-x-0 top-0 z-[3] h-6 bg-gradient-to-b from-[#F0F2F4] to-transparent"
+            aria-hidden
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 z-[3] h-8 bg-gradient-to-t from-[#F0F2F4] to-transparent"
+            aria-hidden
+          />
+          <CarWayAnimation containerRef={processRef} roadRef={roadRef} />
         </div>
       </div>
 
@@ -324,8 +373,8 @@ export default function ClientWrapper({
 
       {inspectionFaqs.length > 0 && (
         <FaqPreviewSection
-          title="سوالات متداول کارشناسی موتور"
-          subtitle="پاسخ سوالات رایج قبل از شروع فرآیند رزرو کارشناسی موتور"
+          title="سؤالات متداول کارشناسی موتورسیکلت"
+          subtitle="پاسخ سوالات رایج درباره کارشناسی موتورسیکلت در محل و خرید موتور دست دوم"
           items={inspectionFaqs}
           limit={6}
           showViewAll={inspectionFaqs.length > 6}

@@ -1,5 +1,5 @@
 ﻿'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
@@ -8,12 +8,14 @@ import { ArrowRight, X } from 'lucide-react';
 import instance from '@/helper/interceptor';
 import { ApiHelper } from '@/helper/api-request';
 
-export default function OpenSheet({inputValue,setInputValue,openModal,setOpenModal,moveToInspectionMethod}:any) {
+export default function OpenSheet({inputValue,setInputValue,openModal,setOpenModal,moveToInspectionMethod,initialBrandId,initialBrandName}:any) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [brands,setBrands] = useState([]);
   const [carGroups,setCarGroups] = useState([]);
   const [showGroup,setShowGroups] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [groupsLoading, setGroupsLoading] = useState(false);
+  const presetApplied = useRef(false);
 
   const getAllData = useCallback((e:any) => {
     setSearchTerm(e);
@@ -22,7 +24,9 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
 
 
         setBrands(res?.Results?.filter((item:any) => item.IsMotorcycleBrand == 1) ?? []);
-        setCarGroups(res?.Results?.filter((item:any) => item.IsMotorcycleBrand == 0) ?? []);
+        if (e) {
+          setCarGroups(res?.Results?.filter((item:any) => item.IsMotorcycleBrand == 0) ?? []);
+        }
       })
       .catch((err: any) => {
         console.error("Error fetching data:", err);
@@ -48,15 +52,51 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
   }, [openModal, resetSheet]);
 
   const getGroupById = (id:any) => {
+    if (!id) return;
+    setGroupsLoading(true);
      instance.get(ApiHelper.get("GetMotorcycleGroupWithBrandId") + "?MotorcycleBrandId=" + id)
       .then((res: any) => {
         setCarGroups(res?.MotorcycleGroups ?? []);
       })
       .catch((err: any) => {
         console.error("Error fetching data:", err);
+      })
+      .finally(() => {
+        setGroupsLoading(false);
       });
 
   }
+
+  useEffect(() => {
+    if (!openModal) {
+      presetApplied.current = false;
+      return;
+    }
+    if (presetApplied.current) return;
+
+    if (initialBrandId) {
+      presetApplied.current = true;
+      setSearchTerm("");
+      setShowGroups(true);
+      getGroupById(initialBrandId);
+      return;
+    }
+
+    if (initialBrandName && brands.length) {
+      const wanted = String(initialBrandName).trim();
+      const match = (brands as Array<{ Id?: number; Name?: string }>).find(
+        (item) =>
+          String(item.Name || "").trim() === wanted ||
+          String(item.Name || "").includes(wanted),
+      );
+      if (match?.Id) {
+        presetApplied.current = true;
+        setSearchTerm("");
+        setShowGroups(true);
+        getGroupById(match.Id);
+      }
+    }
+  }, [openModal, initialBrandId, initialBrandName, brands]);
 
   const backToBrands = () => {
     setShowGroups(false);
@@ -144,8 +184,14 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
             ) : (
               // Show carGroups when a brand is selected
               <div className='w-full'>
+                {groupsLoading ? (
+                  <p className="py-8 text-center text-sm text-[#55565A]">در حال بارگذاری مدل‌ها...</p>
+                ) : null}
+                {!groupsLoading && carGroups?.length === 0 ? (
+                  <p className="py-8 text-center text-sm text-[#55565A]">مدلی برای این برند پیدا نشد.</p>
+                ) : null}
                 {carGroups?.map((item:any) => (
-                  <div key={item.id} className="flex w-full items-center my-4 border-b border-[#CFCFD0] py-2" onClick={() => {
+                  <div key={item.id ?? item.Id} className="flex w-full items-center my-4 border-b border-[#CFCFD0] py-2" onClick={() => {
                     setInputValue({name: item.Name,value:item.Id});
                     // فراخوانی مستقیم moveToInspectionMethod با carGroupId
                     if (moveToInspectionMethod) {

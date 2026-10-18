@@ -22,7 +22,10 @@ import OpenSheet from "./CarGroupSheet";
 const CarWayAnimation = dynamic(() => import("./CarWayAnimation"), {
   ssr: false,
   loading: () => (
-    <div className="w-[45px] h-[117px] absolute -top-16 left-1/2 -translate-x-1/2" />
+    <div
+      className="absolute left-1/2 top-0 h-[117px] w-[45px] -translate-x-1/2"
+      aria-hidden
+    />
   ),
 });
 
@@ -43,13 +46,26 @@ import InspectionSeoArticle from "./InspectionSeoArticleV2";
 
 interface ClientWrapperProps {
   inspectionFaqs?: FaqItem[];
+  initialBrandId?: number;
+  initialBrandName?: string;
 }
 
 export default function ClientWrapper({
   inspectionFaqs = [],
+  initialBrandId,
+  initialBrandName,
 }: ClientWrapperProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const processRef = useRef<HTMLDivElement>(null);
+  const roadRef = useRef<HTMLDivElement>(null);
+  const [openModal, setOpenModal] = useState<boolean>(
+    Boolean(initialBrandId || initialBrandName),
+  );
+  const [presetBrandId, setPresetBrandId] = useState<number | undefined>(
+    initialBrandId,
+  );
+  const [presetBrandName, setPresetBrandName] = useState<string | undefined>(
+    initialBrandName,
+  );
 
   const router = useRouter();
   const { navigate, isPending } = useOptimizedNavigation();
@@ -67,6 +83,22 @@ export default function ClientWrapper({
     localStorage.setItem("CarGroupId", String(inputValue.value));
     localStorage.setItem("CarGroupName", String(inputValue.name));
   }, [inputValue]);
+
+  useEffect(() => {
+    if (initialBrandId || initialBrandName) {
+      setPresetBrandId(initialBrandId);
+      setPresetBrandName(initialBrandName);
+      setOpenModal(true);
+    }
+  }, [initialBrandId, initialBrandName]);
+
+  const handleSheetOpenChange = (open: boolean) => {
+    setOpenModal(open);
+    if (!open) {
+      setPresetBrandId(undefined);
+      setPresetBrandName(undefined);
+    }
+  };
 
   const moveToInspectionMethod = (carGroupId?: number) => {
     const idToUse = carGroupId || inputValue.value;
@@ -137,13 +169,15 @@ export default function ClientWrapper({
               </p>
             </div>
           </div>
-          <Dialog open={openModal} onOpenChange={setOpenModal}>
+          <Dialog open={openModal} onOpenChange={handleSheetOpenChange}>
             <OpenSheet
               openModal={openModal}
               setOpenModal={setOpenModal}
               inputValue={inputValue}
               setInputValue={setInputValue}
               moveToInspectionMethod={moveToInspectionMethod}
+              initialBrandId={presetBrandId}
+              initialBrandName={presetBrandName}
             />
           </Dialog>
           <fieldset className="mt-2 border-0 p-0">
@@ -225,7 +259,7 @@ export default function ClientWrapper({
         </div>
       </div>
 
-      <div className="px-4 py-16 font-medium" ref={ref}>
+      <div className="px-4 py-16 font-medium">
         <p className="font-bold w-full text-center text-lg">
           اعزام کارشناس به محل شما
         </p>
@@ -266,7 +300,10 @@ export default function ClientWrapper({
         </div>
       </div>
 
-      <div className="bg-[#F0F2F4] py-16 lg:pt-12 flex flex-wrap justify-center relative px-4 lg:px-96">
+      <div
+        ref={processRef}
+        className="relative flex flex-wrap justify-center overflow-hidden bg-[#F0F2F4] px-4 py-16 lg:px-96 lg:pt-12"
+      >
         <p className="font-bold bg-[#F0F2F4] py-4 z-10 text-center text-lg">
           فرآیند انجام کارشناسی
         </p>
@@ -310,8 +347,20 @@ export default function ClientWrapper({
             </span>
           </div>
         </div>
-        <div className="absolute w-16 top-24 h-[calc(100%-96px)] bg-way bg-cover">
-          <CarWayAnimation containerRef={ref} />
+        <div
+          ref={roadRef}
+          className="pointer-events-none absolute bottom-8 left-1/2 top-24 w-16 -translate-x-1/2 overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-way bg-cover bg-center" aria-hidden />
+          <div
+            className="absolute inset-x-0 top-0 z-[3] h-6 bg-gradient-to-b from-[#F0F2F4] to-transparent"
+            aria-hidden
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 z-[3] h-8 bg-gradient-to-t from-[#F0F2F4] to-transparent"
+            aria-hidden
+          />
+          <CarWayAnimation containerRef={processRef} roadRef={roadRef} />
         </div>
       </div>
 

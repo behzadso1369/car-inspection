@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { buildMotorcycleMoveBody } from "@/lib/motorcycle-order-move";
+import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
 import { RegulationsTermsViewer } from "./RegulationsTermsViewer";
 
 export default function ClientWrapper() {
@@ -72,7 +73,7 @@ export default function ClientWrapper() {
     orderDetail?.carGroup || orderDetail?.motorcycleGroup || "—";
 
   return (
-    <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-[calc(16rem+env(safe-area-inset-bottom))] lg:pb-8">
+    <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-[calc(16rem+env(safe-area-inset-bottom)+var(--keyboard-inset,0px))] lg:pb-8">
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -174,7 +175,7 @@ export default function ClientWrapper() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-30 w-full space-y-3 bg-white px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0px_4px_32px_0px_#CBD5E0] lg:static lg:my-4 lg:mt-8 lg:pb-4">
+      <FlowStepFooter className="flex-col space-y-3 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] lg:pb-4">
         <label className="flex cursor-pointer items-start gap-3 text-sm leading-7 text-[#55565A]">
           <input
             type="checkbox"
@@ -206,7 +207,7 @@ export default function ClientWrapper() {
         >
           {loading ? "لطفا منتظر بمانید..." : "تایید و پرداخت"}
         </Button>
-      </div>
+      </FlowStepFooter>
 
       <RegulationsTermsViewer
         open={regulationsOpen}

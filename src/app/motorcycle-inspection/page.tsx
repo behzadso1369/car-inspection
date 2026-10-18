@@ -6,7 +6,7 @@
 // Client interactions در ClientWrapper نگهداری می‌شوند
 
 import { Metadata } from "next";
-import { getFaqsByCategoryName } from "@/lib/faq-data";
+import { getFaqsByCategoryName, type FaqItem } from "@/lib/faq-data";
 import {
   BASE_URL,
   COMPANY,
@@ -16,26 +16,82 @@ import {
   generateFAQSchema,
 } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { parseBrandPreset } from "@/lib/popular-brands";
 import ClientWrapper from "./ClientWrapper";
 
 const MOTORCYCLE_INSPECTION_PATH = "/motorcycle-inspection";
 const MOTORCYCLE_INSPECTION_CANONICAL = getCanonicalUrl(MOTORCYCLE_INSPECTION_PATH);
+const MOTORCYCLE_INSPECTION_TITLE =
+  "کارشناسی موتورسیکلت؛ مراحل، هزینه و چک‌لیست قبل از خرید موتور دست دوم";
 const MOTORCYCLE_INSPECTION_DESCRIPTION =
-  "کارشناسی موتورسیکلت در محل با اعزام کارشناس به آدرس شما در تهران و شرق تهران؛ بررسی فنی، بدنه، شاسی و سیستم برق همراه با گزارش کامل. رزرو آنلاین در کارماچک.";
+  "کارشناسی موتورسیکلت در محل شامل چه مواردی است؟ راهنمای بررسی شاسی، موتور، ترمز، گیربکس و مدارک، هزینه کارشناسی و نکات خرید موتور دست دوم را بخوانید.";
+
+const MOTORCYCLE_INSPECTION_PAGE_FAQS: FaqItem[] = [
+  {
+    Question: "کارشناسی موتورسیکلت در محل شامل چه مواردی است؟",
+    Answer:
+      "بسته به خدمت انتخابی، بررسی مشخصات و مدارک، شاسی و بدنه، انجین، انتقال قدرت، ترمز، تعلیق، چرخ‌ها و برق را پوشش می‌دهد. دیاگ و تست حرکت به سازگاری ابزار، شرایط وسیله و توافق خدمت بستگی دارند.",
+  },
+  {
+    Question: "آیا موتورسیکلت صفر هم به بررسی نیاز دارد؟",
+    Answer:
+      "بررسی تطابق مشخصات، وضعیت ظاهری هنگام تحویل، قطعات و عملکردهای قابل آزمون می‌تواند مفید باشد. دامنه بررسی باید با شرایط تحویل و گارانتی سازگار باشد و بازکردن قطعات بدون هماهنگی انجام نشود.",
+  },
+  {
+    Question: "آیا موتورسیکلت زمین‌خورده ارزش خرید دارد؟",
+    Answer:
+      "به شدت و محل ضربه، سلامت اجزای ساختاری، کیفیت تعمیر و قیمت بستگی دارد. خط روی فلاپ به‌تنهایی به معنی آسیب شاسی نیست؛ نبود خط هم نبود تصادف را ثابت نمی‌کند.",
+  },
+  {
+    Question: "آیا دیاگ کارکرد واقعی موتورسیکلت را قطعی مشخص می‌کند؟",
+    Answer:
+      "برای همه مدل‌ها خیر. اطلاعات قابل دریافت متفاوت است و باید با سوابق سرویس و وضعیت استهلاک مقایسه شود. عدد نمایشگر یا یک خروجی دیاگ به‌تنهایی برای تأیید قطعی کافی نیست.",
+  },
+  {
+    Question: "کارشناسی موتورسیکلت چقدر طول می‌کشد؟",
+    Answer:
+      "مدت بررسی به مدل، دامنه خدمت، دسترسی به قطعات، وضعیت موتور و امکان تست حرکت بستگی دارد. زمان تقریبی را پس از اعلام مشخصات وسیله بپرسید.",
+  },
+  {
+    Question: "آیا بدون تست رانندگی می‌توان خرید کرد؟",
+    Answer:
+      "بخشی از بررسی‌ها در حالت ثابت انجام می‌شود، اما بعضی ایرادهای عملکردی ممکن است دیده نشوند. اگر تست حرکت انجام نشده، این محدودیت باید ثبت شود و درباره نیاز به بررسی تکمیلی تصمیم بگیرید.",
+  },
+  {
+    Question: "کارشناسی در محل بهتر است یا تعمیرگاه؟",
+    Answer:
+      "برای بازدید اولیه، محل مناسب می‌تواند کافی باشد. اگر ابزار ثابت، بازکردن قطعه یا اندازه‌گیری تخصصی لازم است، مراجعه به مرکز مجهز یا تعمیرگاه متخصص همان مدل انتخاب مناسب‌تری است.",
+  },
+];
 
 const INSPECTION_STEPS = [
-  { name: "ثبت مشخصات موتور", text: "برند و مدل موتورسیکلت را در فرم رزرو انتخاب کنید." },
-  { name: "انتخاب نوع، محل و زمان", text: "پکیج کارشناسی، آدرس محل حضور کارشناس و زمان دلخواه را انتخاب کنید." },
-  { name: "بررسی هزینه پیش از ثبت", text: "هزینهٔ نهایی بر اساس پکیج و منطقه پیش از ثبت رزرو به شما نمایش داده می‌شود." },
-  { name: "حضور کارشناس در محل موتور", text: "کارشناس کارماچک در زمان تعیین‌شده به محل شما اعزام می‌شود و موتور را بررسی می‌کند." },
-  { name: "تحویل گزارش کارشناسی", text: "گزارش کامل کارشناسی موتور شامل وضعیت بدنه، شاسی و فنی به شما تحویل داده می‌شود." },
+  {
+    name: "اعلام مشخصات",
+    text: "برند، مدل، سال ساخت، کارکرد اعلام‌شده، نوع انتقال قدرت و ایرادهای شناخته‌شده را به کارشناس بگویید.",
+  },
+  {
+    name: "توافق بر دامنه خدمت",
+    text: "مشخص کنید بدنه و شاسی، فنی، دیاگ، تست رانندگی و گزارش در خدمت انتخابی چه پوششی دارند.",
+  },
+  {
+    name: "آماده‌کردن محل",
+    text: "فضای روشن، سطح مناسب، تهویه و دسترسی اطراف وسیله فراهم باشد. مدارک و کلیدها را آماده کنید.",
+  },
+  {
+    name: "بازدید و ارزیابی",
+    text: "بررسی‌های ثابت انجام می‌شوند و در صورت ایمن‌بودن وسیله، اجازه مالک و فراهم‌بودن شرایط، تست حرکت صورت می‌گیرد.",
+  },
+  {
+    name: "تحویل نتیجه",
+    text: "ایرادها، موارد بررسی‌نشده و آزمایش‌های لازم برای تصمیم نهایی ثبت می‌شوند.",
+  },
 ];
 
 function generateServiceSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "کارشناسی موتور در محل",
+    name: "کارشناسی موتورسیکلت در محل",
     serviceType: "کارشناسی موتورسیکلت در محل",
     description: MOTORCYCLE_INSPECTION_DESCRIPTION,
     url: MOTORCYCLE_INSPECTION_CANONICAL,
@@ -68,9 +124,9 @@ function generateHowToSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "مراحل کارشناسی موتور در محل با کارماچک",
+    name: "مراحل کارشناسی موتورسیکلت در محل",
     description:
-      "فرآیند رزرو و انجام کارشناسی موتورسیکلت در محل توسط کارماچک؛ از انتخاب مدل تا تحویل گزارش کامل.",
+      "فرآیند کارشناسی موتورسیکلت در محل؛ از اعلام مشخصات و توافق دامنه خدمت تا بازدید، ارزیابی و تحویل گزارش.",
     totalTime: "PT1H",
     step: INSPECTION_STEPS.map((s, index) => ({
       "@type": "HowToStep",
@@ -87,11 +143,11 @@ function generateWebPageSchema() {
     "@type": "WebPage",
     "@id": `${MOTORCYCLE_INSPECTION_CANONICAL}#webpage`,
     url: MOTORCYCLE_INSPECTION_CANONICAL,
-    name: "کارشناسی موتور در محل | اعزام سریع کارشناس در محل | کارماچک",
+    name: `${MOTORCYCLE_INSPECTION_TITLE} | کارماچک`,
     description: MOTORCYCLE_INSPECTION_DESCRIPTION,
     inLanguage: "fa-IR",
     isPartOf: { "@id": `${BASE_URL}/#website` },
-    about: { "@type": "Thing", name: "کارشناسی موتور در محل" },
+    about: { "@type": "Thing", name: "کارشناسی موتورسیکلت در محل" },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", "h2"],
@@ -104,25 +160,24 @@ export const revalidate = 600; // 10 minutes
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: "کارشناسی موتور در محل | اعزام سریع کارشناس در محل",
-  description:
-    "کارشناسی موتورسیکلت در محل تهران با اعزام کارشناس؛ بررسی فنی، بدنه، شاسی و سیستم برق. رزرو آنلاین، هزینه شفاف و گزارش کامل.",
+  title: `${MOTORCYCLE_INSPECTION_TITLE} | کارماچک`,
+  description: MOTORCYCLE_INSPECTION_DESCRIPTION,
   keywords: [
-    "کارشناسی موتور در محل",
     "کارشناسی موتورسیکلت",
-    "کارشناسی موتور تهران",
-    "اعزام کارشناس موتور",
-    "کارشناسی فنی موتور",
-    "رزرو کارشناسی موتور",
+    "کارشناسی موتورسیکلت در محل",
+    "خرید موتور دست دوم",
+    "چک‌لیست کارشناسی موتور",
+    "هزینه کارشناسی موتورسیکلت",
+    "کارشناسی شاسی موتور",
+    "کارشناسی رنگ موتورسیکلت",
     "کارماچک",
   ],
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/motorcycle-inspection`,
   },
   openGraph: {
-    title: "کارشناسی موتور در محل | اعزام سریع کارشناس در محل | کارماچک",
-    description:
-      "کارشناسی موتورسیکلت در محل تهران؛ بررسی فنی، بدنه و شاسی. رزرو آنلاین در کارماچک.",
+    title: `${MOTORCYCLE_INSPECTION_TITLE} | کارماچک`,
+    description: MOTORCYCLE_INSPECTION_DESCRIPTION,
     url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/motorcycle-inspection`,
     siteName: "کارماچک",
     locale: "fa_IR",
@@ -130,9 +185,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "کارشناسی موتور در محل | کارماچک",
-    description:
-      "اعزام کارشناس به محل شما؛ بررسی فنی موتورسیکلت با گزارش کامل.",
+    title: `${MOTORCYCLE_INSPECTION_TITLE} | کارماچک`,
+    description: MOTORCYCLE_INSPECTION_DESCRIPTION,
   },
   robots: {
     index: true,
@@ -150,11 +204,16 @@ export const metadata: Metadata = {
 async function getInspectionFaqs() {
   const motorcycleFaqs = await getFaqsByCategoryName("کارشناسی موتور", 600);
   if (motorcycleFaqs.length > 0) return motorcycleFaqs;
-  return getFaqsByCategoryName("کارشناسی موتور", 600);
+  return MOTORCYCLE_INSPECTION_PAGE_FAQS;
 }
 
-export default async function MotorcycleInspectionFlow() {
+export default async function MotorcycleInspectionFlow({
+  searchParams,
+}: {
+  searchParams: Promise<{ brandId?: string; brand?: string }>;
+}) {
   const inspectionFaqs = await getInspectionFaqs();
+  const preset = parseBrandPreset(await searchParams);
 
   const schema: Array<Record<string, unknown>> = [
     generateWebPageSchema(),
@@ -163,11 +222,10 @@ export default async function MotorcycleInspectionFlow() {
     generateHowToSchema(),
     generateBreadcrumbSchema([
       { name: "خانه", path: "/" },
-      { name: "کارشناسی موتور در محل", path: MOTORCYCLE_INSPECTION_PATH },
+      { name: "کارشناسی موتورسیکلت در محل", path: MOTORCYCLE_INSPECTION_PATH },
     ]),
   ];
 
-  // FAQPage فقط وقتی اضافه می‌شود که سؤالات واقعی از API آمده باشند
   if (inspectionFaqs.length > 0) {
     schema.push(
       generateFAQSchema(
@@ -182,7 +240,11 @@ export default async function MotorcycleInspectionFlow() {
   return (
     <>
       <JsonLd data={schema} />
-      <ClientWrapper inspectionFaqs={inspectionFaqs} />
+      <ClientWrapper
+        inspectionFaqs={inspectionFaqs}
+        initialBrandId={preset.brandId}
+        initialBrandName={preset.brandName}
+      />
     </>
   );
 }

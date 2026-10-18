@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
 import { StoredInspectionPriceDisplay } from "../components/DiscountPriceDisplay";
 
 export default function ClientWrapper() {
@@ -82,7 +83,7 @@ export default function ClientWrapper() {
   }
 
   return (
-    <div className="bg-white font-IranSans h-screen">
+    <div className="bg-white font-IranSans min-h-screen pb-[calc(7rem+var(--keyboard-inset,0px))] lg:pb-0">
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -129,7 +130,7 @@ export default function ClientWrapper() {
                 </FormItem>
               )}
             />
-            <div className="px-4 lg:my-4 lg:static lg:mt-8 fixed left-0 right-0 flex justify-between bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+            <FlowStepFooter className="justify-between">
               <Dialog open={openModal} onOpenChange={setOpenModal}>
                 <OtpMoldal openModal={openModal} setOpnModal={setOpenModal} remainingSeconds={remainingSeconds} />
               </Dialog>
@@ -138,7 +139,7 @@ export default function ClientWrapper() {
                 {!sendSMS ? "ارسال پیامک" : "...لطفا منتظر بمانید"} 
               </Button>
               <StoredInspectionPriceDisplay />
-            </div>
+            </FlowStepFooter>
           </form>
         </Form>
       </div>

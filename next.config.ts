@@ -109,10 +109,10 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1440, 1920, 2560],
     imageSizes: [32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
-    qualities: [60, 70, 75],
+    qualities: [60, 70, 75, 85, 90],
   },
 
   output: "standalone",

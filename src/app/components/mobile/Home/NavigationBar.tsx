@@ -115,7 +115,7 @@ export function NavigationBar({ activePath = "" }: NavigationBarProps) {
   };
 
   return (
-    <nav className="site-bottom-nav fixed font-IranSans z-40 w-[calc(100%-1.5rem)] max-w-md left-1/2 transform -translate-x-1/2 bottom-6 h-[4.25rem] px-2 bg-[#f6f6f6] rounded-2xl shadow-[0px_4px_8px_0px_#00000014] flex justify-between items-center">
+    <nav className="site-bottom-nav fixed font-IranSans z-40 w-[calc(100%-1.5rem)] max-w-md left-1/2 transform -translate-x-1/2 bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] h-[4.25rem] px-2 bg-[#f6f6f6] rounded-2xl shadow-[0px_4px_8px_0px_#00000014] flex justify-between items-center">
       <a href="/" className={linkClass("/")} style={linkStyle("/")}>
         <HomeIcon />
         <span className="text-[11px] leading-tight text-center">خانه</span>

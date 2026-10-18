@@ -1,7 +1,8 @@
-﻿"use client"
+"use client"
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { DialogContent, DialogTitle } from "@/components/ui/dialog"
+import { KeyboardAwareSheetFooter } from "@/components/flow/KeyboardAwareSheetFooter";
 import { Button } from "@/components/ui/button"
 import { Location01Icon, Cancel01Icon } from "hugeicons-react"
 import { useEffect, useMemo, useState, useRef } from "react"
@@ -298,7 +299,7 @@ export default function DirectionsMap({
       </MapContainer>
     </div>
 
-    <div className="relative z-20 shrink-0 border-t border-[#E8ECF4] bg-white px-4 py-4 shadow-[0_-4px_24px_rgba(203,213,224,0.45)] lg:px-6 lg:py-5">
+    <KeyboardAwareSheetFooter className="relative z-20 border-t border-[#E8ECF4] bg-white px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-4px_24px_rgba(203,213,224,0.45)] lg:static lg:px-6 lg:py-5">
       <div className="flex gap-3">
         <Button
           type="button"
@@ -316,7 +317,7 @@ export default function DirectionsMap({
           پیامک
         </Button>
       </div>
-    </div>
+    </KeyboardAwareSheetFooter>
   </DialogContent>
   )
 }

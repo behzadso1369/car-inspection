@@ -11,6 +11,7 @@ import { ApiHelper } from "@/helper/api-request";
 import { useRouter } from "next/navigation";
 import { StoredInspectionPriceDisplay } from "../components/DiscountPriceDisplay";
 import { toast } from "sonner";
+import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
 import { readStoredAddressId } from "@/helper/create-user-address";
 
 /** Id=1 در API: «اعزام کارشناس به محل انتخابی شما» — کارشناسی در محل */
@@ -93,7 +94,7 @@ export default function ClientWrapper() {
   }, []);
 
   return (
-    <div className="bg-white font-IranSans lg:px-4 lg:py-4 overflow-x-hidden max-w-full">
+    <div className="bg-white font-IranSans lg:px-4 lg:py-4 overflow-x-hidden max-w-full pb-[calc(7rem+var(--keyboard-inset,0px))] lg:pb-0">
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -152,7 +153,7 @@ export default function ClientWrapper() {
         </Tabs>
       </div>
 
-      <div className="px-4 lg:my-4 w-full fixed lg:static lg:mt-8 flex justify-between bottom-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5">
+      <FlowStepFooter className="justify-between">
         <Button
           disabled={loading || (isOnSite && !selectedAddressId)}
           onClick={moveToCarInspectionTime}
@@ -162,7 +163,7 @@ export default function ClientWrapper() {
           {loading ? "لطفا منتظر بمانید..." : "تایید محل کارشناسی"}
         </Button>
         <StoredInspectionPriceDisplay />
-      </div>
+      </FlowStepFooter>
     </div>
   );
 }

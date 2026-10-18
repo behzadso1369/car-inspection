@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Location01Icon, Tick01Icon } from "hugeicons-react";
 import { useRouter } from "next/navigation";
+import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
 import {
   ON_SITE_ADDRESS_KEY,
   type SavedOnSiteAddress,
@@ -52,7 +53,7 @@ export default function ShowAddressClient() {
         <p className="px-4 text-[#55565A]">آدرسی ثبت نشده. به مرحله قبل برگردید و آدرس را ثبت کنید.</p>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white shadow-[0px_4px_32px_0px_#CBD5E0] py-5 px-4 flex justify-between items-center">
+      <FlowStepFooter className="items-center justify-between">
         <Button
           onClick={() => router.push("../inspection-location")}
           variant="outline"
@@ -67,7 +68,7 @@ export default function ShowAddressClient() {
         >
           تایید و ادامه
         </Button>
-      </div>
+      </FlowStepFooter>
     </div>
   );
 }

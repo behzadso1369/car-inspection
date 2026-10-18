@@ -10,6 +10,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import { toast } from "sonner";
 import { DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { KeyboardAwareSheetFooter } from "@/components/flow/KeyboardAwareSheetFooter";
 import { Button } from "@/components/ui/button";
 import { Cancel01Icon, Location01Icon } from "hugeicons-react";
 import { reverseGeocode, type GeocodedAddress } from "@/helper/reverse-geocode";
@@ -435,7 +436,7 @@ export default function OnSiteAddressMapModal({
         )}
       </div>
 
-      <div className="relative z-20 shrink-0 border-t border-[#E8ECF4] bg-white px-4 py-4 shadow-[0_-4px_24px_rgba(203,213,224,0.45)] lg:px-6">
+      <KeyboardAwareSheetFooter className="relative z-20 border-t border-[#E8ECF4] bg-white px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-4px_24px_rgba(203,213,224,0.45)] lg:static lg:px-6">
         {preview && (
           <div className="mb-3 rounded-xl bg-[#F8FAFF] border border-[#E8ECF4] px-3 py-2 text-sm">
             <p className="text-[#55565A] text-xs mb-1">آدرس انتخاب‌شده</p>
@@ -472,7 +473,7 @@ export default function OnSiteAddressMapModal({
             تایید این آدرس
           </Button>
         </div>
-      </div>
+      </KeyboardAwareSheetFooter>
     </DialogContent>
   );
 }
