@@ -175,11 +175,13 @@ export default async function CarInspectionPage({
             imageAlt={
               car.slug === "peugeot-206"
                 ? "پژو ۲۰۶ اسپرت خاکستری مات، نمای سه رخ جلو"
-                :               car.slug === "jac-s5"
-                  ? "جک S5 خاکستری، نمای سه رخ جلو"
-                  : car.slug === "shahin"
-                    ? "سایپا شاهین سفید، نمای سه رخ جلو"
-                    : `عکس ${car.name}، نمای سه رخ جلو`
+                : car.slug === "peugeot-207"
+                  ? "پژو ۲۰۷ هاچ‌بک، نمای سه رخ جلو"
+                  : car.slug === "jac-s5"
+                    ? "جک S5 خاکستری، نمای سه رخ جلو"
+                    : car.slug === "shahin"
+                      ? "سایپا شاهین سفید، نمای سه رخ جلو"
+                      : `عکس ${car.name}، نمای سه رخ جلو`
             }
             searchTerm={car.inspectionSearchTerm}
             carGroupId={car.inspectionCarGroupId}
