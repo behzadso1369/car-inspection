@@ -1,3 +1,10 @@
+"use client";
+
+import {
+  InspectionServicesNavTrigger,
+  isInspectionServicesPath,
+} from "./InspectionServicesSheet";
+
 const ACTIVE = "#3456bb";
 const INACTIVE = "#6B6C70";
 
@@ -8,7 +15,7 @@ type NavigationBarProps = {
 function isActivePath(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   if (href === "/car-inspection") {
-    return pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+    return isInspectionServicesPath(pathname);
   }
   if (href === "/car-price") return pathname.startsWith("/car-price");
   if (href === "/Profile") {
@@ -121,10 +128,13 @@ export function NavigationBar({ activePath = "" }: NavigationBarProps) {
         <span className="text-[11px] leading-tight text-center">خانه</span>
       </a>
 
-      <a href="/car-inspection" className={linkClass("/car-inspection")} style={linkStyle("/car-inspection")}>
+      <InspectionServicesNavTrigger
+        className={linkClass("/car-inspection")}
+        style={linkStyle("/car-inspection")}
+      >
         <CarInspectionIcon />
         <span className="text-[11px] leading-tight text-center">کارشناسی</span>
-      </a>
+      </InspectionServicesNavTrigger>
 
       <a href="/car-price" className={linkClass("/car-price")} style={linkStyle("/car-price")}>
         <MoneyIcon />

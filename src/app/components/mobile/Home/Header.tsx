@@ -2,6 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/seo/BrandLogo";
+import {
+  InspectionServicesDesktopNav,
+  isInspectionServicesPath,
+} from "./InspectionServicesSheet";
 
 type HeaderProps = {
   data?: any;
@@ -11,7 +15,7 @@ type HeaderProps = {
 function isActivePath(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   if (href === "/car-inspection") {
-    return pathname === "/car-inspection" || pathname.startsWith("/car-inspection/");
+    return isInspectionServicesPath(pathname);
   }
   return pathname.startsWith(href);
 }
@@ -71,11 +75,10 @@ export function Header({ data, activePath }: HeaderProps) {
           <li>
             <a href="/" className={linkClass("/")} style={linkStyle("/")}>خانه</a>
           </li>
-          <li>
-            <a href="/car-inspection" className={linkClass("/car-inspection")} style={linkStyle("/car-inspection")}>
-              کارشناسی خودرو
-            </a>
-          </li>
+          <InspectionServicesDesktopNav
+            className={linkClass("/car-inspection")}
+            style={linkStyle("/car-inspection")}
+          />
           <li>
             <a href="/car-price" className={linkClass("/car-price")} style={linkStyle("/car-price")}>
               قیمت گذاری خودرو

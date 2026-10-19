@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { DEALERS_HUB_PATH } from "@/app/car-inspection-dealers/dealer-hub-data";
 import { useCallback, useState, useTransition } from "react";
 import {
   BrandMark,
@@ -62,6 +64,26 @@ function BrandTileLink({
         {tile.other ? "سایر" : tile.label}
       </span>
     </button>
+  );
+}
+
+function DealersEntryCta({ className = "" }: { className?: string }) {
+  return (
+    <Link
+      href={DEALERS_HUB_PATH}
+      className={`dealers-entry-cta banner-cta z-30 inline-flex max-w-[calc(100vw-2.5rem)] shrink-0 items-center gap-1.5 rounded-full border border-white/30 px-3.5 py-2 text-center font-IranSans text-[13px] font-bold leading-snug text-black sm:gap-2 sm:px-5 sm:py-2.5 sm:text-base ${className}`}
+    >
+      پنل کارشناسی ویژه نمایشگاه داران
+      <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="sm:h-4 sm:w-4">
+        <path
+          d="M7.5 2.5 4 6l3.5 3.5"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </Link>
   );
 }
 
@@ -208,25 +230,28 @@ export default function HomeHero({
       aria-labelledby="home-hero-title"
     >
       <div className="relative bg-[#050B18] lg:min-h-[720px] xl:min-h-[760px]">
-        <div className="relative aspect-[16/10] w-full max-lg:max-h-[min(36dvh,15rem)] max-lg:min-h-[9.5rem] overflow-hidden sm:aspect-[16/9] sm:max-lg:max-h-[min(38dvh,16.5rem)] lg:absolute lg:inset-0 lg:max-h-none lg:min-h-0 lg:aspect-auto">
-          <Image
-            src="/images/home/hero-xray-car-2k.webp"
-            alt=""
-            fill
-            priority
-            quality={90}
-            sizes="(max-width: 1023px) 100vw, 2560px"
-            className="origin-[82%_56%] scale-[1.28] object-cover object-[84%_56%] lg:origin-[90%_48%] lg:scale-100 lg:object-[88%_48%]"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 hidden bg-gradient-to-l from-transparent from-45% to-[#050B18]/50 lg:block"
-          />
+        <div className="relative aspect-[16/10] w-full max-lg:max-h-[min(36dvh,15rem)] max-lg:min-h-[9.5rem] sm:aspect-[16/9] sm:max-lg:max-h-[min(38dvh,16.5rem)] lg:absolute lg:inset-0 lg:max-h-none lg:min-h-0 lg:aspect-auto">
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src="/images/home/hero-xray-car-2k.webp"
+              alt=""
+              fill
+              priority
+              quality={90}
+              sizes="(max-width: 1023px) 100vw, 2560px"
+              className="origin-[82%_56%] scale-[1.28] object-cover object-[84%_56%] lg:origin-[90%_48%] lg:scale-100 lg:object-[88%_48%]"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 hidden bg-gradient-to-l from-transparent from-45% to-[#050B18]/50 lg:block"
+            />
+          </div>
 
           <div className="absolute inset-0 z-10 max-lg:contents">
-            <div className="absolute top-[5%] left-0 z-10 w-fit pl-4 sm:top-[6%] sm:pl-5 lg:top-8 lg:left-4 lg:flex lg:w-[min(34rem,42%)] lg:flex-col lg:gap-4 lg:pl-0 xl:top-10 xl:left-6 xl:gap-5">
+            <div className="absolute top-[5%] left-0 z-10 w-fit pl-4 sm:top-[6%] sm:pl-5 lg:top-8 lg:left-4 lg:flex lg:w-[min(34rem,42%)] lg:flex-col lg:gap-3 lg:pl-0 xl:top-10 xl:left-6 xl:gap-4">
               <HeroTitle />
               <div className="hidden lg:block">
+                <DealersEntryCta className="mb-2 self-start" />
                 <BrandPicker {...pickerProps} />
               </div>
             </div>
@@ -234,6 +259,7 @@ export default function HomeHero({
         </div>
 
         <div className="relative z-20 mx-auto -mt-7 w-[calc(100%-2.5rem)] max-w-[24.5rem] pb-2 sm:-mt-8 md:mx-0 md:mb-6 md:ml-[5%] md:mr-auto lg:hidden">
+          <DealersEntryCta className="absolute left-0 top-0 -translate-y-[calc(100%+0.5rem)]" />
           <BrandPicker {...pickerProps} />
         </div>
       </div>

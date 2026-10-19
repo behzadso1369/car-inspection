@@ -8,13 +8,70 @@ import {
 import {
   DEALERS_HUB_FAQS,
   DEALERS_HUB_H1,
+  DEALERS_HUB_INTRO,
+  DEALERS_HUB_LEAD,
+  DEALERS_HUB_PLANS,
   DEALERS_HUB_STEPS,
+  DEALERS_PORTAL_URL,
 } from "./dealer-hub-data";
 import DealerRegistrationForm from "./DealerRegistrationForm";
 
 const INSPECTION_URL = "/car-inspection";
+const PRICE_URL = "/car-price";
+const REGISTER_HASH = "#register";
 const linkClass =
   "font-semibold text-[#3456bb] underline-offset-4 hover:underline";
+
+function SectionCard({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section
+      id={id}
+      className="scroll-mt-28 rounded-[1.75rem] border border-[#E2E8F4] bg-white p-5 sm:p-7"
+    >
+      <h2 className="text-xl font-black leading-9 text-[#101117] sm:text-[1.35rem]">
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
+function P({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mt-3 text-sm leading-8 text-[#55565A] sm:text-[15px] sm:leading-9">
+      {children}
+    </p>
+  );
+}
+
+function CtaPair({ primaryLabel }: { primaryLabel: string }) {
+  return (
+    <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+      <a
+        href={DEALERS_PORTAL_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-bold text-[#0B1F4A] transition-colors hover:bg-[#F3F6FD]"
+      >
+        {primaryLabel}
+      </a>
+      <a
+        href={REGISTER_HASH}
+        className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/10 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-white/15"
+      >
+        ثبت نام نمایشگاه داران
+      </a>
+    </div>
+  );
+}
 
 export default function DealersLanding() {
   return (
@@ -45,81 +102,240 @@ export default function DealersLanding() {
               <span aria-hidden className="text-white/35">
                 /
               </span>
-              <span className="text-white/90">ثبت‌نام نمایشگاه‌دار</span>
+              <span className="text-white/90">پنل نمایشگاه‌داران</span>
             </nav>
 
             <p className="mb-3 text-[12px] font-medium tracking-wide text-[#9BB6F0] sm:text-sm">
-              کارماچک · همکاری با نمایشگاه‌های خودرو
+              کارماچک · کارشناسی خودرو ویژه نمایشگاه‌داران
             </p>
             <h1 className="text-[1.55rem] font-black leading-10 text-white sm:text-3xl sm:leading-[2.6rem]">
               {DEALERS_HUB_H1}
             </h1>
             <p className="mt-4 text-sm leading-8 text-white/80 sm:text-base sm:leading-9">
-              فرم زیر یک درخواست همکاری می‌سازد. تا تأیید ادمین، حساب نمایشگاه
-              ساخته نمی‌شود. پس از تأیید، با همان شماره موبایل از پرتال
-              نمایشگاه وارد می‌شوید.
+              {DEALERS_HUB_LEAD}
             </p>
+            <p className="mt-3 text-sm leading-8 text-white/70 sm:text-[15px] sm:leading-9">
+              {DEALERS_HUB_INTRO}
+            </p>
+            <CtaPair primaryLabel="ورود به پنل نمایشگاه‌داران" />
           </div>
         </header>
 
         <div className="bg-[#F4F6FB]">
           <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 sm:px-6 sm:py-14">
-            <section className="rounded-[1.75rem] border border-[#E2E8F4] bg-white p-5 sm:p-7">
-              <p className="text-sm leading-8 text-[#55565A] sm:text-[15px] sm:leading-9">
-                برای آشنایی با{" "}
-                <Link href="/" className={linkClass}>
-                  خدمات و تیم کارماچک
-                </Link>
-                ، صفحه اصلی را ببینید. این صفحه مخصوص{" "}
-                <strong className="text-[#101117]">ثبت درخواست نمایشگاه</strong>{" "}
-                است؛ برای رزرو{" "}
-                <Link href={INSPECTION_URL} className={linkClass}>
-                  کارشناسی خودرو
-                </Link>{" "}
-                از مسیر جداگانه اقدام کنید.
-              </p>
-              <ul className="mt-4 space-y-2 text-sm leading-7 text-[#55565A]">
-                <li className="flex gap-2">
-                  <span className="text-[#3456bb]">۱.</span>
-                  فرم کوتاه را ارسال کنید (شماره موبایل مالک = ورود بعدی با OTP).
+            <SectionCard
+              id="reports"
+              title="گزارش‌های کارشناسی نمایشگاه‌تان، همیشه در دسترس"
+            >
+              <P>
+                وقتی چند خودرو برای خرید، فروش یا تحویل به مشتری کارشناسی
+                می‌شوند، دسترسی منظم به نتیجه هر بررسی اهمیت بیشتری پیدا می‌کند.
+                در پنل کارماچک می‌توانید گزارش‌های کارشناسی خودروهای نمایشگاه‌تان
+                را یک‌جا ببینید و هنگام نیاز، به سوابق آن‌ها مراجعه کنید.
+              </P>
+              <P>
+                این دسترسی به شما کمک می‌کند پیش از تصمیم‌گیری درباره یک خودرو،
+                نتیجه بررسی آن را مرور کنید و توضیح وضعیت خودرو به مشتری را بر
+                پایه اطلاعات ثبت‌شده پیش ببرید.
+              </P>
+            </SectionCard>
+
+            <SectionCard
+              id="usage"
+              title="تعداد کارشناسی‌ها و مصرف ماهانه اعتبار را ببینید"
+            >
+              <P>
+                برای برنامه‌ریزی هزینه‌های کارشناسی، هم تعداد خودروهای
+                بررسی‌شده مهم است و هم اعتباری که برای آن‌ها مصرف شده است. پنل
+                نمایشگاه‌داران این اطلاعات را در اختیار شما می‌گذارد:
+              </P>
+              <ul className="mt-4 space-y-3 text-sm leading-8 text-[#55565A] sm:text-[15px]">
+                <li>
+                  <strong className="text-[#101117]">
+                    تعداد کارشناسی‌های ماهانه:
+                  </strong>{" "}
+                  در هر ماه چند خودرو کارشناسی شده است؟
                 </li>
-                <li className="flex gap-2">
-                  <span className="text-[#3456bb]">۲.</span>
-                  درخواست در صف بررسی می‌ماند؛ نتیجه از طریق تماس اعلام می‌شود.
+                <li>
+                  <strong className="text-[#101117]">
+                    میزان مصرف ماهانه اعتبار:
+                  </strong>{" "}
+                  چه مقدار از اعتبار حساب در همان ماه استفاده شده است؟
                 </li>
-                <li className="flex gap-2">
-                  <span className="text-[#3456bb]">۳.</span>
-                  پس از تأیید، ورود از{" "}
-                  <span dir="ltr" className="font-medium">
-                    dealer.carmacheck.com
-                  </span>{" "}
-                  — بدون ثبت‌نام آزاد در پرتال.
+                <li>
+                  <strong className="text-[#101117]">موجودی حساب:</strong> چه
+                  میزان اعتبار برای ادامه استفاده از خدمات دارید؟
                 </li>
               </ul>
-            </section>
+              <P>
+                با مرور این اطلاعات، می‌توانید نیاز نمایشگاه به شارژ مجدد را بهتر
+                برآورد کنید و طرح شارژ را متناسب با مصرف خود انتخاب کنید.
+              </P>
+            </SectionCard>
 
-            <div id="register">
-              <DealerRegistrationForm />
-            </div>
+            <SectionCard
+              id="credit"
+              title="اعتبار حساب را شارژ کنید و اعتبار هدیه بگیرید"
+            >
+              <P>
+                در طرح‌های شارژ پنل نمایشگاه‌داران، مبلغی به‌عنوان اعتبار هدیه به
+                شارژ شما اضافه می‌شود؛ بنابراین اعتبار نهایی حساب از مبلغ پرداختی
+                بیشتر خواهد بود.
+              </P>
 
-            <section className="rounded-[1.75rem] border border-[#E2E8F4] bg-white p-5 sm:p-7">
-              <h2 className="text-xl font-black leading-9 text-[#101117]">
-                مراحل از ثبت درخواست تا ورود پرتال
-              </h2>
+              <h3 className="mt-6 text-base font-bold text-[#101117] sm:text-lg">
+                طرح‌های شارژ اعتبار نمایشگاه‌داران
+              </h3>
+              <div className="mt-4 overflow-x-auto rounded-2xl border border-[#E2E8F4]">
+                <table className="w-full min-w-[36rem] border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-[#F0F4FC] text-[#101117]">
+                      <th className="px-3 py-3 text-right font-bold">طرح</th>
+                      <th className="px-3 py-3 text-right font-bold">
+                        مبلغ پرداختی
+                      </th>
+                      <th className="px-3 py-3 text-right font-bold">
+                        اعتبار هدیه شارژ
+                      </th>
+                      <th className="px-3 py-3 text-right font-bold">
+                        مجموع اعتبار دریافتی
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {DEALERS_HUB_PLANS.map((plan) => (
+                      <tr
+                        key={plan.name}
+                        className="border-t border-[#E2E8F4] text-[#55565A]"
+                      >
+                        <td className="px-3 py-3 font-bold text-[#101117]">
+                          {plan.name}
+                        </td>
+                        <td className="px-3 py-3" dir="ltr">
+                          {plan.paid}
+                        </td>
+                        <td className="px-3 py-3" dir="ltr">
+                          {plan.gift}
+                        </td>
+                        <td className="px-3 py-3 font-semibold text-[#101117]" dir="ltr">
+                          {plan.total}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <P>
+                برای مثال، در طرح VIP با پرداخت ۴۰ میلیون تومان، مجموعاً ۴۶
+                میلیون تومان اعتبار دریافت می‌کنید؛ یعنی ۶ میلیون تومان اعتبار
+                اضافه برای استفاده از خدمات کارشناسی.
+              </P>
+              <P>
+                طرح مناسب را بر اساس مصرف کارشناسی نمایشگاه انتخاب کنید. اگر
+                به‌تازگی همکاری را شروع کرده‌اید، مصرف اولیه می‌تواند مبنای انتخاب
+                شارژ بعدی باشد؛ اگر به‌طور مستمر خودرو کارشناسی می‌کنید، گزارش
+                مصرف ماهانه به برآورد دقیق‌تر اعتبار موردنیاز کمک می‌کند.
+              </P>
+              <P>
+                برای بررسی طرح‌های فعال، وارد بخش «کیف پول و اعتبار» پنل شوید.
+              </P>
+            </SectionCard>
+
+            <SectionCard
+              id="bonus-credit"
+              title="اعتبار اضافه به‌ازای کارشناسی هر خودرو"
+            >
+              <P>
+                علاوه بر هدیه شارژ، در طرح همکاری نمایشگاه‌داران، به‌ازای
+                کارشناسی هر خودرو نیز مطابق شرایط طرح، درصدی اعتبار اضافه دریافت
+                می‌کنید. میزان این اعتبار و شرایط تعلق آن را پیش از شروع همکاری
+                از تیم کارماچک بپرسید.
+              </P>
+              <div className="mt-5">
+                <a
+                  href={DEALERS_PORTAL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-full bg-[#3456bb] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#2c4aa0]"
+                >
+                  ورود به پنل و مشاهده طرح‌های شارژ
+                </a>
+              </div>
+            </SectionCard>
+
+            <SectionCard
+              id="support"
+              title="پشتیبانی کارشناسی‌ها و حساب را از طریق تیکت پیگیری کنید"
+            >
+              <P>
+                اگر درباره گزارش یک خودرو، اعتبار حساب یا نحوه استفاده از پنل
+                پرسشی دارید، از داخل حساب نمایشگاه تیکت ثبت کنید.
+              </P>
+              <P>
+                برای اینکه موضوع روشن‌تر بررسی شود، در متن تیکت مشخص کنید درخواست
+                مربوط به کدام خودرو، کارشناسی یا پرداخت است و چه مسئله‌ای نیاز به
+                پیگیری دارد. توضیح دقیق از ابتدا، به کاهش رفت‌وبرگشت برای
+                روشن‌شدن موضوع کمک می‌کند.
+              </P>
+            </SectionCard>
+
+            <SectionCard id="onsite" title="کارشناسی خودرو در محل نمایشگاه">
+              <P>
+                کارماچک امکان کارشناسی خودرو در محل نمایشگاه را در تهران فراهم
+                کرده است. زمان حضور کارشناس بر اساس آدرس و ظرفیت هماهنگ می‌شود و
+                جزئیات بررسی به نوع خدمت انتخابی بستگی دارد. بررسی می‌تواند شامل
+                رنگ و بدنه، شاسی، بخش‌های فنی، دیاگ و آپشن‌ها باشد.
+              </P>
+              <P>
+                برای آشنایی با دامنه خدمات و شرایط محل، صفحه{" "}
+                <Link href={INSPECTION_URL} className={linkClass}>
+                  کارشناسی خودرو در محل
+                </Link>{" "}
+                را ببینید.
+              </P>
+              <P>
+                پیش از حضور کارشناس، خودرو را در فضایی با نور و دسترسی مناسب قرار
+                دهید و امکان بررسی اطراف آن را فراهم کنید. این آمادگی به انجام
+                بهتر بررسی کمک می‌کند.
+              </P>
+              <P>
+                برای برآورد اولیه ارزش خودرو نیز می‌توانید از{" "}
+                <Link href={PRICE_URL} className={linkClass}>
+                  محاسبه قیمت خودرو کارکرده
+                </Link>{" "}
+                استفاده کنید و نتیجه را در کنار گزارش کارشناسی و شرایط واقعی
+                معامله بسنجید.
+              </P>
+              <div className="mt-5">
+                <Link
+                  href="/"
+                  className="inline-flex items-center justify-center rounded-full bg-[#0B1F4A] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#122B58]"
+                >
+                  کارماچک
+                </Link>
+              </div>
+            </SectionCard>
+
+            <SectionCard
+              id="how-to"
+              title="چطور از پنل نمایشگاه‌داران استفاده کنید؟"
+            >
               <ol className="mt-4 list-decimal space-y-4 pr-5 text-sm leading-8 text-[#55565A] marker:font-bold marker:text-[#3456bb] sm:text-[15px]">
                 {DEALERS_HUB_STEPS.map((step) => (
                   <li key={step.title}>
-                    <strong className="text-[#101117]">{step.title}</strong>
-                    <span className="mt-1 block">{step.description}</span>
+                    <strong className="text-[#101117]">{step.title}.</strong>{" "}
+                    {step.description}
                   </li>
                 ))}
               </ol>
-            </section>
+            </SectionCard>
 
-            <section className="rounded-[1.75rem] border border-[#E2E8F4] bg-white p-5 sm:p-7">
-              <h2 className="text-xl font-black leading-9 text-[#101117]">
-                پرسش‌های متداول
-              </h2>
+            <div id="register" className="scroll-mt-28">
+              <DealerRegistrationForm />
+            </div>
+
+            <SectionCard id="faq" title="پرسش‌های متداول نمایشگاه‌داران">
               <Accordion type="single" collapsible className="mt-4 w-full">
                 {DEALERS_HUB_FAQS.map((faq, index) => (
                   <AccordionItem
@@ -136,6 +352,18 @@ export default function DealersLanding() {
                   </AccordionItem>
                 ))}
               </Accordion>
+            </SectionCard>
+
+            <section className="rounded-[1.75rem] bg-[#0B1F4A] p-5 text-white sm:p-7">
+              <h2 className="text-xl font-black leading-9 sm:text-[1.35rem]">
+                مدیریت کارشناسی‌های نمایشگاه را از همین‌جا شروع کنید
+              </h2>
+              <p className="mt-3 text-sm leading-8 text-white/75 sm:text-[15px] sm:leading-9">
+                گزارش خودروها را یک‌جا ببینید، مصرف ماهانه را زیر نظر داشته باشید
+                و با انتخاب طرح شارژ مناسب، برای کارشناسی‌های بعدی اعتبار آماده
+                کنید.
+              </p>
+              <CtaPair primaryLabel="ورود به پنل نمایشگاه‌داران" />
             </section>
           </div>
         </div>

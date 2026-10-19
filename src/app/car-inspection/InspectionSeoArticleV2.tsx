@@ -420,7 +420,7 @@ export default function InspectionSeoArticleV2() {
                 href="/car-inspection-dealers"
                 className="font-semibold text-[#3456bb] underline-offset-4 hover:underline"
               >
-                ثبت‌نام نمایشگاه‌دار در کارماچک
+                پنل نمایشگاه‌داران کارماچک
               </Link>
             </p>
           </div>

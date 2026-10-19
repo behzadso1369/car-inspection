@@ -23,7 +23,7 @@ export const revalidate = 86400;
 const canonical = getCanonicalUrl(DEALERS_HUB_PATH);
 
 export const metadata: Metadata = {
-  title: DEALERS_HUB_TITLE,
+  title: { absolute: DEALERS_HUB_TITLE },
   description: DEALERS_HUB_DESCRIPTION,
   keywords: [...DEALERS_HUB_KEYWORDS],
   alternates: { canonical },
@@ -78,7 +78,7 @@ function generateHowToSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "ثبت‌نام نمایشگاه‌دار در کارماچک",
+    name: "چطور از پنل نمایشگاه‌داران کارماچک استفاده کنید",
     description: DEALERS_HUB_DESCRIPTION,
     step: DEALERS_HUB_STEPS.map((step, index) => ({
       "@type": "HowToStep",
@@ -95,7 +95,7 @@ export default function CarInspectionDealersPage() {
     generateHowToSchema(),
     generateBreadcrumbSchema([
       { name: "خانه", path: "/" },
-      { name: "ثبت‌نام نمایشگاه‌دار", path: DEALERS_HUB_PATH },
+      { name: "پنل نمایشگاه‌داران", path: DEALERS_HUB_PATH },
     ]),
     generateFAQSchema([...DEALERS_HUB_FAQS]),
   ];
