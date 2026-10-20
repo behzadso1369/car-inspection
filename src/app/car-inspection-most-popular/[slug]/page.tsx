@@ -181,7 +181,9 @@ export default async function CarInspectionPage({
                     ? "جک S5 خاکستری، نمای سه رخ جلو"
                     : car.slug === "shahin"
                       ? "سایپا شاهین سفید، نمای سه رخ جلو"
-                      : `عکس ${car.name}، نمای سه رخ جلو`
+                      : car.slug === "renault-l90"
+                        ? "رنو تندر ۹۰ خاکستری، نمای سه رخ جلو"
+                        : `عکس ${car.name}، نمای سه رخ جلو`
             }
             searchTerm={car.inspectionSearchTerm}
             carGroupId={car.inspectionCarGroupId}

@@ -77,6 +77,28 @@
   height: var(--blog-chrome-height);
 }
 
+/* Home hero: short viewports (e.g. iPhone SE) — very slight height trim */
+@media (max-width: 1023px) and (max-height: 740px) {
+  .home-hero-media {
+    max-height: min(33dvh, 13.75rem) !important;
+    min-height: 8.75rem !important;
+  }
+
+  .home-hero-picker .home-hero-brand-tile {
+    min-height: 54px !important;
+  }
+
+  .home-hero-picker .home-hero-primary-cta {
+    margin-top: 0.625rem !important;
+    height: 2.75rem !important;
+  }
+
+  .home-hero-picker .home-hero-popular-cta {
+    margin-top: 0.375rem !important;
+    height: 2.25rem !important;
+  }
+}
+
 .bg-banner {
   background-image: url("/banner.png")
 }

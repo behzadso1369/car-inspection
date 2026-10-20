@@ -88,7 +88,10 @@ export function parseBrandPreset(searchParams?: {
 }
 
 export function inspectionHref(
-  path: "/car-inspection" | "/motorcycle-inspection",
+  path:
+    | "/car-inspection"
+    | "/motorcycle-inspection"
+    | "/car-inspection-dealers",
   brand?: Pick<InspectionBrand, "id" | "name">,
 ) {
   if (!brand) return path;

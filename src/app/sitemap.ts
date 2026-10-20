@@ -104,6 +104,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       'monthly',
       0.8,
     ),
+    urlEntry(
+      '/car-inspection-most-popular/renault-l90',
+      parseDate('2026-10-20'),
+      'monthly',
+      0.8,
+    ),
   ];
 
   const localRoutes: MetadataRoute.Sitemap = [

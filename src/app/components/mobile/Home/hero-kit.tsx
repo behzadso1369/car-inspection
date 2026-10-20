@@ -4,15 +4,23 @@ import Image from "next/image";
 import { apiAssetUrl } from "@/lib/media";
 import { inspectionHref, type InspectionBrand } from "@/lib/popular-brands";
 
-export type HeroTab = "car" | "motorcycle";
+export type HeroTab = "car" | "motorcycle" | "dealer";
 
 export type HeroBrandsProps = {
   carBrands: InspectionBrand[];
   motorcycleBrands: InspectionBrand[];
 };
 
+export function tabPath(tab: "car"): "/car-inspection";
+export function tabPath(tab: "motorcycle"): "/motorcycle-inspection";
+export function tabPath(tab: "dealer"): "/car-inspection-dealers";
+export function tabPath(
+  tab: HeroTab,
+): "/car-inspection" | "/motorcycle-inspection" | "/car-inspection-dealers";
 export function tabPath(tab: HeroTab) {
-  return tab === "car" ? "/car-inspection" : "/motorcycle-inspection";
+  if (tab === "car") return "/car-inspection";
+  if (tab === "motorcycle") return "/motorcycle-inspection";
+  return "/car-inspection-dealers";
 }
 
 export function brandSrc(imagePath?: string | null) {
@@ -69,6 +77,9 @@ export function useHeroBrands(
   carBrands: InspectionBrand[],
   motorcycleBrands: InspectionBrand[],
 ) {
+  if (tab === "dealer") {
+    return { brands: [], href: tabPath("dealer"), tiles: [] };
+  }
   const brands = tab === "car" ? carBrands : motorcycleBrands;
   const href = tabPath(tab);
   const tiles = [

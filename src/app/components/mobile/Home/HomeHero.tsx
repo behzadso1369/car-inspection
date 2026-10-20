@@ -13,7 +13,10 @@ import {
   type HeroTab,
 } from "./hero-kit";
 
-const COPY = {
+const HERO_TABS: HeroTab[] = ["car", "motorcycle", "dealer"];
+const POPULAR_CARS_PATH = "/car-inspection-most-popular";
+
+const COPY: Record<HeroTab, { picker: string; cta: string }> = {
   car: {
     picker: "خودروی خود را انتخاب کنید",
     cta: "درخواست کارشناسی",
@@ -22,9 +25,24 @@ const COPY = {
     picker: "موتور خود را انتخاب کنید",
     cta: "درخواست کارشناسی",
   },
-} as const;
+  dealer: {
+    picker: "پنل کارشناسی ویژه نمایشگاه داران",
+    cta: "ورود به صفحه نمایشگاه داران",
+  },
+};
+
+const TAB_LABELS: Record<HeroTab, string> = {
+  car: "ماشین",
+  motorcycle: "موتور",
+  dealer: "نمایشگاه داران",
+};
 
 type HeroTile = ReturnType<typeof useHeroBrands>["tiles"][number];
+
+function tabIndicatorRight(tab: HeroTab) {
+  const index = HERO_TABS.indexOf(tab);
+  return `calc(4px + ${index} * (100% - 8px) / 3)`;
+}
 
 function BrandTileLink({
   tile,
@@ -42,7 +60,7 @@ function BrandTileLink({
       type="button"
       disabled={disabled}
       onClick={() => onNavigate(tile.href)}
-      className={`flex w-full min-h-[60px] flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1.5 text-center transition hover:-translate-y-0.5 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70 lg:min-h-[76px] lg:gap-1 lg:py-2 ${className} ${
+      className={`home-hero-brand-tile flex w-full min-h-[60px] flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1.5 text-center transition hover:-translate-y-0.5 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70 lg:min-h-[76px] lg:gap-1 lg:py-2 ${className} ${
         tile.other
           ? "border border-dashed border-[#C5C9D3] bg-[#F7F8FC]"
           : "bg-[#F6F8FC] ring-1 ring-[#EEF1F7]"
@@ -67,26 +85,6 @@ function BrandTileLink({
   );
 }
 
-function DealersEntryCta({ className = "" }: { className?: string }) {
-  return (
-    <Link
-      href={DEALERS_HUB_PATH}
-      className={`dealers-entry-cta banner-cta z-30 inline-flex max-w-[calc(100vw-2.5rem)] shrink-0 items-center gap-1.5 rounded-full border border-white/30 px-3.5 py-2 text-center font-IranSans text-[13px] font-bold leading-snug text-black sm:gap-2 sm:px-5 sm:py-2.5 sm:text-base ${className}`}
-    >
-      پنل کارشناسی ویژه نمایشگاه داران
-      <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="sm:h-4 sm:w-4">
-        <path
-          d="M7.5 2.5 4 6l3.5 3.5"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </Link>
-  );
-}
-
 function BrandPicker({
   tab,
   setTab,
@@ -104,6 +102,7 @@ function BrandPicker({
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const isDealer = tab === "dealer";
 
   const navigate = useCallback(
     (targetHref: string) => {
@@ -115,8 +114,10 @@ function BrandPicker({
     [isPending, router],
   );
 
+  const primaryHref = isDealer ? DEALERS_HUB_PATH : href;
+
   return (
-    <div className="relative rounded-[24px] bg-white px-3.5 pb-3.5 pt-3.5 shadow-[0_18px_50px_rgba(8,16,36,0.32)] sm:rounded-[28px] sm:px-4 sm:pb-4 sm:pt-4">
+    <div className="home-hero-picker relative rounded-[24px] bg-white px-3.5 pb-3.5 pt-3.5 shadow-[0_18px_50px_rgba(8,16,36,0.32)] sm:rounded-[28px] sm:px-4 sm:pb-4 sm:pt-4">
       {isPending ? (
         <div
           className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 rounded-[24px] bg-white/90 backdrop-blur-[2px] sm:rounded-[28px]"
@@ -134,56 +135,65 @@ function BrandPicker({
       <div
         role="tablist"
         aria-label="نوع کارشناسی"
-        className="relative mx-auto mt-2 grid max-w-xs grid-cols-2 rounded-full bg-[#F2F5FB] p-1 lg:mt-3"
+        className="relative mx-auto mt-2 grid max-w-md grid-cols-3 rounded-full bg-[#F2F5FB] p-1 lg:mt-3"
       >
         <span
-          className={`absolute top-1 h-[calc(100%-8px)] w-[calc(50%-4px)] rounded-full bg-[#416CEA] shadow-[0_8px_20px_rgba(65,108,234,0.28)] transition-all duration-300 ease-out ${
-            tab === "car" ? "right-1 left-auto" : "left-1 right-auto"
-          }`}
+          className="absolute top-1 h-[calc(100%-8px)] rounded-full bg-[#416CEA] shadow-[0_8px_20px_rgba(65,108,234,0.28)] transition-[right] duration-300 ease-out"
+          style={{
+            width: "calc((100% - 8px) / 3)",
+            right: tabIndicatorRight(tab),
+          }}
         />
-        <button
-          type="button"
-          role="tab"
-          aria-selected={tab === "car"}
-          className={`relative z-10 rounded-full py-2.5 text-sm font-bold ${
-            tab === "car" ? "text-white" : "text-[#5B6270]"
-          }`}
-          onClick={() => setTab("car")}
-        >
-          ماشین
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={tab === "motorcycle"}
-          className={`relative z-10 rounded-full py-2.5 text-sm font-bold ${
-            tab === "motorcycle" ? "text-white" : "text-[#5B6270]"
-          }`}
-          onClick={() => setTab("motorcycle")}
-        >
-          موتور
-        </button>
-      </div>
-
-      <div className="mt-3 grid grid-cols-4 gap-1.5 sm:gap-2">
-        {tiles.map((tile) => (
-          <BrandTileLink
-            key={tile.key}
-            tile={tile}
-            disabled={isPending}
-            onNavigate={navigate}
-          />
+        {HERO_TABS.map((item) => (
+          <button
+            key={item}
+            type="button"
+            role="tab"
+            aria-selected={tab === item}
+            className={`relative z-10 rounded-full px-0.5 py-2.5 text-[11px] font-bold leading-tight sm:text-sm ${
+              tab === item ? "text-white" : "text-[#5B6270]"
+            }`}
+            onClick={() => setTab(item)}
+          >
+            {TAB_LABELS[item]}
+          </button>
         ))}
       </div>
+
+      {isDealer ? (
+        <p className="mt-4 text-center text-xs leading-6 text-[#5B6270] sm:text-sm">
+          گزارش کارشناسی، اعتبار و پشتیبانی نمایشگاه در یک پنل
+        </p>
+      ) : (
+        <div className="mt-3 grid grid-cols-4 gap-1.5 sm:gap-2">
+          {tiles.map((tile) => (
+            <BrandTileLink
+              key={tile.key}
+              tile={tile}
+              disabled={isPending}
+              onNavigate={navigate}
+            />
+          ))}
+        </div>
+      )}
 
       <button
         type="button"
         disabled={isPending}
-        onClick={() => navigate(href)}
-        className="mt-3 flex h-12 w-full items-center justify-center rounded-full bg-[#416CEA] text-sm font-bold text-white shadow-[0_12px_24px_rgba(65,108,234,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-[#3456bb] active:scale-[0.99] disabled:opacity-80"
+        onClick={() => navigate(primaryHref)}
+        className="home-hero-primary-cta mt-3.5 flex h-12 w-full items-center justify-center rounded-full bg-[#416CEA] text-sm font-bold text-white shadow-[0_12px_24px_rgba(65,108,234,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-[#3456bb] active:scale-[0.99] disabled:opacity-80"
       >
         {cta}
       </button>
+
+      {tab === "car" ? (
+        <Link
+          href={POPULAR_CARS_PATH}
+          className="home-hero-popular-cta mt-2.5 flex h-10 w-full items-center justify-center rounded-full border-2 border-[#416CEA] bg-[#F2F5FB] text-sm font-bold text-[#416CEA] transition hover:bg-[#E8EEFC] active:scale-[0.99]"
+        >
+          ماشین های پرطرفدار
+        </Link>
+      ) : null}
     </div>
   );
 }
@@ -230,7 +240,7 @@ export default function HomeHero({
       aria-labelledby="home-hero-title"
     >
       <div className="relative bg-[#050B18] lg:min-h-[720px] xl:min-h-[760px]">
-        <div className="relative aspect-[16/10] w-full max-lg:max-h-[min(36dvh,15rem)] max-lg:min-h-[9.5rem] sm:aspect-[16/9] sm:max-lg:max-h-[min(38dvh,16.5rem)] lg:absolute lg:inset-0 lg:max-h-none lg:min-h-0 lg:aspect-auto">
+        <div className="home-hero-media relative aspect-[16/10] w-full max-lg:max-h-[min(36dvh,15rem)] max-lg:min-h-[9.5rem] sm:aspect-[16/9] sm:max-lg:max-h-[min(38dvh,16.5rem)] lg:absolute lg:inset-0 lg:max-h-none lg:min-h-0 lg:aspect-auto">
           <div className="absolute inset-0 overflow-hidden">
             <Image
               src="/images/home/hero-xray-car-2k.webp"
@@ -248,18 +258,16 @@ export default function HomeHero({
           </div>
 
           <div className="absolute inset-0 z-10 max-lg:contents">
-            <div className="absolute top-[5%] left-0 z-10 w-fit pl-4 sm:top-[6%] sm:pl-5 lg:top-8 lg:left-4 lg:flex lg:w-[min(34rem,42%)] lg:flex-col lg:gap-3 lg:pl-0 xl:top-10 xl:left-6 xl:gap-4">
+            <div className="absolute top-[5%] left-0 z-10 w-fit pl-4 sm:top-[6%] sm:pl-5 lg:top-8 lg:left-4 lg:flex lg:w-[min(34rem,42%)] lg:flex-col lg:gap-4 lg:pl-0 xl:top-10 xl:left-6 xl:gap-5">
               <HeroTitle />
               <div className="hidden lg:block">
-                <DealersEntryCta className="mb-2 self-start" />
                 <BrandPicker {...pickerProps} />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="relative z-20 mx-auto -mt-7 w-[calc(100%-2.5rem)] max-w-[24.5rem] pb-2 sm:-mt-8 md:mx-0 md:mb-6 md:ml-[5%] md:mr-auto lg:hidden">
-          <DealersEntryCta className="absolute left-0 top-0 -translate-y-[calc(100%+0.5rem)]" />
+        <div className="home-hero-mobile-shell relative z-20 mx-auto -mt-7 w-[calc(100%-2.5rem)] max-w-[24.5rem] max-lg:pb-[calc(var(--site-bottom-nav-clearance)*0.55)] sm:-mt-8 md:mx-0 md:mb-6 md:ml-[5%] md:mr-auto lg:hidden">
           <BrandPicker {...pickerProps} />
         </div>
       </div>

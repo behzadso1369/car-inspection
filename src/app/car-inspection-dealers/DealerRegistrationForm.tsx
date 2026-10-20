@@ -108,7 +108,7 @@ export default function DealerRegistrationForm() {
       if (data.isSuccess) {
         setSuccessMessage(
           data.statusMessage ||
-            "درخواست ثبت شد و پس از بررسی با شما تماس گرفته می‌شود.",
+            "درخواست ثبت شد و پس از بررسی با شما تماس گرفته می شود.",
         );
         return;
       }
@@ -139,11 +139,11 @@ export default function DealerRegistrationForm() {
         </p>
         <p className="mt-3 text-sm leading-8 text-[#55565A]">
           تا زمان تأیید توسط کارماچک، لینک ورود به پرتال نمایشگاه فعال
-          نمی‌شود. پس از تأیید، با همین شماره موبایل از طریق OTP وارد{" "}
+          نمی شود. پس از تأیید، با همین شماره موبایل از طریق OTP وارد{" "}
           <span dir="ltr" className="font-medium text-[#3456bb]">
             dealer.carmacheck.com
           </span>{" "}
-          می‌شوید.
+          می شوید.
         </p>
       </div>
     );
@@ -161,11 +161,11 @@ export default function DealerRegistrationForm() {
           id="dealer-form-title"
           className="text-xl font-black leading-9 text-[#101117] sm:text-[1.35rem]"
         >
-          فرم ثبت‌نام نمایشگاه
+          فرم ثبت نام نمایشگاه
         </h2>
         <p className="mt-2 text-sm leading-8 text-[#55565A]">
-          پس از ارسال، درخواست در صف بررسی قرار می‌گیرد. نمایشگاه و حساب کاربری
-          فقط بعد از تأیید ادمین ساخته می‌شود.
+          پس از ارسال، درخواست در صف بررسی قرار می گیرد. نمایشگاه و حساب کاربری
+          فقط بعد از تأیید ادمین ساخته می شود.
         </p>
 
         {serverError ? (
@@ -249,7 +249,7 @@ export default function DealerRegistrationForm() {
                 id="agency-name"
                 name="agencyName"
                 className={`mt-2 ${inputClass}`}
-                placeholder="مثال: نمایندگی ایران‌خودرو منطقه ۳"
+                placeholder="مثال: نمایندگی ایران خودرو منطقه ۳"
                 maxLength={120}
                 value={agencyName}
                 onChange={(e) => setAgencyName(e.target.value)}
@@ -356,7 +356,7 @@ export default function DealerRegistrationForm() {
             disabled={submitting}
             className="h-auto w-full rounded-full bg-[#3456bb] py-3.5 text-base font-bold text-white hover:bg-[#2c4aa0] disabled:opacity-60"
           >
-            {submitting ? "در حال ارسال…" : "ارسال درخواست ثبت‌نام"}
+            {submitting ? "در حال ارسال…" : "ارسال درخواست ثبت نام"}
           </Button>
         </div>
       </form>

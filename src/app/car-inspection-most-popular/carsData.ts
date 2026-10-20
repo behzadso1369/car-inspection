@@ -13,6 +13,7 @@ import peugeot207Page from "./content/peugeot-207.json";
 import jacS5Page from "./content/jac-s5.json";
 import tiggo8ProMaxPage from "./content/tiggo-8-pro-max.json";
 import shahinPage from "./content/shahin.json";
+import renaultL90Page from "./content/renault-l90.json";
 
 export interface CarFaq {
   question: string;
@@ -3149,35 +3150,55 @@ export const CARS: CarInfo[] = [
   },
   {
     slug: "renault-l90",
-    name: "رنو تندر ۹۰ (L90)",
+    name: "ال ۹۰",
     brand: "رنو",
-    tagline: "سدان مقاوم و کم‌هزینه با موتور بادوام",
-    image: "/cars/renault-l90.jpg",
-    intro:
-      "رنو تندر ۹۰ (ال۹۰) سدانی مقاوم و کم‌هزینه با موتور بادوام است که در ایران محبوبیت زیادی دارد. قطعات نسبتاً ارزان و دوام موتور از مزایای آن است اما کیفیت مونتاژ و صداگیری متوسطی دارد.",
+    tagline: "سدان بادوام؛ خریدش به سلامت سرشاسی و سابقه سرویس وابسته است",
+    image: "/cars/renault-l90.png",
+    heroPng: true,
+    inspectionSearchTerm: "تندر 90",
+    aparatVideoHash: "verumw5",
+    aparatVideoTitle: "راهنمای خرید تندر ۹۰ دست دوم: چرا شاسی ال ۹۰ از پشت سپر آسیب می‌بیند؟",
+    aparatThumbnailUrl: "/cars/l90-cover.webp",
+    aparatUploadDate: "2026-10-15T16:21:37+03:30",
+    seoTitle: renaultL90Page.seoTitle,
+    seoDescription: renaultL90Page.seoDescription,
+    ogImage: renaultL90Page.ogImage,
+    contentImage: renaultL90Page.contentImage,
+    contentImageAlt: renaultL90Page.contentImageAlt,
+    articleIntro: renaultL90Page.articleIntro,
+    articleSections: renaultL90Page.sections as CarArticleSection[],
+    faqs: renaultL90Page.faqs,
+    faqTitle: renaultL90Page.faqTitle,
+    quickAnswerTitle: renaultL90Page.quickAnswerTitle,
+    quickAnswer: renaultL90Page.quickAnswer,
+    intro: renaultL90Page.articleIntro[0],
     pros: [
-      "موتور بادوام و مقاوم",
-      "قطعات نسبتاً ارزان و در دسترس",
-      "مصرف سوخت بهینه",
-      "فضای داخلی و صندوق جادار",
+      "موتور ۱.۶ لیتری K4M با سابقه نگهداری قابل پیگیری",
+      "کابین کاربردی و صندوق بزرگ",
+      "قطعات و سرویس نسبتاً در دسترس",
+      "مناسب استفاده روزمره وقتی طراحی ساده اولویت نیست",
     ],
     cons: [
-      "کیفیت مونتاژ و صداگیری متوسط",
-      "امکانات پایه در تیپ‌های ساده",
-      "طراحی قدیمی",
-      "کیفیت قطعات پلاستیکی کابین",
+      "حساسیت جلوی بدنه: دیاق جوشی و نزدیکی به سرشاسی",
+      "امکانات محدود در تیپ‌های قدیمی",
+      "دید عقب و تخمین فاصله در دنده عقب",
+      "هزینه سرویس‌های عقب‌افتاده مثل تسمه تایم، کلاچ و خنک‌کاری",
     ],
     inspectionPoints: [
-      "بررسی سلامت موتور و نشتی‌ها",
-      "تست گیربکس و کلاچ",
-      "کنترل سیستم برق و کولر",
-      "بررسی رنگ و تصادف",
+      "پشت سپر، دیاق، محل جوش و سرشاسی‌های جلو",
+      "استارت سرد، تسمه تایم، نشتی و سیستم خنک‌کاری",
+      "گیربکس دستی یا اتوماتیک، کلاچ و گردگیر پلوس",
+      "رنگ، ستون، سقف و تطبیق کارکرد با فرسودگی",
     ],
     keywords: [
-      "کارشناسی رنو ال 90",
+      "کارشناسی ال 90",
+      "کارشناسی ال ۹۰",
+      "کارشناسی تندر 90",
+      "کارشناسی تندر ۹۰",
       "معایب تندر 90",
+      "معایب ال 90",
       "مزایای ال 90",
-      "کارشناسی L90",
+      "شاسی ال 90",
       "قیمت کارشناسی تندر 90",
     ],
   },
@@ -3602,6 +3623,7 @@ export const FEATURED_CAR_SLUGS = [
   "jac-s5",
   "tiggo-8-pro-max",
   "shahin",
+  "renault-l90",
 ] as const;
 
 export const FEATURED_CARS: CarInfo[] = FEATURED_CAR_SLUGS.map((slug) => {
