@@ -6,7 +6,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "انتخاب محل کارشناسی | فرآیند کارشناسی موتور | کارماچک",
-  description: "انتخاب محل کارشناسی: در محل شما یا مرکز کارشناسی",
+  description: "انتخاب مرکز کارشناسی موتورسیکلت",
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/motorcycle-inspection/inspection-location`,
   },

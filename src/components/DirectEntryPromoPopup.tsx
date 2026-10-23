@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { DiscountTag01Icon, GiftIcon } from "hugeicons-react";
+import {
+  Car01Icon,
+  DiscountTag01Icon,
+  GiftIcon,
+  Motorbike02Icon,
+} from "hugeicons-react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,7 +39,19 @@ const enterItem = {
 const FIRST_PATH_KEY = "carmacheck:promo-first-path";
 const VISITED_MAIN_KEY = "carmacheck:promo-visited-main";
 const SHOWN_KEY = "carmacheck:promo-shown";
-const RESERVE_HREF = "/car-inspection";
+
+const PROMO_RESERVE_LINKS = [
+  {
+    href: "/car-inspection",
+    label: "کارشناسی ماشین",
+    Icon: Car01Icon,
+  },
+  {
+    href: "/motorcycle-inspection",
+    label: "کارشناسی موتور",
+    Icon: Motorbike02Icon,
+  },
+] as const;
 
 function normalizePath(path: string) {
   if (!path) return "/";
@@ -50,6 +67,8 @@ function isMainLandingPage(path: string) {
     p === "/" ||
     p === "/car-inspection" ||
     p.startsWith("/car-inspection/") ||
+    p === "/motorcycle-inspection" ||
+    p.startsWith("/motorcycle-inspection/") ||
     p === "/car-price" ||
     p.startsWith("/car-price/")
   );
@@ -121,9 +140,9 @@ export function DirectEntryPromoPopup() {
 
   const close = () => setOpen(false);
 
-  const goReserve = () => {
+  const goReserve = (href: string) => {
     setOpen(false);
-    router.push(RESERVE_HREF);
+    router.push(href);
   };
 
   if (!open) return null;
@@ -180,8 +199,8 @@ export function DirectEntryPromoPopup() {
                 ۱ میلیون تومان تخفیف کارشناسی و هدیه کیف پول
               </DialogTitle>
               <DialogDescription id="direct-entry-promo-desc" className="sr-only">
-                کارشناسی را الان رزرو کنید تا یک میلیون تومان تخفیف و هدیه کیف پول
-                روی سفارشتان اعمال شود.
+                کارشناسی ماشین یا موتور را رزرو کنید تا یک میلیون تومان تخفیف و هدیه
+                کیف پول روی سفارشتان اعمال شود.
               </DialogDescription>
 
               <motion.h2
@@ -259,18 +278,30 @@ export function DirectEntryPromoPopup() {
                 </div>
               </motion.div>
 
-              <motion.div variants={enterItem}>
-                <Button
-                  type="button"
-                  onClick={goReserve}
-                  className="promo-popup-cta mt-2 h-12 w-full rounded-xl bg-gradient-to-l from-[#2A4BB0] to-[#416CEA] text-base font-extrabold text-white shadow-[0_12px_28px_rgba(52,86,187,0.35)] hover:from-[#243f96] hover:to-[#3456bb]"
-                >
-                  رزرو با تخفیف و هدیه کیف پول
-                </Button>
+              <motion.div variants={enterItem} className="mt-2 space-y-2">
+                {PROMO_RESERVE_LINKS.map((item, index) => {
+                  const ItemIcon = item.Icon;
+                  const isPrimary = index === 0;
+                  return (
+                    <Button
+                      key={item.href}
+                      type="button"
+                      onClick={() => goReserve(item.href)}
+                      className={
+                        isPrimary
+                          ? "promo-popup-cta h-auto min-h-12 w-full whitespace-normal rounded-xl bg-gradient-to-l from-[#2A4BB0] to-[#416CEA] px-4 py-3 text-base font-extrabold text-white shadow-[0_12px_28px_rgba(52,86,187,0.35)] hover:from-[#243f96] hover:to-[#3456bb]"
+                          : "h-auto min-h-12 w-full whitespace-normal rounded-xl border-2 border-[#416CEA] bg-white px-4 py-3 text-base font-extrabold text-[#3456bb] shadow-[0_8px_20px_rgba(52,86,187,0.12)] hover:bg-[#EEF2FF]"
+                      }
+                    >
+                      <ItemIcon size={22} strokeWidth={1.75} color="currentColor" />
+                      {item.label} — رزرو با تخفیف
+                    </Button>
+                  );
+                })}
                 <button
                   type="button"
                   onClick={close}
-                  className="mt-1.5 w-full py-2 text-[13px] font-medium text-[#8A8B90] transition-colors hover:text-[#101117]"
+                  className="w-full py-2 text-[13px] font-medium text-[#8A8B90] transition-colors hover:text-[#101117]"
                 >
                   بعداً
                 </button>

@@ -5,16 +5,14 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import InWorkShop from "./InWorkShop";
-import InLocation from "./InLocation";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
 import { useRouter } from "next/navigation";
 import { StoredInspectionPriceDisplay } from "../components/DiscountPriceDisplay";
 import { toast } from "sonner";
 import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
-import { readStoredAddressId } from "@/helper/create-user-address";
 
-/** Id=1 در API: «اعزام کارشناس به محل انتخابی شما» — کارشناسی در محل */
+/** Id=1 در API: «اعزام کارشناس به محل انتخابی شما» — برای موتور غیرفعال است */
 const ON_SITE_LOCATION_TYPE_ID = 1;
 
 interface LocationType {
@@ -23,26 +21,23 @@ interface LocationType {
   LocationTypeDescription?: string;
 }
 
-function isOnSiteTab(locationTypeId: string | number) {
-  return Number(locationTypeId) === ON_SITE_LOCATION_TYPE_ID;
+function workshopLocationsOnly(list: LocationType[]) {
+  return list.filter((item) => item.Id !== ON_SITE_LOCATION_TYPE_ID);
 }
 
 export default function ClientWrapper() {
   const [locations, setLocations] = useState<LocationType[]>([]);
   const [loading, setLoading] = useState(false);
   const [defaultTab, setDefaultTab] = useState<string>("");
-  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
   const router = useRouter();
-
-  const isOnSite = isOnSiteTab(defaultTab);
 
   useEffect(() => {
     router.prefetch("./inspection-time");
   }, [router]);
 
   const moveToCarInspectionTime = () => {
-    if (isOnSite && !selectedAddressId) {
-      toast("Error", { description: "لطفاً آدرس محل کارشناسی را انتخاب کنید" });
+    if (!defaultTab) {
+      toast("Error", { description: "محل کارشناسی در دسترس نیست" });
       return;
     }
 
@@ -53,23 +48,13 @@ export default function ClientWrapper() {
       carInspectionLocationTypeId: Number(defaultTab),
     };
 
-    if (isOnSite && selectedAddressId) {
-      params.addressId = selectedAddressId;
-      params.AddressId = selectedAddressId;
-    }
-
     instance
       .post(ApiHelper.get("MoveMotorcyclePrivateOrder"), params)
       .then((res: unknown) => {
         setLoading(false);
         if (res) {
-          if (isOnSite) {
-            localStorage.setItem("IsOnSite", "true");
-            localStorage.setItem("AddressId", String(selectedAddressId));
-          } else {
-            localStorage.removeItem("IsOnSite");
-            localStorage.removeItem("AddressId");
-          }
+          localStorage.removeItem("IsOnSite");
+          localStorage.removeItem("AddressId");
           router.push("./inspection-time");
         }
       })
@@ -78,19 +63,14 @@ export default function ClientWrapper() {
 
   useEffect(() => {
     instance.get(ApiHelper.get("GetCarInspectionLocationData")).then((res: any) => {
-      const list = res?.CarInspectionLocationPage ?? [];
+      const list = workshopLocationsOnly(res?.CarInspectionLocationPage ?? []);
       setLocations(list);
       if (list.length > 0) setDefaultTab(String(list[0].Id));
     });
   }, []);
 
   useEffect(() => {
-    const id = readStoredAddressId();
-    if (id) {
-      setSelectedAddressId(id);
-    } else {
-      localStorage.removeItem("AddressId");
-    }
+    localStorage.removeItem("AddressId");
   }, []);
 
   return (
@@ -119,43 +99,43 @@ export default function ClientWrapper() {
       </div>
 
       <div className="overflow-x-hidden">
-        <Tabs
-          value={defaultTab}
-          onValueChange={setDefaultTab}
-          className="w-full bg-white py-6 font-IranSans px-2 lg:px-4"
-          dir="rtl"
-        >
-          <TabsList className="px-2 w-full overflow-x-auto scrollbar-hide flex-nowrap">
-            {locations.map((item) => (
-              <TabsTrigger
-                key={item.Id}
-                className="text-[#404040] !px-0 !mx-0 data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] flex-shrink-0"
-                value={String(item.Id)}
-              >
-                {item.Name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        {locations.length > 1 ? (
+          <Tabs
+            value={defaultTab}
+            onValueChange={setDefaultTab}
+            className="w-full bg-white py-6 font-IranSans px-2 lg:px-4"
+            dir="rtl"
+          >
+            <TabsList className="px-2 w-full overflow-x-auto scrollbar-hide flex-nowrap">
+              {locations.map((item) => (
+                <TabsTrigger
+                  key={item.Id}
+                  className="text-[#404040] !px-0 !mx-0 data-[state=active]:!border-b data-[state=active]:border-b-[#416CEA] flex-shrink-0"
+                  value={String(item.Id)}
+                >
+                  {item.Name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
-          {locations.map((item) => (
-            <TabsContent key={item.Id} value={String(item.Id)}>
-              {isOnSiteTab(item.Id) ? (
-                <InLocation
-                  selectedAddressId={selectedAddressId}
-                  onSelectAddress={setSelectedAddressId}
-                  locationTypeDescription={item.LocationTypeDescription}
-                />
-              ) : (
+            {locations.map((item) => (
+              <TabsContent key={item.Id} value={String(item.Id)}>
                 <InWorkShop LocationTypeDescription={item.LocationTypeDescription} />
-              )}
-            </TabsContent>
-          ))}
-        </Tabs>
+              </TabsContent>
+            ))}
+          </Tabs>
+        ) : (
+          <div className="w-full bg-white py-6 font-IranSans px-2 lg:px-4">
+            <InWorkShop
+              LocationTypeDescription={locations[0]?.LocationTypeDescription}
+            />
+          </div>
+        )}
       </div>
 
       <FlowStepFooter className="justify-between">
         <Button
-          disabled={loading || (isOnSite && !selectedAddressId)}
+          disabled={loading || !defaultTab}
           onClick={moveToCarInspectionTime}
           type="submit"
           className="bg-[#416CEA] text-white rounded-3xl py-6 px-12"
