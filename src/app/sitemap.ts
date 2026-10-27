@@ -19,7 +19,8 @@ const PAGE_LASTMOD: Record<string, string> = {
   '/motorcycle-inspection': '2026-10-14',
   '/car-inspection-tehran': '2026-09-18',
   '/car-inspection-dealers': '2026-10-14',
-  '/car-price': '2026-08-02',
+  '/car-price': '2026-10-27',
+  '/car-new-price': '2026-10-27',
 };
 
 const CARS_LASTMOD = '2026-10-14';
@@ -77,6 +78,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       0.85,
     ),
     urlEntry('/car-price', parseDate(PAGE_LASTMOD['/car-price']), 'weekly', 0.9),
+    urlEntry(
+      '/car-new-price',
+      parseDate(PAGE_LASTMOD['/car-new-price']),
+      'daily',
+      0.9,
+    ),
   ];
 
   const carInspectionRoutes: MetadataRoute.Sitemap = [

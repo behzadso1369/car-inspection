@@ -15,6 +15,7 @@ const ROUTES_WITH_HEADER = [
   "/new-service",
   "/contact-us",
   "/car-price",
+  "/car-new-price",
   "/car-inspection",
   "/motorcycle-inspection",
   "/payment/success",

@@ -13,6 +13,7 @@ const HEADER_ROUTES = new Set([
   "/new-service",
   "/contact-us",
   "/car-price",
+  "/car-new-price",
   "/car-inspection",
   "/motorcycle-inspection",
   "/payment/success",

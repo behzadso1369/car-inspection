@@ -8,7 +8,7 @@ import {
 import { normalizeText } from "@/lib/car-price/text";
 import { useSearchParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Search,
   CarFront,
@@ -20,7 +20,10 @@ import {
   Gauge,
 } from "lucide-react";
 
-import cars from "@/data/car.json";
+import {
+  displayBasePriceFromItem,
+  loadCarNewPriceSelect,
+} from "@/lib/car-price/carNewPriceApi";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -41,14 +44,6 @@ const CarPriceBudgetAlternatives = dynamic(
 );
 
 type Step = "search_car" | "year" | "mileage" | "color" | "chassis" | "result";
-
-type CarItem = {
-  id: string | number;
-  carName: string;
-  carPrice: string | number;
-  lastYear: string;
-  source: string;
-};
 
 type NormalizedCar = {
   id: string;
@@ -133,11 +128,6 @@ function usePinOnScroll(offsetPx: number) {
 const BACK_BTN_CLASS =
   "rounded-2xl border-[#3456bb]/25 text-[#3456bb] hover:bg-[#eef2fd]";
 
-function normalizePrice(value: string | number) {
-  if (typeof value === "number") return value;
-  return Number(String(value).replaceAll(",", "").trim());
-}
-
 function formatPrice(value: number) {
   return new Intl.NumberFormat("fa-IR").format(value);
 }
@@ -156,7 +146,7 @@ function formatMileageInput(value: string) {
 }
 
 function displayBasePrice(car: NormalizedCar) {
-  return car.source === "hamrah" ? car.price + 400000000 : car.price;
+  return displayBasePriceFromItem(car.price, car.source);
 }
 
 type CarPriceFormProps = {
@@ -169,16 +159,9 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
   const router = useRouter();
   const presetFromUrl = useRef((searchParams.get("car") || "").trim());
 
-  const carList: NormalizedCar[] = useMemo(() => {
-    return (cars?.cars as CarItem[]).map((car) => ({
-      id: String(car.id),
-      name: car.carName,
-      price: normalizePrice(car.carPrice),
-      lastYear: car.lastYear,
-      source: car.source,
-      searchKey: normalizeText(car.carName),
-    }));
-  }, []);
+  const [carList, setCarList] = useState<NormalizedCar[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [catalogError, setCatalogError] = useState<string | null>(null);
 
   const [year, setYear] = useState("");
   const [mileage, setMileage] = useState("");
@@ -187,6 +170,39 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
   const [selectedCar, setSelectedCar] = useState<NormalizedCar | null>(null);
   const [selectedColor, setSelectedColor] = useState<(typeof COLOR_OPTIONS)[number] | null>(null);
   const [selectedChassis, setSelectedChassis] = useState<(typeof CHASSIS_OPTIONS)[number] | null>(null);
+
+  const loadCatalog = useCallback(async () => {
+    setCatalogLoading(true);
+    setCatalogError(null);
+    try {
+      const { items } = await loadCarNewPriceSelect();
+      setCarList(
+        items.map((car) => ({
+          id: String(car.id),
+          name: car.carName,
+          price: car.carPrice,
+          lastYear: car.lastYear,
+          source: car.source,
+          searchKey: normalizeText(car.carName),
+        })),
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error && err.message === "RATE_LIMIT"
+          ? "درخواست‌های زیاد؛ چند لحظه بعد دوباره تلاش کنید."
+          : err instanceof Error
+            ? err.message
+            : "بارگذاری لیست قیمت ممکن نشد.";
+      setCatalogError(message);
+      setCarList([]);
+    } finally {
+      setCatalogLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadCatalog();
+  }, [loadCatalog]);
 
   const filteredCars = useMemo(() => {
     const q = normalizeText(query);
@@ -650,6 +666,22 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
                         کنید. راهنمای کامل قیمت‌گذاری در پایین همین صفحه آمده
                         است.
                       </p>
+                    ) : catalogLoading ? (
+                      <div className="rounded-2xl border border-[#E8ECF4] bg-[#F8FAFF] px-4 py-10 text-center text-sm text-[#6B6C70]">
+                        در حال بارگذاری لیست قیمت خودرو...
+                      </div>
+                    ) : catalogError ? (
+                      <div className="space-y-3 rounded-2xl border border-dashed border-[#E8ECF4] bg-white/70 px-4 py-8 text-center">
+                        <p className="text-sm text-[#6B6C70]">{catalogError}</p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className={BACK_BTN_CLASS}
+                          onClick={() => void loadCatalog()}
+                        >
+                          تلاش مجدد
+                        </Button>
+                      </div>
                     ) : (
                       <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3 md:gap-3">
                         {filteredCars.map((car) => (
@@ -675,7 +707,10 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
                       </div>
                     )}
 
-                    {!filteredCars.length && query.trim() && (
+                    {!catalogLoading &&
+                      !catalogError &&
+                      !filteredCars.length &&
+                      query.trim() && (
                       <div className="rounded-2xl border border-dashed border-[#E8ECF4] bg-white/70 px-4 py-8 text-center text-sm text-[#6B6C70]">
                         خودرویی با این عبارت پیدا نشد.
                       </div>

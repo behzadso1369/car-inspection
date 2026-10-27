@@ -3,9 +3,13 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ApiHelper } from "@/helper/api-request";
-import instance from "@/helper/interceptor";
-import { normalizeText } from "@/lib/car-price/text";
+import {
+  pickCarGroup,
+  searchTermsFromCarName,
+  startInspectionForCar,
+} from "@/lib/car-inspection/carGroupMatch";
+
+export { pickCarGroup, searchTermsFromCarName };
 
 interface InspectCtaButtonProps {
   /** نام نمایشی خودرو، مثل «پژو ۲۰۷» */
@@ -19,62 +23,15 @@ interface InspectCtaButtonProps {
   carGroupName?: string;
   className?: string;
   label?: string;
+  /** متن کوتاه‌تر موبایل؛ اگر نباشد همان label */
+  labelMobile?: string;
   showChevron?: boolean;
-}
-
-export function searchTermsFromCarName(carName: string, searchTerm?: string) {
-  const raw = [searchTerm, carName]
-    .map((value) => String(value || "").replace(/\s+/g, " ").trim())
-    .filter(Boolean);
-  const normalized = raw.map((value) => normalizeText(value)).filter(Boolean);
-  const shortened = normalized
-    .map((value) => value.split(" ").slice(0, 2).join(" "))
-    .filter(Boolean);
-
-  return [...new Set([...raw, ...normalized, ...shortened])];
-}
-
-export function pickCarGroup(groups: any[], carName: string, searchTerm?: string) {
-  if (!groups.length) return null;
-
-  const queries = [searchTerm, carName]
-    .map((value) => normalizeText(value || ""))
-    .filter(Boolean);
-
-  let best = groups[0];
-  let bestScore = -1;
-
-  for (const item of groups) {
-    const name = normalizeText(item.Name || "");
-    if (!name) continue;
-
-    let score = 0;
-    for (const query of queries) {
-      if (name === query) score = Math.max(score, 1000);
-      else if (query.includes(name)) score = Math.max(score, 600 + name.length);
-      else if (name.includes(query)) score = Math.max(score, 500 + query.length);
-      else {
-        const overlap = query.split(" ").filter((token) => name.includes(token)).length;
-        score = Math.max(score, overlap * 40);
-      }
-    }
-
-    if (score > bestScore) {
-      bestScore = score;
-      best = item;
-    }
-  }
-
-  return bestScore > 0 ? best : groups[0];
+  variant?: "default" | "compact";
 }
 
 /**
  * دکمه‌ی «شروع کارشناسی همین خودرو».
- * این خودرو را دقیقاً مثل انتخاب دستی در فرم کارشناسی «انتخاب» می‌کند:
- * ۱) گروه خودرو را از بک‌اند پیدا می‌کند
- * ۲) CarGroupId/Name را در localStorage ذخیره می‌کند
- * ۳) سفارش می‌سازد و OrderId را ذخیره می‌کند
- * ۴) کاربر را مستقیم به مرحله‌ی انتخاب روش کارشناسی می‌برد
+ * گروه خودرو را پیدا می‌کند، localStorage را پر می‌کند و به inspection-method می‌برد.
  */
 export default function InspectCtaButton({
   carName,
@@ -83,7 +40,9 @@ export default function InspectCtaButton({
   carGroupName,
   className = "",
   label,
+  labelMobile,
   showChevron = false,
+  variant = "default",
 }: InspectCtaButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -97,53 +56,16 @@ export default function InspectCtaButton({
 
     setLoading(true);
     try {
-      if (carGroupId) {
-        localStorage.setItem("CarGroupId", String(carGroupId));
-        localStorage.setItem("CarGroupName", carGroupName || carName);
-        try {
-          const orderRes: any = await instance.post(ApiHelper.get("CreateOrder"), {
-            carGroupId,
-          });
-          if (orderRes?.orderId) {
-            localStorage.setItem("OrderId", orderRes.orderId);
-          }
-        } catch (orderErr) {
-          console.error("Error creating order:", orderErr);
-        }
-        router.push("/car-inspection/inspection-method");
-        return;
-      }
+      const result = await startInspectionForCar({
+        carName,
+        searchTerm: term,
+        carGroupId,
+        carGroupName,
+      });
 
-      let groups: any[] = [];
-      for (const candidate of searchTermsFromCarName(carName, term)) {
-        const searchRes: any = await instance.get(
-          `${ApiHelper.get("GetAllData")}?terms=${encodeURIComponent(candidate)}`,
-        );
-        groups = (searchRes?.Results || []).filter(
-          (item: any) => item.IsCarBrand === 0,
-        );
-        if (groups.length) break;
-      }
-
-      const group = pickCarGroup(groups, carName, term);
-
-      if (!group?.Id) {
+      if (!result.ok) {
         router.push("/car-inspection");
         return;
-      }
-
-      localStorage.setItem("CarGroupId", String(group.Id));
-      localStorage.setItem("CarGroupName", String(group.Name));
-
-      try {
-        const orderRes: any = await instance.post(ApiHelper.get("CreateOrder"), {
-          carGroupId: group.Id,
-        });
-        if (orderRes?.orderId) {
-          localStorage.setItem("OrderId", orderRes.orderId);
-        }
-      } catch (orderErr) {
-        console.error("Error creating order:", orderErr);
       }
 
       router.push("/car-inspection/inspection-method");
@@ -155,17 +77,32 @@ export default function InspectCtaButton({
     }
   };
 
+  const variantClass =
+    variant === "compact"
+      ? "h-8 w-fit max-w-full gap-1 rounded-full border border-[#3456bb]/25 bg-[#f0f3fc] px-3 text-[10px] font-bold text-[#3456bb] shadow-none hover:bg-[#3456bb] hover:text-white md:h-10 md:rounded-xl md:px-4 md:text-xs"
+      : "bg-[#416CEA] text-white w-full h-12 rounded-3xl text-base font-medium";
+
   return (
     <Button
+      type="button"
       onClick={startInspection}
       disabled={loading}
-      className={`bg-[#416CEA] text-white w-full h-12 rounded-3xl disabled:opacity-60 text-base font-medium ${className}`}
+      className={`disabled:opacity-60 ${variantClass} ${className}`}
     >
       {loading ? (
-        "در حال آماده‌سازی..."
+        <span className="text-[10px] md:text-sm">در حال آماده‌سازی...</span>
       ) : (
         <>
-          {label || `شروع کارشناسی ${carName}`}
+          {labelMobile ? (
+            <>
+              <span className="md:hidden">{labelMobile}</span>
+              <span className="hidden md:inline">
+                {label || `شروع کارشناسی ${carName}`}
+              </span>
+            </>
+          ) : (
+            label || `شروع کارشناسی ${carName}`
+          )}
           {showChevron ? (
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
               <path

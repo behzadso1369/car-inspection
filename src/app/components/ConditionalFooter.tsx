@@ -13,6 +13,7 @@ const ROUTES_WITH_FOOTER = [
   "/new-service",
   "/contact-us",
   "/car-price",
+  "/car-new-price",
   "/car-inspection",
   "/payment/success",
   "/payment/failed",

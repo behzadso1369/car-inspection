@@ -2,19 +2,10 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ApiHelper } from "@/helper/api-request";
-import instance from "@/helper/interceptor";
-import {
-  pickCarGroup,
-  searchTermsFromCarName,
-} from "@/app/car-inspection-most-popular/[slug]/InspectCtaButton";
+import { startInspectionForCar } from "@/lib/car-inspection/carGroupMatch";
 
 /**
- * لینک مستقیم به رزرو کارشناسی یک خودروی مشخص (مثلاً از بات تلگرام/بله).
- * دقیقاً همان کاری که InspectCtaButton روی کلیک انجام می‌دهد را
- * اینجا خودکار روی لود صفحه اجرا می‌کند: پیدا کردن گروه خودرو، ساخت سفارش،
- * ذخیره در localStorage و هدایت به inspection-method.
- *
+ * لینک مستقیم به رزرو کارشناسی یک خودروی مشخص.
  * استفاده: /car-inspection/quick-start?car=<نام خودرو>
  */
 function QuickStartContent() {
@@ -34,41 +25,14 @@ function QuickStartContent() {
 
     async function run() {
       try {
-        let groups: any[] = [];
-        for (const candidate of searchTermsFromCarName(carName)) {
-          const searchRes: any = await instance.get(
-            `${ApiHelper.get("GetAllData")}?terms=${encodeURIComponent(candidate)}`,
-          );
-          groups = (searchRes?.Results || []).filter(
-            (item: any) => item.IsCarBrand === 0,
-          );
-          if (groups.length) break;
-        }
-
+        const result = await startInspectionForCar({ carName });
         if (cancelled) return;
 
-        const group = pickCarGroup(groups, carName);
-
-        if (!group?.Id) {
+        if (!result.ok) {
           setFailed(true);
           return;
         }
 
-        localStorage.setItem("CarGroupId", String(group.Id));
-        localStorage.setItem("CarGroupName", String(group.Name));
-
-        try {
-          const orderRes: any = await instance.post(ApiHelper.get("CreateOrder"), {
-            carGroupId: group.Id,
-          });
-          if (orderRes?.orderId) {
-            localStorage.setItem("OrderId", orderRes.orderId);
-          }
-        } catch (orderErr) {
-          console.error("Error creating order:", orderErr);
-        }
-
-        if (cancelled) return;
         router.replace("/car-inspection/inspection-method");
       } catch (err) {
         console.error("Error starting inspection:", err);
@@ -76,7 +40,7 @@ function QuickStartContent() {
       }
     }
 
-    run();
+    void run();
 
     return () => {
       cancelled = true;
