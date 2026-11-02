@@ -23,7 +23,9 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const NO_STORE = { cache: "no-store" as RequestCache };
-const API_BASE_URL = "https://api.carmacheck.com";
+import { API_ORIGIN } from "@/config/api";
+
+const API_BASE_URL = API_ORIGIN;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com";
 
 /**

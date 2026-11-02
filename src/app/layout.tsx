@@ -119,8 +119,8 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <link rel="preconnect" href="https://api.carmacheck.com" />
-        <link rel="dns-prefetch" href="https://api.carmacheck.com" />
+        <link rel="preconnect" href="https://api-test.carmacheck.com" />
+        <link rel="dns-prefetch" href="https://api-test.carmacheck.com" />
       </head>
       <body className="antialiased" suppressHydrationWarning>
         <a

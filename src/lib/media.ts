@@ -1,3 +1,7 @@
+import { API_ORIGIN } from "@/config/api";
+
+const API_HOST = new URL(API_ORIGIN).hostname;
+
 /** Normalize API media paths and serve them same-origin to avoid third-party cookies. */
 export function apiAssetUrl(path?: string | null): string {
   if (!path) return "";
@@ -6,7 +10,7 @@ export function apiAssetUrl(path?: string | null): string {
   if (/^https?:\/\//i.test(trimmed)) {
     try {
       const url = new URL(trimmed);
-      if (url.hostname === "api.carmacheck.com") {
+      if (url.hostname === API_HOST || url.hostname === "api.carmacheck.com") {
         return `/media${url.pathname}${url.search}`;
       }
     } catch {

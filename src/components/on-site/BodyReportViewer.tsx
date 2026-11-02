@@ -10,7 +10,9 @@ import {
 import CarBodyDiagram from "./CarBodyDiagram";
 import { isDefectStatus } from "./car-body-zones";
 
-const API_ASSET = "https://api.carmacheck.com/";
+import { API_ORIGIN } from "@/config/api";
+
+const API_ASSET = `${API_ORIGIN}/`;
 
 function getAssetUrl(path: string) {
   if (/^https?:\/\//i.test(path)) return path;

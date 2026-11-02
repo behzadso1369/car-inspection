@@ -1,5 +1,6 @@
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://api.carmacheck.com/api/";
+import { API_BASE_URL } from "@/config/api";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? API_BASE_URL;
 
 export type DealerRegistrationPayload = {
   phoneNumber: string;

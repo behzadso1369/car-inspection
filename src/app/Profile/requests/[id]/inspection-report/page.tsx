@@ -40,7 +40,7 @@ function InspectionReportContent() {
         return;
     }
     
-    const imgUrl = "https://api.carmacheck.com/" + imageUrl;
+    const imgUrl = "https://api-test.carmacheck.com/" + imageUrl;
     try {
         // Fetch the image as a blob
         const response = await fetch(imgUrl);

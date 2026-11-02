@@ -135,8 +135,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let newestBlogDate: Date | undefined;
 
   try {
-    const BASE_URL = 'https://api.carmacheck.com/api/';
-    const response = await fetch(`${BASE_URL}SiteBlog/SearchWithTerms`, {
+    const { API_BASE_URL } = await import('@/config/api');
+    const response = await fetch(`${API_BASE_URL}SiteBlog/SearchWithTerms`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ terms: '', take: 1000, skip: 0 }),

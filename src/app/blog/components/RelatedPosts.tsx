@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import moment from "jalali-moment";
 
-const API_ORIGIN = "https://api.carmacheck.com/";
+import { API_ORIGIN as API_ROOT } from "@/config/api";
+
+const API_ORIGIN = `${API_ROOT}/`;
 
 export type RelatedPost = {
   BlogPostId?: number | string;

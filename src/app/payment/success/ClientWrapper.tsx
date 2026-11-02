@@ -20,6 +20,9 @@ export default function ClientWrapper() {
   const [loading, setLoading] = useState(true);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
+  const gateway = searchParams.get("gateway");
+  const isDigipay = gateway === "digipay";
+
   const getPaymentStatus = () => {
     const orderId = searchParams.get("orderId");
     if (!orderId) {
@@ -27,7 +30,10 @@ export default function ClientWrapper() {
       return;
     }
 
-    instance.get(ApiHelper.get("Payment") + "/" + orderId).then((res: any) => {
+    const vehicleKind = searchParams.get("vehicleKind") === "2" ? "2" : "1";
+    const url = `${ApiHelper.get("Payment")}/${orderId}?vehicleKind=${vehicleKind}`;
+
+    instance.get(url).then((res: any) => {
       setPaymentStatus(res);
       setOrderDetail(res);
       setDiscountCode(res?.discountCode || res?.trackingCode || "");
@@ -72,7 +78,17 @@ export default function ClientWrapper() {
             <div className="aspect-[1] relative w-16 h-auto ml-4">
               <CheckmarkCircle01Icon size={80} color="green"/>
             </div>
-            <h3 className="w-full text-center my-4 text-lg lg:text-3xl text-[#101117] font-bold">پرداخت شما با موفقیت انجام شد</h3>
+            <h3 className="w-full text-center my-4 text-lg lg:text-3xl text-[#101117] font-bold">
+              {isDigipay ? "پرداخت اقساطی با موفقیت انجام شد" : "پرداخت شما با موفقیت انجام شد"}
+            </h3>
+            {isDigipay && paymentStatus?.ticketTypeTitle ? (
+              <p className="w-full text-center text-sm text-[#6B6C70]">
+                روش پرداخت: {paymentStatus.ticketTypeTitle}
+              </p>
+            ) : null}
+            {!isDigipay && paymentStatus?.gateway === "Digipay" ? (
+              <p className="w-full text-center text-sm text-[#6B6C70]">درگاه: دیجی‌پی</p>
+            ) : null}
           </div>
         </div>
       </div>

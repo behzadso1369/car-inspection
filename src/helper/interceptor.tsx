@@ -1,8 +1,9 @@
 "use client";
 import axios from "axios";
 import { toast } from "sonner";
+import { API_BASE_URL, API_ORIGIN } from "@/config/api";
 
-const BASE_URL = "https://api.carmacheck.com/api/";
+const BASE_URL = API_BASE_URL;
 
 
 
@@ -17,7 +18,7 @@ const instance = axios.create({
       console.log('🔄 Attempting to refresh token...');
       console.log('📍 Current cookies:', document.cookie);
       const res = await axios.get(
-        "https://api.carmacheck.com/api/User/RefreshToken",
+        `${API_ORIGIN}/api/User/RefreshToken`,
         {
           withCredentials: true,
           headers: {

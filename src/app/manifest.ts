@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { serverApiHelper } from '@/helper/server-fetcher';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://carmacheck.com';
-const API_BASE_URL = 'https://api.carmacheck.com';
+import { API_ORIGIN } from '@/config/api';
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   // Fetch data from API
@@ -18,8 +18,8 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
       const imagePath = data.MasterSiteData.ImagePath;
       // اگه imagePath با / شروع نشده، اضافه می‌کنیم
       iconUrl = imagePath.startsWith('/') 
-        ? `${API_BASE_URL}${imagePath}`
-        : `${API_BASE_URL}/${imagePath}`;
+        ? `${API_ORIGIN}${imagePath}`
+        : `${API_ORIGIN}/${imagePath}`;
     }
     
     if (data?.MasterSiteData?.CompanyName) {
