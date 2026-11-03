@@ -4,19 +4,49 @@ export type ApiEnvelope<T> = {
   resultObject: T;
 };
 
+export type InstallmentQuote = {
+  paidFullyByWallet?: boolean;
+  walletAmountUsed?: number;
+  onlineAmount?: number;
+  installmentAmount?: number;
+  baseAmount: number;
+  surchargePercent: number;
+  surchargeAmount: number;
+  payableAmount: number;
+  title: string;
+  displayText: string;
+  vehicleKind?: VehicleKind;
+  gateway?: "Digipay";
+};
+
 export type InstallmentStart = {
   paymentId?: number;
   providerId?: string;
   ticket?: string;
   paymentUrl?: string;
   paidFullyByWallet: boolean;
-  walletAmountUsed: number;
-  gatewayAmount: number;
+  walletAmountUsed?: number;
+  gatewayAmount?: number;
+  onlineAmount?: number;
+  installmentAmount?: number;
+  baseAmount?: number;
+  surchargePercent?: number;
+  surchargeAmount?: number;
+  payableAmount?: number;
+  title?: string;
+  displayText?: string;
   amountRials?: number;
   requiresPayment: boolean;
   gateway: "Digipay";
   vehicleKind?: 2;
   message?: string;
+};
+
+export type InstallmentVerifyBody = {
+  paymentId?: number;
+  providerId?: string;
+  trackingCode?: string;
+  type?: number;
 };
 
 export type OrderPaymentStatus = {
@@ -25,10 +55,12 @@ export type OrderPaymentStatus = {
   gateway?: "Digipay" | "Zibal" | string;
   trackId?: string;
   providerId?: string;
-  status?: string;
-  amount?: number;
+  ticket?: string;
+  ticketType?: number;
   ticketTypeTitle?: string;
   isCredit?: boolean;
+  status?: string;
+  amount?: number;
   paidAt?: string;
 };
 

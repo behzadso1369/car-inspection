@@ -41,6 +41,7 @@ Payment: "Payment/Order",
 PaymentRequest: "Payment/Request",
 PaymentVerify: "Payment/Verify",
 PaymentInstallment: "Payment/installment",
+PaymentInstallmentQuote: "Payment/installment/quote",
 PaymentInstallmentMotorcycle: "Payment/installment/motorcycle",
 PaymentInstallmentVerify: "Payment/installment/verify",
 

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
-import { startDigipayInstallment } from "@/lib/payment/digipay";
+import { DigipayInstallmentActions } from "@/components/payment/DigipayInstallmentActions";
 import type { VehicleKind } from "@/types/digipay";
 import { Payment02Icon } from "hugeicons-react";
 import Image from "next/image";
@@ -19,7 +19,6 @@ type Props = {
 export function OrderPaymentClient({ vehicleKind = 1, orderImageAlt }: Props) {
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const [payingOnline, setPayingOnline] = useState(false);
-  const [payingDigipay, setPayingDigipay] = useState(false);
 
   const moveApi =
     vehicleKind === 2
@@ -66,18 +65,8 @@ export function OrderPaymentClient({ vehicleKind = 1, orderImageAlt }: Props) {
       .catch(() => setPayingOnline(false));
   };
 
-  const payDigipay = async () => {
-    const orderId = Number(localStorage.getItem("OrderId"));
-    if (!orderId) return;
-    setPayingDigipay(true);
-    try {
-      await startDigipayInstallment(orderId, vehicleKind);
-    } finally {
-      setPayingDigipay(false);
-    }
-  };
-
-  const busy = payingOnline || payingDigipay;
+  const orderId = Number(localStorage.getItem("OrderId") || 0);
+  const busy = payingOnline;
 
   useEffect(() => {
     getUserOrderDetails();
@@ -153,20 +142,12 @@ export function OrderPaymentClient({ vehicleKind = 1, orderImageAlt }: Props) {
         >
           {payingOnline ? "در حال انتقال به درگاه..." : "پرداخت آنلاین"}
         </Button>
-        <div className="w-full">
-          <Button
-            onClick={payDigipay}
-            disabled={busy}
-            type="button"
-            variant="outline"
-            className="border-[#0f766e] text-[#0f766e] rounded-3xl py-6 w-full hover:bg-[#e6f5f3]"
-          >
-            {payingDigipay ? "در حال آماده‌سازی..." : "پرداخت اقساطی با دیجی‌پی"}
-          </Button>
-          <p className="text-center text-xs text-[#6B6C70] mt-2">
-            پرداخت با اعتبار، اقساط یا کیف‌پول دیجی‌پی
-          </p>
-        </div>
+        <DigipayInstallmentActions
+          orderId={orderId}
+          vehicleKind={vehicleKind}
+          disabled={busy}
+          className="w-full"
+        />
       </FlowStepFooter>
     </div>
   );

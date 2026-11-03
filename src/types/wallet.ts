@@ -1,3 +1,5 @@
+import type { InstallmentQuote } from "@/types/digipay";
+
 export interface ApiEnvelope<T> {
   isSuccess: boolean;
   statusMessage: string;
@@ -73,6 +75,7 @@ export interface OrderMoveResult {
   paidFullyByWallet: boolean;
   walletAmountUsed: number;
   gatewayAmount: number;
+  installmentQuote?: InstallmentQuote | null;
 }
 
 export interface WalletGiftPreview {

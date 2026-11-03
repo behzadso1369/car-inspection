@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
-import { startDigipayInstallment } from "@/lib/payment/digipay";
+import { DigipayInstallmentActions } from "@/components/payment/DigipayInstallmentActions";
 import { handleOrderMoveResult } from "@/lib/wallet";
 import type { OrderMoveResult } from "@/types/wallet";
 import { DiscountTag01Icon } from "hugeicons-react";
@@ -18,12 +18,13 @@ export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [digipayLoading, setDigipayLoading] = useState(false);
+  const [orderId, setOrderId] = useState(0);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [regulationsOpen, setRegulationsOpen] = useState(false);
 
   useEffect(() => {
     router.prefetch("/payment/success?vehicleKind=2");
+    setOrderId(Number(localStorage.getItem("OrderId") || 0));
   }, [router]);
 
   const getUserOrderDetails = () => {
@@ -67,22 +68,11 @@ export default function ClientWrapper() {
       });
   };
 
-  const payWithDigipay = async () => {
-    const orderId = Number(localStorage.getItem("OrderId"));
-    if (!orderId || !acceptedTerms) return;
-    setDigipayLoading(true);
-    try {
-      await startDigipayInstallment(orderId, 2);
-    } finally {
-      setDigipayLoading(false);
-    }
-  };
-
   useEffect(() => {
     getUserOrderDetails();
   }, []);
 
-  const payBusy = loading || digipayLoading;
+  const payBusy = loading;
 
   const vehicleLabel =
     orderDetail?.carGroup || orderDetail?.motorcycleGroup || "—";
@@ -222,20 +212,13 @@ export default function ClientWrapper() {
         >
           {loading ? "لطفا منتظر بمانید..." : "پرداخت آنلاین"}
         </Button>
-        <div className="w-full">
-          <Button
-            disabled={payBusy || !acceptedTerms}
-            onClick={payWithDigipay}
-            type="button"
-            variant="outline"
-            className="w-full rounded-3xl border-[#0f766e] py-6 text-[#0f766e] hover:bg-[#e6f5f3] disabled:opacity-50"
-          >
-            {digipayLoading ? "در حال آماده‌سازی..." : "پرداخت اقساطی با دیجی‌پی"}
-          </Button>
-          <p className="mt-2 text-center text-xs text-[#6B6C70]">
-            پرداخت با اعتبار، اقساط یا کیف‌پول دیجی‌پی
-          </p>
-        </div>
+        <DigipayInstallmentActions
+          orderId={orderId}
+          vehicleKind={2}
+          disabled={payBusy || !acceptedTerms}
+          onlineAmountHint={orderDetail?.finalPrice ?? null}
+          className="w-full"
+        />
       </FlowStepFooter>
 
       <RegulationsTermsViewer

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
-import { startDigipayInstallment } from "@/lib/payment/digipay";
+import { DigipayInstallmentActions } from "@/components/payment/DigipayInstallmentActions";
 import { handleOrderMoveResult, readCheckoutContext } from "@/lib/wallet";
 import type { CheckoutPreview, OrderMoveResult } from "@/types/wallet";
 import { DiscountTag01Icon } from "hugeicons-react";
@@ -18,7 +18,6 @@ export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [digipayLoading, setDigipayLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [regulationsOpen, setRegulationsOpen] = useState(false);
   const [walletPreview, setWalletPreview] = useState<CheckoutPreview | null>(null);
@@ -71,22 +70,11 @@ export default function ClientWrapper() {
       });
   };
 
-  const payWithDigipay = async () => {
-    const orderId = Number(localStorage.getItem("OrderId"));
-    if (!orderId || !acceptedTerms) return;
-    setDigipayLoading(true);
-    try {
-      await startDigipayInstallment(orderId, 1);
-    } finally {
-      setDigipayLoading(false);
-    }
-  };
-
   useEffect(() => {
     getUserOrderDetails();
   }, []);
 
-  const payBusy = loading || digipayLoading;
+  const payBusy = loading;
   /** فقط وقتی کل مبلغ از کیف‌پول کارماچک پوشش داده شده و درگاهی نمانده، اقساطی معنا ندارد */
   const showDigipay =
     !walletPreview ||
@@ -244,20 +232,21 @@ export default function ClientWrapper() {
               : "پرداخت آنلاین"}
         </Button>
         {showDigipay ? (
-          <div className="w-full">
-            <Button
-              disabled={payBusy || !acceptedTerms}
-              onClick={payWithDigipay}
-              type="button"
-              variant="outline"
-              className="w-full rounded-3xl border-[#0f766e] py-6 text-[#0f766e] hover:bg-[#e6f5f3] disabled:opacity-50"
-            >
-              {digipayLoading ? "در حال آماده‌سازی..." : "پرداخت اقساطی با دیجی‌پی"}
-            </Button>
-            <p className="mt-2 text-center text-xs text-[#6B6C70]">
-              پرداخت با اعتبار، اقساط یا کیف‌پول دیجی‌پی
-            </p>
-          </div>
+          <DigipayInstallmentActions
+            orderId={checkoutContext.orderId}
+            vehicleKind={1}
+            disabled={payBusy || !acceptedTerms}
+            onlineAmountHint={walletPreview?.gatewayAmount}
+            walletSnapshot={
+              walletPreview
+                ? {
+                    useWallet: walletPreview.useWallet,
+                    gatewayAmount: walletPreview.gatewayAmount,
+                  }
+                : null
+            }
+            className="w-full"
+          />
         ) : null}
       </FlowStepFooter>
 
