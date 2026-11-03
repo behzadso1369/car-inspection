@@ -4,29 +4,13 @@ import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { apiAssetUrl } from "@/lib/media";
+import { apiAssetUrl, sliderHref } from "@/lib/media";
 
 const SLIDER_SIZES = "(max-width: 768px) 100vw, 1080px";
 
 function slideDurationMs(item: any): number {
   const ms = Number(item?.DurationTime);
   return Number.isFinite(ms) && ms > 0 ? ms : 3000;
-}
-
-function sliderHref(link?: string): string | null {
-  const trimmed = String(link ?? "").trim();
-  if (!trimmed) return null;
-
-  try {
-    const url = new URL(trimmed, "https://carmacheck.com");
-    const host = url.hostname.replace(/^www\./, "");
-    if (host === "carmacheck.com" || host === "localhost") {
-      return `${url.pathname}${url.search}${url.hash}` || "/";
-    }
-    return trimmed;
-  } catch {
-    return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
-  }
 }
 
 export const Slider = ({data}:any) => {

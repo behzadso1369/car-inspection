@@ -113,6 +113,7 @@ export default async function Home() {
       <HomeHero
         carBrands={popularBrands.cars}
         motorcycleBrands={popularBrands.motorcycles}
+        slides={data?.Sliders ?? []}
       />
       <Introduction data={data?.WhyWe}/>
       <HomeFeatures />

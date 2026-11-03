@@ -17,3 +17,20 @@ export function apiAssetUrl(path?: string | null): string {
   const clean = trimmed.replace(/\\/g, "/").replace(/^\/+/, "");
   return `/media/${clean}`;
 }
+
+/** Turn slider/banner API links into in-app paths when they point at carmacheck.com. */
+export function sliderHref(link?: string | null): string | null {
+  const trimmed = String(link ?? "").trim();
+  if (!trimmed) return null;
+
+  try {
+    const url = new URL(trimmed, "https://carmacheck.com");
+    const host = url.hostname.replace(/^www\./, "");
+    if (host === "carmacheck.com" || host === "localhost") {
+      return `${url.pathname}${url.search}${url.hash}` || "/";
+    }
+    return trimmed;
+  } catch {
+    return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  }
+}

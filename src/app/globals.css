@@ -639,6 +639,32 @@ a.dealers-entry-cta.banner-cta:hover {
   }
 }
 
+.home-hero-slide {
+  opacity: 0;
+  z-index: 0;
+}
+
+.home-hero-slide.is-base {
+  opacity: 1;
+  z-index: 1;
+}
+
+.home-hero-slide.is-overlay {
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 900ms ease-in-out;
+}
+
+.home-hero-slide.is-overlay.is-shown {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-slide.is-overlay {
+    transition-duration: 1ms !important;
+  }
+}
+
 .home-hero {
   background:
     radial-gradient(ellipse 90% 70% at 88% -10%, rgba(65, 108, 234, 0.38), transparent 58%),
