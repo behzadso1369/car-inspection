@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
+import { DigipayInstallmentActions } from "@/components/payment/DigipayInstallmentActions";
 import { handleOrderMoveResult } from "@/lib/wallet";
 import type { OrderMoveResult } from "@/types/wallet";
 import { DiscountTag01Icon } from "hugeicons-react";
@@ -17,11 +18,13 @@ export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [orderId, setOrderId] = useState(0);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [regulationsOpen, setRegulationsOpen] = useState(false);
 
   useEffect(() => {
     router.prefetch("/payment/success?vehicleKind=2");
+    setOrderId(Number(localStorage.getItem("OrderId") || 0));
   }, [router]);
 
   const getUserOrderDetails = () => {
@@ -68,6 +71,8 @@ export default function ClientWrapper() {
   useEffect(() => {
     getUserOrderDetails();
   }, []);
+
+  const payBusy = loading;
 
   const vehicleLabel =
     orderDetail?.carGroup || orderDetail?.motorcycleGroup || "—";
@@ -200,13 +205,20 @@ export default function ClientWrapper() {
         </label>
 
         <Button
-          disabled={loading || !acceptedTerms}
+          disabled={payBusy || !acceptedTerms}
           onClick={moveToPaymentSucceed}
           type="submit"
           className="w-full rounded-3xl bg-[#416CEA] py-6 text-white disabled:opacity-50"
         >
-          {loading ? "لطفا منتظر بمانید..." : "تایید و پرداخت"}
+          {loading ? "لطفا منتظر بمانید..." : "پرداخت آنلاین"}
         </Button>
+        <DigipayInstallmentActions
+          orderId={orderId}
+          vehicleKind={2}
+          disabled={payBusy || !acceptedTerms}
+          onlineAmountHint={orderDetail?.finalPrice ?? null}
+          className="w-full"
+        />
       </FlowStepFooter>
 
       <RegulationsTermsViewer

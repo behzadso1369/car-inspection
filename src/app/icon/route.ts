@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { serverApiHelper } from '@/helper/server-fetcher';
 
-const API_BASE_URL = 'https://api.carmacheck.com';
+import { API_ORIGIN } from '@/config/api';
 
 // Dynamic icon route handler از API
 export async function GET(request: NextRequest) {
@@ -13,8 +13,8 @@ export async function GET(request: NextRequest) {
     if (data?.MasterSiteData?.ImagePath) {
       const imagePath = data.MasterSiteData.ImagePath;
       imageUrl = imagePath.startsWith('/') 
-        ? `${API_BASE_URL}${imagePath}`
-        : `${API_BASE_URL}/${imagePath}`;
+        ? `${API_ORIGIN}${imagePath}`
+        : `${API_ORIGIN}/${imagePath}`;
     }
 
     // Fetch image from API

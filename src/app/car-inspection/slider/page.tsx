@@ -68,7 +68,7 @@ export default function OurCustomer() {
               <div className="flex flex-wrap px-2">
                 <div className="w-full flex flex-wrap ">
                <div className="relative w-full h-52 overflow-hidden">
-                   <Image className="w-full rounded-3xl h-full object-cover" src={"https://api.carmacheck.com/" + item?.ImagePath} alt={item?.Title}  height={256} width={256} />
+                   <Image className="w-full rounded-3xl h-full object-cover" src={"https://api-test.carmacheck.com/" + item?.ImagePath} alt={item?.Title}  height={256} width={256} />
                    </div>
               
            

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
+import { DigipayInstallmentActions } from "@/components/payment/DigipayInstallmentActions";
 import { handleOrderMoveResult, readCheckoutContext } from "@/lib/wallet";
 import type { CheckoutPreview, OrderMoveResult } from "@/types/wallet";
 import { DiscountTag01Icon } from "hugeicons-react";
@@ -72,6 +73,13 @@ export default function ClientWrapper() {
   useEffect(() => {
     getUserOrderDetails();
   }, []);
+
+  const payBusy = loading;
+  /** فقط وقتی کل مبلغ از کیف‌پول کارماچک پوشش داده شده و درگاهی نمانده، اقساطی معنا ندارد */
+  const showDigipay =
+    !walletPreview ||
+    !walletPreview.canPayFullyByWallet ||
+    walletPreview.gatewayAmount > 0;
 
   return (
     <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-[calc(16rem+env(safe-area-inset-bottom)+var(--keyboard-inset,0px))] lg:pb-8">
@@ -212,7 +220,7 @@ export default function ClientWrapper() {
         </label>
 
         <Button
-          disabled={loading || !acceptedTerms}
+          disabled={payBusy || !acceptedTerms}
           onClick={moveToPaymentSucceed}
           type="submit"
           className="w-full rounded-3xl bg-[#416CEA] py-6 text-white disabled:opacity-50"
@@ -221,8 +229,25 @@ export default function ClientWrapper() {
             ? "لطفا منتظر بمانید..."
             : walletPreview?.canPayFullyByWallet
               ? "پرداخت با کیف‌پول"
-              : "تایید و پرداخت"}
+              : "پرداخت آنلاین"}
         </Button>
+        {showDigipay ? (
+          <DigipayInstallmentActions
+            orderId={checkoutContext.orderId}
+            vehicleKind={1}
+            disabled={payBusy || !acceptedTerms}
+            onlineAmountHint={walletPreview?.gatewayAmount}
+            walletSnapshot={
+              walletPreview
+                ? {
+                    useWallet: walletPreview.useWallet,
+                    gatewayAmount: walletPreview.gatewayAmount,
+                  }
+                : null
+            }
+            className="w-full"
+          />
+        ) : null}
       </FlowStepFooter>
 
       <RegulationsTermsViewer

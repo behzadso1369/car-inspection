@@ -30,7 +30,7 @@ export const BlogHeader = memo(({ data }: any) => {
   };
 
   const logoSrc = data?.ImagePath
-    ? `https://api.carmacheck.com/${data.ImagePath}`
+    ? `https://api-test.carmacheck.com/${data.ImagePath}`
     : "/assets/images/logo.svg";
 
   return (

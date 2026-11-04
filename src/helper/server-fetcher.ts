@@ -8,7 +8,9 @@ import { cache } from "react";
 import { ApiHelper } from './api-request';
 
 // استفاده از همون BASE_URL که در interceptor هست
-const BASE_URL = "https://api.carmacheck.com/api/";
+import { API_BASE_URL } from "@/config/api";
+
+const BASE_URL = API_BASE_URL;
 
 interface FetchOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';

@@ -135,7 +135,7 @@ function BlogCategoryContent() {
                   excerpt={item?.Excerpt ?? item?.BlogPostDescription}
                   imageSrc={
                     item?.ImagePath
-                      ? "https://api.carmacheck.com/" + item.ImagePath
+                      ? "https://api-test.carmacheck.com/" + item.ImagePath
                       : "/placeholder-blog.jpg"
                   }
                   link={`/blog/${relatedPostSlug(item)}`}

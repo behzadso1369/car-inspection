@@ -12,7 +12,7 @@ import Link from "next/link";
 import moment from "jalali-moment";
 
 const IMG = (path?: string) =>
-  path ? "https://api.carmacheck.com/" + path : "/placeholder-blog.jpg";
+  path ? "https://api-test.carmacheck.com/" + path : "/placeholder-blog.jpg";
 const faDate = (d?: string) => {
   try {
     return d ? moment(d).locale("fa").format("D MMMM YYYY") : "";

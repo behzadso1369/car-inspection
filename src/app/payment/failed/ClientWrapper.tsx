@@ -17,6 +17,8 @@ export default function ClientWrapper() {
   const [loading, setLoading] = useState(true);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
+  const failMessage = searchParams.get("message");
+
   const getPaymentStatus = () => {
     const orderId = searchParams.get("orderId");
     if (!orderId) {
@@ -24,7 +26,10 @@ export default function ClientWrapper() {
       return;
     }
 
-    instance.get(ApiHelper.get("Payment") + "/" + orderId).then((res: any) => {
+    const vehicleKind = searchParams.get("vehicleKind") === "2" ? "2" : "1";
+    const url = `${ApiHelper.get("Payment")}/${orderId}?vehicleKind=${vehicleKind}`;
+
+    instance.get(url).then((res: any) => {
       setPaymentStatus(res);
       setOrderDetail(res);
       setDiscountCode(res?.discountCode || res?.trackingCode || "");
@@ -37,6 +42,15 @@ export default function ClientWrapper() {
     walletApi.getBalance().then((res) => {
       if (res?.balance != null) setWalletBalance(res.balance);
     }).catch(() => undefined);
+  };
+
+  const retryPayment = () => {
+    const vehicleKind = searchParams.get("vehicleKind");
+    if (vehicleKind === "2") {
+      router.push("/motorcycle-inspection/payment");
+      return;
+    }
+    router.push("/car-inspection/payment");
   };
 
   const moveToGateway = () => {
@@ -70,6 +84,11 @@ export default function ClientWrapper() {
               <CancelCircleIcon size={80} color="red"/>
             </div>
             <h3 className="w-full text-center my-4 text-lg lg:text-3xl text-[#101117] font-bold">پرداخت ناموفق بود</h3>
+            {failMessage ? (
+              <p className="w-full text-center text-sm text-[#6B6C70] px-2">
+                {decodeURIComponent(failMessage)}
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
@@ -95,9 +114,12 @@ export default function ClientWrapper() {
         </div>
       )}
 
-      <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex justify-center bottom-0 bg-white py-5">
-        <Button onClick={moveToGateway} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
-        پروفایل 
+      <div className="px-4 w-full lg:my-4 lg:static lg:mt-8 fixed flex flex-col gap-3 justify-center bottom-0 bg-white py-5">
+        <Button onClick={retryPayment} type="button" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
+          پرداخت مجدد
+        </Button>
+        <Button onClick={moveToGateway} type="button" variant="outline" className="rounded-3xl py-6 px-12 w-full">
+          پروفایل
         </Button>
       </div>
     </div>

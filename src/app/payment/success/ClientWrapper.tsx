@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import { WalletIcon } from "@/components/WalletIcon";
+import { paymentSuccessUrl, verifyDigipayInstallment } from "@/lib/payment/digipay";
 import { formatToman, walletApi } from "@/lib/wallet";
+import { toast } from "sonner";
 import { CheckmarkCircle01Icon } from "hugeicons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,6 +21,11 @@ export default function ClientWrapper() {
   const [paymentStatus, setPaymentStatus] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [verifying, setVerifying] = useState(false);
+
+  const gateway = searchParams.get("gateway");
+  const isDigipay =
+    gateway === "digipay" || paymentStatus?.gateway === "Digipay";
 
   const getPaymentStatus = () => {
     const orderId = searchParams.get("orderId");
@@ -27,7 +34,10 @@ export default function ClientWrapper() {
       return;
     }
 
-    instance.get(ApiHelper.get("Payment") + "/" + orderId).then((res: any) => {
+    const vehicleKind = searchParams.get("vehicleKind") === "2" ? "2" : "1";
+    const url = `${ApiHelper.get("Payment")}/${orderId}?vehicleKind=${vehicleKind}`;
+
+    instance.get(url).then((res: any) => {
       setPaymentStatus(res);
       setOrderDetail(res);
       setDiscountCode(res?.discountCode || res?.trackingCode || "");
@@ -45,6 +55,43 @@ export default function ClientWrapper() {
   const moveToGateway = () => {
     router.push("/Profile");
   };
+
+  const checkDigipayPayment = async () => {
+    const orderId = Number(searchParams.get("orderId"));
+    const vehicleKind = searchParams.get("vehicleKind") === "2" ? 2 : 1;
+    if (!orderId) return;
+
+    setVerifying(true);
+    try {
+      const body: {
+        paymentId?: number;
+        providerId?: string;
+        trackingCode?: string;
+        type?: number;
+      } = {};
+      if (paymentStatus?.paymentId) body.paymentId = paymentStatus.paymentId;
+      if (paymentStatus?.providerId) body.providerId = paymentStatus.providerId;
+      if (paymentStatus?.trackId) body.trackingCode = String(paymentStatus.trackId);
+      if (paymentStatus?.ticketType != null) body.type = paymentStatus.ticketType;
+
+      if (!body.paymentId && !body.providerId && paymentStatus?.trackId) {
+        await walletApi.verifyPayment(paymentStatus.trackId);
+      } else if (body.paymentId || body.providerId) {
+        await verifyDigipayInstallment(body);
+      } else {
+        toast.error("اطلاعات پرداخت برای بررسی یافت نشد.");
+        return;
+      }
+      window.location.assign(paymentSuccessUrl(orderId, vehicleKind));
+    } catch {
+      toast.error("بررسی پرداخت ناموفق بود. لطفاً دوباره تلاش کنید.");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const showVerifyDigipay =
+    isDigipay && paymentStatus && paymentStatus.hasPayment === false;
 
   useEffect(() => {
     getPaymentStatus();
@@ -72,7 +119,17 @@ export default function ClientWrapper() {
             <div className="aspect-[1] relative w-16 h-auto ml-4">
               <CheckmarkCircle01Icon size={80} color="green"/>
             </div>
-            <h3 className="w-full text-center my-4 text-lg lg:text-3xl text-[#101117] font-bold">پرداخت شما با موفقیت انجام شد</h3>
+            <h3 className="w-full text-center my-4 text-lg lg:text-3xl text-[#101117] font-bold">
+              {isDigipay ? "پرداخت اقساطی با موفقیت انجام شد" : "پرداخت شما با موفقیت انجام شد"}
+            </h3>
+            {isDigipay && paymentStatus?.ticketTypeTitle ? (
+              <p className="w-full text-center text-sm text-[#6B6C70]">
+                روش پرداخت: {paymentStatus.ticketTypeTitle}
+              </p>
+            ) : null}
+            {!isDigipay && paymentStatus?.gateway === "Digipay" ? (
+              <p className="w-full text-center text-sm text-[#6B6C70]">درگاه: دیجی‌پی</p>
+            ) : null}
           </div>
         </div>
       </div>
@@ -102,6 +159,16 @@ export default function ClientWrapper() {
       )}
 
       <div className="px-4 w-full lg:my-4   flex justify-center  bg-white  py-5 gap-3 flex-col">
+        {showVerifyDigipay ? (
+          <Button
+            onClick={checkDigipayPayment}
+            disabled={verifying}
+            type="button"
+            className="bg-[#0f766e] text-white rounded-3xl py-6 px-12 w-full"
+          >
+            {verifying ? "در حال بررسی..." : "بررسی پرداخت"}
+          </Button>
+        ) : null}
         <Button onClick={moveToGateway} type="submit" className="bg-[#416CEA] text-white rounded-3xl py-6 px-12 w-full">
            پروفایل 
         </Button>

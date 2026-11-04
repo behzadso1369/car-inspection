@@ -109,7 +109,7 @@ export function BlogDetailClient({
           {ImagePath && (
             <div className="relative w-full h-64 md:h-96 mb-6 rounded-lg overflow-hidden">
               <Image
-                src={`https://api.carmacheck.com/${ImagePath}`}
+                src={`https://api-test.carmacheck.com/${ImagePath}`}
                 alt={Title || "تصویر مقاله"}
                 fill
                 className="object-cover"
