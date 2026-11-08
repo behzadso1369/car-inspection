@@ -11,6 +11,7 @@ import {
   CarInspectionFlowHeaderSkeleton,
   CarInspectionFlowSkeleton,
 } from "./components/CarInspectionFlowSkeleton";
+import { formatPhoneDisplay, phoneTelHref } from "@/lib/persian-digits";
 
 const FLOW_SKELETON_ROUTES = [
   "/car-inspection/inspection-method",
@@ -137,7 +138,7 @@ export default function ProfileLayout({
                     height={58}
                     src={
                       data?.MasterSiteData?.ImagePath
-                        ? `https://api-test.carmacheck.com/${data.MasterSiteData.ImagePath}`
+                        ? `https://api.carmacheck.com/${data.MasterSiteData.ImagePath}`
                         : "/assets/images/logo.svg"
                     }
                   />
@@ -146,9 +147,9 @@ export default function ProfileLayout({
               <span className="text-[#101117] flex items-center font-IranSans">
                 <a
                   className="rounded-3xl font-IranSans-UltraLight border border-white px-2"
-                  href={`tel:${data?.MasterSiteData?.NavbarPhoneNumber}`}
+                  href={phoneTelHref(data?.MasterSiteData?.NavbarPhoneNumber)}
                 >
-                  {data?.MasterSiteData?.NavbarPhoneNumber}
+                  {formatPhoneDisplay(data?.MasterSiteData?.NavbarPhoneNumber)}
                 </a>
                 <Call02Icon size={16} />
               </span>

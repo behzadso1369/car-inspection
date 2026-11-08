@@ -7,14 +7,14 @@ export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const today = jalaliDayMonth();
-  const title = `قیمت روز خودرو ${today} | صفر و کارخانه`;
-  const description = `لیست قیمت روز خودروهای صفر ${today}؛ نام مدل، سال تولید و قیمت به‌روز از بازار. رزرو کارشناسی همان خودرو در یک کلیک.`;
+  const title = `قیمت خودرو صفر امروز ${today}`;
+  const description = `لیست قیمت خودرو صفر امروز ${today}؛ نام مدل، سال تولید و قیمت به‌روز کارخانه و بازار. رزرو کارشناسی همان خودرو در یک کلیک.`;
 
   return {
     title,
     description,
     keywords: [
-      "قیمت روز خودرو",
+      "قیمت روز خودرو صفر",
       "قیمت خودرو صفر",
       "قیمت ماشین",
       "قیمت کارخانه",

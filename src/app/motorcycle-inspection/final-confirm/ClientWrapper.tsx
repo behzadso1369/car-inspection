@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
 import { DigipayInstallmentActions } from "@/components/payment/DigipayInstallmentActions";
+import {
+  PaymentMethodSelector,
+  type CheckoutPaymentMethod,
+} from "@/components/payment/PaymentMethodSelector";
 import { handleOrderMoveResult } from "@/lib/wallet";
 import type { OrderMoveResult } from "@/types/wallet";
 import { DiscountTag01Icon } from "hugeicons-react";
@@ -11,7 +15,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { buildMotorcycleMoveBody } from "@/lib/motorcycle-order-move";
-import { FlowStepFooter } from "@/components/flow/FlowStepFooter";
+import {
+  FlowStepFooter,
+  flowStepScrollPaddingClass,
+} from "@/components/flow/FlowStepFooter";
 import { RegulationsTermsViewer } from "./RegulationsTermsViewer";
 
 export default function ClientWrapper() {
@@ -21,6 +28,9 @@ export default function ClientWrapper() {
   const [orderId, setOrderId] = useState(0);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [regulationsOpen, setRegulationsOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] =
+    useState<CheckoutPaymentMethod>("online");
+  const [digipayPaying, setDigipayPaying] = useState(false);
 
   useEffect(() => {
     router.prefetch("/payment/success?vehicleKind=2");
@@ -72,13 +82,15 @@ export default function ClientWrapper() {
     getUserOrderDetails();
   }, []);
 
-  const payBusy = loading;
+  const payBusy = loading || digipayPaying;
 
   const vehicleLabel =
     orderDetail?.carGroup || orderDetail?.motorcycleGroup || "—";
 
   return (
-    <div className="bg-white font-IranSans lg:px-4 lg:py-4 pb-[calc(16rem+env(safe-area-inset-bottom)+var(--keyboard-inset,0px))] lg:pb-8">
+    <div
+      className={`bg-white font-IranSans lg:px-4 lg:py-4 ${flowStepScrollPaddingClass}`}
+    >
       <div className="px-4">
         <div className="bg-white px-4 py-6 rounded-3xl my-6">
           <div className="flex items-center">
@@ -180,7 +192,7 @@ export default function ClientWrapper() {
         </div>
       </div>
 
-      <FlowStepFooter className="flex-col space-y-3 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] lg:pb-4">
+      <FlowStepFooter className="flex-col space-y-2 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:pb-4">
         <label className="flex cursor-pointer items-start gap-3 text-sm leading-7 text-[#55565A]">
           <input
             type="checkbox"
@@ -204,21 +216,34 @@ export default function ClientWrapper() {
           </span>
         </label>
 
-        <Button
+        <PaymentMethodSelector
+          value={paymentMethod}
+          onChange={setPaymentMethod}
           disabled={payBusy || !acceptedTerms}
-          onClick={moveToPaymentSucceed}
-          type="submit"
-          className="w-full rounded-3xl bg-[#416CEA] py-6 text-white disabled:opacity-50"
-        >
-          {loading ? "لطفا منتظر بمانید..." : "پرداخت آنلاین"}
-        </Button>
-        <DigipayInstallmentActions
-          orderId={orderId}
-          vehicleKind={2}
-          disabled={payBusy || !acceptedTerms}
-          onlineAmountHint={orderDetail?.finalPrice ?? null}
-          className="w-full"
         />
+
+        {paymentMethod === "online" && (
+          <Button
+            disabled={payBusy || !acceptedTerms}
+            onClick={moveToPaymentSucceed}
+            type="submit"
+            className="w-full rounded-3xl bg-[#416CEA] py-6 text-white disabled:opacity-50"
+          >
+            {loading ? "لطفا منتظر بمانید..." : "پرداخت آنلاین"}
+          </Button>
+        )}
+
+        {paymentMethod === "digipay" && (
+          <DigipayInstallmentActions
+            orderId={orderId}
+            vehicleKind={2}
+            variant="premium"
+            disabled={payBusy || !acceptedTerms}
+            onPayingChange={setDigipayPaying}
+            onlineAmountHint={orderDetail?.finalPrice ?? null}
+            className="w-full"
+          />
+        )}
       </FlowStepFooter>
 
       <RegulationsTermsViewer

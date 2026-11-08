@@ -138,13 +138,14 @@ export function OrderPaymentClient({ vehicleKind = 1, orderImageAlt }: Props) {
           onClick={payOnline}
           disabled={busy}
           type="button"
-          className="bg-[#416CEA] text-white rounded-3xl py-6 w-full"
+          className="w-full rounded-3xl bg-[#416CEA] py-6 text-white"
         >
           {payingOnline ? "در حال انتقال به درگاه..." : "پرداخت آنلاین"}
         </Button>
         <DigipayInstallmentActions
           orderId={orderId}
           vehicleKind={vehicleKind}
+          variant="compact"
           disabled={busy}
           className="w-full"
         />

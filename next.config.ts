@@ -93,13 +93,20 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/media/:path*",
-        destination: "https://api-test.carmacheck.com/:path*",
+        destination: "https://api.carmacheck.com/:path*",
       },
     ];
   },
 
   images: {
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api.carmacheck.com",
+        port: "",
+        pathname: "/**",
+        search: "",
+      },
       {
         protocol: "https",
         hostname: "api-test.carmacheck.com",

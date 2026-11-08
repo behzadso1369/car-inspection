@@ -1,4 +1,5 @@
 import { BrandLogo } from "@/components/seo/BrandLogo";
+import { formatPhoneDisplay, phoneTelHref } from "@/lib/persian-digits";
 
 function PhoneIcon() {
   return (
@@ -17,12 +18,20 @@ type CallActionProps = {
   data?: any;
   /** روی موبایل به‌صورت fixed زیر بنر بچسبد (مثلاً صفحه قیمت‌گذاری) */
   fixed?: boolean;
+  /** داخل هدر sticky والد؛ بدون sticky/fixed جدا */
+  embedded?: boolean;
 };
 
-export default function CallAction({ data, fixed = false }: CallActionProps) {
-  const sectionClass = fixed
-    ? "fixed inset-x-0 top-11 z-50 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]"
-    : "sticky top-11 z-50 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]";
+export default function CallAction({
+  data,
+  fixed = false,
+  embedded = false,
+}: CallActionProps) {
+  const sectionClass = embedded
+    ? "relative z-50 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]"
+    : fixed
+      ? "fixed inset-x-0 top-11 z-50 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]"
+      : "sticky top-11 z-50 bg-secondary p-4 h-11 text-black flex justify-between items-center shadow-[0px_4px_8px_0px_#00000014]";
 
   return (
     <>
@@ -37,9 +46,9 @@ export default function CallAction({ data, fixed = false }: CallActionProps) {
         <span className="text-[#101117] flex items-center font-IranSans">
           <a
             className="rounded-3xl font-IranSans border border-white px-2"
-            href={`tel:${data?.NavbarPhoneNumber}`}
+            href={phoneTelHref(data?.NavbarPhoneNumber)}
           >
-            {data?.NavbarPhoneNumber}
+            {formatPhoneDisplay(data?.NavbarPhoneNumber)}
           </a>
           <PhoneIcon />
         </span>

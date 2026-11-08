@@ -209,6 +209,13 @@ a.dealers-entry-cta.banner-cta:hover {
   color: #000000 !important;
 }
 
+@media (max-width: 1023px) {
+  .car-price-result-cta.banner-cta {
+    animation: none;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .banner-cta {
     animation: none;

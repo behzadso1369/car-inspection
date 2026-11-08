@@ -15,6 +15,9 @@ import { textMatchesQuery } from "@/lib/car-price/text";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { NavigationBar } from "@/app/components/mobile/Home/NavigationBar";
+import CarNewPriceRangeFilter, {
+  useCarNewPriceRangeBounds,
+} from "@/components/car-new-price/CarNewPriceRangeFilter";
 
 function formatPriceDisplay(item: CarNewPriceItem) {
   if (item.carPriceText) {
@@ -23,12 +26,31 @@ function formatPriceDisplay(item: CarNewPriceItem) {
   return `${item.carPrice.toLocaleString("fa-IR")} تومان`;
 }
 
-export default function CarNewPriceList() {
+type CarNewPriceListProps = {
+  lastUpdateFa: string;
+  lastUpdateIso: string;
+};
+
+export default function CarNewPriceList({
+  lastUpdateFa,
+  lastUpdateIso,
+}: CarNewPriceListProps) {
   const [items, setItems] = useState<CarNewPriceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [priceFilterEnabled, setPriceFilterEnabled] = useState(false);
+  const [rangeMin, setRangeMin] = useState(0);
+  const [rangeMax, setRangeMax] = useState(0);
+
+  const { ceiling } = useCarNewPriceRangeBounds(items);
+
+  useEffect(() => {
+    if (ceiling > 0 && rangeMax === 0) {
+      setRangeMax(ceiling);
+    }
+  }, [ceiling, rangeMax]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedQuery(query.trim()), 300);
@@ -60,30 +82,76 @@ export default function CarNewPriceList() {
   }, [load]);
 
   const filtered = useMemo(() => {
-    if (!debouncedQuery) return items;
-    return items.filter((item) => textMatchesQuery(item.carName, debouncedQuery));
-  }, [items, debouncedQuery]);
+    let list = items;
+    if (priceFilterEnabled) {
+      list = list.filter(
+        (item) => item.carPrice >= rangeMin && item.carPrice <= rangeMax,
+      );
+    }
+    if (debouncedQuery) {
+      list = list.filter((item) =>
+        textMatchesQuery(item.carName, debouncedQuery),
+      );
+    }
+    return list;
+  }, [items, debouncedQuery, priceFilterEnabled, rangeMin, rangeMax]);
 
   const groups = useMemo(() => groupItemsByBrand(filtered), [filtered]);
 
+  const countLabel = useMemo(() => {
+    if (loading || error) return null;
+    let text = `${filtered.length.toLocaleString("fa-IR")} مدل`;
+    if (debouncedQuery) text += ` برای «${debouncedQuery}»`;
+    if (priceFilterEnabled) text += " (با فیلتر قیمت)";
+    return text;
+  }, [
+    loading,
+    error,
+    filtered.length,
+    debouncedQuery,
+    priceFilterEnabled,
+  ]);
+
   return (
     <>
-      <div className="sticky top-[4.5rem] z-30 -mx-3 space-y-3 border-b border-[#E8ECF4] bg-[#F3F5F8]/95 px-3 py-3 backdrop-blur-md md:static md:mx-0 md:rounded-2xl md:border md:bg-white md:p-4 lg:top-28">
-        <div className="relative">
-          <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#999A9C]" />
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="جستجوی نام خودرو یا برند..."
-            className="h-12 rounded-2xl border-[#E8ECF4] bg-white pr-10 text-right focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20"
-            autoComplete="off"
-          />
-        </div>
-        {!loading && !error && (
-          <p className="text-[11px] text-[#6B6C70] md:text-xs">
-            {filtered.length.toLocaleString("fa-IR")} مدل
-            {debouncedQuery ? ` برای «${debouncedQuery}»` : ""}
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2 md:mb-3">
+        <p className="inline-flex items-center gap-1.5 rounded-full border border-[#D6F0E0] bg-[#EFFAF3] px-3 py-1 text-xs font-bold text-[#1F7A45] md:text-sm">
+          <span className="h-2 w-2 rounded-full bg-[#22A55B]" aria-hidden="true" />
+          آخرین به‌روزرسانی:{" "}
+          <time dateTime={lastUpdateIso}>{lastUpdateFa}</time>
+        </p>
+        {countLabel && (
+          <p className="inline-flex items-center rounded-full border border-[#E8ECF4] bg-white px-3 py-1 text-xs font-bold text-[#55565A] md:text-sm">
+            {countLabel}
           </p>
+        )}
+      </div>
+
+      <div className="-mx-3 space-y-2 px-3 md:mx-0 md:space-y-3 md:rounded-2xl md:border md:border-[#E8ECF4] md:bg-white md:p-4">
+        <div className="sticky top-[4.5rem] z-30 -mx-3 border-b border-[#E8ECF4] bg-[#F3F5F8]/95 px-3 py-2 backdrop-blur-md md:static md:mx-0 md:border-0 md:bg-transparent md:p-0 lg:top-28">
+          <div className="relative">
+            <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#999A9C]" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="جستجوی نام خودرو یا برند..."
+              className="h-11 rounded-2xl border-[#E8ECF4] bg-white pr-10 text-right focus-visible:border-[#3456bb] focus-visible:ring-[#3456bb]/20 md:h-12"
+              autoComplete="off"
+            />
+          </div>
+        </div>
+        {!loading && !error && items.length > 0 && (
+          <CarNewPriceRangeFilter
+            items={items}
+            enabled={priceFilterEnabled}
+            onEnabledChange={setPriceFilterEnabled}
+            rangeMin={rangeMin}
+            rangeMax={rangeMax > 0 ? rangeMax : ceiling}
+            onRangeChange={(min, max) => {
+              setRangeMin(min);
+              setRangeMax(max);
+            }}
+          />
         )}
       </div>
 
@@ -119,7 +187,7 @@ export default function CarNewPriceList() {
       )}
 
       {!loading && !error && groups.length > 0 && (
-        <div className="mt-4 space-y-8 md:mt-6">
+        <div className="mt-5 space-y-6 md:mt-8 md:space-y-8">
           {groups.map((group) => (
             <section key={group.brand} aria-labelledby={`brand-${group.brand}`}>
               <h2

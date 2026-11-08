@@ -25,6 +25,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { formatPhoneDisplay, phoneTelHref } from "@/lib/persian-digits";
 
 const NAV_ITEMS = [
   { href: "/", label: "خانه", icon: Home01Icon },
@@ -50,7 +51,7 @@ export const BlogMobileHeader = memo(({ data }: any) => {
   };
 
   const logoSrc = data?.ImagePath
-    ? `https://api-test.carmacheck.com/${data.ImagePath}`
+    ? `https://api.carmacheck.com/${data.ImagePath}`
     : "/assets/images/logo.svg";
   const phone = data?.NavbarPhoneNumber;
 
@@ -147,12 +148,12 @@ export const BlogMobileHeader = memo(({ data }: any) => {
             <div className="mt-auto space-y-2 border-t border-[#E8EAF0] bg-[#F8F9FC] p-4">
               {phone && (
                 <a
-                  href={`tel:${phone}`}
+                  href={phoneTelHref(phone)}
                   className="flex items-center justify-center gap-2 rounded-2xl border border-[#DCE3F5] bg-white px-4 py-3 text-sm text-[#101117]"
                 >
                   <Call02Icon size={18} className="text-[#3456bb]" />
                   <span className="font-IranSans-UltraLight tracking-wide" dir="ltr">
-                    {phone}
+                    {formatPhoneDisplay(phone)}
                   </span>
                 </a>
               )}

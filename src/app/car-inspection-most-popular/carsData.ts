@@ -3633,3 +3633,7 @@ export const FEATURED_CARS: CarInfo[] = FEATURED_CAR_SLUGS.map((slug) => {
   }
   return car;
 });
+
+export function isFeaturedCarSlug(slug: string): boolean {
+  return (FEATURED_CAR_SLUGS as readonly string[]).includes(slug);
+}

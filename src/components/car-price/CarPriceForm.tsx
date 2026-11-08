@@ -495,8 +495,8 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
   );
 
   const shellClass = embedded
-    ? "relative font-IranSans"
-    : "relative min-h-screen bg-[#F3F5F8] font-IranSans pb-24 lg:pb-8";
+    ? "relative max-w-full overflow-x-clip font-IranSans"
+    : "relative min-h-screen overflow-x-clip bg-[#F3F5F8] font-IranSans pb-24 lg:pb-8";
 
   const content = (
     <>
@@ -516,8 +516,8 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
       )}
       <div
         ref={mobilePin.panelRef}
-        className={`z-40 border-b border-[#E8ECF4] bg-white/95 px-3 py-2.5 shadow-[0_8px_24px_rgba(16,17,23,0.06)] backdrop-blur-md lg:hidden ${
-          mobilePin.pinned ? "fixed inset-x-0 top-[5.5rem]" : ""
+        className={`z-40 max-w-full overflow-x-clip border-b border-[#E8ECF4] bg-white/95 px-3 py-2.5 shadow-[0_8px_24px_rgba(16,17,23,0.06)] backdrop-blur-md lg:hidden ${
+          mobilePin.pinned ? "fixed inset-x-0 top-[5.5rem] w-full" : ""
         }`}
       >
         <div className="mb-2 flex items-center gap-2">
@@ -534,7 +534,7 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
         {inputControls}
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-3 pt-3 md:px-6 md:pt-6">
+      <div className="relative mx-auto w-full min-w-0 max-w-7xl px-3 pt-3 md:px-6 md:pt-6">
         {/* دسکتاپ: هدر کامل */}
         {!embedded && (
           <header className="mb-6 hidden lg:block">
@@ -646,14 +646,14 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
           </aside>
 
           {/* پنل اصلی */}
-          <div className="lg:col-span-8">
-            <Card className="glass-card rounded-3xl border-[#3456bb]/10 md:rounded-[2rem]">
+          <div className="min-w-0 lg:col-span-8">
+            <Card className="glass-card min-w-0 overflow-x-clip rounded-3xl border-[#3456bb]/10 md:rounded-[2rem]">
               {/* دسکتاپ: ورودی چسبان داخل کارت */}
               <div className="sticky top-28 z-20 hidden border-b border-[#E8ECF4]/80 bg-white/95 px-6 py-4 backdrop-blur-md lg:block">
                 {inputControls}
               </div>
 
-              <CardContent className="space-y-3 p-3 md:space-y-4 md:p-6">
+              <CardContent className="min-w-0 space-y-3 p-3 md:space-y-4 md:p-6">
                 {step === "search_car" && (
                   <>
                     {!query.trim() && !embedded ? (
@@ -789,12 +789,12 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
                   selectedColor &&
                   selectedChassis &&
                   priceRange && (
-                    <div className="space-y-4 pb-8 lg:pb-0">
-                      <div className="rounded-2xl car-price-result-card p-5 text-white md:rounded-[2rem] md:p-8">
+                    <div className="min-w-0 max-w-full space-y-4 overflow-x-clip pb-8 lg:pb-0">
+                      <div className="min-w-0 rounded-2xl car-price-result-card p-4 text-white sm:p-5 md:rounded-[2rem] md:p-8">
                         <div className="text-xs text-white/80 md:text-sm">بازه قیمت تقریبی</div>
-                        <div className="mt-2 text-lg font-black leading-9 md:mt-4 md:text-3xl md:leading-[3.5rem]">
+                        <p className="mt-2 text-[clamp(0.9375rem,4.35vw,1.3125rem)] font-black leading-8 whitespace-nowrap sm:text-xl md:mt-4 md:text-3xl md:leading-[3.5rem]">
                           {formatPrice(priceRange.min)} تا {formatPrice(priceRange.max)} تومان
-                        </div>
+                        </p>
                       </div>
 
                       {budgetAlternatives.length > 0 ? (
@@ -808,11 +808,13 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
                       )}
 
                       <div className="grid gap-3 md:grid-cols-2">
-                        <div className="space-y-2 rounded-2xl car-price-summary-box p-4 md:rounded-3xl md:p-5">
+                        <div className="min-w-0 space-y-2 rounded-2xl car-price-summary-box p-4 md:rounded-3xl md:p-5">
                           <div className="mb-1 text-sm font-black text-[#101117]">جزئیات انتخاب</div>
-                          <div className="flex justify-between gap-3 text-sm">
+                          <div className="flex flex-col gap-0.5 text-sm sm:flex-row sm:justify-between sm:gap-3">
                             <span className="text-[#6B6C70]">خودرو</span>
-                            <span className="font-bold text-[#101117]">{selectedCar.name}</span>
+                            <span className="min-w-0 font-bold text-[#101117] break-words [overflow-wrap:anywhere] sm:max-w-[60%] sm:text-left">
+                              {selectedCar.name}
+                            </span>
                           </div>
                           <div className="flex justify-between gap-3 text-sm">
                             <span className="text-[#6B6C70]">سال ساخت</span>
@@ -834,23 +836,23 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
                           </div>
                         </div>
 
-                        <div className="space-y-2 rounded-2xl car-price-summary-box p-4 md:rounded-3xl md:p-5">
+                        <div className="min-w-0 space-y-2 rounded-2xl car-price-summary-box p-4 md:rounded-3xl md:p-5">
                           <div className="mb-1 text-sm font-black text-[#101117]">خروجی محاسبه</div>
-                          <div className="flex justify-between gap-3 text-sm">
-                            <span className="text-[#6B6C70]">قیمت پایه</span>
-                            <span className="font-bold text-[#101117]">
+                          <div className="flex flex-col gap-0.5 text-sm sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+                            <span className="shrink-0 text-[#6B6C70]">قیمت پایه</span>
+                            <span className="min-w-0 font-bold text-[#101117] break-words [overflow-wrap:anywhere] sm:text-left">
                               {formatPrice(displayBasePrice(selectedCar))} تومان
                             </span>
                           </div>
-                          <div className="flex justify-between gap-3 text-sm">
-                            <span className="text-[#6B6C70]">قیمت محاسبه‌شده</span>
-                            <span className="font-bold car-price-accent">
+                          <div className="flex flex-col gap-0.5 text-sm sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+                            <span className="shrink-0 text-[#6B6C70]">قیمت محاسبه‌شده</span>
+                            <span className="min-w-0 font-bold car-price-accent break-words [overflow-wrap:anywhere] sm:text-left">
                               {formatPrice(finalPrice)} تومان
                             </span>
                           </div>
-                          <div className="flex justify-between gap-3 text-sm">
-                            <span className="text-[#6B6C70]">بازه نهایی</span>
-                            <span className="font-black car-price-accent-light">
+                          <div className="flex flex-col gap-0.5 text-sm sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+                            <span className="shrink-0 text-[#6B6C70]">بازه نهایی</span>
+                            <span className="min-w-0 font-black car-price-accent-light break-words [overflow-wrap:anywhere] sm:text-left">
                               {formatPrice(priceRange.min)} تا {formatPrice(priceRange.max)}
                             </span>
                           </div>

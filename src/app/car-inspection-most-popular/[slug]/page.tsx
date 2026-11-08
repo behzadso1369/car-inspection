@@ -8,7 +8,7 @@ import {
   Tick01Icon,
 } from "hugeicons-react";
 import { BASE_URL, COMMON_KEYWORDS } from "@/lib/seo";
-import { CARS, getCarBySlug } from "../carsData";
+import { CARS, getCarBySlug, isFeaturedCarSlug } from "../carsData";
 import CarShowcaseHero from "./CarShowcaseHero";
 import InspectCtaButton from "./InspectCtaButton";
 import PriceEstimateCtaButton from "./PriceEstimateCtaButton";
@@ -46,11 +46,22 @@ export async function generateMetadata({
   const imageAlt = car.contentImageAlt || `کارشناسی ${car.name}`;
   const titleAlreadyHasBrand = /کارماچک\s*$/.test(title);
 
+  const indexable = isFeaturedCarSlug(slug);
+
   return {
     title: titleAlreadyHasBrand ? { absolute: title } : title,
     description,
     keywords: [...car.keywords, ...COMMON_KEYWORDS],
     alternates: { canonical: url },
+    ...(indexable
+      ? {}
+      : {
+          robots: {
+            index: false,
+            follow: false,
+            googleBot: { index: false, follow: false },
+          },
+        }),
     openGraph: {
       title,
       description,

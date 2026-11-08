@@ -119,8 +119,8 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <link rel="preconnect" href="https://api-test.carmacheck.com" />
-        <link rel="dns-prefetch" href="https://api-test.carmacheck.com" />
+        <link rel="preconnect" href="https://api.carmacheck.com" />
+        <link rel="dns-prefetch" href="https://api.carmacheck.com" />
       </head>
       <body className="antialiased" suppressHydrationWarning>
         <a
@@ -147,7 +147,13 @@ export default async function RootLayout({
         <JsonLd data={[generateOrganizationSchema(), generateLocalBusinessSchema(), generateWebSiteSchema()]} />
         <SiteChrome
           header={<Header data={initialData} />}
-          banner={<Banner data={initialData} />}
+          banner={<Banner data={initialData} pin={false} />}
+          homeMobileHeader={
+            <>
+              <Banner data={initialData} pin={false} />
+              <CallAction data={initialData} embedded />
+            </>
+          }
           mobileBar={<CallAction data={initialData} />}
           mobileBarFixed={<CallAction data={initialData} fixed />}
           footer={<Footer data={initialData} />}

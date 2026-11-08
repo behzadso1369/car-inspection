@@ -16,5 +16,20 @@ export function DeferredToaster() {
   }, []);
 
   if (!ready) return null;
-  return <Toaster richColors position="top-center" />;
+  return (
+    <Toaster
+      richColors
+      position="top-center"
+      dir="rtl"
+      toastOptions={{
+        classNames: {
+          toast: "font-IranSans",
+          title: "font-IranSans",
+          description: "font-IranSans",
+          actionButton: "font-IranSans",
+          cancelButton: "font-IranSans",
+        },
+      }}
+    />
+  );
 }

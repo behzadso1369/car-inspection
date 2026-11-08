@@ -148,13 +148,13 @@ export default function CarPriceBudgetAlternatives({
   );
 
   return (
-    <div className="space-y-3">
+    <div className="min-w-0 max-w-full space-y-3">
       <CarPriceInspectPromo carName={carName} />
 
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="group relative w-full overflow-hidden rounded-2xl border-0 p-[1.5px] text-right shadow-[0_10px_28px_rgba(53,99,233,0.22)] transition-transform active:scale-[0.98] md:rounded-3xl"
+        className="group relative w-full max-w-full overflow-hidden rounded-2xl border-0 p-[1.5px] text-right shadow-[0_10px_28px_rgba(53,99,233,0.22)] md:rounded-3xl"
       >
         <span
           aria-hidden
@@ -199,7 +199,7 @@ export default function CarPriceBudgetAlternatives({
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetContent
             side="bottom"
-            className="flex max-h-[88vh] flex-col gap-0 overflow-hidden rounded-t-3xl border-[#E8EAF0] bg-white p-0 font-IranSans [&>button]:top-4 [&>button]:left-4 [&>button]:right-auto"
+            className="flex max-h-[88vh] w-full max-w-[100vw] flex-col gap-0 overflow-hidden rounded-t-3xl border-[#E8EAF0] bg-white p-0 font-IranSans box-border [&>button]:top-4 [&>button]:left-4 [&>button]:right-auto"
             dir="rtl"
           >
             <div className="mx-auto mt-3 h-1.5 w-12 shrink-0 rounded-full bg-[#D8DCE6]" />

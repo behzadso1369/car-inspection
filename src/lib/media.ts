@@ -10,7 +10,11 @@ export function apiAssetUrl(path?: string | null): string {
   if (/^https?:\/\//i.test(trimmed)) {
     try {
       const url = new URL(trimmed);
-      if (url.hostname === API_HOST || url.hostname === "api.carmacheck.com") {
+      if (
+        url.hostname === API_HOST ||
+        url.hostname === "api.carmacheck.com" ||
+        url.hostname === "api-test.carmacheck.com"
+      ) {
         return `/media${url.pathname}${url.search}`;
       }
     } catch {

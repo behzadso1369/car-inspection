@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { memo } from "react";
 import NavigationLink from "@/components/ui/navigation-link";
+import { formatPhoneDisplay, phoneTelHref } from "@/lib/persian-digits";
 
 const NAV_ITEMS = [
   { href: "/", label: "خانه" },
@@ -30,7 +31,7 @@ export const BlogHeader = memo(({ data }: any) => {
   };
 
   const logoSrc = data?.ImagePath
-    ? `https://api-test.carmacheck.com/${data.ImagePath}`
+    ? `https://api.carmacheck.com/${data.ImagePath}`
     : "/assets/images/logo.svg";
 
   return (
@@ -77,10 +78,10 @@ export const BlogHeader = memo(({ data }: any) => {
           {data?.NavbarPhoneNumber && (
             <a
               className="rounded-3xl px-2 font-IranSans-UltraLight tracking-wide"
-              href={`tel:${data.NavbarPhoneNumber}`}
+              href={phoneTelHref(data.NavbarPhoneNumber)}
               dir="ltr"
             >
-              {data.NavbarPhoneNumber}
+              {formatPhoneDisplay(data.NavbarPhoneNumber)}
             </a>
           )}
           <Call02Icon size={16} />

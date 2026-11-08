@@ -46,7 +46,7 @@ export default function CarPricePage() {
   ];
 
   return (
-    <main className="relative min-h-screen bg-[#F3F5F8] font-IranSans pb-24 lg:pb-8" dir="rtl">
+    <main className="relative min-h-screen overflow-x-clip bg-[#F3F5F8] font-IranSans pb-24 lg:pb-8" dir="rtl">
       <JsonLd data={schemas} />
       <div className="relative mx-auto max-w-7xl px-3 pt-3 md:px-6 md:pt-6">
         <header className="mb-4 lg:mb-6">
@@ -60,11 +60,6 @@ export default function CarPricePage() {
           </p>
           <p className="mt-2 text-xs leading-5 text-[#6B6C70] lg:text-sm lg:leading-7">
             قیمت‌گذاری رایگان و بدون ثبت‌نام: اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
-          </p>
-          <p className="mt-2 text-xs leading-6 text-[#6B6C70] lg:text-sm">
-            برای استفاده از محاسبه‌گر تعاملی، جاوااسکریپت مرورگر باید فعال باشد.
-            متن راهنما و سوالات متداول در ادامه همین صفحه بدون نیاز به محاسبه
-            قابل مطالعه است.
           </p>
         </header>
 

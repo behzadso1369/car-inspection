@@ -32,8 +32,10 @@ export async function renderBrandOgImage(options: BrandOgOptions = {}) {
   const fontRegular = readAsset(`${FONT_DIR}/IRANSansWeb(FaNum).ttf`);
   const fontBold = readAsset(`${FONT_DIR}/IRANSansWeb(FaNum)_Bold.ttf`);
 
-  const logoBase64 = readAsset("public/assets/images/logo.svg").toString("base64");
-  const logoSrc = `data:image/svg+xml;base64,${logoBase64}`;
+  const logoBase64 = readAsset(
+    "public/assets/images/og-brand-logo.jpg",
+  ).toString("base64");
+  const logoSrc = `data:image/jpeg;base64,${logoBase64}`;
 
   return new ImageResponse(
     (
@@ -174,7 +176,13 @@ export async function renderBrandOgImage(options: BrandOgOptions = {}) {
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} width={196} height={184} alt="کارماچک" />
+          <img
+            src={logoSrc}
+            width={270}
+            height={150}
+            alt="کارماچک"
+            style={{ objectFit: "contain" }}
+          />
         </div>
       </div>
     ),

@@ -1,5 +1,6 @@
 "use client";
 
+import { CarPriceNavTrigger, isCarPricePath } from "./CarPriceNavSheet";
 import {
   InspectionServicesNavTrigger,
   isInspectionServicesPath,
@@ -17,7 +18,7 @@ function isActivePath(pathname: string, href: string) {
   if (href === "/car-inspection") {
     return isInspectionServicesPath(pathname);
   }
-  if (href === "/car-price") return pathname.startsWith("/car-price");
+  if (href === "/car-price") return isCarPricePath(pathname);
   if (href === "/Profile") {
     return pathname.startsWith("/Profile") || pathname.startsWith("/wallet");
   }
@@ -136,14 +137,14 @@ export function NavigationBar({ activePath = "" }: NavigationBarProps) {
         <span className="text-[11px] leading-tight text-center">کارشناسی</span>
       </InspectionServicesNavTrigger>
 
-      <a href="/car-price" className={linkClass("/car-price")} style={linkStyle("/car-price")}>
+      <CarPriceNavTrigger className={linkClass("/car-price")} style={linkStyle("/car-price")}>
         <MoneyIcon />
         <span className="text-[11px] leading-tight text-center">
-          قیمت‌گذاری
+          قیمت
           <br />
           خودرو
         </span>
-      </a>
+      </CarPriceNavTrigger>
 
       <a href="/blog" className={linkClass("/blog")} style={linkStyle("/blog")}>
         <BookIcon />

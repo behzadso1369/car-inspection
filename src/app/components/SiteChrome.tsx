@@ -60,6 +60,8 @@ function isPublicChromePath(pathname: string, routes: Set<string>) {
 type SiteChromeProps = {
   header: ReactNode;
   banner: ReactNode;
+  /** بنر + نوار لوگو/تلفن صفحه اصلی — یک بلوک sticky */
+  homeMobileHeader?: ReactNode;
   mobileBar: ReactNode;
   mobileBarFixed: ReactNode;
   footer: ReactNode;
@@ -69,6 +71,7 @@ type SiteChromeProps = {
 export function SiteChrome({
   header,
   banner,
+  homeMobileHeader,
   mobileBar,
   mobileBarFixed,
   footer,
@@ -78,15 +81,32 @@ export function SiteChrome({
   const showHeader = isPublicChromePath(pathname, HEADER_ROUTES);
   const showFooter = isPublicChromePath(pathname, FOOTER_ROUTES);
   const isCarPrice = pathname === "/car-price";
+  const isHome = pathname === "/";
   const showMobileBottomNav = isInspectionLandingPath(pathname);
 
   return (
     <>
       {showHeader ? (
         <>
-          {banner}
-          <div className="lg:hidden">{isCarPrice ? mobileBarFixed : mobileBar}</div>
-          <div className="hidden lg:block sticky top-11 z-50 bg-white">
+          {isHome ? (
+            <>
+              <div className="sticky top-0 z-[70] lg:hidden">
+                {homeMobileHeader ?? (
+                  <>
+                    {banner}
+                    {mobileBar}
+                  </>
+                )}
+              </div>
+              <div className="sticky top-0 z-[60] hidden lg:block">{banner}</div>
+            </>
+          ) : (
+            <>
+              <div className="sticky top-0 z-[60]">{banner}</div>
+              <div className="lg:hidden">{isCarPrice ? mobileBarFixed : mobileBar}</div>
+            </>
+          )}
+          <div className="hidden lg:sticky lg:top-11 lg:z-50 lg:block bg-white">
             <div className="px-20">{header}</div>
           </div>
           <div className="hidden lg:block mb-6" aria-hidden />

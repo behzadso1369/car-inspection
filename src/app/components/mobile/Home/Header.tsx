@@ -2,10 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/seo/BrandLogo";
+import { CarPriceDesktopNav, isCarPricePath } from "./CarPriceNavSheet";
 import {
   InspectionServicesDesktopNav,
   isInspectionServicesPath,
 } from "./InspectionServicesSheet";
+import { formatPhoneDisplay, phoneTelHref } from "@/lib/persian-digits";
 
 type HeaderProps = {
   data?: any;
@@ -16,6 +18,9 @@ function isActivePath(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   if (href === "/car-inspection") {
     return isInspectionServicesPath(pathname);
+  }
+  if (href === "/car-price") {
+    return isCarPricePath(pathname);
   }
   return pathname.startsWith(href);
 }
@@ -79,11 +84,10 @@ export function Header({ data, activePath }: HeaderProps) {
             className={linkClass("/car-inspection")}
             style={linkStyle("/car-inspection")}
           />
-          <li>
-            <a href="/car-price" className={linkClass("/car-price")} style={linkStyle("/car-price")}>
-              قیمت گذاری خودرو
-            </a>
-          </li>
+          <CarPriceDesktopNav
+            className={linkClass("/car-price")}
+            style={linkStyle("/car-price")}
+          />
           <li>
             <a href="/blog" className={linkClass("/blog")} style={linkStyle("/blog")}>بلاگ</a>
           </li>
@@ -102,9 +106,9 @@ export function Header({ data, activePath }: HeaderProps) {
         <span className="text-[#101117] flex items-center font-IranSans">
           <a
             className="rounded-3xl font-IranSans border border-white px-2"
-            href={`tel:${data?.NavbarPhoneNumber}`}
+            href={phoneTelHref(data?.NavbarPhoneNumber)}
           >
-            {data?.NavbarPhoneNumber}
+            {formatPhoneDisplay(data?.NavbarPhoneNumber)}
           </a>
           <PhoneIcon />
           <a href="/Profile" className="mx-2" aria-label="حساب کاربری">

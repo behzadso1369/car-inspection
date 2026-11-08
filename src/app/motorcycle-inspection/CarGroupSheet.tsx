@@ -1,6 +1,5 @@
-﻿'use client';
+'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
 import { DialogClose, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -150,8 +149,7 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
                     setShowGroups(true);
                     getGroupById(item.Id);
                   }}>
-                     <Image width={25} height={25} src={"https://api-test.carmacheck.com/" + item.ImagePath} alt={item.Name}/>
-                  <span className='mx-2'>{item.Name}</span>
+                  <span>{item.Name}</span>
                   <span className='text-xs text-gray-500 mr-auto'>برند</span>
                   </div>
                 ))}
@@ -162,8 +160,7 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
                       moveToInspectionMethod(item.Id, item.Name);
                     }
                   }}>
-                     <Image width={25} height={25} src={"https://api-test.carmacheck.com/" + item.ImagePath} alt={item.Name}/>
-                  <span className='mx-2'>{item.Name}</span>
+                  <span>{item.Name}</span>
                   <span className='text-xs text-gray-500 mr-auto'>مدل</span>
                   </div>
                 ))}
@@ -176,8 +173,7 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
                     setShowGroups(true);
                     getGroupById(item.Id);
                   } }>
-                     <Image width={25} height={25} src={"https://api-test.carmacheck.com/" + item.ImagePath} alt={item.Name}/>
-                  <span className='mx-2'>{item.Name}</span>
+                  <span>{item.Name}</span>
                   </div>
                 ))}
               </div>
@@ -198,8 +194,7 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
                       moveToInspectionMethod(item.Id, item.Name);
                     }
                   }}>
-                     <Image width={25} height={25} src={"https://api-test.carmacheck.com/" + item.ImagePath} alt={item.Name}/>
-                  <span className='mx-2'>{item.Name}</span>
+                  <span>{item.Name}</span>
                   </div>
                 ))}
               </div>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useEffect, useState } from "react";
 import instance from "@/helper/interceptor";
 import { ApiHelper } from "@/helper/api-request";
@@ -11,6 +11,7 @@ import {
   MotorcycleInspectionFlowHeaderSkeleton,
   MotorcycleInspectionFlowSkeleton,
 } from "./components/CarInspectionFlowSkeleton";
+import { formatPhoneDisplay, phoneTelHref } from "@/lib/persian-digits";
 
 const FLOW_SKELETON_ROUTES = [
   "/motorcycle-inspection/inspection-method",
@@ -129,14 +130,14 @@ export default function ProfileLayout({
             <div className="px-4 py-3 flex justify-between shadow-[0px_6px_20px_-2px_#10182814] lg:shadow-none">
               <ArrowRight onClick={handleBack} className="cursor-pointer" />
               <div className="flex items-center">
-                <Link href="/" prefetch={false} aria-label="صفحه اصلی کارماچک">
+                <Link href="/" prefetch={false} aria-label="???? ???? ???????">
                   <Image
-                    alt="کارماچک"
+                    alt="???????"
                     width={140}
                     height={58}
                     src={
                       data?.MasterSiteData?.ImagePath
-                        ? `https://api-test.carmacheck.com/${data.MasterSiteData.ImagePath}`
+                        ? `https://api.carmacheck.com/${data.MasterSiteData.ImagePath}`
                         : "/assets/images/logo.svg"
                     }
                   />
@@ -145,9 +146,9 @@ export default function ProfileLayout({
               <span className="text-[#101117] flex items-center font-IranSans">
                 <a
                   className="rounded-3xl font-IranSans-UltraLight border border-white px-2"
-                  href={`tel:${data?.MasterSiteData?.NavbarPhoneNumber}`}
+                  href={phoneTelHref(data?.MasterSiteData?.NavbarPhoneNumber)}
                 >
-                  {data?.MasterSiteData?.NavbarPhoneNumber}
+                  {formatPhoneDisplay(data?.MasterSiteData?.NavbarPhoneNumber)}
                 </a>
                 <Call02Icon size={16} />
               </span>
