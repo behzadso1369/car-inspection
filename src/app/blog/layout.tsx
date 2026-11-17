@@ -4,8 +4,7 @@ import { BlogHeader } from "./components/BlogHeader";
 import Banner from "../components/mobile/Home/Banner";
 import { BlogMobileHeader } from "./components/BlogMobileHeader";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export default async function BlogLayout({
   children,
@@ -16,7 +15,7 @@ export default async function BlogLayout({
 
   try {
     const data = await serverFetch("Site/GetMasterPageData", {
-      cache: "no-store",
+      next: { revalidate: 3600 },
     });
     initialData = data?.MasterSiteData;
   } catch (error) {

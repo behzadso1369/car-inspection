@@ -146,7 +146,7 @@ export default function ProfileLayout({
               </div>
               <span className="text-[#101117] flex items-center font-IranSans">
                 <a
-                  className="rounded-3xl font-IranSans-UltraLight border border-white px-2"
+                  className="rounded-3xl font-IranSans border border-white px-2"
                   href={phoneTelHref(data?.MasterSiteData?.NavbarPhoneNumber)}
                 >
                   {formatPhoneDisplay(data?.MasterSiteData?.NavbarPhoneNumber)}

@@ -40,7 +40,12 @@ export function processBlogContent(htmlContent: string): {
   const toc: TocItem[] = [];
   let index = 0;
 
-  const processed = htmlContent.replace(
+  let html = htmlContent
+    .replace(/\{\{[A-Z][A-Z0-9_]*\}\}/g, "")
+    .replace(/<h1\b/gi, "<h2")
+    .replace(/<\/h1>/gi, "</h2>");
+
+  const processed = html.replace(
     /<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi,
     (_match, attrs: string, inner: string) => {
       const text = decodeHtmlEntities(inner.replace(/<[^>]+>/g, "")).trim();

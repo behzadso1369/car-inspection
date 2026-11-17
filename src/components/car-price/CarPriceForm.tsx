@@ -391,7 +391,9 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
       {step === "search_car" && (
         <div>
           <div className="mb-1.5 flex items-center justify-between gap-3 lg:mb-2">
-            <p className="shrink-0 text-sm font-extrabold text-[#101117]">جستجوی خودرو</p>
+            <label htmlFor="car-price-search" className="shrink-0 text-sm font-extrabold text-[#101117]">
+              جستجوی خودرو
+            </label>
             <p className="min-w-0 truncate text-[11px] leading-5 text-[#6B6C70]">
               {query.trim() && query.trim() === presetFromUrl.current
                 ? "تیپ مورد نظر را انتخاب کنید"
@@ -401,6 +403,7 @@ export default function CarPriceForm({ embedded = false }: CarPriceFormProps) {
           <div className="relative">
             <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#999A9C]" />
             <Input
+              id="car-price-search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="مثلاً دنا پلاس، پژو ۲۰۷، تارا..."

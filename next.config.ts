@@ -30,6 +30,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.carmacheck.com" }],
+        destination: "https://carmacheck.com/:path*",
+        permanent: true,
+      },
+      {
         source: "/car-inspection-flow/select-car-group",
         destination: "/car-inspection",
         permanent: true,

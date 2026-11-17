@@ -146,39 +146,49 @@ function VerticalCard({ item, highlighted = false }: { item: any; highlighted?: 
   );
 }
 
-export default function BlogClient() {
+type BlogClientProps = {
+  initialPosts?: any[];
+  initialCategories?: any[];
+};
+
+export default function BlogClient({
+  initialPosts = [],
+  initialCategories = [],
+}: BlogClientProps) {
   const router = useRouter();
   const [heroApi, setHeroApi] = useState<CarouselApi>();
   const [heroIndex, setHeroIndex] = useState(0);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>(initialCategories);
   const [activeCat, setActiveCat] = useState<string>("all");
-  const [posts, setPosts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const getCategory = () => {
-    instance
-      .post(ApiHelper.get("SearchWithTermsCategory"), { terms: "" })
-      .then((res: any) => {
-        if (res?.CategoryItems?.length) setCategories(res.CategoryItems);
-      })
-      .catch(() => {});
-  };
-
-  const getAllBlogs = () => {
-    setIsLoading(true);
-    instance
-      .post(ApiHelper.get("SiteBlogSearchWithTerms"), { terms: "", take: 1000, skip: 0 })
-      .then((res: any) => {
-        setPosts(res?.SearchItems ?? []);
-      })
-      .catch((err) => console.error("Error fetching blogs:", err))
-      .finally(() => setIsLoading(false));
-  };
+  const [posts, setPosts] = useState<any[]>(initialPosts);
+  const [isLoading, setIsLoading] = useState(initialPosts.length === 0);
 
   useEffect(() => {
-    getCategory();
-    getAllBlogs();
-  }, []);
+    if (initialPosts.length > 0 && initialCategories.length > 0) return;
+
+    if (initialCategories.length === 0) {
+      instance
+        .post(ApiHelper.get("SearchWithTermsCategory"), { terms: "" })
+        .then((res: any) => {
+          if (res?.CategoryItems?.length) setCategories(res.CategoryItems);
+        })
+        .catch(() => {});
+    }
+
+    if (initialPosts.length === 0) {
+      instance
+        .post(ApiHelper.get("SiteBlogSearchWithTerms"), {
+          terms: "",
+          take: 1000,
+          skip: 0,
+        })
+        .then((res: any) => {
+          setPosts(res?.SearchItems ?? []);
+        })
+        .catch((err) => console.error("Error fetching blogs:", err))
+        .finally(() => setIsLoading(false));
+    }
+  }, [initialPosts.length, initialCategories.length]);
 
   useEffect(() => {
     if (!heroApi) return;
@@ -198,6 +208,9 @@ export default function BlogClient() {
 
   return (
     <div className="font-IranSans max-w-6xl mx-auto px-4 py-4" dir="rtl">
+      <h1 className="text-2xl font-black text-[#101117] mb-4 lg:text-3xl">
+        مقالات کارشناسی خودرو
+      </h1>
       {/* ===== فیلتر دسته‌بندی + جستجو ===== */}
       <div className="flex flex-col lg:flex-row lg:items-center gap-4">
         <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -235,7 +248,10 @@ export default function BlogClient() {
         </div>
 
         <InputGroup className="px-4 w-full lg:w-72 flex items-center !py-0 border border-[#DFDFDF] rounded-full text-[#55565A]">
-          <InputGroupInput placeholder="جستجو در مقاله‌ها" />
+          <label htmlFor="blog-search" className="sr-only">
+            جستجو در مقاله‌ها
+          </label>
+          <InputGroupInput id="blog-search" placeholder="جستجو در مقاله‌ها" />
           <InputGroupAddon align="inline-end">
             <SearchIcon className="w-4 h-4" />
           </InputGroupAddon>

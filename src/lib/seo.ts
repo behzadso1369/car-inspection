@@ -225,10 +225,14 @@ export function generateArticleSchema(config: {
     ...(config.timeRequiredMinutes
       ? { timeRequired: `PT${config.timeRequiredMinutes}M` }
       : {}),
-    author: {
-      '@type': 'Person',
-      name: config.author || 'تیم کارماچک',
-    },
+    author: (() => {
+      const name = (config.author || '').trim();
+      const isOrg =
+        !name || name === 'تیم کارماچک' || name === 'کارماچک' || name === 'CarmaCheck';
+      return isOrg
+        ? { '@type': 'Organization' as const, name: 'کارماچک' }
+        : { '@type': 'Person' as const, name };
+    })(),
     publisher: {
       '@type': 'Organization',
       name: 'کارماچک',
@@ -372,7 +376,7 @@ export const PAGE_SEO = {
   
   services: {
     title: 'خدمات کارشناسی خودرو شرق تهران | استاندارد و VIP',
-    description: 'کارشناسی خودرو شرق تهران و سراسر تهران | استاندارد از ۲۵۰ و VIP از ۴۵۰ هزار تومان | بررسی موتور، برق، تایر و ترمز | گزارش فوری در محل',
+    description: 'کارشناسی خودرو شرق تهران و سراسر تهران | بررسی بدنه، رنگ، شاسی و بخش‌های فنی متناسب با نوع خدمت | گزارش پیش از معامله',
     keywords: [
       ...COMMON_KEYWORDS,
       ...LOCAL_KEYWORDS,

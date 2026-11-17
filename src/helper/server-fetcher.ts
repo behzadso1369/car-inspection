@@ -17,6 +17,8 @@ interface FetchOptions {
   body?: any;
   headers?: Record<string, string>;
   cache?: RequestCache;
+  /** اگر true باشد، خطای شبکه/5xx بلعیده نمی‌شود (برای تفکیک ۴۰۴ از خطای سرور). */
+  throwOnError?: boolean;
   next?: {
     revalidate?: number;
     tags?: string[];
@@ -55,6 +57,10 @@ export async function serverFetch<T = any>(
 
     const response = await fetch(url, fetchOptions);
 
+    if (response.status === 404) {
+      return null;
+    }
+
     if (!response.ok) {
       console.error(`❌ Server Fetch Error: ${response.status} ${response.statusText}`);
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -74,6 +80,7 @@ export async function serverFetch<T = any>(
     return data?.resultObject || data;
   } catch (error) {
     console.error('❌ Server Fetch Failed:', error);
+    if (options.throwOnError) throw error;
     return null;
   }
 }

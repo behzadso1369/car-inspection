@@ -186,14 +186,16 @@ export default function ClientWrapper({
           </Dialog>
           <fieldset className="mt-2 border-0 p-0">
             <legend className="sr-only">انتخاب مدل موتور</legend>
-            <Label onClick={() => setOpenModal(true)} className="my-2">
+            <Label htmlFor="motorcycle-group-select" onClick={() => setOpenModal(true)} className="my-2">
               نام موتور
             </Label>
             <Input
+              id="motorcycle-group-select"
               onClick={() => setOpenModal(true)}
               value={inputValue.name}
               readOnly
               placeholder="مدل موتور را انتخاب کنید"
+              aria-label="نام موتور"
               className="items-center !py-4 border w-full border-[#DFDFDF] rounded-full text-[#55565A] text-base h-11"
             />
           </fieldset>

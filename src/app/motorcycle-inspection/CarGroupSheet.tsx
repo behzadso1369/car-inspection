@@ -132,8 +132,8 @@ export default function OpenSheet({inputValue,setInputValue,openModal,setOpenMod
             </DialogHeader>
             <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 pb-6">
             <div className="mb-2">
-                                    <Label className="text-sm font-light text-[#101117] ">نام موتور</Label>
-                                    <Input  value={searchTerm} onChange={(e:any) => {
+                                    <Label htmlFor="motorcycle-group-search" className="text-sm font-light text-[#101117] ">نام موتور</Label>
+                                    <Input id="motorcycle-group-search" aria-label="جستجوی نام موتور" value={searchTerm} onChange={(e:any) => {
                                       getAllData(e.target.value);
                                       if (!e.target.value.trim()) {
                                         setShowGroups(false);

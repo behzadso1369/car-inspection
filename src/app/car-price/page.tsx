@@ -3,17 +3,12 @@ import CarPriceForm from "@/components/car-price/CarPriceForm";
 import CarPricingSeoContent from "@/components/car-price/CarPricingSeoContent";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { BASE_URL, generateBreadcrumbSchema } from "@/lib/seo";
-import { jalaliFullDate, tehranIsoDate } from "@/lib/jalali-date";
 
-// تاریخ «امروز» در H1/تایتل؛ هر ساعت بازسازی می‌شود تا بعد از نیمه‌شب تهران عقب نماند.
 export const revalidate = 3600;
 
 const PAGE_URL = `${BASE_URL}/car-price`;
 
 export default function CarPricePage() {
-  const todayFa = jalaliFullDate();
-  const todayIso = tehranIsoDate();
-
   const schemas = [
     {
       "@context": "https://schema.org",
@@ -22,7 +17,6 @@ export default function CarPricePage() {
       url: PAGE_URL,
       name: "تخمین و محاسبه قیمت خودرو کارکرده",
       inLanguage: "fa-IR",
-      dateModified: `${todayIso}T00:00:00+03:30`,
       isPartOf: { "@type": "WebSite", url: BASE_URL, name: "کارماچک" },
       mainEntity: { "@id": `${PAGE_URL}#app` },
     },
@@ -55,11 +49,10 @@ export default function CarPricePage() {
           </h1>
           <p className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#D6F0E0] bg-[#EFFAF3] px-3 py-1 text-xs font-bold leading-5 text-[#1F7A45] lg:text-sm">
             <span className="h-2 w-2 rounded-full bg-[#22A55B]" aria-hidden="true" />
-            قیمت روز بازار، به‌روز در{" "}
-            <time dateTime={todayIso}>{todayFa}</time>
+            رایگان و بدون ثبت‌نام — نتیجه برآورد است، نه قیمت قطعی معامله
           </p>
           <p className="mt-2 text-xs leading-5 text-[#6B6C70] lg:text-sm lg:leading-7">
-            قیمت‌گذاری رایگان و بدون ثبت‌نام: اول خودرو را جستجو کن، بعد مشخصات را مرحله‌به‌مرحله وارد کن.
+            اول خودرو را جستجو کنید، بعد سال، کارکرد و وضعیت رنگ و شاسی را وارد کنید تا بازهٔ تخمین را ببینید.
           </p>
         </header>
 

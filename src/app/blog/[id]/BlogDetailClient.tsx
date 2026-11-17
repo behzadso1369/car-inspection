@@ -114,6 +114,8 @@ export function BlogDetailClient({
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 800px"
+                loading="eager"
+                fetchPriority="high"
               />
             </div>
           )}
