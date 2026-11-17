@@ -36,6 +36,9 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
     pathname === "/car-inspection-tehran" ||
     pathname.startsWith("/car-inspection-tehran/");
   const isCarInspectionDealers = pathname === "/car-inspection-dealers";
+  const isInstallmentHub =
+    pathname === "/car-inspection-installment" ||
+    pathname === "/motorcycle-inspection-installment";
   const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
   const isCarInspectionFlowStep =
     pathname.startsWith("/car-inspection/") && !isCarInspectionMostPopular;
@@ -45,6 +48,7 @@ export default function ConditionalFooter({ data }: ConditionalFooterProps) {
       isCarInspectionMostPopular ||
       isCarInspectionTehran ||
       isCarInspectionDealers ||
+      isInstallmentHub ||
       isBlog) &&
     !pathname.startsWith("/Profile") &&
     !isCarInspectionFlowStep;

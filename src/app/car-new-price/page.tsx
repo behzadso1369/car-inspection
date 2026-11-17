@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import CarNewPriceList from "@/components/car-new-price/CarNewPriceList";
+import CarNewPriceSeoContent, {
+  carNewPriceFaqs,
+} from "@/components/car-new-price/CarNewPriceSeoContent";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { BASE_URL, generateBreadcrumbSchema } from "@/lib/seo";
+import { BASE_URL, generateBreadcrumbSchema, generateFAQSchema } from "@/lib/seo";
 import { jalaliFullDate, tehranIsoDate } from "@/lib/jalali-date";
 
 const PAGE_URL = `${BASE_URL}/car-new-price`;
@@ -26,6 +29,7 @@ export default function CarNewPricePage() {
       { name: "کارماچک", path: "/" },
       { name: "قیمت روز خودرو صفر", path: "/car-new-price" },
     ]),
+    generateFAQSchema([...carNewPriceFaqs]),
   ];
 
   return (
@@ -75,16 +79,7 @@ export default function CarNewPricePage() {
           />
         </Suspense>
 
-        <section className="mt-10 rounded-2xl border border-[#E8ECF4] bg-white p-4 text-xs leading-7 text-[#55565A] md:rounded-3xl md:p-6 md:text-sm">
-          <h2 className="mb-2 text-sm font-black text-[#101117] md:text-base">
-            دربارهٔ قیمت‌های این صفحه
-          </h2>
-          <p>
-            اعداد نمایش‌داده‌شده برای تصمیم‌گیری اولیه در نظر گرفته شده‌اند.
-            قبل از خرید،
-            کارشناسی فنی و بدنه توصیه می‌شود.
-          </p>
-        </section>
+        <CarNewPriceSeoContent />
       </div>
     </main>
   );

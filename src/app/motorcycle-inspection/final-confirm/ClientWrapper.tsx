@@ -3,38 +3,97 @@
 import { Button } from "@/components/ui/button";
 import { ApiHelper } from "@/helper/api-request";
 import instance from "@/helper/interceptor";
-import { DigipayInstallmentActions } from "@/components/payment/DigipayInstallmentActions";
 import {
   PaymentMethodSelector,
   type CheckoutPaymentMethod,
 } from "@/components/payment/PaymentMethodSelector";
-import { handleOrderMoveResult } from "@/lib/wallet";
-import type { OrderMoveResult } from "@/types/wallet";
-import { DiscountTag01Icon } from "hugeicons-react";
+import {
+  fetchInstallmentQuote,
+  startDigipayInstallment,
+} from "@/lib/payment/digipay";
+import { handleOrderMoveResult, walletApi } from "@/lib/wallet";
+import type { CheckoutPreview, OrderMoveResult } from "@/types/wallet";
+import type { InstallmentQuote } from "@/types/digipay";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { buildMotorcycleMoveBody } from "@/lib/motorcycle-order-move";
 import {
+  MOTORCYCLE_GROUP_ID_KEY,
+  MOTORCYCLE_INSPECTION_TYPE_ID_KEY,
+} from "@/lib/motorcycle-inspection-storage";
+import { RegulationsTermsViewer } from "./RegulationsTermsViewer";
+import {
   FlowStepFooter,
   flowStepScrollPaddingClass,
 } from "@/components/flow/FlowStepFooter";
-import { RegulationsTermsViewer } from "./RegulationsTermsViewer";
+import { WalletCheckoutBlock } from "./WalletCheckoutBlock";
+import { WalletIcon } from "@/components/WalletIcon";
+
+function formatAmountFa(amount: number | null | undefined) {
+  return Number(amount ?? 0).toLocaleString("fa-IR");
+}
+
+function readMotorcycleCheckoutContext() {
+  if (typeof window === "undefined") {
+    return {
+      orderId: 0,
+      motorcycleGroupId: 0,
+      motorcycleInspectionTypeId: null as number | null,
+    };
+  }
+  const storedType = localStorage.getItem(MOTORCYCLE_INSPECTION_TYPE_ID_KEY);
+  return {
+    orderId: Number(localStorage.getItem("OrderId") || 0),
+    motorcycleGroupId: Number(localStorage.getItem(MOTORCYCLE_GROUP_ID_KEY) || 0),
+    motorcycleInspectionTypeId: storedType ? Number(storedType) : null,
+  };
+}
+
+function motorcycleSuccessUrl(orderId: number) {
+  return `/payment/success?orderId=${orderId}&vehicleKind=2`;
+}
+
+function handleMotorcycleMoveResult(res: OrderMoveResult | null | undefined) {
+  if (!res) return false;
+  if (
+    res.paidFullyByWallet ||
+    (res.isEndFlow && !res.requiresPayment && res.orderId)
+  ) {
+    window.location.assign(motorcycleSuccessUrl(res.orderId));
+    return true;
+  }
+  return handleOrderMoveResult(res);
+}
 
 export default function ClientWrapper() {
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [orderId, setOrderId] = useState(0);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [regulationsOpen, setRegulationsOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] =
     useState<CheckoutPaymentMethod>("online");
   const [digipayPaying, setDigipayPaying] = useState(false);
+  const [installmentQuote, setInstallmentQuote] =
+    useState<InstallmentQuote | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [walletPreview, setWalletPreview] = useState<CheckoutPreview | null>(
+    null,
+  );
+  const [checkoutContext, setCheckoutContext] = useState({
+    orderId: 0,
+    motorcycleGroupId: 0,
+    motorcycleInspectionTypeId: null as number | null,
+  });
+  const [walletGiftAmount, setWalletGiftAmount] = useState<number | null>(null);
+  const [walletBalanceHint, setWalletBalanceHint] = useState<number | null>(
+    null,
+  );
 
   useEffect(() => {
     router.prefetch("/payment/success?vehicleKind=2");
-    setOrderId(Number(localStorage.getItem("OrderId") || 0));
+    setCheckoutContext(readMotorcycleCheckoutContext());
   }, [router]);
 
   const getUserOrderDetails = () => {
@@ -42,7 +101,7 @@ export default function ClientWrapper() {
       .get(
         ApiHelper.get("GetUserOrderDetails") +
           "?OrderId=" +
-          localStorage.getItem("OrderId")
+          localStorage.getItem("OrderId"),
       )
       .then((res: any) => {
         setOrderDetail(res);
@@ -54,20 +113,16 @@ export default function ClientWrapper() {
     const movePrivate = () =>
       instance.post(
         ApiHelper.get("MoveMotorcyclePrivateOrder"),
-        buildMotorcycleMoveBody()
+        buildMotorcycleMoveBody({
+          useWallet: Boolean(walletPreview?.useWallet),
+        }),
       ) as Promise<OrderMoveResult>;
 
     movePrivate()
       .then((first) => {
-        if (first?.isEndFlow && !first?.requiresPayment && first?.orderId) {
-          window.location.assign(
-            `/payment/success?orderId=${first.orderId}&vehicleKind=2`
-          );
-          return;
-        }
-        if (handleOrderMoveResult(first)) return;
+        if (handleMotorcycleMoveResult(first)) return;
         return movePrivate().then((second) => {
-          if (!handleOrderMoveResult(second)) {
+          if (!handleMotorcycleMoveResult(second)) {
             setLoading(false);
           }
         });
@@ -82,112 +137,270 @@ export default function ClientWrapper() {
     getUserOrderDetails();
   }, []);
 
+  useEffect(() => {
+    walletApi
+      .getBalance()
+      .then((res) => {
+        if (res?.balance != null) setWalletBalanceHint(Number(res.balance));
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const { motorcycleGroupId, motorcycleInspectionTypeId } = checkoutContext;
+    if (!motorcycleGroupId) return;
+    let cancelled = false;
+    walletApi
+      .getGiftPreview(motorcycleGroupId, motorcycleInspectionTypeId)
+      .then((res) => {
+        if (cancelled) return;
+        const raw =
+          (res as { giftAmount?: number }).giftAmount ??
+          (res as { GiftAmount?: number }).GiftAmount;
+        const amount = Number(raw ?? 0);
+        setWalletGiftAmount(amount > 0 ? amount : null);
+      })
+      .catch(() => {
+        if (!cancelled) setWalletGiftAmount(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    checkoutContext.motorcycleGroupId,
+    checkoutContext.motorcycleInspectionTypeId,
+  ]);
+
+  const orderId = checkoutContext.orderId;
+
   const payBusy = loading || digipayPaying;
+  const showDigipay =
+    !walletPreview ||
+    !walletPreview.canPayFullyByWallet ||
+    walletPreview.gatewayAmount > 0;
+
+  const isOnlineCheckout = !showDigipay || paymentMethod === "online";
+
+  useEffect(() => {
+    if (!orderId) return;
+
+    if (showDigipay && paymentMethod === "digipay") {
+      walletApi
+        .applyToOrder(orderId, false)
+        .then((applied) => {
+          if (applied?.orderId != null) {
+            localStorage.setItem("useWallet", "false");
+            setWalletPreview(applied);
+          }
+        })
+        .catch(() => {});
+      return;
+    }
+
+    if (
+      walletPreview?.allowWalletPayment &&
+      (walletPreview.walletBalance ?? 0) > 0 &&
+      !walletPreview.useWallet
+    ) {
+      walletApi
+        .applyToOrder(orderId, true)
+        .then((applied) => {
+          if (applied?.orderId != null) {
+            localStorage.setItem(
+              "useWallet",
+              String(Boolean(applied.useWallet)),
+            );
+            setWalletPreview(applied);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [
+    paymentMethod,
+    orderId,
+    showDigipay,
+    walletPreview?.allowWalletPayment,
+    walletPreview?.walletBalance,
+    walletPreview?.useWallet,
+  ]);
+
+  useEffect(() => {
+    if (!orderId || paymentMethod !== "digipay" || !showDigipay) {
+      setInstallmentQuote(null);
+      return;
+    }
+    let cancelled = false;
+    setQuoteLoading(true);
+    fetchInstallmentQuote(orderId, 2)
+      .then((res) => {
+        if (!cancelled) setInstallmentQuote(res);
+      })
+      .finally(() => {
+        if (!cancelled) setQuoteLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [orderId, paymentMethod, showDigipay, walletPreview?.gatewayAmount]);
+
+  const onlinePayable =
+    isOnlineCheckout && walletPreview?.useWallet
+      ? walletPreview.gatewayAmount
+      : (walletPreview?.payable ??
+        orderDetail?.finalPrice ??
+        orderDetail?.totalPrice ??
+        0);
+
+  const digipayPayable =
+    installmentQuote?.payableAmount ??
+    installmentQuote?.installmentAmount ??
+    null;
+
+  const footerAmount =
+    showDigipay && paymentMethod === "digipay"
+      ? digipayPayable
+      : onlinePayable;
+
+  const payDisabled = payBusy || !acceptedTerms;
+
+  const startDigipayPay = async () => {
+    const id = orderId || Number(localStorage.getItem("OrderId") || 0);
+    if (!id || payDisabled || digipayPaying) return;
+    setDigipayPaying(true);
+    try {
+      await startDigipayInstallment(id, 2);
+    } finally {
+      setDigipayPaying(false);
+    }
+  };
 
   const vehicleLabel =
-    orderDetail?.carGroup || orderDetail?.motorcycleGroup || "—";
+    orderDetail?.carGroup || orderDetail?.motorcycleGroup || "";
 
   return (
     <div
-      className={`bg-white font-IranSans lg:px-4 lg:py-4 ${flowStepScrollPaddingClass}`}
+      className={`bg-white font-IranSans lg:px-4 lg:py-2 ${flowStepScrollPaddingClass}`}
     >
-      <div className="px-4">
-        <div className="bg-white px-4 py-6 rounded-3xl my-6">
-          <div className="flex items-center">
-            <div className="aspect-[2] relative w-16 h-8 ml-4">
-              <Image
-                src="/final-step.png"
-                alt="final-step.png"
-                fill
-                sizes="64px"
-                quality={70}
-                className="object-fill"
-              />
-            </div>
-            <div>
-              <h3 className="text-base text-black my-2 font-medium">
-                مشاهده و تایید نهایی
-              </h3>
-              <h4 className="text-[#55565A] font-light text-sm">
-                {" "}
-                بعدی: پرداخت
-              </h4>
-            </div>
-          </div>
+      <div className="flex items-center px-4 py-3">
+        <div className="relative ml-4 aspect-[2] h-8 w-16">
+          <Image
+            src="/final-step.png"
+            alt="final-step.png"
+            fill
+            sizes="64px"
+            quality={70}
+            className="object-fill"
+          />
+        </div>
+        <div>
+          <h3 className="text-base font-medium text-black">
+            مشاهده و تایید نهایی
+          </h3>
+          <h4 className="text-sm font-light text-[#55565A]">بعدی: پرداخت</h4>
         </div>
       </div>
 
-      <div className="px-4">
-        <h1>خلاصه اطلاعات</h1>
-        <div className="flex my-4 justify-between">
-          <span className="text-[#6B6C70] text-sm">مدل موتور:</span>
-          <span className="text-sm">{vehicleLabel}</span>
+      {showDigipay ? (
+        <div className="px-4 pb-2">
+          <PaymentMethodSelector
+            value={paymentMethod}
+            onChange={setPaymentMethod}
+            disabled={payBusy}
+            walletBalance={
+              walletPreview?.walletBalance ?? walletBalanceHint
+            }
+            onlineHint="استفاده از کیف پول کارماچک + هدیه"
+            digipayHint="4 قسط با دیجی پی"
+          />
         </div>
-        <div className="flex justify-between">
-          <span className="text-[#6B6C70] text-sm">نام و نام خانوادگی:</span>
-          <span>{orderDetail?.username}</span>
+      ) : null}
+
+      <div className="space-y-3 px-4 pb-2">
+        <WalletCheckoutBlock
+          orderId={checkoutContext.orderId}
+          preview={walletPreview}
+          onPreviewChange={setWalletPreview}
+          hideUi
+        />
+
+        <h2 className="mb-3 pt-2 text-sm font-semibold text-[#101117]">
+          جزییات سفارش
+        </h2>
+
+        <div className="mt-3 flex justify-between gap-3">
+          <span className="shrink-0 text-sm text-[#6B6C70]">نوع وسیله:</span>
+          <span className="min-w-0 text-left text-sm text-[#101117]">
+            {vehicleLabel}
+          </span>
         </div>
-      </div>
-
-      <div className="px-4 shadow-[0px_4px_24px_0px_#EAEAEA] py-2 mx-2 text-xs my-4 rounded-2xl">
-        <div className="text-[#6B6C70] my-2">آدرس کارشناسی</div>
-        <span>{orderDetail?.carInspectionLocationTypeAddress}</span>
-      </div>
-
-      <div className="px-4">
-        <h1>خلاصه سفارش</h1>
-        <div className="flex my-4 justify-between items-center">
-          <span className="text-[#6B6C70] text-sm">مبلغ کل:</span>
-          <div className="flex items-baseline gap-1">
-            <span className="text-base font-black text-[#101117]">
-              {(orderDetail?.totalPrice ?? 0).toLocaleString("fa-IR")}
-            </span>
-            <span className="text-xs font-medium text-[#55565A]">تومان</span>
-          </div>
+        <div className="flex justify-between gap-3">
+          <span className="shrink-0 text-sm text-[#6B6C70]">نام و نام خانوادگی:</span>
+          <span className="min-w-0 text-left text-sm text-[#101117]">
+            {orderDetail?.username}
+          </span>
         </div>
 
-        {(orderDetail?.discount ?? 0) > 0 ? (
-          <div className="my-4 flex items-center justify-between gap-3 rounded-2xl border border-[#86EFAC]/50 bg-gradient-to-l from-[#ECFDF5] via-[#F0FDF4] to-[#F7FEF9] px-4 py-3.5 shadow-[0_6px_20px_rgba(34,197,94,0.12)]">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#22C55E]/15 text-[#16A34A]">
-                <DiscountTag01Icon size={22} />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-semibold text-[#101117]">
-                  تخفیف شما
+        <div className="space-y-2">
+          <div className="flex items-start justify-between gap-3">
+            <span className="pt-1 text-sm text-[#6B6C70]">مبلغ کل:</span>
+            <div className="text-left">
+              <div className="flex items-baseline justify-end gap-1">
+                <span className="text-base font-black text-[#101117]">
+                  {(orderDetail?.totalPrice ?? 0).toLocaleString("fa-IR")}
                 </span>
-                <span className="text-xs font-light text-[#55565A]">
-                  مبلغ کسر شده از سفارش
-                </span>
+                <span className="text-xs font-medium text-[#55565A]">تومان</span>
               </div>
             </div>
-            <span className="whitespace-nowrap text-[13px] font-extrabold text-[#16A34A]">
-              {orderDetail?.discount?.toLocaleString()}− تومان
-            </span>
           </div>
-        ) : (
-          <div className="flex justify-between">
-            <span className="text-[#6B6C70] text-sm">تخفیف:</span>
-            <span className="text-[13px]">
-              {orderDetail?.discount?.toLocaleString()} تومان
-            </span>
-          </div>
-        )}
+          {isOnlineCheckout && walletPreview?.useWallet ? (
+            <>
+              <div className="flex items-start justify-between gap-3">
+                <span className="pt-1 text-sm text-[#6B6C70]">کسر کیف پول:</span>
+                <div className="text-left">
+                  <div className="flex items-baseline justify-end gap-1">
+                    <span className="text-base font-black tabular-nums text-[#16A34A]">
+                      {(walletPreview.walletCanCover ?? 0).toLocaleString("fa-IR")}
+                    </span>
+                    <span className="text-xs font-medium text-[#55565A]">تومان</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between gap-3">
+                <span className="text-sm font-medium text-[#101117]">
+                  مبلغ قابل پرداخت:
+                </span>
+                <span className="text-base font-extrabold tabular-nums text-[#416CEA]">
+                  {(walletPreview.gatewayAmount ?? 0).toLocaleString("fa-IR")}{" "}
+                  <span className="text-xs font-medium">تومان</span>
+                </span>
+              </div>
+            </>
+          ) : null}
+        </div>
 
-        <div className="flex my-4 justify-between">
-          <span className="text-[#6B6C70] text-sm">نوع کارشناسی:</span>
+        {(!showDigipay || paymentMethod === "online") && walletGiftAmount ? (
+          <div className="flex items-start justify-between gap-3">
+            <span className="pt-1 text-sm text-[#6B6C70]">هدیه کیف پول:</span>
+            <div className="text-left">
+              <div className="flex items-baseline justify-end gap-1">
+                <span className="text-base font-black tabular-nums text-[#16A34A]">
+                  {walletGiftAmount.toLocaleString("fa-IR")}
+                </span>
+                <span className="text-xs font-medium text-[#55565A]">تومان</span>
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        <div className="flex justify-between gap-3">
+          <span className="text-sm text-[#6B6C70]">نوع کارشناسی:</span>
           <span className="text-sm">{orderDetail?.inspectionType}</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-[#6B6C70] text-sm">محل کارشناسی:</span>
-          <span>{orderDetail?.carInspectionLocationType}</span>
-        </div>
-        <div className="mt-4 flex items-center justify-between rounded-2xl border border-[#416CEA]/25 bg-[#416CEA]/6 px-4 py-3.5">
-          <span className="text-sm font-medium text-[#101117]">
-            قابل پرداخت:
-          </span>
-          <span className="text-base font-extrabold text-[#416CEA]">
-            {orderDetail?.finalPrice?.toLocaleString()} تومان
+        <div className="flex justify-between gap-3">
+          <span className="shrink-0 text-sm text-[#6B6C70]">محل کارشناسی:</span>
+          <span className="min-w-0 text-left text-sm leading-6 text-[#101117]">
+            {orderDetail?.carInspectionLocationTypeAddress ||
+              orderDetail?.carInspectionLocationType}
           </span>
         </div>
       </div>
@@ -216,34 +429,55 @@ export default function ClientWrapper() {
           </span>
         </label>
 
-        <PaymentMethodSelector
-          value={paymentMethod}
-          onChange={setPaymentMethod}
-          disabled={payBusy || !acceptedTerms}
-        />
+        <div className="space-y-3 rounded-2xl border border-[#E8ECF4] bg-[#F8FAFC] px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            {showDigipay && paymentMethod === "digipay" ? (
+              <Button
+                disabled={
+                  payDisabled || digipayPayable == null || quoteLoading
+                }
+                onClick={startDigipayPay}
+                type="button"
+                className="inline-flex h-auto shrink-0 items-center gap-1.5 rounded-2xl border-0 bg-[#003eff] px-4 py-3 text-sm font-bold leading-none text-white shadow-[0_4px_14px_rgba(0,62,255,0.35)] hover:bg-[#0036e0] disabled:opacity-50"
+              >
+                {!digipayPaying ? (
+                  <WalletIcon size={22} className="shrink-0 text-white" />
+                ) : null}
+                {digipayPaying
+                  ? "لطفا منتظر بمانید..."
+                  : "پرداخت اقساطی دیجی‌پی"}
+              </Button>
+            ) : (
+              <Button
+                disabled={payDisabled}
+                onClick={moveToPaymentSucceed}
+                type="button"
+                className="h-auto shrink-0 rounded-2xl bg-[#416CEA] px-5 py-3 text-sm font-bold text-white disabled:opacity-50"
+              >
+                {loading
+                  ? "لطفا منتظر بمانید..."
+                  : walletPreview?.canPayFullyByWallet
+                    ? "پرداخت با کیف‌پول"
+                    : "پرداخت آنلاین"}
+              </Button>
+            )}
 
-        {paymentMethod === "online" && (
-          <Button
-            disabled={payBusy || !acceptedTerms}
-            onClick={moveToPaymentSucceed}
-            type="submit"
-            className="w-full rounded-3xl bg-[#416CEA] py-6 text-white disabled:opacity-50"
-          >
-            {loading ? "لطفا منتظر بمانید..." : "پرداخت آنلاین"}
-          </Button>
-        )}
-
-        {paymentMethod === "digipay" && (
-          <DigipayInstallmentActions
-            orderId={orderId}
-            vehicleKind={2}
-            variant="premium"
-            disabled={payBusy || !acceptedTerms}
-            onPayingChange={setDigipayPaying}
-            onlineAmountHint={orderDetail?.finalPrice ?? null}
-            className="w-full"
-          />
-        )}
+            <div className="min-w-0 shrink text-left">
+              {quoteLoading && paymentMethod === "digipay" ? (
+                <span className="text-sm text-[#6B6C70]">در حال محاسبه...</span>
+              ) : (
+                <>
+                  <span className="text-lg font-extrabold tabular-nums text-[#101117]">
+                    {formatAmountFa(footerAmount)}
+                  </span>
+                  <span className="mr-1 text-xs font-medium text-[#55565A]">
+                    تومان
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       </FlowStepFooter>
 
       <RegulationsTermsViewer

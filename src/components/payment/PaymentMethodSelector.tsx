@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export type CheckoutPaymentMethod = "online" | "digipay";
 
 type Props = {
@@ -93,6 +95,13 @@ export function PaymentMethodSelector({
             </span>
           ) : null}
         </span>
+        <Image
+          src="/images/payment/digipay-logo.png"
+          alt="دیجی‌پی"
+          width={72}
+          height={76}
+          className="h-16 w-auto shrink-0 object-contain"
+        />
       </label>
     </fieldset>
   );

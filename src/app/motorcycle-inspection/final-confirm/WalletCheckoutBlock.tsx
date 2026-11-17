@@ -8,6 +8,8 @@ type WalletCheckoutBlockProps = {
   orderId: number;
   preview: CheckoutPreview | null;
   onPreviewChange: (preview: CheckoutPreview | null) => void;
+  /** فقط پیش‌نمایش کیف‌پول را بارگذاری می‌کند؛ UI در جای دیگر (مثلاً شیت پرداخت) */
+  hideUi?: boolean;
 };
 
 function setUseWalletFlag(useWallet: boolean) {
@@ -18,6 +20,7 @@ export function WalletCheckoutBlock({
   orderId,
   preview: _preview,
   onPreviewChange,
+  hideUi = false,
 }: WalletCheckoutBlockProps) {
   void _preview;
   useEffect(() => {
@@ -64,6 +67,7 @@ export function WalletCheckoutBlock({
     };
   }, [orderId, onPreviewChange]);
 
-  void _preview;
+  if (hideUi) return null;
+
   return null;
 }

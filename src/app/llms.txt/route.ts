@@ -10,6 +10,8 @@ export async function GET() {
 
 - کارشناسی خودرو: https://carmacheck.com/car-inspection
 - پنل نمایشگاه‌داران / کارشناسی ویژه نمایشگاه: https://carmacheck.com/car-inspection-dealers
+- کارشناسی قسطی خودرو (دیجی‌پی): https://carmacheck.com/car-inspection-installment
+- کارشناسی قسطی موتورسیکلت (دیجی‌پی): https://carmacheck.com/motorcycle-inspection-installment
 - قیمت‌گذاری خودرو: https://carmacheck.com/car-price
 - بلاگ کارشناسی خودرو: https://carmacheck.com/blog
 - سوالات متداول: https://carmacheck.com/faq
