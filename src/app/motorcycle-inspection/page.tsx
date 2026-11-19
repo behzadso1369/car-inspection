@@ -160,7 +160,7 @@ export const revalidate = 600; // 10 minutes
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title: { absolute: `${MOTORCYCLE_INSPECTION_TITLE} | کارماچک` },
+  title: `${MOTORCYCLE_INSPECTION_TITLE} | کارماچک`,
   description: MOTORCYCLE_INSPECTION_DESCRIPTION,
   keywords: [
     "کارشناسی موتورسیکلت",

@@ -221,52 +221,39 @@ export function FaqClient({ initialCategories, initialQuestionsByCategory }: Faq
             )}
 
             <div className="mt-4 lg:mt-5">
-              {faqCategories.map((cat: any) => {
-                const catId = String(cat.Id);
-                const items = questionsByCategory[catId] ?? [];
-                const isActive = catId === activeTab;
-                return (
-                  <div
-                    key={catId}
-                    hidden={!isActive}
-                    className={isActive ? undefined : "hidden"}
-                  >
-                    {items.length > 0 ? (
-                      <Accordion type="single" collapsible className="w-full space-y-3">
-                        {items.map((q: any, index: number) => (
-                          <AccordionItem
-                            key={q.Id}
-                            value={String(q.Id)}
-                            className="overflow-hidden rounded-3xl border border-[#E8ECF4] bg-white px-4 shadow-[0_4px_18px_rgba(16,17,23,0.04)] transition hover:border-[#3456bb]/20 hover:shadow-[0_8px_24px_rgba(53,99,233,0.08)] data-[state=open]:border-[#3456bb]/30 data-[state=open]:bg-gradient-to-b data-[state=open]:from-white data-[state=open]:to-[#F8FAFF]"
-                          >
-                            <AccordionTrigger className="py-4 text-right text-sm font-bold leading-7 text-[#101117] hover:no-underline md:text-base [&[data-state=open]]:text-[#3456bb]">
-                              <span className="flex items-start gap-3 text-right">
-                                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#EEF2FD] text-xs font-black text-[#3456bb]">
-                                  {index + 1}
-                                </span>
-                                <span>{q.Question}</span>
-                              </span>
-                            </AccordionTrigger>
-                            <AccordionContent className="border-t border-[#EEF2FD] pb-4 text-right text-sm leading-8 text-[#55565A] md:text-base">
-                              {q.Answer}
-                            </AccordionContent>
-                          </AccordionItem>
-                        ))}
-                      </Accordion>
-                    ) : (
-                      <div className="rounded-3xl border border-dashed border-[#E8ECF4] bg-white/80 px-6 py-12 text-center">
-                        <MessageQuestionIcon size={40} className="mx-auto text-[#3456bb]/50" />
-                        <p className="mt-4 text-base font-semibold text-[#101117]">
-                          سوالی برای این دسته ثبت نشده است
-                        </p>
-                        <p className="mt-2 text-sm text-[#6B6C70]">
-                          دسته دیگری را انتخاب کنید یا با پشتیبانی تماس بگیرید.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+              {faqCategoriesContent.length > 0 ? (
+                <Accordion type="single" collapsible className="w-full space-y-3">
+                  {faqCategoriesContent.map((q: any, index: number) => (
+                    <AccordionItem
+                      key={q.Id}
+                      value={String(q.Id)}
+                      className="overflow-hidden rounded-3xl border border-[#E8ECF4] bg-white px-4 shadow-[0_4px_18px_rgba(16,17,23,0.04)] transition hover:border-[#3456bb]/20 hover:shadow-[0_8px_24px_rgba(53,99,233,0.08)] data-[state=open]:border-[#3456bb]/30 data-[state=open]:bg-gradient-to-b data-[state=open]:from-white data-[state=open]:to-[#F8FAFF]"
+                    >
+                      <AccordionTrigger className="py-4 text-right text-sm font-bold leading-7 text-[#101117] hover:no-underline md:text-base [&[data-state=open]]:text-[#3456bb]">
+                        <span className="flex items-start gap-3 text-right">
+                          <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#EEF2FD] text-xs font-black text-[#3456bb]">
+                            {index + 1}
+                          </span>
+                          <span>{q.Question}</span>
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent className="border-t border-[#EEF2FD] pb-4 text-right text-sm leading-8 text-[#55565A] md:text-base">
+                        {q.Answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              ) : (
+                <div className="rounded-3xl border border-dashed border-[#E8ECF4] bg-white/80 px-6 py-12 text-center">
+                  <MessageQuestionIcon size={40} className="mx-auto text-[#3456bb]/50" />
+                  <p className="mt-4 text-base font-semibold text-[#101117]">
+                    سوالی برای این دسته ثبت نشده است
+                  </p>
+                  <p className="mt-2 text-sm text-[#6B6C70]">
+                    دسته دیگری را انتخاب کنید یا با پشتیبانی تماس بگیرید.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="mt-6 rounded-3xl border border-[#3456bb]/15 bg-gradient-to-b from-[#F8FAFF] to-[#EEF2FD] p-5 lg:hidden">

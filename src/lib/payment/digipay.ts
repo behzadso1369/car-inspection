@@ -52,20 +52,6 @@ function showDigipayRegistrationToast(statusMessage: string) {
   );
 }
 
-/** مبلغ قابل پرداخت آنلاین × (۱ + درصد افزایش اقساط). */
-export function applyInstallmentSurcharge(
-  amount: number,
-  quote?: InstallmentQuote | null,
-): number {
-  const base = Number(amount ?? 0);
-  const pct = Number(quote?.surchargePercent ?? 0);
-  if (pct > 0) {
-    return Math.round(base * (1 + pct / 100));
-  }
-  const quoted = Number(quote?.payableAmount ?? quote?.installmentAmount ?? 0);
-  return quoted > 0 ? quoted : base;
-}
-
 export function paymentSuccessUrl(orderId: number, vehicleKind: VehicleKind = 1) {
   const params = new URLSearchParams({
     orderId: String(orderId),

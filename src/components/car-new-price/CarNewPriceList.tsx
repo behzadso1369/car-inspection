@@ -29,19 +29,15 @@ function formatPriceDisplay(item: CarNewPriceItem) {
 type CarNewPriceListProps = {
   lastUpdateFa: string;
   lastUpdateIso: string;
-  initialItems?: CarNewPriceItem[];
-  initialError?: string | null;
 };
 
 export default function CarNewPriceList({
   lastUpdateFa,
   lastUpdateIso,
-  initialItems = [],
-  initialError = null,
 }: CarNewPriceListProps) {
-  const [items, setItems] = useState<CarNewPriceItem[]>(initialItems);
-  const [loading, setLoading] = useState(initialItems.length === 0 && !initialError);
-  const [error, setError] = useState<string | null>(initialError);
+  const [items, setItems] = useState<CarNewPriceItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [priceFilterEnabled, setPriceFilterEnabled] = useState(false);
@@ -82,9 +78,8 @@ export default function CarNewPriceList({
   }, []);
 
   useEffect(() => {
-    if (initialItems.length > 0 || initialError) return;
     void load();
-  }, [load, initialItems.length, initialError]);
+  }, [load]);
 
   const filtered = useMemo(() => {
     let list = items;
@@ -122,15 +117,8 @@ export default function CarNewPriceList({
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2 md:mb-3">
         <p className="inline-flex items-center gap-1.5 rounded-full border border-[#D6F0E0] bg-[#EFFAF3] px-3 py-1 text-xs font-bold text-[#1F7A45] md:text-sm">
           <span className="h-2 w-2 rounded-full bg-[#22A55B]" aria-hidden="true" />
-          قیمت هر مدل از منبع همان ردیف است
-          {lastUpdateFa ? (
-            <>
-              {" "}
-              <span className="font-medium text-[#3d7a55]">
-                (نمایش صفحه: <time dateTime={lastUpdateIso}>{lastUpdateFa}</time>)
-              </span>
-            </>
-          ) : null}
+          آخرین به‌روزرسانی:{" "}
+          <time dateTime={lastUpdateIso}>{lastUpdateFa}</time>
         </p>
         {countLabel && (
           <p className="inline-flex items-center rounded-full border border-[#E8ECF4] bg-white px-3 py-1 text-xs font-bold text-[#55565A] md:text-sm">
@@ -143,11 +131,7 @@ export default function CarNewPriceList({
         <div className="sticky top-[4.5rem] z-30 -mx-3 border-b border-[#E8ECF4] bg-[#F3F5F8]/95 px-3 py-2 backdrop-blur-md md:static md:mx-0 md:border-0 md:bg-transparent md:p-0 lg:top-28">
           <div className="relative">
             <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#999A9C]" />
-            <label htmlFor="car-new-price-search" className="sr-only">
-              جستجوی نام خودرو یا برند
-            </label>
             <Input
-              id="car-new-price-search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="جستجوی نام خودرو یا برند..."

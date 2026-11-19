@@ -75,18 +75,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     urlEntry('/regulations', parseDate(PAGE_LASTMOD['/regulations']), 'monthly', 0.5),
     urlEntry('/car-inspection', parseDate(PAGE_LASTMOD['/car-inspection']), 'weekly', 0.9),
     urlEntry(
-      '/motorcycle-inspection',
-      parseDate(PAGE_LASTMOD['/motorcycle-inspection']),
-      'weekly',
-      0.9,
-    ),
-    urlEntry(
-      '/car-inspection-most-popular',
-      parseDate(CARS_LASTMOD),
-      'weekly',
-      0.85,
-    ),
-    urlEntry(
       '/car-inspection-dealers',
       parseDate(PAGE_LASTMOD['/car-inspection-dealers']),
       'weekly',

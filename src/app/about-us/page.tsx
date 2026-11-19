@@ -37,14 +37,7 @@ export const metadata: Metadata = {
     siteName: "کارماچک",
     locale: "fa_IR",
     type: "website",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: "درباره کارماچک",
-      },
-    ],
+    // تصویر OG به‌صورت داینامیک از app/opengraph-image.tsx تولید می‌شود
   },
   twitter: {
     card: "summary_large_image",
@@ -65,14 +58,12 @@ async function getMasterPageData() {
 const experts = [
   {
     name: "بهنام زارعی",
-    title: "کارشناس فنی و بدنه خودرو",
-    role: "مسئول بررسی رنگ، بدنه و شاسی در خدمت انتخابی",
+    title: "کارشناس  حرفه ای فنی و بدنه خودرو",
     img: "/expert1.png",
   },
   {
     name: "حمید حاجی قبادلو",
     title: "کارشناس فنی خودرو",
-    role: "مسئول بررسی بخش‌های فنی قابل آزمون در خدمت انتخابی",
     img: "/expert2.png",
   }
 ];
@@ -173,25 +164,9 @@ export default async function AboutUsPage() {
           <h2 className="text-2xl lg:text-3xl font-bold mb-6 text-center">
             کارشناسان حرفه‌ای
           </h2>
-          <p className="max-w-3xl mx-auto text-center text-[#101117] text-base lg:text-lg leading-8 mb-6">
+          <p className="max-w-3xl mx-auto text-center text-[#101117] text-base lg:text-lg leading-8 mb-12">
             کارشناسی خودرو توسط کارشناسان مجرب انجام می‌شود؛ از بررسی رنگ و بدنه
             تا بخش‌های فنی متناسب با نوع خدمت انتخابی.
-          </p>
-          <p className="max-w-3xl mx-auto text-center text-[#55565A] text-sm lg:text-base leading-8 mb-12">
-            مسئول بررسی هر بخش و حدود مسئولیت گزارش را در{" "}
-            <Link href="/regulations" className="font-semibold text-[#3456bb] hover:underline">
-              قوانین و مقررات
-            </Link>{" "}
-            ببینید. مطالب آموزشی بلاگ را تیم کارماچک تهیه می‌کند؛ برای سؤال دربارهٔ
-            دامنهٔ خدمت از{" "}
-            <Link href="/contact-us" className="font-semibold text-[#3456bb] hover:underline">
-              تماس با ما
-            </Link>{" "}
-            یا{" "}
-            <Link href="/blog" className="font-semibold text-[#3456bb] hover:underline">
-              مقالات کارشناسی
-            </Link>{" "}
-            استفاده کنید.
           </p>
           
           <div className="w-full ">
@@ -220,11 +195,6 @@ export default async function AboutUsPage() {
                 <div className="text-sm lg:text-base text-gray-400 text-center">
                   {item.title}
                 </div>
-                {item.role ? (
-                  <p className="mt-1 max-w-[16rem] text-center text-xs leading-6 text-[#6B6C70]">
-                    {item.role}
-                  </p>
-                ) : null}
               </div>
               
            

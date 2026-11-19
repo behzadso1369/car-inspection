@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
+import { jalaliDayMonth } from "@/lib/jalali-date";
 
 const PAGE_URL = `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/car-new-price`;
 
 export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "قیمت خودرو صفر | کارماچک";
-  const description =
-    "فهرست قیمت خودرو صفر بر اساس مدل، سال و منبع اعلام‌شده. نتیجه برای اطلاع است، نه قیمت قطعی معامله. امکان رزرو کارشناسی همان خودرو.";
+  const today = jalaliDayMonth();
+  const title = `قیمت خودرو صفر امروز ${today}`;
+  const description = `لیست قیمت خودرو صفر امروز ${today}؛ نام مدل، سال تولید و قیمت به‌روز کارخانه و بازار. رزرو کارشناسی همان خودرو در یک کلیک.`;
 
   return {
-    title: { absolute: title },
+    title,
     description,
     keywords: [
       "قیمت روز خودرو صفر",
@@ -22,11 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
     ],
     alternates: { canonical: PAGE_URL },
     openGraph: {
-      title,
+      title: `${title} | کارماچک`,
       description,
       url: PAGE_URL,
-      locale: "fa_IR",
-      type: "website",
     },
   };
 }

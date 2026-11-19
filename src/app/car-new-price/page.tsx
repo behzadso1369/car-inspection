@@ -7,27 +7,12 @@ import CarNewPriceSeoContent, {
 import { JsonLd } from "@/components/seo/JsonLd";
 import { BASE_URL, generateBreadcrumbSchema, generateFAQSchema } from "@/lib/seo";
 import { jalaliFullDate, tehranIsoDate } from "@/lib/jalali-date";
-import {
-  loadCarNewPriceSelect,
-  type CarNewPriceItem,
-} from "@/lib/car-price/carNewPriceApi";
 
 const PAGE_URL = `${BASE_URL}/car-new-price`;
 
-export default async function CarNewPricePage() {
+export default function CarNewPricePage() {
   const todayFa = jalaliFullDate();
   const todayIso = tehranIsoDate();
-  let initialItems: CarNewPriceItem[] = [];
-  let initialError: string | null = null;
-  try {
-    const payload = await loadCarNewPriceSelect();
-    initialItems = payload.items ?? [];
-  } catch (err) {
-    initialError =
-      err instanceof Error && err.message === "RATE_LIMIT"
-        ? "درخواست‌های زیاد؛ چند لحظه بعد دوباره تلاش کنید."
-        : "بارگذاری قیمت‌ها ممکن نشد.";
-  }
 
   const schemas = [
     {
@@ -37,6 +22,7 @@ export default async function CarNewPricePage() {
       url: PAGE_URL,
       name: "قیمت روز خودرو صفر",
       inLanguage: "fa-IR",
+      dateModified: `${todayIso}T00:00:00+03:30`,
       isPartOf: { "@type": "WebSite", url: BASE_URL, name: "کارماچک" },
     },
     generateBreadcrumbSchema([
@@ -90,8 +76,6 @@ export default async function CarNewPricePage() {
           <CarNewPriceList
             lastUpdateFa={todayFa}
             lastUpdateIso={todayIso}
-            initialItems={initialItems}
-            initialError={initialError}
           />
         </Suspense>
 

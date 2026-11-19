@@ -71,7 +71,7 @@ export function PaymentMethodSelector({
       </label>
 
       <label
-        className={`flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-3 transition ${
+        className={`flex cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 transition ${
           value === "digipay"
             ? "border-[#003eff] bg-[#003eff]/8 ring-1 ring-[#003eff]/25"
             : "border-[#E5E7EB] bg-white"
@@ -80,13 +80,13 @@ export function PaymentMethodSelector({
         <input
           type="radio"
           name="checkout-payment-method"
-          className="mt-1 size-5 shrink-0 accent-[#003eff]"
+          className="size-5 shrink-0 accent-[#003eff]"
           checked={value === "digipay"}
           onChange={() => onChange("digipay")}
           disabled={disabled}
         />
         <span className="min-w-0 flex-1 text-right">
-          <span className="block text-sm font-medium leading-5 text-[#101117]">
+          <span className="block text-sm font-medium text-[#101117]">
             پرداخت اقساطی دیجی‌پی
           </span>
           {digipayHint ? (
@@ -98,9 +98,9 @@ export function PaymentMethodSelector({
         <Image
           src="/images/payment/digipay-logo.png"
           alt="دیجی‌پی"
-          width={76}
-          height={42}
-          className="h-[2.625rem] w-auto shrink-0 object-contain object-left"
+          width={72}
+          height={76}
+          className="h-16 w-auto shrink-0 object-contain"
         />
       </label>
     </fieldset>

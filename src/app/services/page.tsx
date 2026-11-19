@@ -1,5 +1,5 @@
 import Image from "next/image"
-import Link from "next/link"
+import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Check } from "lucide-react"
 import { NavigationBar } from "../components/mobile/Home/NavigationBar"
@@ -13,7 +13,7 @@ export const revalidate = 3600; // 1 hour
 // SEO Metadata
 export const metadata: Metadata = {
   title: "خدمات کارشناسی خودرو | استاندارد و VIP",
-  description: "دامنه خدمات کارشناسی کارماچک: بررسی بدنه، رنگ، شاسی و بخش‌های فنی متناسب با نوع خدمت. تعرفه هنگام ثبت درخواست اعلام می‌شود.",
+  description: "انواع خدمات کارشناسی: استاندارد از ۲۵۰ هزار تومان | VIP از ۴۵۰ هزار تومان | بررسی موتور، برق، تایر، ترمز و سیستم سوخت | گزارش فوری",
   keywords: [
     "قیمت کارشناسی",
     "کارشناسی استاندارد",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "خدمات کارشناسی خودرو | استاندارد و VIP",
-    description: "بررسی بدنه، رنگ، شاسی و بخش‌های فنی پیش از معامله؛ تعرفه هنگام ثبت درخواست اعلام می‌شود.",
+    description: "انواع خدمات کارشناسی: استاندارد از ۲۵۰ هزار تومان | VIP از ۴۵۰ هزار تومان",
     url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/services`,
     siteName: "کارماچک",
     locale: "fa_IR",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "خدمات کارشناسی خودرو",
-    description: "کارشناسی استاندارد و VIP پیش از خرید یا فروش خودرو",
+    description: "کارشناسی استاندارد و VIP با قیمت مناسب",
   },
   robots: {
     index: true,
@@ -58,22 +58,22 @@ export default async function Services() {
     {
       id: 1,
       icon: "/service-box-1.svg",
-      title: "کارشناسی در محل",
+      title: "تجهیزات با کیفیت",
     },
     {
       id: 2,
-      icon: "/professiona-tools.svg",
-      title: "بررسی بدنه و رنگ",
+      icon: "/service-box-1.svg",
+      title: "تجهیزات با کیفیت",
     },
     {
       id: 3,
       icon: "/professiona-tools.svg",
-      title: "بررسی فنی",
+      title: "تجهیزات با کیفیت",
     },
     {
       id: 4,
       icon: "/professional-expoerts.svg",
-      title: "گزارش پیش از معامله",
+      title: "کارشناسان حرفه ای",
     },
   ]
 
@@ -82,62 +82,57 @@ export default async function Services() {
       id: 1,
       icon: "/standard-inspection.svg",
       title: "کارشناسی استاندارد",
-      description: "بررسی وضعیت قابل مشاهده بدنه، رنگ، شاسی و بخش‌های فنی متناسب با نوع خدمت انتخابی.",
+      description: "بررسی کامل خودروی شما با تجهیزات جدید",
       features: [
-        "بررسی بدنه، رنگ و شاسی",
-        "بررسی بخش‌های فنی قابل آزمون",
-        "ثبت موارد خارج از دامنه خدمت",
-        "گزارش برای تصمیم خرید یا فروش",
+        "بررسی موتور و گیربکس",
+        "بررسی سیستم برق",
+        "بررسی تایرها و ترمزها",
+        "بررسی سیستم سوخت",
       ],
-      href: "/car-inspection",
-      buttonText: "ثبت درخواست کارشناسی خودرو",
+      price: "۲۵۰,۰۰۰ تومان",
+      buttonText: "انجام کارشناسی",
     },
     {
       id: 2,
       icon: "/vip-inspect.svg",
       title: "کارشناسی VIP",
-      description: "پوشش گسترده‌تر نسبت به خدمت استاندارد؛ جزئیات دقیق دامنه هنگام ثبت درخواست اعلام می‌شود.",
+      description: "بررسی جامع با خدمات اضافی و راهنمایی تخصصی",
       features: [
-        "دامنه گسترده‌تر بررسی بدنه و فنی",
-        "توضیح یافته‌ها برای مذاکره معامله",
-        "هماهنگی محل و زمان اعزام",
-        "گزارش مکتوب پس از انجام خدمت",
+        "بررسی موتور و گیربکس",
+        "بررسی سیستم برق",
+        "بررسی تایرها و ترمزها",
+        "بررسی سیستم سوخت",
       ],
-      href: "/car-inspection",
-      buttonText: "ثبت درخواست کارشناسی خودرو",
+      price: "۴۵۰,۰۰۰ تومان",
+      buttonText: "انجام کارشناسی",
     },
   ]
 
   const faqs = [
     {
       id: 1,
-      question: "کارشناسی خودرو شامل چه مواردی است؟",
-      answer:
-        "بسته به نوع خدمت، وضعیت بدنه، رنگ، شاسی و بخش‌های فنی قابل آزمون بررسی می‌شود. مواردی که بازکردن قطعه، ابزار خاص یا شرایط محیط اجازه ندهد، در گزارش به‌عنوان بررسی‌نشده ثبت می‌شود.",
+      question: "نام سوال اول در مورد کارشناسی خودرو شما چیست؟",
+      answer: "پاسخ سوال اول در مورد کارشناسی خودرو شما و کلیه جزئیات مربوط به آن.",
     },
     {
       id: 2,
-      question: "تعرفه کارشناسی چقدر است؟",
-      answer:
-        "مبلغ نهایی به نوع خدمت، محل اعزام و مشخصات خودرو بستگی دارد و هنگام ثبت درخواست اعلام می‌شود. در این صفحه تعرفه حدسی درج نشده است.",
+      question: "نام سوال دوم در مورد کارشناسی خودرو شما چیست؟",
+      answer: "پاسخ سوال دوم در مورد کارشناسی خودرو شما و کلیه جزئیات مربوط به آن.",
     },
     {
       id: 3,
-      question: "کارشناسی در محل انجام می‌شود یا باید خودرو را ببریم؟",
-      answer:
-        "مسیر اصلی کارماچک اعزام کارشناس به آدرس اعلام‌شده در تهران و شرق تهران است. اگر بررسی خاصی فقط در مرکز مجهز ممکن باشد، پیش از انجام خدمت هماهنگ می‌شود.",
+      question: "نام سوال سوم در مورد کارشناسی خودرو شما چیست؟",
+      answer: "پاسخ سوال سوم در مورد کارشناسی خودرو شما و کلیه جزئیات مربوط به آن.",
     },
     {
       id: 4,
-      question: "خروجی کارشناسی چیست؟",
-      answer:
-        "پس از انجام خدمت، گزارش یافته‌ها در اختیار شما قرار می‌گیرد تا برای تصمیم خرید، فروش یا مذاکره قیمت استفاده شود. گزارش جایگزین معاینه فنی یا کارشناسی قضایی نیست.",
+      question: "نام سوال چهارم در مورد کارشناسی خودرو شما چیست؟",
+      answer: "پاسخ سوال چهارم در مورد کارشناسی خودرو شما و کلیه جزئیات مربوط به آن.",
     },
     {
       id: 5,
-      question: "برای موتورسیکلت هم خدمت دارید؟",
-      answer:
-        "بله. مسیر جداگانه کارشناسی موتورسیکلت در محل وجود دارد. اگر وسیله مورد معامله موتور است، از صفحه کارشناسی موتورسیکلت درخواست ثبت کنید.",
+      question: "نام سوال پنجم در مورد کارشناسی خودرو شما چیست؟",
+      answer: "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاری می باشد.",
     },
   ]
 
@@ -160,13 +155,13 @@ export default async function Services() {
           {/* Right: Content */}
           <div className="w-full lg:w-1/2 lg:px-8 lg:order-0">
             <h1 className="text-2xl lg:text-3xl font-bold text-[#101117] mb-4">
-              خدمات کارشناسی خودرو پیش از معامله
+              سرویس عمومی و رفع مشکلات خودرو
             </h1>
             <p className="text-base lg:text-lg text-gray-700 font-light leading-relaxed mb-6">
-              کارماچک تعمیرگاه یا سرویس دوره‌ای نیست. پیش از خرید یا فروش،
-              وضعیت قابل بررسی خودرو — بدنه، رنگ، شاسی و بخش‌های فنی متناسب با
-              نوع خدمت — در محل شما ارزیابی می‌شود و نتیجه در قالب گزارش در
-              اختیار طرفین معامله قرار می‌گیرد.
+              ما تیمی باتجربه و کارآمد داریم که با دقت و تعهد کار می‌کنه تا
+              مطمئن بشیم خودروی شما همیشه در بهترین وضعیت ممکن قرار داره. در
+              هر سرویس دوره‌ای، چراغ‌ها، سیستم برق و سایر قطعاتی که ممکنه
+              دچار استهلاک بشن رو بررسی می‌کنیم.
             </p>
 
             {/* Features Grid */}
@@ -235,19 +230,18 @@ export default async function Services() {
                 ))}
               </div>
 
-              <p className="text-sm text-[#55565A] leading-7 mb-4 text-center">
-                {service.description}
-              </p>
-              <p className="text-center text-sm font-semibold text-[#3456bb] mb-6">
-                تعرفه هنگام ثبت درخواست اعلام می‌شود
-              </p>
+              {/* Price */}
+              <div className="text-center mb-6">
+                <p className="text-sm text-gray-600 mb-1">قیمت از</p>
+                <p className="text-xl lg:text-2xl font-bold text-primary">
+                  {service.price}
+                </p>
+              </div>
 
-              <Link
-                href={service.href}
-                className="block w-full rounded-2xl bg-[#416CEA] hover:bg-primary/90 text-white font-bold py-3 text-center"
-              >
+              {/* Button */}
+              <Button className="w-full rounded-2xl bg-[#416CEA] hover:bg-primary/90 text-white font-bold py-2 lg:py-3">
                 {service.buttonText}
-              </Link>
+              </Button>
             </div>
           ))}
         </div>
@@ -259,13 +253,6 @@ export default async function Services() {
           سوالات متداول
         </h2>
 
-        <p className="mb-6 text-center text-sm text-[#55565A]">
-          برای موتورسیکلت، مسیر جداگانه{" "}
-          <Link href="/motorcycle-inspection" className="font-semibold text-[#3456bb] hover:underline">
-            کارشناسی موتورسیکلت
-          </Link>{" "}
-          را ببینید.
-        </p>
         <div className="bg-secondary-background rounded-2xl p-6 lg:p-8">
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq) => (

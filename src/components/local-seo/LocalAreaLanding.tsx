@@ -109,10 +109,10 @@ export default function LocalAreaLanding({ area }: Props) {
 
           <ul className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              { k: "۵٬۷۵۳", v: "کارشناسی انجام‌شده" },
+              { k: "۲۵٬۰۰۰+", v: "کارشناسی موفق" },
               { k: "در محل", v: `پوشش ${name}` },
               { k: "گزارش", v: "دیجیتال و فوری" },
-              { k: "۹۵٪", v: "رضایت مشتریان" },
+              { k: "۹۰٪", v: "دقت کارشناسی" },
             ].map((item) => (
               <li
                 key={item.v}

@@ -30,14 +30,6 @@ export const metadata: Metadata = {
     siteName: "کارماچک",
     locale: "fa_IR",
     type: "website",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/opengraph-image`,
-        width: 1200,
-        height: 630,
-        alt: "تماس با کارماچک",
-      },
-    ],
   },
   twitter: {
     card: "summary",

@@ -358,10 +358,10 @@ export default function InspectionSeoArticleV2() {
           </p>
           <p className="mt-4">
             <Link
-              href="/motorcycle-inspection"
+              href="/car-inspection"
               className="inline-flex items-center rounded-full bg-[#416CEA] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#3456bb]"
             >
-              ثبت درخواست کارشناسی موتورسیکلت
+              ثبت درخواست کارشناسی خودرو
             </Link>
           </p>
         </Section>
@@ -534,10 +534,10 @@ export default function InspectionSeoArticleV2() {
           </p>
           <p className="mt-4">
             <Link
-              href="/motorcycle-inspection"
+              href="/car-inspection"
               className="inline-flex items-center rounded-full bg-[#416CEA] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#3456bb]"
             >
-              درخواست کارشناسی موتورسیکلت در محل
+              درخواست کارشناسی خودرو در محل
             </Link>
           </p>
         </Section>

@@ -8,7 +8,6 @@ import {
   type CheckoutPaymentMethod,
 } from "@/components/payment/PaymentMethodSelector";
 import {
-  applyInstallmentSurcharge,
   fetchInstallmentQuote,
   startDigipayInstallment,
 } from "@/lib/payment/digipay";
@@ -29,7 +28,6 @@ import {
 } from "@/components/flow/FlowStepFooter";
 import { WalletCheckoutBlock } from "./WalletCheckoutBlock";
 import { WalletIcon } from "@/components/WalletIcon";
-import { FESTIVAL_DISCOUNT } from "@/app/car-inspection/lib/pricing";
 
 function formatAmountFa(amount: number | null | undefined) {
   return Number(amount ?? 0).toLocaleString("fa-IR");
@@ -55,6 +53,7 @@ export default function ClientWrapper() {
     carGroupId: 0,
     carInspectionTypeId: null as number | null,
   });
+  const [walletGiftAmount, setWalletGiftAmount] = useState<number | null>(null);
   const [walletBalanceHint, setWalletBalanceHint] = useState<number | null>(
     null,
   );
@@ -116,6 +115,28 @@ export default function ClientWrapper() {
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    const { carGroupId, carInspectionTypeId } = checkoutContext;
+    if (!carGroupId) return;
+    let cancelled = false;
+    walletApi
+      .getGiftPreview(carGroupId, carInspectionTypeId)
+      .then((res) => {
+        if (cancelled) return;
+        const raw =
+          (res as { giftAmount?: number }).giftAmount ??
+          (res as { GiftAmount?: number }).GiftAmount;
+        const amount = Number(raw ?? 0);
+        setWalletGiftAmount(amount > 0 ? amount : null);
+      })
+      .catch(() => {
+        if (!cancelled) setWalletGiftAmount(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [checkoutContext.carGroupId, checkoutContext.carInspectionTypeId]);
 
   const orderId = checkoutContext.orderId;
 
@@ -190,10 +211,6 @@ export default function ClientWrapper() {
     };
   }, [orderId, paymentMethod, showDigipay, walletPreview?.gatewayAmount]);
 
-  const carmacheckDiscount = Number(
-    walletPreview?.discount ?? orderDetail?.discount ?? 0,
-  );
-
   const onlinePayable =
     isOnlineCheckout && walletPreview?.useWallet
       ? walletPreview.gatewayAmount
@@ -202,27 +219,15 @@ export default function ClientWrapper() {
         orderDetail?.totalPrice ??
         0);
 
-  const isDigipayCheckout = showDigipay && paymentMethod === "digipay";
-  const detailsPayableBase =
-    isOnlineCheckout && walletPreview?.useWallet
-      ? (walletPreview.gatewayAmount ?? 0)
-      : Number(
-          walletPreview?.payable ??
-            orderDetail?.finalPrice ??
-            orderDetail?.totalPrice ??
-            0,
-        );
-  const detailsPayable = isDigipayCheckout
-    ? applyInstallmentSurcharge(detailsPayableBase, installmentQuote)
-    : detailsPayableBase;
-  const displayedDiscount = isDigipayCheckout
-    ? Math.max(carmacheckDiscount, FESTIVAL_DISCOUNT)
-    : carmacheckDiscount;
-  const displayedTotalPrice = isDigipayCheckout
-    ? detailsPayable + FESTIVAL_DISCOUNT
-    : Number(orderDetail?.totalPrice ?? 0);
+  const digipayPayable =
+    installmentQuote?.payableAmount ??
+    installmentQuote?.installmentAmount ??
+    null;
 
-  const footerAmount = isDigipayCheckout ? detailsPayable : onlinePayable;
+  const footerAmount =
+    showDigipay && paymentMethod === "digipay"
+      ? digipayPayable
+      : onlinePayable;
 
   const payDisabled = payBusy || !acceptedTerms;
 
@@ -269,7 +274,7 @@ export default function ClientWrapper() {
             walletBalance={
               walletPreview?.walletBalance ?? walletBalanceHint
             }
-            onlineHint="استفاده از کیف پول کارماچک"
+            onlineHint="استفاده از کیف پول کارماچک + هدیه"
             digipayHint="4 قسط با دیجی پی"
           />
         </div>
@@ -306,54 +311,51 @@ export default function ClientWrapper() {
             <div className="text-left">
               <div className="flex items-baseline justify-end gap-1">
                 <span className="text-base font-black text-[#101117]">
-                  {displayedTotalPrice.toLocaleString("fa-IR")}
+                  {(orderDetail?.totalPrice ?? 0).toLocaleString("fa-IR")}
                 </span>
                 <span className="text-xs font-medium text-[#55565A]">تومان</span>
               </div>
             </div>
           </div>
           {isOnlineCheckout && walletPreview?.useWallet ? (
-            <div className="flex items-start justify-between gap-3">
-              <span className="pt-1 text-sm text-[#6B6C70]">کسر کیف پول:</span>
-              <div className="text-left">
-                <div className="flex items-baseline justify-end gap-1">
-                  <span className="text-base font-black tabular-nums text-[#B45309]">
-                    {(walletPreview.walletCanCover ?? 0).toLocaleString("fa-IR")}
-                  </span>
-                  <span className="text-xs font-medium text-[#B45309]">تومان</span>
+            <>
+              <div className="flex items-start justify-between gap-3">
+                <span className="pt-1 text-sm text-[#6B6C70]">کسر کیف پول:</span>
+                <div className="text-left">
+                  <div className="flex items-baseline justify-end gap-1">
+                    <span className="text-base font-black tabular-nums text-[#16A34A]">
+                      {(walletPreview.walletCanCover ?? 0).toLocaleString("fa-IR")}
+                    </span>
+                    <span className="text-xs font-medium text-[#55565A]">تومان</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : null}
-          {displayedDiscount > 0 ? (
-            <div className="flex items-start justify-between gap-3">
-              <span className="pt-1 text-sm text-[#6B6C70]">تخفیف کارماچک:</span>
-              <div className="text-left">
-                <div className="flex items-baseline justify-end gap-1">
-                  <span className="text-base font-black tabular-nums text-[#16A34A]">
-                    {displayedDiscount.toLocaleString("fa-IR")}
-                  </span>
-                  <span className="text-xs font-medium text-[#55565A]">تومان</span>
-                </div>
+              <div className="flex justify-between gap-3">
+                <span className="text-sm font-medium text-[#101117]">
+                  مبلغ قابل پرداخت:
+                </span>
+                <span className="text-base font-extrabold tabular-nums text-[#416CEA]">
+                  {(walletPreview.gatewayAmount ?? 0).toLocaleString("fa-IR")}{" "}
+                  <span className="text-xs font-medium">تومان</span>
+                </span>
               </div>
-            </div>
-          ) : null}
-          {(isOnlineCheckout && walletPreview?.useWallet) ||
-          displayedDiscount > 0 ||
-          isDigipayCheckout ? (
-            <div className="flex items-start justify-between gap-3">
-              <span className="pt-1 text-sm text-[#6B6C70]">مبلغ قابل پرداخت:</span>
-              <div className="text-left">
-                <div className="flex items-baseline justify-end gap-1">
-                  <span className="text-base font-black tabular-nums text-[#416CEA]">
-                    {detailsPayable.toLocaleString("fa-IR")}
-                  </span>
-                  <span className="text-xs font-medium text-[#416CEA]">تومان</span>
-                </div>
-              </div>
-            </div>
+            </>
           ) : null}
         </div>
+
+        {(!showDigipay || paymentMethod === "online") && walletGiftAmount ? (
+          <div className="flex items-start justify-between gap-3">
+            <span className="pt-1 text-sm text-[#6B6C70]">هدیه کیف پول:</span>
+            <div className="text-left">
+              <div className="flex items-baseline justify-end gap-1">
+                <span className="text-base font-black tabular-nums text-[#16A34A]">
+                  {walletGiftAmount.toLocaleString("fa-IR")}
+                </span>
+                <span className="text-xs font-medium text-[#55565A]">تومان</span>
+              </div>
+            </div>
+          </div>
+        ) : null}
 
         <div className="flex justify-between gap-3">
           <span className="text-sm text-[#6B6C70]">نوع کارشناسی:</span>
@@ -397,7 +399,7 @@ export default function ClientWrapper() {
             {showDigipay && paymentMethod === "digipay" ? (
               <Button
                 disabled={
-                  payDisabled || !installmentQuote || quoteLoading
+                  payDisabled || digipayPayable == null || quoteLoading
                 }
                 onClick={startDigipayPay}
                 type="button"

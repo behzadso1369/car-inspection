@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { jalaliDayMonth } from "@/lib/jalali-date";
 
 const PAGE_URL = `${process.env.NEXT_PUBLIC_SITE_URL || "https://carmacheck.com"}/car-price`;
 
+// تاریخ تایتل از قیمت‌های زنده‌ی API می‌آید؛ صفحه هر ساعت (revalidate روت) دوباره ساخته می‌شود تا تاریخ هر روز عوض شود.
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "تخمین قیمت خودرو کارکرده | کارماچک";
-  const description =
-    "عوامل مؤثر بر ارزش خودرو را بررسی کنید و بازهٔ برآورد قیمت کارکرده را ببینید. نتیجهٔ ابزار برآورد است، نه قیمت قطعی معامله. رایگان و بدون ثبت‌نام.";
+  const today = jalaliDayMonth();
+  const title = `تخمین قیمت خودرو کارکرده امروز ${today} | رایگان`;
+  const description = `محاسبه و قیمت‌گذاری رایگان خودرو کارکرده با قیمت روز بازار، ${today}. مدل، سال، کارکرد و وضعیت رنگ و شاسی را وارد کنید و بدون ثبت‌نام بازهٔ قیمت را ببینید.`;
 
   return {
-    title: { absolute: title },
+    title,
     description,
     keywords: [
       "تخمین قیمت خودرو",
@@ -23,11 +25,9 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: PAGE_URL,
     },
     openGraph: {
-      title,
+      title: `${title} | کارماچک`,
       description,
       url: PAGE_URL,
-      locale: "fa_IR",
-      type: "website",
     },
   };
 }

@@ -19,9 +19,10 @@ import {
   type RelatedPost,
 } from "../components/RelatedPosts";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-const CACHE = { next: { revalidate: 3600 } };
+const NO_STORE = { cache: "no-store" as RequestCache };
 import { API_ORIGIN } from "@/config/api";
 
 const API_BASE_URL = API_ORIGIN;
@@ -41,8 +42,7 @@ async function resolvePostId(param: string): Promise<string | null> {
     {
       method: "POST",
       body: { terms: "", take: 1000, skip: 0 },
-      throwOnError: true,
-      ...CACHE,
+      ...NO_STORE,
     }
   );
   const items = data?.SearchItems ?? [];
@@ -60,10 +60,7 @@ const getPost = cache(async (param: string) => {
   const id = await resolvePostId(param);
   if (!id) return null;
   const endpoint = `${ApiHelper.get("GetBlogDetail")}?id=${id}`;
-  const data = await serverFetch<{ PostDetails?: any[] }>(endpoint, {
-    throwOnError: true,
-    ...CACHE,
-  });
+  const data = await serverFetch<{ PostDetails?: any[] }>(endpoint, NO_STORE);
   const post = data?.PostDetails?.[0] ?? null;
 
   return post ? { ...post, __resolvedId: id } : null;
@@ -77,7 +74,7 @@ function excludeCurrentPost(posts: RelatedPost[], postId: string) {
 
 async function fetchRelatedFromApi(postId: string, take: number) {
   const endpoint = `${ApiHelper.get("GetRelatedPosts")}?PostId=${postId}&Take=${take}`;
-  const data = await serverFetch(endpoint, CACHE);
+  const data = await serverFetch(endpoint, NO_STORE);
   return excludeCurrentPost(normalizeRelatedPosts(data), postId);
 }
 
@@ -104,7 +101,7 @@ async function getRelatedPosts(
     {
       method: "POST",
       body: { terms: "", take: 20, skip: 0 },
-      ...CACHE,
+      ...NO_STORE,
     }
   );
   const others = (list?.SearchItems ?? []).filter((item: any) => {
@@ -215,7 +212,6 @@ export default async function BlogDetailPage({ params }: Props) {
             blogData.ModifiedDate ??
             blogData.CreatedDate ??
             blogData.CreatedOn,
-          author: blogData.AuthorName ?? blogData.CreatedBy,
           image,
           timeRequiredMinutes: readingTime,
         }),
